@@ -1,6 +1,7 @@
 Actions
 	- create github account
 	- open issues
+		- make models and forms for the basic components
 	- "digidemo"
 	- set milestone 1 functionalities
 		* due date 2.5 wks (two weeks next Thursday)

@@ -1,12 +1,12 @@
 from django.conf.urls import patterns, include, url
 
 from django.contrib import admin
+import views 
+
 admin.autodiscover()
 
 urlpatterns = patterns('',
-    # Examples:
-    # url(r'^$', 'digidemo.views.home', name='home'),
-    # url(r'^blog/', include('blog.urls')),
-
-    url(r'^admin/', include(admin.site.urls)),
+	url(r'^$',views.test, name='test'),
+	url(r'^proposals/(?P<proposal_name>\w+)/$', views.proposal, name='proposal'),
 )
+

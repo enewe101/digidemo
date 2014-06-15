@@ -1,0 +1,25 @@
+LoadModule wsgi_module /usr/local/Cellar/mod_wsgi/3.3/libexec/mod_wsgi.so
+
+<VirtualHost *:80>
+	
+    LogLevel info
+    ServerName <name-of-your-server-box>
+    ServerAdmin <your-full-email-address>
+
+    DocumentRoot /path/to/directory/to/mount/as/public/html
+
+    # These directories become publicly available!
+	Alias /resources 	/path/to/digidemo/resources/
+    Alias /robots.txt 	/path/to/digidemo/resources/robots.txt
+    Alias /favicon.ico 	/path/to/digidemo/resources/favicon.ico
+	# Note '/static/' should match STATIC_ROOT in your settings.py file
+    Alias /static/ 		/path/to/digidemo/static/
+	# Note '/media/' should match STATIC_ROOT in your settings.py file
+    Alias /media/ 		/path/to/digidemo/media/
+
+    WSGIDaemonProcess digidemo processes=2 threads=15 display-name=%{GROUP}
+    WSGIProcessGroup digidemo
+
+    WSGIScriptAlias / /path/to/digidemo/src/digidemo/wsgi.py
+
+</VirtualHost>

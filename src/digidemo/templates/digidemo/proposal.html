@@ -1,0 +1,48 @@
+this is the proposal view
+
+{{ proposal.creation_date }}<br \>
+{{ proposal.name }}<br \>
+{{ proposal.title }}<br \>
+{{ proposal.text }}<br \>
+
+{% for letter in proposal.letter_set.all %}
+	<div class="letter"
+
+		<div class="senders">
+			<div class="original_sender">
+				<img class="original_sender_avatar_image" 
+					src="{{ letter.sender.avatar_img.url }}" 
+					alt="original sender avatar" />
+				{{ letter.sender.avatar_name }}
+			</div>
+
+			<div class="resenders">
+				{% for resender in letter.resenders.all %}
+				<div class="resender">
+					<img class="resender_avatar_image" 
+						src="{{ resender.avatar_img.url }}" 
+						alt="resender_avatar" />
+					{{ resender.avatar_name }}
+				</div>
+				{% endfor %}
+			</div>
+		</div>
+
+		<div class="letter_body">
+		{{ letter.body }}
+		</div>
+
+		<div class"comments_wrapper">
+			{% for comment in letter.comment_set.all %}
+			<div class="comment">
+				{{ comment.body }}
+				<div class="comment_author">
+					{{ comment.author.avatar_name }}
+				<div>
+			<div>
+			{% endfor %}
+		</div>
+
+	</div>
+{% endfor %}
+

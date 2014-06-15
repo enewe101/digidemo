@@ -1,3 +1,5 @@
 settings.py
 wsgi.py
+my.cnf
+httpd.conf
 
