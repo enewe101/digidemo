@@ -1,6 +1,6 @@
-# INSTALLATION
+## Installation
 
-## PART 1 -- INSTALL DEPENDENCIES
+### Part 1 -- install dependencies
 1. Install Apache httpd webserver.
 
 2. Install mod\_wsgi, and configure apache webserver to use it.  Verify that
@@ -17,7 +17,7 @@ at lesat separately, each is working.  Refer to the software's specific
 documentation and user communities to get set up help!
 
 
-## PART 2 -- INSTALL DIGIDEMO, AND WIRE THINGS UP
+### Part 2 -- install digidemo, and wire things up
 6. Download digidemo.
 
 7. Configure Apache / mod\_wsgi to load the digidemo app.  Copy the following 
@@ -42,9 +42,9 @@ documentation and user communities to get set up help!
 	to use when connecting to mysql.  The default user is digidemo.  Use
 	whatever you want, but you will need to actually 
 
-		- create a database called 'digidemo'
-		- add the digidemo user to your mysql server, and give it write 
-			privileges to the digidemo database
+	- create a database called 'digidemo'
+	- add the digidemo user to your mysql server, and give it write 
+		privileges to the digidemo database
 
 	test your database by directly logging into it in the terminal using
 	the mysql client.  Log in as the user you created for digidemo to make
