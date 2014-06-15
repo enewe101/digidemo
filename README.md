@@ -1,29 +1,26 @@
-INSTALLATION
+# INSTALLATION
 
+## PART 1 -- INSTALL DEPENDENCIES
+1. Install Apache httpd webserver.
 
-PART 1 -- INSTALL DEPENDENCIES
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-1) Install Apache httpd webserver.
-
-2) Install mod\_wsgi, and configure apache webserver to use it.  Verify that
+2. Install mod\_wsgi, and configure apache webserver to use it.  Verify that
 	you can serve a simple wsgi test application on localhost
 
-3) Install MySQL
+3. Install MySQL
 
-4) Install Django
+4. Install Django
 
-5) Install South
+5. Install South
 
 Note: you should test all of those installations and convince yourself that,
 at lesat separately, each is working.  Refer to the software's specific
 documentation and user communities to get set up help!
 
 
-PART 2 -- INSTALL DIGIDEMO, AND WIRE THINGS UP
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-6) Download digidemo.
+## PART 2 -- INSTALL DIGIDEMO, AND WIRE THINGS UP
+6. Download digidemo.
 
-7) Configure Apache / mod\_wsgi to load the digidemo app.  Copy the following 
+7. Configure Apache / mod\_wsgi to load the digidemo app.  Copy the following 
 	configuration files in place, removing the '.template' part, and filling 
 	the holes with your machine-specific details
 
@@ -36,7 +33,7 @@ PART 2 -- INSTALL DIGIDEMO, AND WIRE THINGS UP
 	Troubleshoot your problems using the apache error log. Normally you can 
 	find it at /var/log/apache2/error_log
 
-8) Configure digidemo to work with your database.  Copy this file in place, 
+8. Configure digidemo to work with your database.  Copy this file in place, 
 	removing the '.template', and adding your database specifics:
 
 		<proj-root>/src/digidemo/me.cnf.template
