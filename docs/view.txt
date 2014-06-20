@@ -59,6 +59,11 @@ Proposal View
 		- indicate recipient actors
 		
 		
-Model
+Model additions
 	Proposal
 		- federal / provincial / municipal / other
+
+
+	
+
+		

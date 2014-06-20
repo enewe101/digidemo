@@ -1,0 +1,469 @@
+@font-face{
+	font-family: computerModern;
+	src: url(../fonts/computer_modern/cmunrm.eot);
+}   
+@font-face{
+	font-family: computerModern;
+	src: url(../fonts/computer_modern/cmunrm.ttf);
+}   
+@font-face{
+	font-family: computerModern;
+	font-style: italic;
+	src: url(../fonts/computer_modern/cmunci.eot);
+}   
+@font-face{
+	font-family: computerModern;
+	font-style: italic;
+	src: url(../fonts/computer_modern/cmunci.ttf);
+}   
+@font-face{
+	font-family: computerModern;
+	font-weight: bold;
+	src: url(../fonts/computer_modern/cmunbx.eot);
+}   
+@font-face{
+	font-family: computerModern;
+	font-weight: bold;
+	src: url(../fonts/computer_modern/cmunbx.ttf);
+}   
+@font-face{
+	font-family: computerModern;
+	font-weight: bold;
+	font-style: italic;
+	src: url(../fonts/computer_modern/cmunbi.eot);
+}   
+@font-face{
+	font-family: computerModern;
+	font-weight: bold;
+	font-style: italic;
+	src: url(../fonts/computer_modern/cmunbi.ttf);
+}   
+
+@font-face{
+	font-family: ubuntu;
+	src: url(../fonts/ubuntu/Ubuntu-R.eot);
+}   
+@font-face{
+	font-family: ubuntu;
+	src: url(../fonts/ubuntu/Ubuntu-R.ttf);
+}   
+@font-face{
+	font-family: ubuntu;
+	font-style: italic;
+	src: url(../fonts/ubuntu/Ubuntu-RI.eot);
+}   
+@font-face{
+	font-family: ubuntu;
+	font-style: italic;
+	src: url(../fonts/ubuntu/Ubuntu-RI.ttf);
+}   
+@font-face{
+	font-family: ubuntu;
+	font-weight: bold;
+	src: url(../fonts/ubuntu/Ubuntu-B.eot);
+}   
+@font-face{
+	font-family: ubuntu;
+	font-weight: bold;
+	src: url(../fonts/ubuntu/Ubuntu-B.ttf);
+}   
+@font-face{
+	font-family: ubuntu;
+	font-weight: bold;
+	font-style: italic;
+	src: url(../fonts/ubuntu/Ubuntu-BI.eot);
+}   
+@font-face{
+	font-family: ubuntu;
+	font-weight: bold;
+	font-style: italic;
+	src: url(../fonts/ubuntu/Ubuntu-BI.ttf);
+}   
+
+.centered {
+	text-align: center;
+}
+
+.italic {
+	font-style: italic;
+}
+
+.bold {
+	font-weight: bold;
+}
+
+.grey {
+	color: rgb(200,200,200);
+}
+
+
+body {
+	font-family: ubuntu;
+}
+
+#header {
+	height: 40px;
+	clear: both;
+}
+
+#middle {
+	clear: both;
+}
+
+#footer {
+	clear: both;
+}
+
+.outer_center {
+	text-align: center;
+}
+
+.inner_center {
+	text-align: left;
+	margin: auto;
+	width: 1024px;
+}
+
+#colophon {
+	float: left;
+	width: 40px;
+	height: 40px;
+}
+
+#user {
+	float: right;
+}
+
+#left_col {
+	float: left;
+	width: 140px;
+}
+
+#center_col {
+	float:left;
+	width: 678px;
+	border: solid 1px blue;
+}
+
+#proposal {
+	font-family: computerModern;
+	padding: 0 10px 0 10px;
+}
+
+h1.proposal_title {
+	padding: 0px;
+	margin: 0 0 14px 0;
+}
+
+#proposal_summary {
+}
+
+#proposal_factors {
+	clear: both;
+	margin: 40px 0 0 0;
+}
+
+.clear {
+	clear: both;
+}
+
+.factor_list {
+	padding-left: 20px;
+}
+
+.factor_element {
+	margin: 10px 0 10px 0;
+	padding-left: 20px;
+}
+
+.factor_left_column {
+	width: 280px;
+	margin-left: 0px;
+	float: left;
+}
+
+.factor_right_column {
+	width: 280px;
+	margin-left: 36px;
+	float: left;
+}
+
+hr.flourish {
+	height: 24px;
+	background: no-repeat center url('../images/horizontal_rule_flourish.png');
+	border: none;
+	margin: 30px 0 40px 0;
+}
+
+#right_col {
+	float: left;
+	width: 200px;
+	height: 20px;
+}
+
+ul#navbar {
+	list-style-type: none;
+	padding: 15px;
+	text-align: right;
+}
+
+li.navitem {
+}
+
+.nav_horizontal_bar {
+	margin: 10px 0 10px 0;
+}
+
+
+
+.tabs {
+	height: 30px;
+	margin: 0 0 0 10px;
+}
+
+.tab, .tab_active, .tab_thin_space, .tab_thick_space {
+	float: left;
+}
+
+.tab, .tab_thin_space, .tab_thick_space {
+	border-bottom: solid 1px rgb(170, 0, 212);
+}
+
+.tab, .tab_active {
+	padding: 0px 4px 0 4px;
+	border-left: solid 1px rgb(170, 0, 212);
+	border-top: solid 1px rgb(170, 0, 212);
+	border-right: solid 1px rgb(170, 0, 212);
+}
+
+.tab {
+	margin-top: 3px;
+	height: 20px;
+}
+
+.tab_active {
+	padding-top: 4px;
+	height: 20px;
+}
+
+.tab_thin_space {
+	height: 24px;
+	width: 4px;
+}
+
+.tab_thick_space {
+	height: 24px;
+	width: 14px;
+}
+
+.factor_list_heading {
+	font-weight: bold;
+	text-align: center;
+}
+
+.disabled{
+	color: rgb(220,220,220);
+}
+
+.letter {
+	position: relative;
+	left: -10px;
+}
+
+.letter_status_bar {
+	width: 100px;
+	float: left;
+	text-align: center;
+	border: solid 1px red;
+}
+
+.letter_votes_widget {
+	height: 100px;
+}
+
+.letter_downvote, .letter_upvote {
+}
+
+.letter_upvote {
+	margin: 10px 0 0 0;
+}
+
+.letter_downvote {
+}
+
+.letter_score {
+	font-family: computerModern;
+	font-size: 36px;
+	font-style: italic;
+	font-weight: bold;
+	line-height: 48px;
+	height: 48px;
+	margin-left: -6px;
+}
+
+
+.resend_widget {
+	margin: 0 0 0 10px;
+}
+
+.resend {
+	font-family: computerModern;
+	font-size: 24px;
+	font-style: italic;
+	font-weight: bold;
+	line-height: 0.8em;
+}
+
+.letter_main {
+	float: left;
+	padding: 0 10px 0 10px;
+	width: 550px;
+	border: solid 1px blue;
+}
+
+.greeting {
+	margin: 0;
+	padding: 0 0 10px 0;
+}
+
+.recipients_and_valence {
+	position: relative;
+	margin: 0 0 10px 0;
+}
+
+.recipients {
+	border-bottom: dotted 1px rgb(180,180,180);
+	padding-bottom: 10px;
+}
+
+.recipient_title {
+	font-weight: bold;
+	font-size: 14px;
+}
+
+.recipient_name {
+	font-size: 14px;
+}
+
+.letter_valence {
+	margin: 14px 0 0 6px;
+}
+
+.senders {
+	margin: 20px 0 20px 0;
+}
+
+.sender {
+	float: left;
+	height: 100px;
+	text-align: center;
+}
+
+.sender_avatar_image {
+	position: relative;
+	width: 56px;
+	height: 56px;
+	margin: auto;
+	margin-top: 0.6em;
+}
+
+.avatar_image_medium {
+	width: 56px;
+	height: 56px;
+}
+
+.avatar_mask_medium {
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 56px;
+	height: 56px;
+}
+
+.sender_name_and_bling {
+	float: left;
+	text-align: center;
+}
+
+.sender_name {
+	line-height: 12px;
+	margin-top: 0.6em;
+}
+
+.sender_bling {
+	font-size: 12px;
+}
+
+.resending {
+	float: left;
+	padding: 12px 0 0 6px;
+}
+
+.resender {
+	position: relative;
+	width: 42px;
+	height 56px;
+	float: left;
+	margin-right: 6px;
+}	
+
+.resenders_single_row {
+	margin: 0 0 10px 0;
+}
+
+.avatar_image_small {
+	margin-top: 6px;
+	height: 42px;
+	width: 42px;
+}
+
+.avatar_mask_small {
+	position: absolute;
+	height: 42px;
+	width: 42px;
+	top: 6px;
+	left: 0;
+}
+
+.letter_comment {
+	border-top: 1px rgb(180,180,180) dotted;
+	padding: 10px;
+	font-size: 12px;
+}
+
+.recipient {
+	font-size: 14px;
+	margin: 0;
+}
+
+.letter_body {
+	font-size: 16px;
+	padding-top: 10px;
+}
+
+a.send_letter {
+	margin-left: 4px;
+}
+
+a.send_letter:link {
+	color: rgb(170, 0, 212);
+	text-decoration: none;
+}
+a.send_letter:visited {
+	color: rgb(170, 0, 212);
+	text-decoration: none;
+}
+
+a.send_letter:hover {
+	color: rgb(170, 0, 212);
+	text-decoration: underline;
+}
+
+a.send_letter:active {
+	color: rgb(170, 0, 212);
+	text-decoration: underline;
+}
+
+.comment_author {
+	font-weight: bold;
+}

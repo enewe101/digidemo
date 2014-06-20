@@ -1,48 +1,385 @@
-this is the proposal view
+{% load staticfiles %}
+<!DOCTYPE html>
+<html>
 
-{{ proposal.creation_date }}<br \>
-{{ proposal.name }}<br \>
-{{ proposal.title }}<br \>
-{{ proposal.text }}<br \>
+<head>
+	<title>
+		{{ proposal.title }}
+	</title>
 
-{% for letter in proposal.letter_set.all %}
-	<div class="letter"
+	<link rel="stylesheet" type="text/css" 
+		href="{% static "digidemo/css/basic.css" %}" />
+	<link rel="stylesheet" type="text/css" 
+		href="{% static "digidemo/css/proposal.css" %}" />
 
-		<div class="senders">
-			<div class="original_sender">
-				<img class="original_sender_avatar_image" 
-					src="{{ letter.sender.avatar_img.url }}" 
-					alt="original sender avatar" />
-				{{ letter.sender.avatar_name }}
-			</div>
+</head>
 
-			<div class="resenders">
-				{% for resender in letter.resenders.all %}
-				<div class="resender">
-					<img class="resender_avatar_image" 
-						src="{{ resender.avatar_img.url }}" 
-						alt="resender_avatar" />
-					{{ resender.avatar_name }}
+<body>
+
+	<div id="header">
+
+		<div class="outer_center">
+			<div class="inner_center">
+
+				<div id="colophon">
 				</div>
-				{% endfor %}
+
+				<div id="user">
+					enewe101 &#x25BE;
+				</div>
+
 			</div>
-		</div>
-
-		<div class="letter_body">
-		{{ letter.body }}
-		</div>
-
-		<div class"comments_wrapper">
-			{% for comment in letter.comment_set.all %}
-			<div class="comment">
-				{{ comment.body }}
-				<div class="comment_author">
-					{{ comment.author.avatar_name }}
-				<div>
-			<div>
-			{% endfor %}
 		</div>
 
 	</div>
-{% endfor %}
 
+	<div id="middle">
+
+		<div class="outer_center">
+			<div class="inner_center">
+
+			<div id="left_col">
+				<div class="tabs">
+				</div>
+				<h1 class="proposal_title">&nbsp;</h1>
+				<ul id="navbar">
+
+					<li class="navitem">
+						feed
+					</li>
+
+					<li class="navitem">
+						watchlist
+					</li>
+
+					<li class="navitem">
+						active
+					</li>
+
+					<li class="navitem">
+						new
+					</li>
+
+					<li class="navitem">
+						random 
+					</li>
+
+					<div class="nav_horizontal_bar"></div>
+
+					<li class="navitem">
+						+ create
+					</li>
+
+					<div class="nav_horizontal_bar"></div>
+
+					<li class="navitem">
+						Montreal
+					</li>
+
+					<li class="navitem">
+						Quebec
+					</li>
+
+					<li class="navitem">
+						Canada
+					</li>
+
+
+				</ul>
+			</div>
+
+			<div id="center_col">
+
+				<div class="tabs">
+					<div class="tab_thick_space"></div>
+					<div class="tab">
+							Overview
+					</div>
+					<div class="tab_thin_space"></div>
+					<div class="tab_active">
+							Proposal
+					</div>
+					<div class="tab_thin_space"></div>
+					<div class="tab">
+							Discuss
+					</div>
+					<div class="tab_thin_space"></div>
+					<div class="tab">
+							Edit
+					</div>
+					<div class="tab_thin_space"></div>
+					<div class="tab">
+						<span class='disabled'>
+							Save
+						</span>
+					</div>
+					<div class="tab_thick_space"></div>
+				</div>
+
+				<div id="proposal">
+					<h1 class="proposal_title">
+						{{ proposal.title }}
+					</h1>
+					<div id="proposal_summary">
+						{% autoescape off %}	
+							{{ proposal.text }}
+						{% endautoescape %}
+					</div>	
+					<div id="proposal_factors">
+						<div class="clear"></div>
+						<div class="factor_left_column">
+							<div class="factor_list_heading">
+								Forseen benefits:
+							</div>
+							{% if proposal.factor_set.all|length = 0 %}
+							<div class="centered italic grey">none</div>
+							{% else %}
+							<ul class="factor_list">
+								{% for factor in proposal.factor_set.all %}
+								{% if factor.valence > 0 %}
+								<li class="factor_element">
+								{{ factor.description }}
+								</li>
+								{% endif %}
+								{% endfor %}
+							</ul>
+							{% endif %}
+						</div>
+						<div class="factor_right_column">
+							<div class="factor_list_heading">
+								Forseen hazards:
+							</div>
+							{% if proposal.factor_set.all|length = 0 %}
+							<div class="centered italic grey">none</div>
+							{% else %}
+							<ul class="factor_list">
+								{% for factor in proposal.factor_set.all %}
+								{% if factor.valence < 0 %}
+								<li class="factor_element">
+								{{ factor.description }}
+								</li>
+								{% endif %}
+								{% endfor %}
+							</ul>
+							{% endif %}
+						</div>
+						<div class="clear"></div>
+					</div>
+				</div>
+
+				<hr class="flourish" />
+
+				<div id="letters">
+				{% for letter in proposal.letter_set.all %}
+
+					<div class="letter">
+						<div class="letter_status_bar">
+							<div class="letter_votes_widget">
+								<div class="letter_upvote">
+									<img src="{% static "digidemo/images/upvote.png" %}" />
+								
+								</div>
+								<div class="letter_score">
+									{{ letter.score }}
+								</div>
+								<div class="letter_downvote">
+									<img src="{% static "digidemo/images/downvote.png" %}" />
+								</div>
+							</div>
+
+							<div class="resend"><span class="resend_count">7</span><img class="resend_widget" src="{% static "digidemo/images/mail.png" %}" /></div>
+							{% if letter.valence < 0 %}
+							<img class="letter_valence"
+							src="{% static "digidemo/images/oppose.png" %}"
+							alt="support" />
+							{% elif letter.valence > 0 %}
+							<img class="letter_valence"
+							src="{% static "digidemo/images/support.png" %}"
+							alt="support" />
+							{% else %}
+							<img class="letter_valence"
+							src="{% static "digidemo/images/ammend.png" %}"
+							alt="support" />
+							{% endif %}
+
+						</div>
+
+						<div class="letter_main">
+
+							<div class="recipients">
+								Attention:
+								{% for recipient in letter.recipients.all %}
+								<br \><span class="recipient_title">
+									{{ recipient.name }}</span>,
+								<span class="recipient_name">
+									{{ recipient.person.fname|capfirst }}
+									{{ recipient.person.lname|capfirst }}
+								</span>
+								{% endfor %}
+							</div>
+
+							<div class="clear"></div>
+
+							<div class="letter_body">
+								{{ letter.body|truncatewords:100 }}
+								{% if letter.body|wordcount > 100 %}
+								<a href="#">view full letter</a>
+								{% endif %}
+							</div>
+
+
+							<div class="senders">
+								<div class="sender">
+									<div class="sender_avatar_image">
+										<img class="avatar_image_medium"
+										src="{{ letter.sender.avatar_img.url }}"
+										alt="{{ letter.sender.avatar_name }}" />
+
+										<img class="avatar_mask_medium"
+										src="{% static "digidemo/images/avatar_mask.png" %}" />
+									</div>
+
+									<div class="sender_name_and_bling">
+										<div class="sender_name">
+											{{ letter.sender.avatar_name }}
+										</div>
+										<div class="sender_bling">
+											14.7 k &nbsp;&nbsp; 13 
+											<img src="{% static "digidemo/images/bronze.png" %}" alt="bronze badge" />
+										</div>
+									</div>
+								</div>
+
+
+
+								<div class="resending">
+									<div class="resenders_single_row">
+										<div class="resender">
+
+											<img class="avatar_image_small" 
+											src="{% static letter.sender.avatar_img.url %}" 
+											alt="resender_avatar" />
+
+											<img 
+											src="{% static "digidemo/images/avatar_mask.png" %}" 
+											class="avatar_mask_small" />
+
+										</div>
+										<div class="resender">
+
+											<img class="avatar_image_small" 
+											src="{% static letter.sender.avatar_img.url %}" 
+											alt="resender_avatar" />
+
+											<img 
+											src="{% static "digidemo/images/avatar_mask.png" %}" 
+											class="avatar_mask_small" />
+
+										</div>
+										<div class="resender">
+
+											<img class="avatar_image_small" 
+											src="{% static letter.sender.avatar_img.url %}" 
+											alt="resender_avatar" />
+
+											<img 
+											src="{% static "digidemo/images/avatar_mask.png" %}" 
+											class="avatar_mask_small" />
+
+										</div>
+										<div class="resender">
+
+											<img class="avatar_image_small" 
+											src="{% static letter.sender.avatar_img.url %}" 
+											alt="resender_avatar" />
+
+											<img 
+											src="{% static "digidemo/images/avatar_mask.png" %}" 
+											class="avatar_mask_small" />
+
+										</div>
+										<div class="resender">
+
+											<img class="avatar_image_small" 
+											src="{% static letter.sender.avatar_img.url %}" 
+											alt="resender_avatar" />
+
+											<img 
+											src="{% static "digidemo/images/avatar_mask.png" %}" 
+											class="avatar_mask_small" />
+
+										</div>
+										<div class="resender">
+
+											<img class="avatar_image_small" 
+											src="{% static letter.sender.avatar_img.url %}" 
+											alt="resender_avatar" />
+
+											<img 
+											src="{% static "digidemo/images/avatar_mask.png" %}" 
+											class="avatar_mask_small" />
+
+										</div>
+										<div class="resender">
+
+											<img class="avatar_image_small" 
+											src="{% static letter.sender.avatar_img.url %}" 
+											alt="resender_avatar" />
+
+											<img 
+											src="{% static "digidemo/images/avatar_mask.png" %}" 
+											class="avatar_mask_small" />
+
+										</div>
+										<div class="clear"></div>
+									</div>
+									<a class="send_letter" href="#">
+										send a version of this letter
+									</a>
+
+								</div>
+
+								<div class="clear"></div>
+
+							</div>
+
+							<div class"letter_comments">
+								{% for comment in letter.comment_set.all %}
+								<div class="letter_comment">
+									<span class="letter_comment_body">
+										{{ comment.body }}
+									</span>
+									<span class="comment_author">
+										~ {{ comment.author.avatar_name }}
+									</span>
+								</div>
+								{% endfor %}
+							</div>
+						</div> <!-- main  -->
+
+					</div> <!-- letter -->
+				{% endfor %}
+				</div>
+
+			</div>
+
+
+
+			<div id="right_col">
+			</div>
+
+			</div>
+
+		</div>
+
+	</div>
+
+	<div id="footer">
+		<div class="outer_center">
+			<div class="inner_center">
+				footer
+			</div>
+		</div>
+	</div>
+
+</body>

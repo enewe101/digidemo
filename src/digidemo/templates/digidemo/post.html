@@ -1,0 +1,90 @@
+{% load staticfiles %}
+<!DOCTYPE html>
+<html>
+	<head>
+		<link rel="stylesheet" type="text/css" 
+			href="{% static "droll/css/post.css" %}" />
+
+		<link rel="image_src" href="http://shpow.com/static/droll/images/colophon.png" / >
+
+		<script type="text/x-mathjax-config">
+		  MathJax.Hub.Config({
+			tex2jax: {
+			  inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+			  processEscapes: true
+			}
+		  });
+		</script>
+		<script type="text/javascript"
+			src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+		</script>
+
+	</head>
+	<body>
+
+		<div id="header">
+		<div id="header_jack" class="jack">
+
+			<div id="colophon_wrapper">
+				<img id="colophon" 
+					src="/static/droll/images/colophon.png" 
+					alt="HEAVEN or HELL" />
+			</div>
+
+			<div id="description" class="dark">
+				cooperation, corruption, social computation, and the 
+				structure of society
+			</div>
+
+			<div class='clear'></div>
+		</div>
+		</div>
+
+
+		<div id="middle">
+		<div id="middle_jack" class="jack">
+
+				<div id="post-list">
+					{% for post in posts %}
+					<li class="post-link">
+					<a class='light' href="{% url 'detail' post.id %}">
+						{{ post.title }}
+					</a>
+					</li>
+					{% endfor %}
+				</div>
+
+				<div id="main">
+					{% autoescape off %}
+					<h1 class="post-title light">{{ this_post_title }}</h1>
+					<div class="post-text light">
+						{{ post_html }}
+					</div>
+					{% endautoescape %}
+					<div class="comments_area">
+						<a class="muut comments" 
+							href="https://muut.com/i/shpow/droll/{{ this_post.id }}">
+							{{ this_post.id }}</a>
+						<script src="//cdn.muut.com/1/moot.min.js"></script>
+					</div>
+				</div>
+
+				<div class="clear"></div>
+
+		</div>
+		</div>
+
+		<div id="footer">
+		<div id="footer_jack" class="jack">
+
+			<a id="attribution" href="/me">
+				<img id="avatar" src="/static/droll/images/jump_avatar_crop_cut.png" alt="avatar showing some radass jumping ship" />
+				<div class="dark" id="about_me"> about me </div>
+			</a>
+			<div class='clear'></div>
+
+		</div>
+		</div>
+
+	</body>
+</html>
