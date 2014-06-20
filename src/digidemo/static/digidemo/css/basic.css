@@ -142,7 +142,6 @@ body {
 #center_col {
 	float:left;
 	width: 678px;
-	border: solid 1px blue;
 }
 
 #proposal {
@@ -274,7 +273,6 @@ li.navitem {
 	width: 100px;
 	float: left;
 	text-align: center;
-	border: solid 1px red;
 }
 
 .letter_votes_widget {
@@ -318,7 +316,6 @@ li.navitem {
 	float: left;
 	padding: 0 10px 0 10px;
 	width: 550px;
-	border: solid 1px blue;
 }
 
 .greeting {
