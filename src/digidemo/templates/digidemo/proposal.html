@@ -9,8 +9,8 @@
 
 	<link rel="stylesheet" type="text/css" 
 		href="{% static "digidemo/css/basic.css" %}" />
-	<link rel="stylesheet" type="text/css" 
-		href="{% static "digidemo/css/proposal.css" %}" />
+	<!-- link rel="stylesheet" type="text/css" 
+		href="{% static "digidemo/css/proposal.css" %}" /-->
 
 </head>
 
@@ -313,6 +313,24 @@
 									</span>
 								</div>
 								{% endfor %}
+
+								<div class="add_comment">
+									<form 
+										method="POST"
+										action="{% url "proposal" proposal.name %}">
+									{{ comment_form.non_field_errors }}
+									{% csrf_token %}
+									{{ comment_form.body.errors }}
+									{{ comment_form.body }}
+									{{ comment_form.letter.errors }}
+									<input type="hidden" name="letter" 
+										value="{{ letter.id }}" />
+									{{ comment_form.author.errors }}
+									<input type="hidden" name="author" 
+										value="{{ logged_in_user.id }}" />
+									<input type="submit" value="post" />
+									</form>
+								</div>
 							</div>
 							<!-- end of letter comments area -->
 						</div> 
