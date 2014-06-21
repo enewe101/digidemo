@@ -24,6 +24,7 @@
 				<div id="colophon">
 				</div>
 
+				<!-- logged in user hardcoded temporarily -->
 				<div id="user">
 					enewe101 &#x25BE;
 				</div>
@@ -33,15 +34,20 @@
 
 	</div>
 
+	<!-- content in the middle (vertical middle) of the page -->
 	<div id="middle">
 
+		<!-- centering device for the middle of the page layout -->
 		<div class="outer_center">
 			<div class="inner_center">
 
+			<!-- start the left column of the central page layout -->
 			<div id="left_col">
 				<div class="tabs">
 				</div>
 				<h1 class="proposal_title">&nbsp;</h1>
+
+				<!-- start the left navigation bar -->
 				<ul id="navbar">
 
 					<li class="navitem">
@@ -86,10 +92,15 @@
 
 
 				</ul>
-			</div>
+				<!-- end the left navigation bar -->
 
+			</div>
+			<!-- end the left column of the middle page layout -->
+
+			<!-- start the (horizontal) center column of middle page layout -->
 			<div id="center_col">
 
+				<!-- start tabs at the top of the proposal -->
 				<div class="tabs">
 					<div class="tab_thick_space"></div>
 					<div class="tab">
@@ -115,7 +126,9 @@
 					</div>
 					<div class="tab_thick_space"></div>
 				</div>
+				<!-- end tabs at the top of the proposal -->
 
+				<!-- start the proposal -->
 				<div id="proposal">
 					<h1 class="proposal_title">
 						{{ proposal.title }}
@@ -166,13 +179,18 @@
 						<div class="clear"></div>
 					</div>
 				</div>
+				<!-- end the proposal -->
 
 				<hr class="flourish" />
 
+				<!-- start the open letters area -->
 				<div id="letters">
 				{% for letter in proposal.letter_set.all %}
 
+					<!-- start of an open letter -->
 					<div class="letter">
+
+						<!-- score and icons for the letter -->
 						<div class="letter_status_bar">
 							<div class="letter_votes_widget">
 								<div class="letter_upvote">
@@ -203,7 +221,9 @@
 							{% endif %}
 
 						</div>
+						<!-- end score and icons for the letter -->
 
+						<!-- start the content of the letter -->
 						<div class="letter_main">
 
 							<div class="recipients">
@@ -228,7 +248,9 @@
 							</div>
 
 
+							<!-- start the list of senders -->
 							<div class="senders">
+								<!-- the original sender of the letter -->
 								<div class="sender">
 									<div class="sender_avatar_image">
 										<img class="avatar_image_medium"
@@ -249,77 +271,11 @@
 										</div>
 									</div>
 								</div>
+								<!-- end of original sender -->
 
-
-
+								<!-- people that have resent the letter -->
 								<div class="resending">
 									<div class="resenders_single_row">
-										<div class="resender">
-
-											<img class="avatar_image_small" 
-											src="{% static letter.sender.avatar_img.url %}" 
-											alt="resender_avatar" />
-
-											<img 
-											src="{% static "digidemo/images/avatar_mask.png" %}" 
-											class="avatar_mask_small" />
-
-										</div>
-										<div class="resender">
-
-											<img class="avatar_image_small" 
-											src="{% static letter.sender.avatar_img.url %}" 
-											alt="resender_avatar" />
-
-											<img 
-											src="{% static "digidemo/images/avatar_mask.png" %}" 
-											class="avatar_mask_small" />
-
-										</div>
-										<div class="resender">
-
-											<img class="avatar_image_small" 
-											src="{% static letter.sender.avatar_img.url %}" 
-											alt="resender_avatar" />
-
-											<img 
-											src="{% static "digidemo/images/avatar_mask.png" %}" 
-											class="avatar_mask_small" />
-
-										</div>
-										<div class="resender">
-
-											<img class="avatar_image_small" 
-											src="{% static letter.sender.avatar_img.url %}" 
-											alt="resender_avatar" />
-
-											<img 
-											src="{% static "digidemo/images/avatar_mask.png" %}" 
-											class="avatar_mask_small" />
-
-										</div>
-										<div class="resender">
-
-											<img class="avatar_image_small" 
-											src="{% static letter.sender.avatar_img.url %}" 
-											alt="resender_avatar" />
-
-											<img 
-											src="{% static "digidemo/images/avatar_mask.png" %}" 
-											class="avatar_mask_small" />
-
-										</div>
-										<div class="resender">
-
-											<img class="avatar_image_small" 
-											src="{% static letter.sender.avatar_img.url %}" 
-											alt="resender_avatar" />
-
-											<img 
-											src="{% static "digidemo/images/avatar_mask.png" %}" 
-											class="avatar_mask_small" />
-
-										</div>
 										<div class="resender">
 
 											<img class="avatar_image_small" 
@@ -338,11 +294,14 @@
 									</a>
 
 								</div>
+								<!-- end of re-senders  -->
 
 								<div class="clear"></div>
 
 							</div>
+							<!-- end of letter senders area -->
 
+							<!-- start of the letter comments area -->
 							<div class"letter_comments">
 								{% for comment in letter.comment_set.all %}
 								<div class="letter_comment">
@@ -355,25 +314,34 @@
 								</div>
 								{% endfor %}
 							</div>
-						</div> <!-- main  -->
+							<!-- end of letter comments area -->
+						</div> 
+						<!-- end of letter main content -->
 
-					</div> <!-- letter -->
-				{% endfor %}
+					</div>
+					<!-- end of a letter -->
+				{% endfor %} <!-- loop over all letters for the proposal -->
 				</div>
+				<!-- end of letters area -->
 
 			</div>
+			<!-- end of central column in middle page layout -->
 
 
 
+			<!-- start of right column in middle page layout -->
 			<div id="right_col">
 			</div>
+			<!-- end of right column in middle page layout -->
 
 			</div>
-
 		</div>
+		<!-- end of centering device for the middle of the page layout -->
 
 	</div>
+	<!-- end of the (vertical) middle of the page layout -->
 
+	<!-- start of page footer -->
 	<div id="footer">
 		<div class="outer_center">
 			<div class="inner_center">
@@ -381,5 +349,6 @@
 			</div>
 		</div>
 	</div>
+	<!-- end of page footer -->
 
 </body>
