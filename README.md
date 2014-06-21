@@ -9,11 +9,12 @@
 3. Install MySQL
 
 4. Install Django
+	- requires Pillow 
 
 5. Install South
 
 Note: you should test all of those installations and convince yourself that,
-at lesat separately, each is working.  Refer to the software's specific
+at least separately, each is working.  Refer to the software's specific
 documentation and user communities to get set up help!
 
 
@@ -52,7 +53,6 @@ documentation and user communities to get set up help!
 
 	in <proj-root>/src, run the commands 
 		
-		$ python manage.py schemamigration digidemo --initial
 		$ python manage.py migrate digidemo
 	
 	Test your database configuration by going to localhost/test_db.
