@@ -21,4 +21,5 @@ class LetterForm(ModelForm):
 		widgets = {
 			'proposal': forms.HiddenInput(),
 			'sender': forms.HiddenInput(),
+			'body': forms.Textarea(attrs={'class':'letter_body_textarea'})
 		}
