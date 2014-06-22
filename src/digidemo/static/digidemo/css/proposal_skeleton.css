@@ -72,8 +72,16 @@ h1.proposal_title {
 	background: cyan;
 }
 
-hr.flourish {
+.hr_flourish {
 	background: lightblue;
+}
+
+.hr_flourish div.hr {
+	background: green;
+}
+
+.hr_flourish div.flourish {
+	background: green;
 }
 
 #right_col {
@@ -113,7 +121,7 @@ li.navitem {
 	background: pink;
 }
 
-.letter_status_bar {
+.letter_status_bar, .letter_status_bar_spacer {
 	background: purple;
 }
 
@@ -240,4 +248,9 @@ a.send_letter {
 
 .comment_author {
 	background: yellowgreen;
-}*/
+}
+
+.add_letter {
+	background: orange;
+}
+*/

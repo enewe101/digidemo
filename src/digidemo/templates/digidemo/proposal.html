@@ -204,7 +204,6 @@
 							<div class="clear"></div>
 						</div>
 
-						<hr class="flourish" />
 
 					</div>
 					<!-- end of proposal main area -->
@@ -212,9 +211,20 @@
 				</div>
 				<!-- end the proposal -->
 
+				<div class="clear"></div>
+				<div class="hr_flourish">
+					<div class="hr"></div> 
+					<div class="flourish"></div>
+				</div>
+
 				<!-- start the open letters area -->
+				<h1>Open Letters</h1>
 				<div id="letters">
 				{% for letter in proposal.letter_set.all %}
+
+					{% if not forloop.first %}
+						<hr />
+					{% endif %}
 
 					<!-- start of an open letter -->
 					<div class="letter">
@@ -367,17 +377,33 @@
 
 					</div>
 					<!-- end of a letter -->
+					<div class="clear"></div>
+
 				{% endfor %} <!-- loop over all letters for the proposal -->
 
+					<div class="hr_flourish">
+						<div class="hr"></div> 
+						<div class="flourish"></div>
+					</div>
+
 					<!-- start form for adding new letters -->
+					<h1>Your Letter</h1>
 					<div id="add_letter">
+
 						<form 
 							method="post" 
 							action="{% url "send_letter"  %}" >
 							{% csrf_token %}
-							{{ letter_form.valence }}
-							{{ letter_form.body }}
-							{{ letter_form.recipients }}
+							<div class="form_line">
+								{{ letter_form.valence }}
+							</div>
+							<div class="form_line">
+								{{ letter_form.recipients }}
+							</div>
+							<div class="form_line">
+								{{ letter_form.body }}
+							</div>
+
 							<input type="hidden" name="proposal" 
 								value="{{ proposal.id }}" />
 							<input type="hidden" name="sender"
@@ -385,6 +411,7 @@
 
 							<input type="submit" value="send" />
 						</form>
+
 					</div>
 					<!-- end form for adding new letters -->
 
