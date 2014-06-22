@@ -8,6 +8,8 @@
 	</title>
 
 	<link rel="stylesheet" type="text/css" 
+		href="{% static "digidemo/css/proposal_skeleton.css" %}" />
+	<link rel="stylesheet" type="text/css" 
 		href="{% static "digidemo/css/basic.css" %}" />
 	<!-- link rel="stylesheet" type="text/css" 
 		href="{% static "digidemo/css/proposal.css" %}" /-->
@@ -37,18 +39,11 @@
 	<!-- content in the middle (vertical middle) of the page -->
 	<div id="middle">
 
-		<!-- centering device for the middle of the page layout -->
-		<div class="outer_center">
-			<div class="inner_center">
-
-			<!-- start the left column of the central page layout -->
-			<div id="left_col">
-				<div class="tabs">
-				</div>
-				<h1 class="proposal_title">&nbsp;</h1>
-
-				<!-- start the left navigation bar -->
-				<ul id="navbar">
+		<!-- start the left column of the central page layout -->
+		<div id="left_col">
+			<!-- start the left navigation bar -->
+			<div id="navbar">
+				<ul>
 
 					<li class="navitem">
 						feed
@@ -92,96 +87,130 @@
 
 
 				</ul>
-				<!-- end the left navigation bar -->
+			</div>
+			<!-- end the left navigation bar -->
 
 			</div>
 			<!-- end the left column of the middle page layout -->
+		<!-- centering device for the middle of the page layout -->
+		<div class="outer_center">
+			<div class="inner_center">
+
+			<!-- 
+				this is to prevent overlap with the left col when the 
+				view is collapsed 
+			-->
+			<div id="left_col_spacer"></div>
 
 			<!-- start the (horizontal) center column of middle page layout -->
 			<div id="center_col">
 
-				<!-- start tabs at the top of the proposal -->
-				<div class="tabs">
-					<div class="tab_thick_space"></div>
-					<div class="tab">
-							Overview
-					</div>
-					<div class="tab_thin_space"></div>
-					<div class="tab_active">
-							Proposal
-					</div>
-					<div class="tab_thin_space"></div>
-					<div class="tab">
-							Discuss
-					</div>
-					<div class="tab_thin_space"></div>
-					<div class="tab">
-							Edit
-					</div>
-					<div class="tab_thin_space"></div>
-					<div class="tab">
-						<span class='disabled'>
-							Save
-						</span>
-					</div>
-					<div class="tab_thick_space"></div>
-				</div>
-				<!-- end tabs at the top of the proposal -->
-
 				<!-- start the proposal -->
 				<div id="proposal">
-					<h1 class="proposal_title">
-						{{ proposal.title }}
-					</h1>
-					<div id="proposal_summary">
-						{% autoescape off %}	
-							{{ proposal.text }}
-						{% endautoescape %}
-					</div>	
-					<div id="proposal_factors">
-						<div class="clear"></div>
-						<div class="factor_left_column">
-							<div class="factor_list_heading">
-								Forseen benefits:
+
+					<!-- start of propasal score and icons -->
+					<div class="letter_status_bar">
+						<div class="letter_votes_widget">
+							<div class="letter_upvote">
+								<img src="{% static "digidemo/images/upvote.png" %}" />
+							
 							</div>
-							{% if proposal.factor_set.all|length = 0 %}
-							<div class="centered italic grey">none</div>
-							{% else %}
-							<ul class="factor_list">
-								{% for factor in proposal.factor_set.all %}
-								{% if factor.valence > 0 %}
-								<li class="factor_element">
-								{{ factor.description }}
-								</li>
-								{% endif %}
-								{% endfor %}
-							</ul>
-							{% endif %}
-						</div>
-						<div class="factor_right_column">
-							<div class="factor_list_heading">
-								Forseen hazards:
+							<div class="letter_score">
+								{{ proposal.score }}
 							</div>
-							{% if proposal.factor_set.all|length = 0 %}
-							<div class="centered italic grey">none</div>
-							{% else %}
-							<ul class="factor_list">
-								{% for factor in proposal.factor_set.all %}
-								{% if factor.valence < 0 %}
-								<li class="factor_element">
-								{{ factor.description }}
-								</li>
-								{% endif %}
-								{% endfor %}
-							</ul>
-							{% endif %}
+							<div class="letter_downvote">
+								<img src="{% static "digidemo/images/downvote.png" %}" />
+							</div>
 						</div>
-						<div class="clear"></div>
+
 					</div>
+					<!-- end of proposal score and icons -->
+
+					<!-- start of proposal main area -->
+					<div class="proposal_main">
+
+						<!-- start tabs at the top of the proposal -->
+						<div class="tabs">
+							<div class="tab_thick_space"></div>
+							<div class="tab">
+									Overview
+							</div>
+							<div class="tab_thin_space"></div>
+							<div class="tab_active">
+									Proposal
+							</div>
+							<div class="tab_thin_space"></div>
+							<div class="tab">
+									Discuss
+							</div>
+							<div class="tab_thin_space"></div>
+							<div class="tab">
+									Edit
+							</div>
+							<div class="tab_thin_space"></div>
+							<div class="tab">
+								<span class='disabled'>
+									Save
+								</span>
+							</div>
+							<div class="tab_thick_space"></div>
+						</div>
+						<!-- end tabs at the top of the proposal -->
+
+						<h1 class="proposal_title">{{ proposal.title }}</h1>
+						<div id="proposal_summary">
+							{% autoescape off %}	
+								{{ proposal.text }}
+							{% endautoescape %}
+						</div>	
+						<div id="proposal_factors">
+							<div class="clear"></div>
+							<div class="factor_left_column">
+								<div class="factor_list_heading">
+									Forseen benefits:
+								</div>
+								{% if proposal.factor_set.all|length = 0 %}
+								<div class="centered italic grey">none</div>
+								{% else %}
+								<ul class="factor_list">
+									{% for factor in proposal.factor_set.all %}
+									{% if factor.valence > 0 %}
+									<li class="factor_element">
+									{{ factor.description }}
+									</li>
+									{% endif %}
+									{% endfor %}
+								</ul>
+								{% endif %}
+							</div>
+							<div class="factor_right_column">
+								<div class="factor_list_heading">
+									Forseen hazards:
+								</div>
+								{% if proposal.factor_set.all|length = 0 %}
+								<div class="centered italic grey">none</div>
+								{% else %}
+								<ul class="factor_list">
+									{% for factor in proposal.factor_set.all %}
+									{% if factor.valence < 0 %}
+									<li class="factor_element">
+									{{ factor.description }}
+									</li>
+									{% endif %}
+									{% endfor %}
+								</ul>
+								{% endif %}
+							</div>
+							<div class="clear"></div>
+						</div>
+
+						<hr class="flourish" />
+
+					</div>
+					<!-- end of proposal main area -->
+
 				</div>
 				<!-- end the proposal -->
-
-				<hr class="flourish" />
 
 				<!-- start the open letters area -->
 				<div id="letters">
@@ -339,6 +368,26 @@
 					</div>
 					<!-- end of a letter -->
 				{% endfor %} <!-- loop over all letters for the proposal -->
+
+					<!-- start form for adding new letters -->
+					<div id="add_letter">
+						<form 
+							method="post" 
+							action="{% url "send_letter"  %}" >
+							{% csrf_token %}
+							{{ letter_form.valence }}
+							{{ letter_form.body }}
+							{{ letter_form.recipients }}
+							<input type="hidden" name="proposal" 
+								value="{{ proposal.id }}" />
+							<input type="hidden" name="sender"
+								value="{{ logged_in_user.id }}" />
+
+							<input type="submit" value="send" />
+						</form>
+					</div>
+					<!-- end form for adding new letters -->
+
 				</div>
 				<!-- end of letters area -->
 
@@ -346,9 +395,50 @@
 			<!-- end of central column in middle page layout -->
 
 
-
 			<!-- start of right column in middle page layout -->
 			<div id="right_col">
+
+				<!-- start of proposal sectors -->
+				<div class="tags">
+					Sectors
+					<ul>
+						<li>
+							<div class="economy_sector_tag">
+								Economy
+							</div>
+						</li>
+						<li>
+							<div class="environment_sector_tag">
+								Environment
+							</div>
+						</li>
+					</ul>
+					<div class="clear"></div>
+				</div>
+				<!-- end of proposal sectors -->
+
+				<!-- start of tags -->
+				<div class="tags">
+					Tags
+					<ul>
+						<li>
+							<div class="tag">
+								Tar-sands
+							</div>
+						</li>
+						<li>
+							<div class="tag">
+								CO2
+							</div>
+							<div class="tag">
+								Fossil-fuel
+							</div>
+						</li>
+					</ul>
+					<div class="clear"></div>
+				</div>
+				<!-- end of tags -->
+
 			</div>
 			<!-- end of right column in middle page layout -->
 

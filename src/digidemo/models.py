@@ -95,6 +95,10 @@ class Position(models.Model):
 	email = models.EmailField(max_length=254)
 	mandate_summary = models.TextField()
 
+	def __unicode__(self):
+		return "%s, %s %s" %(self.name, self.person.fname, 
+			self.person.lname)
+
 
 class Letter(models.Model):
 	proposal = models.ForeignKey(Proposal)

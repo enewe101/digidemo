@@ -12,3 +12,13 @@ class LetterCommentForm(ModelForm):
 			'letter': forms.HiddenInput(),
 		}
 	
+class LetterForm(ModelForm):
+	class Meta:
+		model = Letter
+		fields = [
+			'proposal', 'valence', 'sender', 'body', 'recipients',
+		]
+		widgets = {
+			'proposal': forms.HiddenInput(),
+			'sender': forms.HiddenInput(),
+		}

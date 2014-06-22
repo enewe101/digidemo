@@ -99,6 +99,8 @@
 
 body {
 	font-family: ubuntu;
+	margin: 0;
+	padding: 0;
 }
 
 #header {
@@ -134,9 +136,13 @@ body {
 	float: right;
 }
 
-#left_col {
+#left_col, #left_col_spacer {
 	float: left;
-	width: 140px;
+	width: 120px;
+}
+
+#left_col_spacer {
+	height: 20px;
 }
 
 #center_col {
@@ -144,17 +150,23 @@ body {
 	width: 678px;
 }
 
+.proposal_main {
+	float:left;
+	width: 550px;
+}
+
 #proposal {
 	font-family: computerModern;
-	padding: 0 10px 0 10px;
 }
 
 h1.proposal_title {
 	padding: 0px;
-	margin: 0 0 14px 0;
+	margin: 0px;
+	font-size: 24px;
 }
 
-#proposal_summary {
+#proposal_summary p {
+	margin: 0 0 10px 0;
 }
 
 #proposal_factors {
@@ -172,18 +184,17 @@ h1.proposal_title {
 
 .factor_element {
 	margin: 10px 0 10px 0;
-	padding-left: 20px;
 }
 
 .factor_left_column {
-	width: 280px;
+	width: 260px;
 	margin-left: 0px;
 	float: left;
 }
 
 .factor_right_column {
-	width: 280px;
-	margin-left: 36px;
+	width: 260px;
+	margin-left: 30px;
 	float: left;
 }
 
@@ -200,10 +211,56 @@ hr.flourish {
 	height: 20px;
 }
 
-ul#navbar {
+div.tags {
+	border-left: solid 1px rgb(170, 0, 212);
+	padding: 4px;
+	margin-bottom: 20px;
+	/*background: rgb(242, 215, 248);*/
+}
+
+div.tags ul {
 	list-style-type: none;
-	padding: 15px;
+	margin: 0;
+	padding: 0;
+}
+
+div.tags ul li {
+	clear: both;
+}
+
+div.tags ul li div {
+	padding: 0 2px 0 2px;
+	margin: 2px;
+	float: left;
+	font-size: 12px;
+}
+
+div.tag {
+	border: solid 1px rgb(170, 0, 212);
+}
+
+.economy_sector_tag {
+	background: orange;
+	color: black;
+}
+
+.environment_sector_tag {
+	background: green;
+	color: white;
+}
+
+div#navbar {
+	padding: 10px;
+	border-right: solid 1px rgb(170, 0, 212);
+	border-top: solid 1px rgb(170, 0, 212);
+	border-bottom: solid 1px rgb(170, 0, 212);
+}
+
+div#navbar ul {
+	list-style-type: none;
 	text-align: right;
+	margin: 0;
+	padding: 0;
 }
 
 li.navitem {
@@ -213,11 +270,9 @@ li.navitem {
 	margin: 10px 0 10px 0;
 }
 
-
-
 .tabs {
 	height: 30px;
-	margin: 0 0 0 10px;
+	font-family: ubuntu;
 }
 
 .tab, .tab_active, .tab_thin_space, .tab_thick_space {
@@ -266,7 +321,6 @@ li.navitem {
 
 .letter {
 	position: relative;
-	left: -10px;
 }
 
 .letter_status_bar {
@@ -283,7 +337,6 @@ li.navitem {
 }
 
 .letter_upvote {
-	margin: 10px 0 0 0;
 }
 
 .letter_downvote {
@@ -314,7 +367,6 @@ li.navitem {
 
 .letter_main {
 	float: left;
-	padding: 0 10px 0 10px;
 	width: 550px;
 }
 
@@ -468,4 +520,4 @@ a.send_letter:active {
 
 .comment_author {
 	font-weight: bold;
-}
+} 
