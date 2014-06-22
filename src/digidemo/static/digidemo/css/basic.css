@@ -422,10 +422,15 @@ li.navitem {
 	left: 0;
 }
 
-.letter_comment {
+.add_comment, .letter_comment {
 	border-top: 1px rgb(180,180,180) dotted;
 	padding: 10px;
 	font-size: 12px;
+}
+
+.letter_comment_input {
+	width: 100%;
+	height: 40px;
 }
 
 .recipient {

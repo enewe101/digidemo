@@ -7,6 +7,7 @@ class LetterCommentForm(ModelForm):
 		model = Comment
 		fields = ['body', 'author', 'letter']
 		widgets = {
+			'body': forms.Textarea(attrs={'class':'letter_comment_input'}),
 			'author': forms.HiddenInput(), 
 			'letter': forms.HiddenInput(),
 		}
