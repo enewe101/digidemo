@@ -1,0 +1,16 @@
+<form method="post" action="{% url "send_letter"  %}" >
+
+	{% csrf_token %}
+
+	{% for hidden in form.hidden_fields %}
+		{{ hidden }}
+	{% endfor %}
+
+	{% for field in form.visible_fields %}
+	<div class="form_line">
+		{{ field }}
+	</div>
+	{% endfor %}
+
+	<input type="submit" value="send" />
+</form>

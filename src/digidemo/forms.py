@@ -16,9 +16,11 @@ class LetterForm(ModelForm):
 	class Meta:
 		model = Letter
 		fields = [
-			'proposal', 'valence', 'sender', 'body', 'recipients',
+			'parent_letter', 'proposal', 'sender', 'valence', 'recipients', 
+			'body'
 		]
 		widgets = {
+			'parent_letter': forms.HiddenInput(),
 			'proposal': forms.HiddenInput(),
 			'sender': forms.HiddenInput(),
 			'body': forms.Textarea(attrs={'class':'letter_body_textarea'})
@@ -64,9 +66,9 @@ class LetterVoteForm(ModelForm):
 		fields = ['user', 'letter', 'valence']
 
 		widgets = {
-			'user': forms.TextInput(),
-			'letter': forms.TextInput(),
-			'valence': forms.TextInput(),
+			'user': forms.HiddenInput(),
+			'letter': forms.HiddenInput(),
+			'valence': forms.HiddenInput(),
 		}
 
 	class Media:

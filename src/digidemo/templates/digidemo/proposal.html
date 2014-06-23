@@ -381,27 +381,7 @@
 					<h1>Your Letter</h1>
 					<div id="add_letter">
 
-						<form 
-							method="post" 
-							action="{% url "send_letter"  %}" >
-							{% csrf_token %}
-							<div class="form_line">
-								{{ letter_form.valence }}
-							</div>
-							<div class="form_line">
-								{{ letter_form.recipients }}
-							</div>
-							<div class="form_line">
-								{{ letter_form.body }}
-							</div>
-
-							<input type="hidden" name="proposal" 
-								value="{{ proposal.id }}" />
-							<input type="hidden" name="sender"
-								value="{{ logged_in_user.id }}" />
-
-							<input type="submit" value="send" />
-						</form>
+						{% include "digidemo/add_letter.html" with form=letter_form %}
 
 					</div>
 					<!-- end form for adding new letters -->

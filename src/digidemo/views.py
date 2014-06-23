@@ -67,7 +67,10 @@ def proposal(request, proposal_name):
 	media = ProposalVoteForm().media
 	media += LetterVoteForm().media
 
-	letter_form = LetterForm()
+	letter_form = LetterForm(initial={
+		'proposal': this_proposal.pk,
+		'sender': logged_in_user,
+	})
 
 	return render(
 		request,
@@ -99,7 +102,7 @@ def send_letter(request):
 	return render(
 		request,
 		'digidemo/send_letter.html', 
-		{'valid':valid}
+		{'valid':letter_form.errors}
 	)
 
 

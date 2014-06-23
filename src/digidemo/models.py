@@ -117,6 +117,7 @@ class Position(models.Model):
 
 
 class Letter(models.Model):
+	parent_letter = models.ForeignKey('self', blank=True, null=True)
 	proposal = models.ForeignKey(Proposal)
 	valence = models.SmallIntegerField(default=1, choices=VALENCE_CHOICES)
 	sender = models.ForeignKey(User)
