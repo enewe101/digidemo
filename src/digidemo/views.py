@@ -54,7 +54,9 @@ def proposal(request, proposal_name):
 		else:
 			letter_vote_form = LetterVoteForm(
 				initial={'user':logged_in_user.pk, 'letter':letter.pk},
-				form_id=letter_num, cur_score=letter.score)
+				form_id=letter_num,
+				cur_score=letter.score
+			)
 
 
 		letter_sections.append({
