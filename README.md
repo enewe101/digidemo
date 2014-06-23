@@ -60,3 +60,5 @@ documentation and user communities to get set up help!
 	If you got errors during this process, you'll need to look for errors in
 	your mysql installation, your my.cnf configuration, and you might also
 	check your apache error log.
+
+9. Add test data to the database.  See `<proj-root>/data/README.md`.
