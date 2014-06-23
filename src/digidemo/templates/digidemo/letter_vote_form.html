@@ -1,0 +1,11 @@
+{% load staticfiles %}
+<div class="letter_upvote">
+	<img src="{% static "digidemo/images/upvote.png" %}" />
+
+</div>
+<div class="letter_score">
+	{{ letter.score }}
+</div>
+<div class="letter_downvote">
+	<img src="{% static "digidemo/images/downvote.png" %}" />
+</div>

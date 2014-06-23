@@ -121,19 +121,15 @@ li.navitem {
 	background: pink;
 }
 
-.letter_status_bar, .letter_status_bar_spacer {
+.proposal_status_bar, .letter_status_bar, .letter_status_bar_spacer {
 	background: purple;
 }
 
-.letter_votes_widget {
+.votes_widget {
 	background: cyan;
 }
 
-.letter_downvote, .letter_upvote {
-	background: lightblue;
-}
-
-.letter_score {
+.score {
 	background: lightcyan;
 }
 

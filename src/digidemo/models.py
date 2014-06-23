@@ -6,9 +6,27 @@ NAME_LENGTH = 48
 URL_LENGTH = 256
 
 
+VALENCE_CHOICES = [
+	(-1, 'oppose'),
+	(0, 'ammend'),
+	(1, 'support'),
+]
+
+VOTE_CHOICES = [
+	(-1, 'down vote'),
+	(1, 'up vote'),
+]
+
+FACTOR_CHOICES = [
+	(-1, 'risk'),
+	(1, 'benefit')
+]
+
+
 class Sector(models.Model):
 	short_name = models.CharField(max_length=3)
 	name = models.CharField(max_length=64)
+
 
 class User(models.Model):
 	email = models.EmailField(max_length=254)
@@ -45,16 +63,20 @@ class Proposal(models.Model):
 		get_latest_by = 'creation_date'
 
 
+class ProposalVote(models.Model):
+	user = models.ForeignKey(User)
+	proposal = models.ForeignKey(Proposal)
+	valence = models.SmallIntegerField(choices=VOTE_CHOICES)
+
+	class Meta:
+		unique_together	= ('user', 'proposal')
+
+
 class Capability(models.Model):
 	name = models.CharField(max_length=64)
 	description = models.CharField(max_length=512)
 	sector = models.ForeignKey(Sector)
 
-
-FACTOR_CHOICES = [
-	(-1, 'risk'),
-	(1, 'benefit')
-]
 
 class Factor(models.Model):
 	proposal = models.ForeignKey(Proposal)
@@ -62,12 +84,6 @@ class Factor(models.Model):
 	capability = models.ForeignKey(Capability)
 	valence = models.SmallIntegerField(choices=FACTOR_CHOICES)
 
-
-VALENCE_CHOICES = [
-	(-1, 'oppose'),
-	(0, 'ammend'),
-	(1, 'support'),
-]
 
 class Person(models.Model):
 	fname = models.CharField(max_length=NAME_LENGTH)
@@ -115,6 +131,15 @@ class Letter(models.Model):
 			get_choice(VALENCE_CHOICES, self.valence))
 
 
+class LetterVote(models.Model):
+	user = models.ForeignKey(User)
+	letter = models.ForeignKey(Letter)
+	valence = models.SmallIntegerField(choices=VOTE_CHOICES)
+
+	class Meta:
+		unique_together = ('user', 'letter')
+
+
 class Comment(models.Model):
 	author = models.ForeignKey(User)
 	letter = models.ForeignKey(Letter)
@@ -123,5 +148,6 @@ class Comment(models.Model):
 
 	def __unicode__(self):
 		return self.author.avatar_name
+
 
 
