@@ -344,7 +344,7 @@ li.navitem {
 	position: relative;
 }
 
-.letter_status_bar, .letter_status_bar_spacer {
+.proposal_status_bar, .letter_status_bar, .letter_status_bar_spacer {
 	width: 100px;
 	float: left;
 	text-align: center;
@@ -354,20 +354,11 @@ li.navitem {
 	height: 20px;
 }
 
-.letter_votes_widget {
+.votes_widget {
 	height: 100px;
 }
 
-.letter_downvote, .letter_upvote {
-}
-
-.letter_upvote {
-}
-
-.letter_downvote {
-}
-
-.letter_score {
+.score {
 	font-family: computerModern;
 	font-size: 36px;
 	font-style: italic;

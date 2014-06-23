@@ -1,0 +1,51 @@
+{% load staticfiles %}
+
+<div id="{{ form.form_id }}" class="votes_widget">
+
+	<!-- 
+		create some visual elements: up and downvotes and the score 
+		These will get events bound to submit a vote form
+	-->
+
+	{% if form.valence.value = 1 %}
+	<img class="upvote" src="{% static "digidemo/images/upvote_on.png" %}" />
+	{% else %}
+	<img class="upvote" src="{% static "digidemo/images/upvote.png" %}" />
+	{% endif %}
+
+	<div class="score">
+		{{ form.cur_score }}
+	</div>
+
+	{% if form.valence.value = -1 %}
+	<img class="downvote" 
+		src="{% static "digidemo/images/downvote_on.png" %}" />
+	{% else %}
+	<img class="downvote"
+		src="{% static "digidemo/images/downvote.png" %}" />
+	{% endif %}
+
+
+	<!-- 
+		if the user hasn't voted before, then create a voting form and arm the
+		up- and downvote widgets to submit the up-/downvote form 
+	-->
+	{% if form.instance.pk == None %}
+
+	<form class="vote_form">
+	{% csrf_token %}
+	{{ form.as_p }}
+	</form>
+
+	<script type="text/javascript">
+		arm_proposal_form(
+			"{{ form.form_id }}", 
+			"{{ endpoint }}",
+			"{% static "digidemo/images/upvote_on.png" %}",
+			"{% static "digidemo/images/downvote_on.png" %}"
+		);
+	</script>
+
+	{% endif %}
+
+</div>

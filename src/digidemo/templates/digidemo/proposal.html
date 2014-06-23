@@ -13,6 +13,16 @@
 		href="{% static "digidemo/css/basic.css" %}" />
 	<!-- link rel="stylesheet" type="text/css" 
 		href="{% static "digidemo/css/proposal.css" %}" /-->
+	
+	<script type="text/javascript"
+		src="https://code.jquery.com/jquery-2.1.1.min.js" ></script>
+	<script type="text/javascript">
+		ajax_handler_url = '{% url "ajax" %}';
+	</script>
+	<script type="text/javascript" 
+		src="{% static "digidemo/js/ajax.js" %}" ></script>
+
+	{{ media }}
 
 </head>
 
@@ -109,21 +119,11 @@
 				<div id="proposal">
 
 					<!-- start of propasal score and icons -->
-					<div class="letter_status_bar">
-						<div class="letter_votes_widget">
-							<div class="letter_upvote">
-								<img src="{% static "digidemo/images/upvote.png" %}" />
-							
-							</div>
-							<div class="letter_score">
-								{{ proposal.score }}
-							</div>
-							<div class="letter_downvote">
-								<img src="{% static "digidemo/images/downvote.png" %}" />
-							</div>
-						</div>
 
+					<div class="proposal_status_bar">
+					{% include "digidemo/vote_form.html" with form=proposal_vote_form %}
 					</div>
+
 					<!-- end of proposal score and icons -->
 
 					<!-- start of proposal main area -->
@@ -220,7 +220,8 @@
 				<!-- start the open letters area -->
 				<h1>Open Letters</h1>
 				<div id="letters">
-				{% for letter in proposal.letter_set.all %}
+				{% for letter_section in letter_sections %}
+				{% with letter=letter_section.letter %}
 
 					{% if not forloop.first %}
 						<hr />
@@ -231,18 +232,7 @@
 
 						<!-- score and icons for the letter -->
 						<div class="letter_status_bar">
-							<div class="letter_votes_widget">
-								<div class="letter_upvote">
-									<img src="{% static "digidemo/images/upvote.png" %}" />
-								
-								</div>
-								<div class="letter_score">
-									{{ letter.score }}
-								</div>
-								<div class="letter_downvote">
-									<img src="{% static "digidemo/images/downvote.png" %}" />
-								</div>
-							</div>
+							{% include "digidemo/vote_form.html" with form=letter_section.vote_form %}
 
 							<div class="resend"><span class="resend_count">7</span><img class="resend_widget" src="{% static "digidemo/images/mail.png" %}" /></div>
 							{% if letter.valence < 0 %}
@@ -379,6 +369,7 @@
 					<!-- end of a letter -->
 					<div class="clear"></div>
 
+				{% endwith %}
 				{% endfor %} <!-- loop over all letters for the proposal -->
 
 					<div class="hr_flourish">
