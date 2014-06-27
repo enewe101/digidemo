@@ -101,11 +101,7 @@ function VoteForm(form_id, form_class, start_state, score, endpoint) {
 
 		ajaxForm(
 			endpoint,
-		   	this.form, 
-			{
-				'success': function(data) {alert(data.toSource());},
-				'error':	function(data) {alert(data.toSource());}
-			}
+		   	this.form
 		);
 	}
 

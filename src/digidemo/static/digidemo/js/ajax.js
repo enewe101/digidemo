@@ -63,6 +63,8 @@ function ajaxHtml(endpoint, data, handlers) {
 // and optionally fires `success` or `error` with the parsed JSON response.
 function ajax(endpoint, data, handlers) {
 
+	handlers = handlers || {};
+
 	$.ajax({
 		"url": handle_ajax_json_url + endpoint + '/',
 		"data": data,
@@ -79,7 +81,6 @@ function ajax(endpoint, data, handlers) {
 // with the parsed JSON response.
 function ajaxForm(endpoint, form, handlers) {
 	form_as_array = form.serializeArray();
-	alert(form_as_array.toSource());
 	as_dict = dict(form_as_array);
 	ajax(endpoint, as_dict, handlers);
 
