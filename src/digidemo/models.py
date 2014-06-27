@@ -7,13 +7,14 @@ URL_LENGTH = 256
 
 
 VALENCE_CHOICES = [
+	(1, 'support'),
 	(-1, 'oppose'),
 	(0, 'ammend'),
-	(1, 'support'),
 ]
 
 VOTE_CHOICES = [
 	(-1, 'down vote'),
+	(0, 'non vote'),
 	(1, 'up vote'),
 ]
 
@@ -29,6 +30,7 @@ class Sector(models.Model):
 
 
 class User(models.Model):
+	password = models.CharField(max_length=32)
 	email = models.EmailField(max_length=254)
 	email_validated = models.BooleanField(default=False)
 	avatar_img = models.ImageField(upload_to='avatars')
@@ -119,7 +121,7 @@ class Position(models.Model):
 class Letter(models.Model):
 	parent_letter = models.ForeignKey('self', blank=True, null=True)
 	proposal = models.ForeignKey(Proposal)
-	valence = models.SmallIntegerField(default=1, choices=VALENCE_CHOICES)
+	valence = models.SmallIntegerField(choices=VALENCE_CHOICES)
 	sender = models.ForeignKey(User)
 	resenders = models.ManyToManyField(User, related_name='resent_letters')
 	body = models.TextField()

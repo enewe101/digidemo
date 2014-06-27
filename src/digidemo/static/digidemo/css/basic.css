@@ -358,6 +358,27 @@ li.navitem {
 	height: 100px;
 }
 
+.upvote_on {
+	background: center center no-repeat url('../images/upvote_on.png');
+	height: 20px;
+}
+
+.upvote_off {
+	background: center center no-repeat url('../images/upvote.png');
+	height: 20px;
+}
+
+.downvote_on {
+	background: center center no-repeat url('../images/downvote_on.png');
+	height: 20px;
+}
+
+.downvote_off {
+	background: center center no-repeat url('../images/downvote.png');
+	height: 20px;
+}
+
+
 .score {
 	font-family: computerModern;
 	font-size: 36px;
@@ -537,8 +558,13 @@ a.send_letter:active {
 .comment_author {
 	font-weight: bold;
 } 
+.resend_letter_form_area .letter_body_textarea {
+	width: 548px;
+	padding: 0;
+	margin: 0;
+}
 
-.letter_body_textarea {
+#add_letter .letter_body_textarea {
 	width: 620px;
 	padding: 0;
 	margin: 0;

@@ -2,7 +2,7 @@ from django.conf.urls import patterns, include, url
 
 from django.contrib import admin
 from views import test, proposal, send_letter
-from ajax import handle_ajax
+from ajax import handle_ajax_json, handle_ajax_html
 
 admin.autodiscover()
 
@@ -10,7 +10,11 @@ urlpatterns = patterns('',
 	url(r'^$', test, name='test'),
 	url(r'^proposals/(?P<proposal_name>\w+)/$', proposal, name='proposal'),
 	url(r'^send_letter/$', send_letter, name='send_letter'),
-	url(r'^ajax/(?P<view>\w+)/$', handle_ajax, name='handle_ajax'),
-	url(r'^ajax/$', handle_ajax, name='ajax'),
+	url(r'^ajaxJson/(?P<view>\w+)/$', handle_ajax_json, 
+		name='handle_ajax_json'),
+	url(r'^ajaxHtml/(?P<view>\w+)/$', handle_ajax_html, 
+		name='handle_ajax_html'),
+	url(r'^ajaxJson/$', handle_ajax_json, name='ajax_json_test'),
+	url(r'^ajaxHtml/$', handle_ajax_html, name='ajax_html_test'),
 )
 

@@ -17,10 +17,40 @@
 	<script type="text/javascript"
 		src="https://code.jquery.com/jquery-2.1.1.min.js" ></script>
 	<script type="text/javascript">
-		ajax_handler_url = '{% url "ajax" %}';
+
+		var django = {{ django_vars_js|safe }};
+
+		$(document).ready(function() {
+			arm_ajax_forms();
+		});
+
+
+		function js_error(err_msg) {
+			if(django.DEBUG){
+				alert(err_msg);
+			}
+		}
+
+		handle_ajax_json_url = '{% url "ajax_json_test" %}';
+		handle_ajax_html_url = '{% url "ajax_html_test" %}';
+		var STRUCT=false;
 	</script>
 	<script type="text/javascript" 
 		src="{% static "digidemo/js/ajax.js" %}" ></script>
+	<!--script type="text/javascript" 
+		src="{% static "digidemo/js/resend_letter.js" %}" ></script-->
+	<script type="text/javascript" 
+		src="{% static "digidemo/js/struct.js" %}" ></script>
+
+	<script type="text/javascript" 
+		src="{% static "digidemo/js/new_vote_form.js" %}" ></script>
+
+	<script type="text/javascript">
+
+		var vote_form = new VoteForm('an_id', 'a_class', 0, 3);
+
+	</script>
+
 
 	{{ media }}
 
@@ -227,147 +257,9 @@
 						<hr />
 					{% endif %}
 
-					<!-- start of an open letter -->
-					<div class="letter">
-
-						<!-- score and icons for the letter -->
-						<div class="letter_status_bar">
-							{% include "digidemo/vote_form.html" with form=letter_section.vote_form %}
-
-							<div class="resend"><span class="resend_count">7</span><img class="resend_widget" src="{% static "digidemo/images/mail.png" %}" /></div>
-							{% if letter.valence < 0 %}
-							<img class="letter_valence"
-							src="{% static "digidemo/images/oppose.png" %}"
-							alt="support" />
-							{% elif letter.valence > 0 %}
-							<img class="letter_valence"
-							src="{% static "digidemo/images/support.png" %}"
-							alt="support" />
-							{% else %}
-							<img class="letter_valence"
-							src="{% static "digidemo/images/ammend.png" %}"
-							alt="support" />
-							{% endif %}
-
-						</div>
-						<!-- end score and icons for the letter -->
-
-						<!-- start the content of the letter -->
-						<div class="letter_main">
-
-							<div class="recipients">
-								Attention:
-								{% for recipient in letter.recipients.all %}
-								<br \><span class="recipient_title">
-									{{ recipient.name }}</span>,
-								<span class="recipient_name">
-									{{ recipient.person.fname|capfirst }}
-									{{ recipient.person.lname|capfirst }}
-								</span>
-								{% endfor %}
-							</div>
-
-							<div class="clear"></div>
-
-							<div class="letter_body">
-								{{ letter.body|truncatewords:100 }}
-								{% if letter.body|wordcount > 100 %}
-								<a href="#">view full letter</a>
-								{% endif %}
-							</div>
-
-
-							<!-- start the list of senders -->
-							<div class="senders">
-								<!-- the original sender of the letter -->
-								<div class="sender">
-									<div class="sender_avatar_image">
-										<img class="avatar_image_medium"
-										src="{{ letter.sender.avatar_img.url }}"
-										alt="{{ letter.sender.avatar_name }}" />
-
-										<img class="avatar_mask_medium"
-										src="{% static "digidemo/images/avatar_mask.png" %}" />
-									</div>
-
-									<div class="sender_name_and_bling">
-										<div class="sender_name">
-											{{ letter.sender.avatar_name }}
-										</div>
-										<div class="sender_bling">
-											14.7 k &nbsp;&nbsp; 13 
-											<img src="{% static "digidemo/images/bronze.png" %}" alt="bronze badge" />
-										</div>
-									</div>
-								</div>
-								<!-- end of original sender -->
-
-								<!-- people that have resent the letter -->
-								<div class="resending">
-									<div class="resenders_single_row">
-										<div class="resender">
-
-											<img class="avatar_image_small" 
-											src="{% static letter.sender.avatar_img.url %}" 
-											alt="resender_avatar" />
-
-											<img 
-											src="{% static "digidemo/images/avatar_mask.png" %}" 
-											class="avatar_mask_small" />
-
-										</div>
-										<div class="clear"></div>
-									</div>
-									<a class="send_letter" href="#">
-										send a version of this letter
-									</a>
-
-								</div>
-								<!-- end of re-senders  -->
-
-								<div class="clear"></div>
-
-							</div>
-							<!-- end of letter senders area -->
-
-							<!-- start of the letter comments area -->
-							<div class"letter_comments">
-								{% for comment in letter.comment_set.all %}
-								<div class="letter_comment">
-									<span class="letter_comment_body">
-										{{ comment.body }}
-									</span>
-									<span class="comment_author">
-										~ {{ comment.author.avatar_name }}
-									</span>
-								</div>
-								{% endfor %}
-
-								<div class="add_comment">
-									<form 
-										method="POST"
-										action="{% url "proposal" proposal.name %}">
-									{{ comment_form.non_field_errors }}
-									{% csrf_token %}
-									{{ comment_form.body.errors }}
-									{{ comment_form.body }}
-									{{ comment_form.letter.errors }}
-									<input type="hidden" name="letter" 
-										value="{{ letter.id }}" />
-									{{ comment_form.author.errors }}
-									<input type="hidden" name="author" 
-										value="{{ logged_in_user.id }}" />
-									<input type="submit" value="post" />
-									</form>
-								</div>
-							</div>
-							<!-- end of letter comments area -->
-						</div> 
-						<!-- end of letter main content -->
-
-					</div>
-					<!-- end of a letter -->
+					{% include "digidemo/letter.html" %}
 					<div class="clear"></div>
+
 
 				{% endwith %}
 				{% endfor %} <!-- loop over all letters for the proposal -->

@@ -45,7 +45,9 @@ function arm_cast_vote(
 		// submit the vote form by ajax
 		ajaxForm(
 			endpoint, 
-			form
+			form,
+			function(data){alert('success')},
+			function(data){alert('error')}
 		);
 	};
 

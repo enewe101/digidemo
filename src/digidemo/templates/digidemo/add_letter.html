@@ -1,4 +1,5 @@
-<form method="post" action="{% url "send_letter"  %}" >
+{{ form.endpoint }}
+<form class="{{ form.form_class}}" id="{{ form.form_id }}" />
 
 	{% csrf_token %}
 
@@ -12,5 +13,21 @@
 	</div>
 	{% endfor %}
 
-	<input type="submit" value="send" />
+	<input id="{{ form.form_id }}_submit" class="submit_letter" type="button" value="send" />
 </form>
+
+<!-- arm the submit button to submit the form to an ajax endpoint -->
+<script type="text/javascript">
+
+	register_form(
+		'{{ form.form_id }}',
+		'{{ form.endpoint }}',
+		'{{ form.form_class}}',
+		'{{ form.form_id }}_submit',
+		{
+			'success': function(data){alert(data.toSource());},
+			'error': function(data){alert(data.toSource());}
+		}
+	);
+
+</script>

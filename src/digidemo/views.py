@@ -4,6 +4,17 @@ from django.http import HttpResponse, HttpResponseRedirect
 from digidemo.models import *
 from digidemo.forms import *
 from digidemo.utils import get_or_none
+from settings import DEBUG
+import json
+
+def get_django_vars():
+	return {
+		'DEBUG': DEBUG
+	}
+
+
+def get_django_vars_JSON():
+	return json.dumps(get_django_vars())
 
 
 def proposal(request, proposal_name):
@@ -11,7 +22,7 @@ def proposal(request, proposal_name):
 	this_proposal = Proposal.objects.get(name=proposal_name)
 
 	# ** Hardcoded the logged in user to be enewe101 **
-	logged_in_user = User.objects.get(pk=2)
+	logged_in_user = User.objects.get(pk=1)
 
 	# if this is a form submission, handle it
 	if request.method == 'POST':
@@ -40,10 +51,13 @@ def proposal(request, proposal_name):
 			initial={'user':logged_in_user.pk, 'proposal':this_proposal.pk},
 			cur_score=this_proposal.score)
 
+	# Get all of the letters which are associated with this proposal
+	# and which are 'original letters'
 	letter_sections = []
-	letters = Letter.objects.filter(proposal=this_proposal)
+	letters = Letter.objects.filter(parent_letter=None, proposal=this_proposal)
 	for letter_num, letter in enumerate(letters):
 
+		# make a voting form for each letter
 		letter_vote = get_or_none(
 			LetterVote, user=logged_in_user, letter=letter)
 
@@ -58,26 +72,42 @@ def proposal(request, proposal_name):
 				cur_score=letter.score
 			)
 
+		# make a re-sending form for each letter
+		resend_form = ResendLetterForm(
+			initial={
+				'parent_letter': letter,
+				'proposal': this_proposal,
+				'body': letter.body,
+				'recipients': letter.body,
+				'sender': logged_in_user,
+				'valence': letter.valence
+			}, 
+			form_id='resend_letter_%d' %letter_num,
+		   	endpoint='resend_letter',
+			form_class='resend_letter_form'
+		)
 
 		letter_sections.append({
 			'letter': letter,
 			'comment_form': LetterCommentForm(
 				initial={'user':logged_in_user.pk, 'letter':letter.pk}),
-			'vote_form': letter_vote_form
+			'vote_form': letter_vote_form,
+			'resend_form': resend_form
 		}) 
 	
 	media = ProposalVoteForm().media
 	media += LetterVoteForm().media
 
 	letter_form = LetterForm(initial={
-		'proposal': this_proposal.pk,
+		'proposal': this_proposal,
 		'sender': logged_in_user,
-	})
+	}, form_id='add_letter')
 
 	return render(
 		request,
 		'digidemo/proposal.html', 
 		{
+			'django_vars_js': get_django_vars_JSON(),
 			'proposal': this_proposal,
 			'comment_form': comment_form,
 			'letter_form': letter_form,
