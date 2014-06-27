@@ -1,0 +1,188 @@
+{% load staticfiles %}
+<html>
+<head>
+<title>Digidemo</title>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<link rel="stylesheet" type="text/css" href="{% static "digidemo/css/proposal_index_style.css" %}" />
+<link rel="stylesheet" type="text/css" href="{% static "digidemo/css/login.css" %}" />
+<!--[if lte IE 6]><link rel="stylesheet" type="text/css" href="{% static "digidemo/css/ie.css" %}" /><![endif]-->
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+<script>
+
+$(document).ready(function(){
+  $('#login-trigger').click(function(){
+    $(this).next('#login-content').slideToggle();
+    $(this).toggleClass('active');          
+    
+    if ($(this).hasClass('active')) $(this).find('span').html('&#x25B2;')
+      else $(this).find('span').html('&#x25BC;')
+    })
+});
+</script>
+
+</head>
+
+<body>
+<!-- BEGIN wrapper -->
+<nav>
+  <ul>
+    <li id="login">
+      <a id="login-trigger" href="#">
+        Log in <span>?</span>
+      </a>
+      <div id="login-content">
+        <form>
+          <fieldset id="inputs">
+            <input id="username" type="email" name="Email" placeholder="Your email address" required>   
+            <input id="password" type="password" name="Password" placeholder="Password" required>
+          </fieldset>
+          <fieldset id="actions">
+            <input type="submit" id="submit" value="Log in">
+            <label><input type="checkbox" checked="checked"> Keep me signed in</label>
+          </fieldset>
+        </form>
+      </div>                     
+    </li>
+    <li id="signup">
+      <a href="">Sign up FREE</a>
+    </li>
+  </ul>
+</nav>
+</div>
+
+<div id="wrapper">
+  <!-- BEGIN header -->
+  <div id="header">
+    <ul class="pages">
+      <li><a href="index.html">Home</a></li>
+      <li><a href="about.html">About us</a></li>
+      <li><a href="page.html">Demo Page</a></li>
+
+    </ul>
+    <form action="http://www.free-css.com/">
+      <p>Search: </p>
+      <input type="text" name="s" id="s" value="" />
+      <button type="submit">Go</button>
+    </form>
+    <div class="break"></div>
+    <h1><a>InnodeMag</a></h1>
+    <div class="ad"><img src="{% static "digidemo/images/ad468x60.jpg" %}" alt="" /></div>
+    {% load apptags %}
+  </div>
+  <!-- END header -->
+  <!-- BEGIN content -->
+  <div id="content">
+    <!-- begin featured -->
+    <div class="articles">
+      <h2 class="title">Featured News</h2>
+            <div class="post">
+        <div class="details">
+          <p class="l"> <span class="category">Last modified on {{ featured_post.last_modified }} </span> - Created by on {{featured_post.creation_date}} </p>
+          <p class="r"> <a href="/proposals/{{featured_post.name}}">21 Comments</a> </p>
+        </div>
+        <div class="thumb"><a href="/proposals/{{featured_post.name}}"><img src="{{featured_post.proposal_image}}" alt="" /></a></div>
+        <h2><a href="/proposals/{{featured_post.name}}">{{featured_post.title}}</a></h2>
+            <p> {{featured_post.text|getSummary}} </p>
+    </div>
+    </div>
+    <!-- end featured -->
+
+
+    <!-- begin more articles -->
+    <div class="articles">
+
+      <h2 class="title">Featured</h2>
+
+
+      <!-- begin post -->
+	{% for proposal in proposals%}
+      <div class="post">
+        <div class="details">
+          <p class="l"> <span class="category">Last modified on {{ proposal.last_modified }} </span> - Created by {{users|getAuthor:proposal}}  on {{proposal.creation_date}} </p>
+          <p class="r"> <a href="/proposals/{{proposal.name}}"> {{ proposal.score }} score</a> </p>
+        </div>
+        <div class="thumb"><a href="/proposals/{{proposal.name}}"> <img src="{{proposal.proposal_image}}" alt="" /></a></div>
+        <h2><a href="/proposals/{{proposal.name}}"> {{proposal.title}}</a></h2>
+        <p> {{proposal.text|getSummary}} </p>
+      </div>
+	{% endfor %}
+
+
+
+      <div class="break"></div>
+    </div>
+    <!-- end more articles -->
+    <!-- begin post navigation -->
+    <div class="postnav">
+      <ul>
+        <li><a href="/mainPage/sort=top_score">Sort by Top score</a></li>
+        <li><a href="/mainPage/sort="most_comments">Sort by comments</a></li>
+        <li><a href="/mainPage/sort=most_recent">Sort by Latest</a></li>
+      </ul>
+    </div>
+    <!-- end post navigation -->
+  </div>
+  <!-- END content -->
+  <!-- BEGIN sidebar -->
+  <div id="sidebar">
+    <!-- begin popular posts -->
+    <div class="box">
+      <h2>Popular Posts</h2>
+      <ul>
+	{% for post in popular_posts%}
+        <li><a href="/proposals/{{post.name}}">{{post.title}}</a></li>
+	{% endfor %}
+      </ul>
+    </div>
+    <!-- end popular posts -->
+    <!-- begin featured video -->
+    <div class="box">
+      <h2>Featured Video</h2>
+      <div class="video" ><iframe height ="200" src="//www.youtube.com/embed/6GR-9-nB-YE" frameborder="0" allowfullscreen></iframe></div>
+    </div>
+    <!-- end featured video -->
+    <!-- BEGIN left -->
+    <div class="l sidebar">
+
+      <!-- begin categories -->
+      <div class="box">
+        <h2>Categories</h2>
+        <ul>
+          <li>Advertising</li>
+          <li>Fashion</li>
+          <li>Gadgets</li>
+          <li>Lifestyle</li>
+          <li>Networking</li>
+          <li>News</li>
+          <li>Sports</li>
+        </ul>
+      </div>
+      <!-- end categories -->
+    </div>
+    <!-- END left -->
+    <!-- BEGIN right -->
+    <div class="r sidebar">
+      <!-- begin archives -->
+      <div class="box">
+        <h2>Archives</h2>
+        <ul>
+          <li>2014</li>
+          <li>2013</li>
+          <li>2012</li>
+          <li>2011</li>
+        </ul>
+      </div>
+      <!-- end archives -->
+    </div>
+    <!-- END right -->
+  </div>
+  <!-- END sidebar -->
+  <!-- BEGIN footer -->
+  <div id="footer">
+    <p>Copyright &copy; June 2014 Edward Newell and Nishanth - Digidemo.com All Rights Reserved </p>
+  </div>
+  <!-- END footer -->
+</div>
+<!-- END wrapper -->
+</body>
+</html>
