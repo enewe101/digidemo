@@ -42,7 +42,9 @@ class User(models.Model):
 	zip_code = models.CharField(max_length=10)
 	country = models.CharField(max_length=64, choices=COUNTRIES)
 	province = models.CharField(max_length=32, choices=PROVINCES, blank=True)
-
+        username = models.CharField(max_length = 12)
+        password = models.CharField(max_length = 20)
+                
 	def __unicode__(self):
 		return self.avatar_name
 
@@ -57,6 +59,7 @@ class Proposal(models.Model):
 	author = models.ForeignKey(User)
 	score = models.SmallIntegerField(default=0)
 	sector = models.ManyToManyField(Sector, related_name='proposals')
+	proposal_image = models.ImageField(upload_to='proposal_avatars',default='/digidemo/proposal-images/');
 	
 	def __unicode__(self):
 		return self.title
