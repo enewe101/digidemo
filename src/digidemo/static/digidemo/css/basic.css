@@ -564,7 +564,7 @@ a.send_letter:active {
 	margin: 0;
 }
 
-#add_letter .letter_body_textarea {
+#add_letter_div .letter_body_textarea {
 	width: 620px;
 	padding: 0;
 	margin: 0;
@@ -574,7 +574,7 @@ a.send_letter:active {
 	margin-bottom: 10px;
 }
 
-#add_letter {
+#add_letter_div {
 	width: 622px;
 	margin-left: 28px;
 }

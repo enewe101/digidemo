@@ -1,20 +1,25 @@
 from django.core.urlresolvers import reverse
+from django.core import serializers
 from django.shortcuts import render, get_object_or_404
 from django.http import HttpResponse, HttpResponseRedirect
 from digidemo.models import *
 from digidemo.forms import *
-from digidemo.utils import get_or_none
+from digidemo import utils
 from settings import DEBUG
 import json
 
-def get_django_vars():
-	return {
+def get_django_vars(additional_vars={}):
+	django_vars = {
 		'DEBUG': DEBUG
 	}
 
+	django_vars.update(additional_vars)
 
-def get_django_vars_JSON():
-	return json.dumps(get_django_vars())
+	return django_vars
+
+
+def get_django_vars_JSON(additional_vars):
+	return json.dumps(get_django_vars(additional_vars))
 
 
 def proposal(request, proposal_name):
@@ -23,6 +28,7 @@ def proposal(request, proposal_name):
 
 	# ** Hardcoded the logged in user to be enewe101 **
 	logged_in_user = User.objects.get(pk=1)
+	
 
 	# if this is a form submission, handle it
 	if request.method == 'POST':
@@ -38,7 +44,7 @@ def proposal(request, proposal_name):
 		comment_form = LetterCommentForm()
 
 
-	proposal_vote = get_or_none(
+	proposal_vote = utils.get_or_none(
 		ProposalVote, user=logged_in_user, proposal=this_proposal)
 
 	if proposal_vote:
@@ -58,7 +64,7 @@ def proposal(request, proposal_name):
 	for letter_num, letter in enumerate(letters):
 
 		# make a voting form for each letter
-		letter_vote = get_or_none(
+		letter_vote = utils.get_or_none(
 			LetterVote, user=logged_in_user, letter=letter)
 
 		if letter_vote:
@@ -98,19 +104,21 @@ def proposal(request, proposal_name):
 	media = ProposalVoteForm().media
 	media += LetterVoteForm().media
 
-	letter_form = LetterForm(initial={
+	add_letter_form = LetterForm(initial={
 		'proposal': this_proposal,
 		'sender': logged_in_user,
-	}, form_id='add_letter')
+	}, form_id='add_letter', form_class='add_letter')
 
 	return render(
 		request,
 		'digidemo/proposal.html', 
 		{
-			'django_vars_js': get_django_vars_JSON(),
+			'django_vars_js': get_django_vars_JSON(
+				{'user': utils.obj_to_dict(
+				logged_in_user, exclude=['password'])}),
 			'proposal': this_proposal,
 			'comment_form': comment_form,
-			'letter_form': letter_form,
+			'letter_form': add_letter_form,
 			'letter_sections': letter_sections,
 			'logged_in_user': logged_in_user,
 			'proposal_vote_form': proposal_vote_form,

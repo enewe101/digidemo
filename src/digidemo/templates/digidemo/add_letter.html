@@ -1,4 +1,3 @@
-{{ form.endpoint }}
 <form class="{{ form.form_class}}" id="{{ form.form_id }}" />
 
 	{% csrf_token %}
@@ -23,11 +22,7 @@
 		'{{ form.form_id }}',
 		'{{ form.endpoint }}',
 		'{{ form.form_class}}',
-		'{{ form.form_id }}_submit',
-		{
-			'success': function(data){alert(data.toSource());},
-			'error': function(data){alert(data.toSource());}
-		}
+		'{{ form.form_id }}_submit'
 	);
 
 </script>

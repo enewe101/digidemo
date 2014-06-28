@@ -9,58 +9,25 @@
 </div>
 
 <script type="text/javascript">
-	vote_form = new VoteForm(
-			'{{ form.form_id }}',
-			'votes_widget',
-			{{ form.valence.value|default_if_none:0 }},
-			{{ form.cur_score|default_if_none:0 }},
-			'{{ form.endpoint }}'
-		);
 
+	// build the vote_widget.  This is the js object and associated html 
+	// elements to allow up/downvoting and show the current score.
+	vote_form = new VoteForm(
+		'{{ form.form_id }}',
+		'votes_widget',
+		{{ form.valence.value|default_if_none:0 }},
+		{{ form.cur_score|default_if_none:0 }},
+		'{{ form.endpoint }}'
+	);
+
+	// register this widget to the page
+	register_widget('{{ form.form_id }}', vote_form, 'votes_widget');
+
+	// insert the html associated with the widget into a div above, which 
+	// would be included in the page at the point of inclusion of this template
 	$(document).ready(
 		$('#{{form.form_id}}_target').append(vote_form.get())
 	)
 
 </script>
 
-<!--div id="{{ form.form_id }}" class="votes_widget">
-
-
-	{% if form.valence.value = 1 %}
-	<img class="upvote" src="{% static "digidemo/images/upvote_on.png" %}" />
-	{% else %}
-	<img class="upvote" src="{% static "digidemo/images/upvote.png" %}" />
-	{% endif %}
-
-	<div class="score">
-		{{ form.cur_score }}
-	</div>
-
-	{% if form.valence.value = -1 %}
-	<img class="downvote" 
-		src="{% static "digidemo/images/downvote_on.png" %}" />
-	{% else %}
-	<img class="downvote"
-		src="{% static "digidemo/images/downvote.png" %}" />
-	{% endif %}
-
-
-
-	<form class="vote_form">
-	{% csrf_token %}
-	{{ form.as_p }}
-	</form>
-
-	<script type="text/javascript">
-		arm_proposal_form(
-			"{{ form.form_id }}", 
-			"{{ form.endpoint }}",
-			"{% static "digidemo/images/upvote_on.png" %}",
-			"{% static "digidemo/images/downvote_on.png" %}"
-		);
-
-	</script>
-
-
-
-</div-->

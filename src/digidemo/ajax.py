@@ -33,7 +33,8 @@ def handle_ajax_json(request, view='test', *args, **kwargs):
 		data = handler(request, *args, **kwargs)
 
 	except Exception, e:
-		data = {'error': screen_ajax_error(e)}
+		return HttpResponse(content=screen_ajax_error(e), status=500, 
+			reason='Internal Server Error')
 
 	# render and return the HttpResponse
 	data = json.dumps(data)
@@ -73,6 +74,7 @@ def screen_ajax_error(e):
 	
 
 def vote_proposal(request):
+
 	existing_vote = get_or_none(ProposalVote,
 		user=request.POST['user'], proposal=request.POST['proposal']) 
 
@@ -135,6 +137,21 @@ def vote_letter(request):
 json_responders['vote_letter'] = vote_letter
 
 
+def send_letter(request):
+	letter_form = LetterForm(request.POST)
+
+	if letter_form.is_valid():
+
+		# add the new (re)sent letter to the database
+		letter_form.save()
+
+		return {'success':True}
+
+	return {'success':False}
+
+json_responders['send_letter'] = send_letter
+
+
 def resend_letter(request):
 	letter_form = ResendLetterForm(request.POST)
 
@@ -155,6 +172,7 @@ def resend_letter(request):
 json_responders['resend_letter'] = resend_letter
 
 
+
 def get_resender_avatar(request):
 
 	# ** Hardcoded the logged in user to be enewe101 **
@@ -165,6 +183,7 @@ def get_resender_avatar(request):
 
 
 html_responders['get_resender_avatar'] = get_resender_avatar
+
 	
 
 def test(request):

@@ -16,41 +16,25 @@
 	
 	<script type="text/javascript"
 		src="https://code.jquery.com/jquery-2.1.1.min.js" ></script>
+
 	<script type="text/javascript">
 
+		var ALERT_AJAX_ERRORS = true;
+		var STRUCT = false;
 		var django = {{ django_vars_js|safe }};
 
+		var handle_ajax_json_url = '{% url "ajax_json_test" %}';
+		var handle_ajax_html_url = '{% url "ajax_html_test" %}';
+
+
+		// Add page behaviors in response to widgets on the page
 		$(document).ready(function() {
-			arm_ajax_forms();
+
+
 		});
-
-
-		function js_error(err_msg) {
-			if(django.DEBUG){
-				alert(err_msg);
-			}
-		}
-
-		handle_ajax_json_url = '{% url "ajax_json_test" %}';
-		handle_ajax_html_url = '{% url "ajax_html_test" %}';
-		var STRUCT=false;
 	</script>
 	<script type="text/javascript" 
-		src="{% static "digidemo/js/ajax.js" %}" ></script>
-	<!--script type="text/javascript" 
-		src="{% static "digidemo/js/resend_letter.js" %}" ></script-->
-	<script type="text/javascript" 
-		src="{% static "digidemo/js/struct.js" %}" ></script>
-
-	<script type="text/javascript" 
-		src="{% static "digidemo/js/new_vote_form.js" %}" ></script>
-
-	<script type="text/javascript">
-
-		var vote_form = new VoteForm('an_id', 'a_class', 0, 3);
-
-	</script>
-
+		src="{% static "digidemo/js/lib.js" %}" ></script>
 
 	{{ media }}
 
@@ -257,7 +241,7 @@
 						<hr />
 					{% endif %}
 
-					{% include "digidemo/letter.html" %}
+					{% include "digidemo/letter.html" with include_id=forloop.counter %}
 					<div class="clear"></div>
 
 
@@ -271,7 +255,7 @@
 
 					<!-- start form for adding new letters -->
 					<h1>Your Letter</h1>
-					<div id="add_letter">
+					<div id="add_letter_div">
 
 						{% include "digidemo/add_letter.html" with form=letter_form %}
 

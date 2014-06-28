@@ -30,46 +30,47 @@ function VoteForm(form_id, form_class, start_state, score, endpoint) {
 
 
 	// arm the upvote button.  Proxy makes the event handler use this context.
-	this.html.upvote.click( function(o) {
-		return function() {
+	this.html.upvote.click( $.proxy(
+		function() {
 
-			if(o.state == -1) {
-				o.enter_state_1();
+			if(this.state == -1) {
+				this.enter_state_1();
 
-			} else if(o.state == 0) {
-				o.enter_state_1();
+			} else if(this.state == 0) {
+				this.enter_state_1();
 
-			} else if(o.state == 1) {
-				o.enter_state_0();
+			} else if(this.state == 1) {
+				this.enter_state_0();
 
 			} else {
-				js_error('VoteForm: unexpected state: ' + o.state);
+				js_error('VoteForm: unexpected state: ' + this.state);
 			}
 
-			o.send_vote();
-		};
-	}(this));
+			this.send_vote();
+		}, this)
+	);
+
 
 	// arm the downvote button.  Proxy makes event handler use this context.
-	this.html.downvote.click( function(o) {
-		return function() {
+	this.html.downvote.click( $.proxy(
+		function() {
 
-			if (o.state == -1) {
-				o.enter_state_0();
+			if (this.state == -1) {
+				this.enter_state_0();
 
-			} else if (o.state == 0) {
-				o.enter_state_neg1();
+			} else if (this.state == 0) {
+				this.enter_state_neg1();
 
-			} else if (o.state == 1) {
-				o.enter_state_neg1();
+			} else if (this.state == 1) {
+				this.enter_state_neg1();
 
 			} else {
-				js_error('VoteForm: unexpected state: ' + o.state);
+				js_error('VoteForm: unexpected state: ' + this.state);
 			}
 
-			o.send_vote();
-		}
-	}(this));
+			this.send_vote();
+		}, this)
+	);
 
 
 	// state-changing functions
@@ -94,6 +95,16 @@ function VoteForm(form_id, form_class, start_state, score, endpoint) {
 		this.state = 1;
 	}
 
+	// this provides placeholders for callbacks that the page in which
+	// this widget will be placed, can use
+	this.pagehooks = {
+		'before': function(){},
+		'success': function(){},
+		'error': function(){},
+		'after': function(){}
+	}
+
+
 	// posts the vote using ajax
 	this.send_vote = function() {
 
@@ -101,7 +112,21 @@ function VoteForm(form_id, form_class, start_state, score, endpoint) {
 
 		ajaxForm(
 			endpoint,
-		   	this.form
+		   	this.form,
+			{
+				'before': $.proxy(function(data, textStatus, jqXHR) {
+					return this.pagehooks.success(data, textStatus, jqXHR);
+				}, this),
+				'success': $.proxy(function(data, textStatus, jqXHR) {
+					return this.pagehooks.success(data, textStatus, jqXHR);
+				}, this),
+				'error': $.proxy(function(data, textStatus, jqXHR) {
+					return this.pagehooks.error(data, textStatus, jqXHR);
+				}, this),
+				'after': $.proxy(function(data, textStatus, jqXHR) {
+					return this.pagehooks.error(data, textStatus, jqXHR);
+				}, this)
+			}
 		);
 	}
 

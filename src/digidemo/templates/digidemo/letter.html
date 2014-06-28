@@ -1,6 +1,6 @@
 {% load staticfiles %}
 <!-- start of an open letter -->
-<div class="letter">
+<div id="letter_{{ include_id }}" class="letter">
 
 	<!-- score and icons for the letter -->
 	<div class="letter_status_bar">
@@ -48,7 +48,6 @@
 			{% endif %}
 		</div>
 
-
 		<!-- start the list of senders -->
 		<div class="senders">
 			<!-- the original sender of the letter -->
@@ -76,10 +75,18 @@
 
 			<!-- people that have resent the letter -->
 			<div class="resending">
-				<div class="resenders_single_row">
-					{% for resender in letter.resenders.all %}
-					{% include "digidemo/resender_avatar.html" %}
-					{% endfor %}
+
+
+				<!-- this div gets its id based on the letter resend form
+				id so that js can bind resinding event to loading the
+				letter's avatar here --> 
+				<div class="resenders_single_row" 
+					id="{{ include_id }}_resenders" >
+
+						{% for resender in letter.resenders.all %}
+						{% include "digidemo/resender_avatar.html" %}
+						{% endfor %}
+
 					<div class="clear"></div>
 				</div>
 				<a class="send_letter" href="#">
@@ -137,3 +144,43 @@
 
 </div>
 <!-- end of a letter -->
+
+<script type="text/javascript">
+	$('document').ready(function() {
+
+		// get the resend letter widget, and the resender list
+		var resend_letter_form = widgets[
+			'{{letter_section.resend_form.form_id}}']['widget'];
+		var resender_list = widgets['resender_list_{{include_id}}']['widget'];
+
+		// make a callback function -- when the user resends a letter, she
+		// will get added to the resender list
+		var callback = function(rsl) {
+			return function() {
+				rsl.add_user(django.user.pk);
+			};
+		}(resender_list);
+
+		// now bind this function to the resend letter widget's hook
+		resend_letter_form.pagehooks.success = callback;
+	})
+
+	// get the list of existing senders for this letter
+	var existing_senders = [
+		{{ letter.sender.pk }}{% if letter.resenders|length > 0 %},{% endif %}
+		{% for resender in letter.resenders.all %}
+			{{ resender.pk }}{% if not forloop.last %},{% endif %}
+		{% endfor %}
+	];
+
+	var resender_list = new ResenderList(
+		$('#{{include_id}}_resenders'),
+		existing_senders
+	);
+
+
+	// register the resender widget to the page
+	register_widget('resender_list_{{ include_id }}', resender_list, 
+		'resender_list');
+
+</script>
