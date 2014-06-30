@@ -1,5 +1,7 @@
 static/*
 media/*
+docs/my_notes/*
+*.svg
 *.pyc
 *.swp
 *~
