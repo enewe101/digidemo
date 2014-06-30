@@ -1,5 +1,5 @@
 @font-face{
-	font-family: computerModern;
+	font-family: comp-bottom: 1em;uterModern;
 	src: url(../fonts/computer_modern/cmunrm.eot);
 }   
 @font-face{
@@ -80,6 +80,9 @@
 	src: url(../fonts/ubuntu/Ubuntu-BI.ttf);
 }   
 
+p {
+}
+
 .pointer {
 	cursor: pointer;
 }
@@ -100,6 +103,14 @@
 	color: rgb(200,200,200);
 }
 
+.float_left {
+	float: left;
+}
+
+.note_icon {
+	margin: 20px 10px 10px 0;
+	float:left;
+}
 
 body {
 	font-family: ubuntu;
@@ -127,7 +138,7 @@ body {
 .inner_center {
 	text-align: left;
 	margin: auto;
-	width: 1024px;
+	width: 1124px;
 }
 
 #colophon {
@@ -151,12 +162,12 @@ body {
 
 #center_col {
 	float:left;
-	width: 678px;
+	width: 778px;
 }
 
 .proposal_main {
 	float:left;
-	width: 550px;
+	width: 650px;
 }
 
 #proposal {
@@ -296,6 +307,7 @@ li.navitem {
 }
 
 .tabs {
+	margin: 0 0 10px 100px;
 	height: 30px;
 	font-family: ubuntu;
 }
@@ -365,21 +377,25 @@ li.navitem {
 .upvote_on {
 	background: center center no-repeat url('../images/upvote_on.png');
 	height: 20px;
+	cursor: pointer;
 }
 
 .upvote_off {
 	background: center center no-repeat url('../images/upvote.png');
 	height: 20px;
+	cursor: pointer;
 }
 
 .downvote_on {
 	background: center center no-repeat url('../images/downvote_on.png');
 	height: 20px;
+	cursor: pointer;
 }
 
 .downvote_off {
 	background: center center no-repeat url('../images/downvote.png');
 	height: 20px;
+	cursor: pointer;
 }
 
 
@@ -559,6 +575,12 @@ a.send_letter:active {
 	text-decoration: underline;
 }
 
+#overview {
+
+	width: 650px;
+	float: left;
+}
+
 .comment_author {
 	font-weight: bold;
 } 
@@ -589,4 +611,10 @@ a.send_letter:active {
 
 .add_comment_toggle_content {
 	display: none;
+}
+
+.take_note {
+	background: rgb(249, 249, 218);
+	padding: 1px 20px;
+	margin-top: 20px;
 }

@@ -1,0 +1,23 @@
+{% load staticfiles %}
+<!-- the original sender of the letter -->
+<div class="sender">
+	<div class="sender_avatar_image">
+		<img class="avatar_image_medium"
+		src="{{ user.avatar_img.url }}"
+		alt="{{ user.username }}" />
+
+		<img class="avatar_mask_medium"
+		src="{% static "digidemo/images/avatar_mask.png" %}" />
+	</div>
+
+	<div class="sender_name_and_bling">
+		<div class="sender_name">
+			{{ user.username }}
+		</div>
+		<div class="sender_bling">
+			14.7 k &nbsp;&nbsp; 13 
+			<img src="{% static "digidemo/images/bronze.png" %}" alt="bronze badge" />
+		</div>
+	</div>
+</div>
+<!-- end of original sender -->

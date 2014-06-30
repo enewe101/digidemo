@@ -4,7 +4,7 @@ from digidemo.choices import *
 
 NAME_LENGTH = 48
 URL_LENGTH = 256
-
+TITLE_LENGTH = 256
 
 VALENCE_CHOICES = [
 	(1, 'support'),
@@ -68,6 +68,33 @@ class Proposal(models.Model):
 
 	class Meta:
 		get_latest_by = 'creation_date'
+
+
+class Discussion(models.Model):
+	proposal = models.ForeignKey(Proposal)
+	title = models.CharField(max_length=TITLE_LENGTH)
+	body = models.TextField()
+	user = models.ForeignKey(User)
+	score = models.SmallIntegerField(default=0)
+	is_open = models.BooleanField(default=False)
+	creation_date = models.DateField(auto_now_add=True)
+	last_activity_date = models.DateField(auto_now=True)
+
+	def __unicode__(self):
+		return self.title
+
+
+class Reply(models.Model):
+	discussion = models.ForeignKey(Discussion)
+	body = models.TextField()
+	user = models.ForeignKey(User)
+	score = models.SmallIntegerField(default=0)
+	is_open = models.BooleanField(default=False)
+	creation_date = models.DateField(auto_now_add=True)
+
+	def __unicode__(self):
+		return self.user.username
+
 
 
 class ProposalVote(models.Model):

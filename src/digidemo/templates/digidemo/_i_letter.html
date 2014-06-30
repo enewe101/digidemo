@@ -50,32 +50,11 @@
 
 		<!-- start the list of senders -->
 		<div class="senders">
-			<!-- the original sender of the letter -->
-			<div class="sender">
-				<div class="sender_avatar_image">
-					<img class="avatar_image_medium"
-					src="{{ letter.sender.avatar_img.url }}"
-					alt="{{ letter.sender.user_name }}" />
 
-					<img class="avatar_mask_medium"
-					src="{% static "digidemo/images/avatar_mask.png" %}" />
-				</div>
-
-				<div class="sender_name_and_bling">
-					<div class="sender_name">
-						{{ letter.sender.user_name }}
-					</div>
-					<div class="sender_bling">
-						14.7 k &nbsp;&nbsp; 13 
-						<img src="{% static "digidemo/images/bronze.png" %}" alt="bronze badge" />
-					</div>
-				</div>
-			</div>
-			<!-- end of original sender -->
+			{% include "digidemo/_i_user_id.html" with user=letter.sender %}
 
 			<!-- people that have resent the letter -->
 			<div class="resending">
-
 
 				<!-- this div gets its id based on the letter resend form
 				id so that js can bind resinding event to loading the
@@ -83,7 +62,7 @@
 				<div class="resenders_single_row" 
 					id="{{ include_id }}_resenders" >
 
-						{% for resender in letter.resenders.all %}
+						{% for resender in letter_section.resenders %}
 						{% include "digidemo/_i_resender_avatar.html" %}
 						{% endfor %}
 
@@ -120,7 +99,7 @@
 					{{ comment.body }}
 				</span>
 				<span class="comment_author">
-					~ {{ comment.author.user_name }}
+					~ {{ comment.author.username }}
 				</span>
 			</div>
 			{% endfor %}

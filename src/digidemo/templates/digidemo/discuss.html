@@ -1,0 +1,34 @@
+{% extends "digidemo/__proposal.html" %}
+{% load staticfiles %}
+{% block proposal_content %}
+	<h1 class="proposal_title">Discussion Re: {{ proposal.title }}</h1>
+	<div class="take_note">
+		<img src="{% static "digidemo/images/icon_info.png" %}" 
+			class="note_icon" />
+		<p>
+			Note: this forum is for constructive discussion relating to the
+			writing of {{ proposal.title }}.  Your goal should be to generate
+			consensus about the facts, and how to represent them neutrally and 
+			proportionately.  Sorry, Opinions and preferences aren't relevant 
+			in this context!
+		</p>
+		<p>
+
+			Make sure to read the <a href="#">proposal guidelines</a> before 
+			contributing :)
+		</p>
+		<p>
+			This is not a forum for general discussion about 
+			{{ proposal.title }}.  Maybe try reddit?
+		<p>
+	</div>
+
+	<div class="discussion_area">
+
+		{% for discussion in proposal.discussion_set.all %}
+			{% include "digidemo/_i_discussion.html" with discussion=discussion %}
+		{% endfor %}
+
+	</div>
+
+{% endblock proposal_content %}

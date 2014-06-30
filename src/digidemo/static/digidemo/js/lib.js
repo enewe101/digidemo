@@ -452,7 +452,6 @@ function ResenderList(wrapper, init_users) {
 		
 		// if the user is already in the list, do nothing
 		if($.inArray(user_pk, this.users) >= 0) {
-			alert('already in list!');
 			return;
 		}
 

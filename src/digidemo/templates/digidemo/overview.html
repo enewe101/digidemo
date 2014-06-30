@@ -1,0 +1,104 @@
+{% extends "digidemo/__proposal.html" %}
+{% block proposal_content %}
+<!-- start the proposal -->
+<div id="proposal">
+
+	<!-- start of proposal main area -->
+	<div class="proposal_main">
+
+		<h1 class="proposal_title">{{ proposal.title }}</h1>
+		<div id="proposal_summary">
+			{% autoescape off %}	
+				{{ proposal.text }}
+			{% endautoescape %}
+		</div>	
+		<div id="proposal_factors">
+			<div class="clear"></div>
+			<div class="factor_left_column">
+				<div class="factor_list_heading">
+					Foreseen benefits:
+				</div>
+				{% if proposal.factor_set.all|length = 0 %}
+				<div class="centered italic grey">none</div>
+				{% else %}
+				<ul class="factor_list">
+					{% for factor in proposal.factor_set.all %}
+					{% if factor.valence > 0 %}
+					<li class="factor_element">
+					{{ factor.description }}
+					</li>
+					{% endif %}
+					{% endfor %}
+				</ul>
+				{% endif %}
+			</div>
+			<div class="factor_right_column">
+				<div class="factor_list_heading">
+					Foreseen hazards:
+				</div>
+				{% if proposal.factor_set.all|length = 0 %}
+				<div class="centered italic grey">none</div>
+				{% else %}
+				<ul class="factor_list">
+					{% for factor in proposal.factor_set.all %}
+					{% if factor.valence < 0 %}
+					<li class="factor_element">
+					{{ factor.description }}
+					</li>
+					{% endif %}
+					{% endfor %}
+				</ul>
+				{% endif %}
+			</div>
+			<div class="clear"></div>
+		</div>
+
+
+	</div>
+	<!-- end of proposal main area -->
+
+</div>
+<!-- end the proposal -->
+
+<div class="clear"></div>
+<div class="hr_flourish">
+	<div class="hr"></div> 
+	<div class="flourish"></div>
+</div>
+
+<!-- start the open letters area -->
+<h1>Open Letters</h1>
+<div id="letters">
+{% for letter_section in letter_sections %}
+	{% with letter=letter_section.letter %}
+	{% with i=forloop.counter|stringformat:"s" %}
+
+	{% if not forloop.first %}
+		<hr />
+	{% endif %}
+
+	{% include "digidemo/_i_letter.html" with include_id=forloop.counter %}
+	<div class="clear"></div>
+
+
+	{% endwith %}
+	{% endwith %}
+{% endfor %} <!-- loop over all letters for the proposal -->
+
+	<div class="hr_flourish">
+		<div class="hr"></div> 
+		<div class="flourish"></div>
+	</div>
+
+	<!-- start form for adding new letters -->
+	<h1>Your Letter</h1>
+	<div id="add_letter_div">
+
+		{% include "digidemo/_w_add_letter.html" with form=letter_form %}
+
+	</div>
+	<!-- end form for adding new letters -->
+
+</div>
+<!-- end of letters area -->
+{% endblock proposal_content %}

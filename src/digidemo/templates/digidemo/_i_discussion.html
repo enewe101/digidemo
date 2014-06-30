@@ -1,0 +1,19 @@
+<!-- start discussion div -->
+<div class="discussion">
+
+	<h2 class="discussion_title">{{discussion.title}}</h2>
+	<div class="discussion_body">{{discussion.body}}</div>
+	<div class="discussion_user">
+		{% include "digidemo/_i_user_id.html" with user=discussion.user%}
+	</div>
+
+	<div class="replies">
+		{% for reply in discussion.replies.all %}
+		<div class="reply">
+			{{reply.body}} ~<span class="bold">{{reply.user.username}}</span>
+		</div>
+		{% endfor %}
+	</div>
+
+</div>
+<!-- end discussion div -->
