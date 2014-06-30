@@ -1,0 +1,29 @@
+{% load staticfiles %}
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>
+			{% block title %}digidemo{% endblock title%}
+		</title>
+
+		{% block css %}
+			<link rel="stylesheet" type="text/css" 
+				href="{% static "digidemo/css/basic.css" %}" />
+		{% endblock css %}
+
+		{% block js %}
+			<script type="text/javascript"
+				src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
+			<script type="text/javascript" 
+				src="{% static "digidemo/js/lib.js" %}"></script>
+		{% endblock js %}
+
+		{% block media %}{% endblock media %}
+
+	</head>
+	<body>
+		{% block body %}
+		{% endblock body %}
+	</body>
+</html>
+

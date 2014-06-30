@@ -80,6 +80,10 @@
 	src: url(../fonts/ubuntu/Ubuntu-BI.ttf);
 }   
 
+.pointer {
+	cursor: pointer;
+}
+
 .centered {
 	text-align: center;
 }
@@ -564,6 +568,10 @@ a.send_letter:active {
 	margin: 0;
 }
 
+.resend_letter_form_area {
+	display: none;
+}
+
 #add_letter_div .letter_body_textarea {
 	width: 620px;
 	padding: 0;
@@ -577,4 +585,8 @@ a.send_letter:active {
 #add_letter_div {
 	width: 622px;
 	margin-left: 28px;
+}
+
+.add_comment_toggle_content {
+	display: none;
 }

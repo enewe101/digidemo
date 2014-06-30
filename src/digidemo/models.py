@@ -30,6 +30,8 @@ class Sector(models.Model):
 
 
 class User(models.Model):
+	creation_date = models.DateField(auto_now_add=True)
+	last_logged_in = models.DateField()
 	password = models.CharField(max_length=32)
 	email = models.EmailField(max_length=254)
 	email_validated = models.BooleanField(default=False)
@@ -42,8 +44,8 @@ class User(models.Model):
 	zip_code = models.CharField(max_length=10)
 	country = models.CharField(max_length=64, choices=COUNTRIES)
 	province = models.CharField(max_length=32, choices=PROVINCES, blank=True)
-        username = models.CharField(max_length = 12)
-        password = models.CharField(max_length = 20)
+	username = models.CharField(max_length = 12)
+	password = models.CharField(max_length = 20)
                 
 	def __unicode__(self):
 		return self.avatar_name

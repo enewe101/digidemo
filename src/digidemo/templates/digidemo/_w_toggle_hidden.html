@@ -1,0 +1,11 @@
+<script type="text/javascript">
+(function() {
+	
+var toggle_div = $('#_w_toggle_hidden_{{ widget_id }}');
+var content = $('#_w_toggle_hidden_content_{{ widget_id }}');
+var toggler = new ToggleHidden(toggle_div, content);
+register_widget('toggle_hidden_{{ widget_id }}', toggler, 'toggle_hidden');
+
+	
+}());
+</script>

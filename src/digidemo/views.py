@@ -195,16 +195,16 @@ def login(request, provider_name):
 
 
 def mainPage(request,sort_type='most_recent'):
-        
+
         if(sort_type=='most_recent'):
                 proposals = Proposal.objects.order_by('-creation_date')[:5]
         elif(sort_type=='top_score'):
                 proposals = Proposal.objects.order_by('-score')[:5]
-                
+
         popular_posts =  Proposal.objects.order_by('-score')[:6]
 
         featured_post = Proposal.objects.get(name='Quebec');
-        
+
         users = User.objects.all();
 
         # Hard coded Featured news

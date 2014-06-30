@@ -1,22 +1,12 @@
+{% extends "digidemo/__base.html" %}
 {% load staticfiles %}
-<!DOCTYPE html>
-<html>
 
-<head>
-	<title>
-		{{ proposal.title }}
-	</title>
+{% block title %}
+	{{ proposal.title }} | {{ block.super }}
+{% endblock title %}
 
-	<link rel="stylesheet" type="text/css" 
-		href="{% static "digidemo/css/proposal_skeleton.css" %}" />
-	<link rel="stylesheet" type="text/css" 
-		href="{% static "digidemo/css/basic.css" %}" />
-	<!-- link rel="stylesheet" type="text/css" 
-		href="{% static "digidemo/css/proposal.css" %}" /-->
-	
-	<script type="text/javascript"
-		src="https://code.jquery.com/jquery-2.1.1.min.js" ></script>
-
+{% block js %}
+	{{ block.super }}
 	<script type="text/javascript">
 
 		var ALERT_AJAX_ERRORS = true;
@@ -33,15 +23,14 @@
 
 		});
 	</script>
-	<script type="text/javascript" 
-		src="{% static "digidemo/js/lib.js" %}" ></script>
+{% endblock js %}
 
+{% block media %}
 	{{ media }}
+{% endblock media %}
 
-</head>
 
-<body>
-
+{% block body %}
 	<div id="header">
 
 		<div class="outer_center">
@@ -135,7 +124,7 @@
 					<!-- start of propasal score and icons -->
 
 					<div class="proposal_status_bar">
-					{% include "digidemo/vote_form.html" with form=proposal_vote_form %}
+					{% include "digidemo/_w_vote_form.html" with form=proposal_vote_form %}
 					</div>
 
 					<!-- end of proposal score and icons -->
@@ -235,17 +224,19 @@
 				<h1>Open Letters</h1>
 				<div id="letters">
 				{% for letter_section in letter_sections %}
-				{% with letter=letter_section.letter %}
+					{% with letter=letter_section.letter %}
+					{% with i=forloop.counter|stringformat:"s" %}
 
 					{% if not forloop.first %}
 						<hr />
 					{% endif %}
 
-					{% include "digidemo/letter.html" with include_id=forloop.counter %}
+					{% include "digidemo/_i_letter.html" with include_id=forloop.counter %}
 					<div class="clear"></div>
 
 
-				{% endwith %}
+					{% endwith %}
+					{% endwith %}
 				{% endfor %} <!-- loop over all letters for the proposal -->
 
 					<div class="hr_flourish">
@@ -257,7 +248,7 @@
 					<h1>Your Letter</h1>
 					<div id="add_letter_div">
 
-						{% include "digidemo/add_letter.html" with form=letter_form %}
+						{% include "digidemo/_w_add_letter.html" with form=letter_form %}
 
 					</div>
 					<!-- end form for adding new letters -->
@@ -333,4 +324,4 @@
 	</div>
 	<!-- end of page footer -->
 
-</body>
+{% endblock body %}

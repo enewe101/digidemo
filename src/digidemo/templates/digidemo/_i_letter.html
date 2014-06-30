@@ -4,7 +4,7 @@
 
 	<!-- score and icons for the letter -->
 	<div class="letter_status_bar">
-		{% include "digidemo/vote_form.html" with form=letter_section.vote_form %}
+		{% include "digidemo/_w_vote_form.html" with form=letter_section.vote_form %}
 
 		<div class="resend"><span class="resend_count">7</span><img class="resend_widget" src="{% static "digidemo/images/mail.png" %}" /></div>
 		{% if letter.valence < 0 %}
@@ -55,7 +55,7 @@
 				<div class="sender_avatar_image">
 					<img class="avatar_image_medium"
 					src="{{ letter.sender.avatar_img.url }}"
-					alt="{{ letter.sender.avatar_name }}" />
+					alt="{{ letter.sender.user_name }}" />
 
 					<img class="avatar_mask_medium"
 					src="{% static "digidemo/images/avatar_mask.png" %}" />
@@ -63,7 +63,7 @@
 
 				<div class="sender_name_and_bling">
 					<div class="sender_name">
-						{{ letter.sender.avatar_name }}
+						{{ letter.sender.user_name }}
 					</div>
 					<div class="sender_bling">
 						14.7 k &nbsp;&nbsp; 13 
@@ -84,12 +84,13 @@
 					id="{{ include_id }}_resenders" >
 
 						{% for resender in letter.resenders.all %}
-						{% include "digidemo/resender_avatar.html" %}
+						{% include "digidemo/_i_resender_avatar.html" %}
 						{% endfor %}
 
 					<div class="clear"></div>
 				</div>
-				<a class="send_letter" href="#">
+				<a id="_w_toggle_hidden_{{include_id}}" 
+					class="send_letter pointer">
 					send a version of this letter
 				</a>
 
@@ -102,9 +103,13 @@
 		<!-- end of letter senders area -->
 
 		<div class="clear"></div>
-		<div class="resend_letter_form_area">
-		{% include "digidemo/add_letter.html" with form=letter_section.resend_form %}
+
+		<div id="_w_toggle_hidden_content_{{include_id}}" 
+			class="resend_letter_form_area">
+			{% include "digidemo/_w_add_letter.html" with form=letter_section.resend_form %}
 		</div>
+		{% include "digidemo/_w_toggle_hidden.html" with widget_id=include_id %}
+
 		<div class="clear"></div>
 
 		<!-- start of the letter comments area -->
@@ -115,28 +120,39 @@
 					{{ comment.body }}
 				</span>
 				<span class="comment_author">
-					~ {{ comment.author.avatar_name }}
+					~ {{ comment.author.user_name }}
 				</span>
 			</div>
 			{% endfor %}
 
+
+			{% with widget_id="comment_"|add:i %}
 			<div class="add_comment">
-				<form 
-					method="POST"
-					action="{% url "proposal" proposal.name %}">
-				{{ comment_form.non_field_errors }}
-				{% csrf_token %}
-				{{ comment_form.body.errors }}
-				{{ comment_form.body }}
-				{{ comment_form.letter.errors }}
-				<input type="hidden" name="letter" 
-					value="{{ letter.id }}" />
-				{{ comment_form.author.errors }}
-				<input type="hidden" name="author" 
-					value="{{ logged_in_user.id }}" />
-				<input type="submit" value="post" />
-				</form>
+				<a id="_w_toggle_hidden_{{ widget_id }}" class="pointer"> 
+					add comment
+				</a>
+				<div id="_w_toggle_hidden_content_{{ widget_id }}"
+					class="add_comment_toggle_content" >
+					<form 
+						method="POST"
+						action="{% url "proposal" proposal.name %}">
+					{{ comment_form.non_field_errors }}
+					{% csrf_token %}
+					{{ comment_form.body.errors }}
+					{{ comment_form.body }}
+					{{ comment_form.letter.errors }}
+					<input type="hidden" name="letter" 
+						value="{{ letter.id }}" />
+					{{ comment_form.author.errors }}
+					<input type="hidden" name="author" 
+						value="{{ logged_in_user.id }}" />
+					<input type="submit" value="post" />
+					</form>
+				</div>
 			</div>
+			{% include "digidemo/_w_toggle_hidden.html" %}
+			{% endwith %}
+
 		</div>
 		<!-- end of letter comments area -->
 	</div> 

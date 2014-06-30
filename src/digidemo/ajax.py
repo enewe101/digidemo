@@ -179,7 +179,7 @@ def get_resender_avatar(request):
 	logged_in_user = User.objects.get(pk=1)
 
 	return render(
-		request, 'digidemo/resender_avatar.html', {'resender': logged_in_user})
+		request, 'digidemo/_i_resender_avatar.html', {'resender': logged_in_user})
 
 
 html_responders['get_resender_avatar'] = get_resender_avatar

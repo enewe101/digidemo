@@ -489,3 +489,89 @@ function js_error(err_msg) {
 		alert(err_msg);
 	}
 }
+
+
+function noop() {
+}
+
+function make_page_hooks(args) {
+
+	// collect an array of valid hooks and initialize them to noop
+	var valid_hooks = []
+	var pagehooks = {}
+
+	for(var i=1; i<arguments.length; i++) {
+		var hookname = arguments[i];
+		valid_hooks.push(hookname);
+		pagehooks[hookname] = noop;
+	}
+
+
+	// make a public pagehook assignment function
+	var that = arguments[0];
+	that.pagehook = $.proxy( 
+		function(hookname, f) {
+			// do some validation
+			// ensure hookname is valid
+			if(!(hookname in pagehooks)) {
+				js_error('pagehook error: ' + hookname 
+					+ ' is not a valid hookname');
+				return
+			}
+
+			// ensure hook is a function
+			if(typeof f != 'function') {
+				js_error('pagehook error: pagehook must be a function.  Got: ' 
+					+ f);
+			}
+
+			// everything ok, assign the hook
+			pagehooks[hookname] = f;
+		},
+		that
+	);
+
+	return pagehooks;
+}
+
+
+
+
+//////////////////////////
+//  					//
+//  ToggleHidden widget	//
+//  					//
+//////////////////////////
+
+function ToggleHidden(toggle_div, content) {
+
+	// determine initial state of the content: is it already displayed?
+	var state = 'hidden';
+	if(content.css('display') == 'block') {
+		state = 'shown';
+	}
+
+	// create pagehooks support
+	var pagehooks = make_page_hooks(this, 'on_show', 'on_hide');
+
+	// public
+	this.toggle = function() {
+		if(state == 'shown') {
+			content.css('display', 'none');
+			state = 'hidden';
+			pagehooks.on_hide();
+
+		} else if(state == 'hidden') {
+			content.css('display', 'block');
+			state = 'shown';
+			pagehooks.on_show();
+
+		} else {
+			js_error('ToggleHidden: unexpected state');
+		}
+	}
+	
+	// register display toggling behavior to clickable element
+	toggle_div.click(this.toggle);
+}
+
