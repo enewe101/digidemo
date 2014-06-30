@@ -7,7 +7,8 @@ register = template.Library()
 
 @register.filter(name='getAuthor')
 def getAuthor(users, proposal):
-    return users.get(id=proposal.author_id).fname
+    print users.get(id=proposal.author_id).user.first_name
+    return users.get(id=proposal.author_id).avatar_name
 
 @register.filter(name='getSummary')
 def getSummary(proposal):

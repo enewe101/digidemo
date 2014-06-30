@@ -1,7 +1,7 @@
 from django.conf.urls import patterns, include, url
 
 from django.contrib import admin
-from views import test, proposal, send_letter,mainPage,login
+from views import test, proposal, send_letter,mainPage,login,userRegistration
 from ajax import handle_ajax_json, handle_ajax_html
 
 admin.autodiscover()
@@ -18,5 +18,6 @@ urlpatterns = patterns('',
 		name='handle_ajax_html'),
 	url(r'^ajaxJson/$', handle_ajax_json, name='ajax_json_test'),
 	url(r'^ajaxHtml/$', handle_ajax_html, name='ajax_html_test'),
+        url(r'^userRegistration/$', userRegistration),
 )
 

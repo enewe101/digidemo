@@ -1,5 +1,6 @@
 from django.db import models
 from digidemo.choices import *
+from django.contrib.auth.models import User
 
 
 NAME_LENGTH = 48
@@ -29,21 +30,16 @@ class Sector(models.Model):
 	name = models.CharField(max_length=64)
 
 
-class User(models.Model):
-	password = models.CharField(max_length=32)
-	email = models.EmailField(max_length=254)
+class UserProfile(models.Model):
+        user = models.ForeignKey(User, unique=True, related_name='profile')
 	email_validated = models.BooleanField(default=False)
 	avatar_img = models.ImageField(upload_to='avatars')
 	avatar_name = models.CharField(max_length=NAME_LENGTH)
-	fname = models.CharField(max_length=NAME_LENGTH)
-	lname = models.CharField(max_length=NAME_LENGTH)
 	rep = models.IntegerField(default=0)
 	street = models.CharField(max_length=128)
 	zip_code = models.CharField(max_length=10)
 	country = models.CharField(max_length=64, choices=COUNTRIES)
 	province = models.CharField(max_length=32, choices=PROVINCES, blank=True)
-        username = models.CharField(max_length = 12)
-        password = models.CharField(max_length = 20)
                 
 	def __unicode__(self):
 		return self.avatar_name

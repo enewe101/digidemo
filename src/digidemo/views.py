@@ -186,8 +186,7 @@ def login(request, provider_name):
     return response;
 
 
-def mainPage(request,sort_type='most_recent'):
-        
+def mainPage(request,sort_type='most_recent'):    
         if(sort_type=='most_recent'):
                 proposals = Proposal.objects.order_by('-creation_date')[:5]
         elif(sort_type=='top_score'):
@@ -197,7 +196,7 @@ def mainPage(request,sort_type='most_recent'):
 
         featured_post = Proposal.objects.get(name='Quebec');
         
-        users = User.objects.all();
+        users = UserProfile.objects.all();
 
         # Hard coded Featured news
         
@@ -209,3 +208,15 @@ def mainPage(request,sort_type='most_recent'):
                  'popular_posts':popular_posts,
                  'featured_post':featured_post,}
         )
+
+def userRegistration(request):
+        if(request.method == 'POST'):
+                print "working till here"
+                user = User(request.POST)
+                print user
+                print "now"
+        return render(
+                request,
+                'digidemo/User_registration.html',
+                )
+
