@@ -49,7 +49,7 @@ UNLOCK TABLES;
 
 LOCK TABLES `auth_user` WRITE;
 /*!40000 ALTER TABLE `auth_user` DISABLE KEYS */;
-REPLACE INTO `auth_user` VALUES (1,'pbkdf2_sha256$12000$HTO8LpwBPvs1$lu8lf8rkBse7wfh1hANWorw5cw1Goljzhr6eagjj3Fg=','2014-06-15 03:38:24',1,'enewe101','','','edward.newell@gmail.com',1,1,'2014-06-15 03:38:24');
+REPLACE INTO `auth_user` VALUES (1,'pbkdf2_sha256$12000$vdIKgzqx54r5$J3tT4LmxhxzRu/4YX8kPVNcf7GdGYbCDfBrkbUQ6NaI=','2014-06-15 03:38:24',1,'superuser','super','user','super.user@email.com',1,1,'2014-06-15 03:38:24'),(2,'pbkdf2_sha256$12000$LvEWg7RRIxvY$nK9r1ddB9vUhVIc5ORAzES/+rKZHxMFXJQnwkdyIAt8=','2014-07-01 05:20:13',0,'regularuser','regular','user','regular.user@email.com',0,1,'2014-07-01 05:22:06');
 /*!40000 ALTER TABLE `auth_user` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -87,7 +87,7 @@ UNLOCK TABLES;
 
 LOCK TABLES `digidemo_comment` WRITE;
 /*!40000 ALTER TABLE `digidemo_comment` DISABLE KEYS */;
-REPLACE INTO `digidemo_comment` VALUES (1,1,1,'@nishanth1991 I agree with you but I think that you should consider offering some concrete evidence for what you are saying -- back up how the environmental losses will arise and why they are certain.  There\'s plenty of facts in the issue \nwiki to choose from.',1),(2,1,1,'ll',0),(3,1,1,'lll\r\n',0);
+REPLACE INTO `digidemo_comment` VALUES (1,1,1,'@normaluser I agree with you but I think that you should consider offering some concrete evidence for what you are saying -- back up how the environmental losses will arise and why they are certain.  There\'s plenty of facts in the issue \nwiki to choose from.',1),(2,1,1,'ll',0),(3,1,1,'lll\r\n',0);
 /*!40000 ALTER TABLE `digidemo_comment` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -215,7 +215,7 @@ UNLOCK TABLES;
 
 LOCK TABLES `digidemo_userprofile` WRITE;
 /*!40000 ALTER TABLE `digidemo_userprofile` DISABLE KEYS */;
-REPLACE INTO `digidemo_userprofile` VALUES (1,1,1,'','enwell',4,'Somewhere','560072','India','Karnatka');
+REPLACE INTO `digidemo_userprofile` VALUES (1,1,1,'avatars/superuser.jpg','superuser',4,'Somewhere','560072','India','Karnatka'),(2,2,1,'avatars/regularuser.jpg','normaluser',12,'56 Long Ave.','51515','CAN','QC');
 /*!40000 ALTER TABLE `digidemo_userprofile` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -266,4 +266,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2014-06-30 23:27:50
+-- Dump completed on 2014-07-01  1:47:02

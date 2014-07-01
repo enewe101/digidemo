@@ -31,7 +31,7 @@ class Sector(models.Model):
 
 
 class UserProfile(models.Model):
-        user = models.ForeignKey(User, unique=True, related_name='profile')
+	user = models.ForeignKey(User, unique=True, related_name='profile')
 	email_validated = models.BooleanField(default=False)
 	avatar_img = models.ImageField(upload_to='avatars')
 	avatar_name = models.CharField(max_length=NAME_LENGTH)

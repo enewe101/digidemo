@@ -55,8 +55,8 @@
 			<div class="sender">
 				<div class="sender_avatar_image">
 					<img class="avatar_image_medium"
-					src="{{ letter.sender.avatar_img.url }}"
-					alt="{{ letter.sender.avatar_name }}" />
+					src="{{ letter.sender.profile.get.avatar_img.url }}"
+					alt="{{ letter.sender.username }}" />
 
 					<img class="avatar_mask_medium"
 					src="{% static "digidemo/images/avatar_mask.png" %}" />
@@ -64,7 +64,7 @@
 
 				<div class="sender_name_and_bling">
 					<div class="sender_name">
-						{{ letter.sender.avatar_name }}
+						{{ letter.sender.profile.get.avatar_name }}
 					</div>
 					<div class="sender_bling">
 						14.7 k &nbsp;&nbsp; 13 
@@ -108,7 +108,7 @@
 					{{ comment.body }}
 				</span>
 				<span class="comment_author">
-					~ {{ comment.author.avatar_name }}
+					~ {{ comment.author.username }}
 				</span>
 			</div>
 			{% endfor %}
