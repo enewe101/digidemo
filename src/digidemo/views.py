@@ -244,14 +244,14 @@ def proposal(request, proposal_name):
 		)
 
 		# compile the list of resenders -- don't include the original sender
-		resenders = letter.resenders.exclude(pk=letter.sender.pk)
+		# resenders = letter.resenders.exclude(pk=letter.sender.pk)
 
 		letter_sections.append({
 			'letter': letter,
 			'comment_form': LetterCommentForm(
 				initial={'user':logged_in_user.pk, 'letter':letter.pk}),
 			'vote_form': letter_vote_form,
-			'resenders': resenders,
+		#	'resenders': resenders,
 			'resend_form': resend_form
 		}) 
 	
