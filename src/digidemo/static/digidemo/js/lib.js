@@ -180,10 +180,10 @@ function register_widget(widget_id, widget, widget_class) {
 	}
 }
 
-function register_form(form_id, endpoint, form_class, submit_id, handlers) {
+function register_form(form_id, endpoint, form_class, submit_id) {
 
 	var form_widget = new FormWidget(
-		$('#'+form_id), endpoint, $('#' + submit_id), handlers);
+		$('#'+form_id), endpoint, $('#' + submit_id));
 
 	register_widget(form_id, form_widget, form_class);
 
@@ -201,18 +201,9 @@ function register_form(form_id, endpoint, form_class, submit_id, handlers) {
 //////////////////////////
 
 
-function FormWidget(form, endpoint, submit_button, handlers, responseType) {
+function FormWidget(form, endpoint, submit_button, responseType) {
 
 	var events = ['before', 'success', 'error', 'after'];
-
-	// handlers are optional
-	handlers = handlers || {};
-
-	// add an error handler that alerts ajax errors if ALERT_AJAX_ERRORS
-	handlers = conditional_ajax_error(handlers);
-
-	// make all the other handlers noops if they weren't defined
-	handlers = add_noops(handlers, events)
 
 	var hooks = make_page_hooks(this, events) 
 
@@ -227,13 +218,11 @@ function FormWidget(form, endpoint, submit_button, handlers, responseType) {
 					}, this),
 
 					'success': $.proxy(function(data, textStatus, jqXHR) {
-						handlers.success(data, textStatus, jqXHR);
 						hooks['success'](data, textStatus, jqXHR);
 
 					}, this),
 
 					'error': $.proxy(function(data, textStatus, jqXHR) {
-						handlers.error(data, textStatus, jqXHR);
 						hooks['error'](data, textStatus, jqXHR);
 					}, this),
 
@@ -639,14 +628,14 @@ function ToggleHidden(toggle_div, content) {
 //////////////////////
 
 function CommentWidget(
-	form, endpoint, submit_button, handlers) {
+	form, endpoint, submit_button) {
 
 	var events = ['before', 'success', 'error', 'after'];
 	var hooks = make_page_hooks(this, events);
 
 	// the CommentWidget decorates a form widget
 	var form_widget = new FormWidget(
-			form, endpoint, submit_button, handlers, 'html');
+			form, endpoint, submit_button, 'html');
 
 	// get the comment text-area
 	var comment_input = $('textarea[name=body]', form);
