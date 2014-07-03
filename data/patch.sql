@@ -132,15 +132,6 @@ REPLACE INTO `digidemo_letter_recipients` (`id`, `letter_id`, `position_id`) VAL
 UNLOCK TABLES;
 
 --
--- Dumping data for table `digidemo_letter_resenders`
---
-
-LOCK TABLES `digidemo_letter_resenders` WRITE;
-/*!40000 ALTER TABLE `digidemo_letter_resenders` DISABLE KEYS */;
-/*!40000 ALTER TABLE `digidemo_letter_resenders` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
 -- Dumping data for table `digidemo_lettervote`
 --
 
@@ -275,4 +266,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2014-07-02 22:22:04
+-- Dump completed on 2014-07-03 12:38:16

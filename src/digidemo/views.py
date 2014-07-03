@@ -116,7 +116,8 @@ def overview(request, proposal_name):
 		)
 
 		# compile the list of resenders -- don't include the original sender
-		resenders = letter.resenders.exclude(pk=letter.sender.pk)
+		resenders = set([l.sender 
+			for l in Letter.objects.filter(parent_letter=letter)])
 
 		letter_sections.append({
 			'letter': letter,
