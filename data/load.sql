@@ -390,35 +390,6 @@ REPLACE INTO `digidemo_letter_recipients` (`id`, `letter_id`, `position_id`) VAL
 UNLOCK TABLES;
 
 --
--- Table structure for table `digidemo_letter_resenders`
---
-
-DROP TABLE IF EXISTS `digidemo_letter_resenders`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `digidemo_letter_resenders` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `letter_id` int(11) NOT NULL,
-  `user_id` int(11) NOT NULL,
-  PRIMARY KEY (`id`),
-  UNIQUE KEY `digidemo_letter_resenders_letter_id_382bd8e9b6d83aa3_uniq` (`letter_id`,`user_id`),
-  KEY `digidemo_letter_resenders_45f341a0` (`letter_id`),
-  KEY `digidemo_letter_resenders_6340c63c` (`user_id`),
-  CONSTRAINT `user_id_refs_id_99a14ef7` FOREIGN KEY (`user_id`) REFERENCES `auth_user` (`id`),
-  CONSTRAINT `letter_id_refs_id_4cfb61f4` FOREIGN KEY (`letter_id`) REFERENCES `digidemo_letter` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `digidemo_letter_resenders`
---
-
-LOCK TABLES `digidemo_letter_resenders` WRITE;
-/*!40000 ALTER TABLE `digidemo_letter_resenders` DISABLE KEYS */;
-/*!40000 ALTER TABLE `digidemo_letter_resenders` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
 -- Table structure for table `digidemo_lettervote`
 --
 
@@ -821,7 +792,7 @@ CREATE TABLE `south_migrationhistory` (
   `migration` varchar(255) NOT NULL,
   `applied` datetime NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -830,7 +801,7 @@ CREATE TABLE `south_migrationhistory` (
 
 LOCK TABLES `south_migrationhistory` WRITE;
 /*!40000 ALTER TABLE `south_migrationhistory` DISABLE KEYS */;
-REPLACE INTO `south_migrationhistory` (`id`, `app_name`, `migration`, `applied`) VALUES (1,'digidemo','0001_initial','2014-07-03 16:31:04');
+REPLACE INTO `south_migrationhistory` (`id`, `app_name`, `migration`, `applied`) VALUES (1,'digidemo','0001_initial','2014-07-03 16:31:04'),(2,'digidemo','0002_auto','2014-07-03 16:46:56');
 /*!40000 ALTER TABLE `south_migrationhistory` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -843,4 +814,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2014-07-03 12:32:00
+-- Dump completed on 2014-07-03 12:47:22

@@ -130,7 +130,6 @@ class Letter(models.Model):
 	proposal = models.ForeignKey(Proposal)
 	valence = models.SmallIntegerField(choices=VALENCE_CHOICES)
 	sender = models.ForeignKey(User)
-	resenders = models.ManyToManyField(User, related_name='resent_letters')
 	body = models.TextField()
 	recipients = models.ManyToManyField(Position, related_name='letters')
 	score = models.SmallIntegerField(default=0)

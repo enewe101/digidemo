@@ -469,29 +469,30 @@ function VoteForm(form_id, form_class, start_state, score, endpoint) {
 
 function ResenderList(wrapper, init_users) {
 
-	this.wrapper = wrapper;
-	this.users = init_users;
+	wrapper = wrapper;
+	var users = init_users;
 
+	// public function.  Get the user avatar for user with given pk and then
+	// put it in the wrapper div
 	this.add_user = function(user_pk) {
 		
 		// if the user is already in the list, do nothing
-		if($.inArray(user_pk, this.users) >= 0) {
+		if($.inArray(user_pk, users) >= 0) {
 			return;
 		}
 
 		// otherwise, we add the user, and append her avatar image
-		this.users.push(user_pk);
-		this.get_user_avatar_html(user_pk);
+		users.push(user_pk);
+		get_user_avatar_html(user_pk);
 
 	}
 
-	this.get_user_avatar_html = function(user_pk) {
+	var get_user_avatar_html = function(user_pk) {
 		ajaxHtml(
 			'get_resender_avatar',
 		   	{'user_pk':user_pk}, 
 			{'success': $.proxy(function(html){
-				alert('html')
-				this.wrapper.prepend(html);
+				wrapper.prepend(html);
 			}, this)}
 		);
 	};
