@@ -14,3 +14,5 @@ else
 fi
 
 mysqldump$user_phrase$pwd_phrase --replace --complete-insert --add-drop-database --databases digidemo > load.sql
+
+mysqldump$user_phrase$pwd_phrase --no-create-info --replace --complete-insert --ignore=digidemo.south_migrationhistory digidemo > patch.sql
