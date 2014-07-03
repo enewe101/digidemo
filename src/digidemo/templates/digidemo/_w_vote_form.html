@@ -1,7 +1,7 @@
 {% load staticfiles %}
 
-<div id="{{form.form_id}}_target" class="votes_widget" >
-	<form id="{{form.form_id}}">
+<div id="{{ include_id }}_target" class="votes_widget" >
+	<form id="{{ include_id }}">
 		{% for field in form %}
 		{{ field }}
 		{% endfor %}
@@ -13,7 +13,7 @@
 	// build the vote_widget.  This is the js object and associated html 
 	// elements to allow up/downvoting and show the current score.
 	vote_form = new VoteForm(
-		'{{ form.form_id }}',
+		'{{ include_id }}',
 		'votes_widget',
 		{{ form.valence.value|default_if_none:0 }},
 		{{ form.cur_score|default_if_none:0 }},
@@ -21,12 +21,12 @@
 	);
 
 	// register this widget to the page
-	register_widget('{{ form.form_id }}', vote_form, 'votes_widget');
+	register_widget('{{ include_id }}', vote_form, 'votes_widget');
 
 	// insert the html associated with the widget into a div above, which 
 	// would be included in the page at the point of inclusion of this template
 	$(document).ready(
-		$('#{{form.form_id}}_target').append(vote_form.get())
+		$('#{{ include_id }}_target').append(vote_form.get())
 	)
 
 </script>

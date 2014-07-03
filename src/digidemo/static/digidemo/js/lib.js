@@ -627,8 +627,7 @@ function ToggleHidden(toggle_div, content) {
 //  				//
 //////////////////////
 
-function CommentWidget(
-	form, endpoint, submit_button) {
+function CommentWidget(form, endpoint, submit_button) {
 
 	var events = ['before', 'success', 'error', 'after'];
 	var hooks = make_page_hooks(this, events);

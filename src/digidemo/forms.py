@@ -135,9 +135,6 @@ class ProposalVoteForm(ModelForm):
 			'valence': forms.HiddenInput(),
 		}
 
-	class Media:
-		js = ('digidemo/js/vote_form.js',)
-
 
 class LetterVoteForm(ModelForm):
 
@@ -158,10 +155,4 @@ class LetterVoteForm(ModelForm):
 			'letter': forms.HiddenInput(),
 			'valence': forms.HiddenInput(),
 		}
-
-	class Media:
-		js = ('digidemo/js/vote_form.js',)
-
-
-
 
