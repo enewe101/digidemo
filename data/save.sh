@@ -13,4 +13,4 @@ else
 	pwd_phrase=" -p$pwd"
 fi
 
-mysqldump$user_phrase$pwd_phrase --replace --complete-insert digidemo > load.sql
+mysqldump$user_phrase$pwd_phrase --replace --complete-insert --add-drop-database --databases digidemo > load.sql

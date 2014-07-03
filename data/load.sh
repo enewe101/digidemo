@@ -13,6 +13,6 @@ else
 	pwd_phrase=" -p$pwd"
 fi
 
-mysql$user_phrase$pwd_phrase digidemo < test_data.sql
+mysql$user_phrase$pwd_phrase digidemo < load.sql
 mkdir -p ../media/
 cp -r media/* ../media/

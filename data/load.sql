@@ -16,6 +16,16 @@
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
 --
+-- Current Database: `digidemo`
+--
+
+/*!40000 DROP DATABASE IF EXISTS `digidemo`*/;
+
+CREATE DATABASE /*!32312 IF NOT EXISTS*/ `digidemo` /*!40100 DEFAULT CHARACTER SET utf8 */;
+
+USE `digidemo`;
+
+--
 -- Table structure for table `auth_group`
 --
 
@@ -833,4 +843,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2014-07-02 20:56:14
+-- Dump completed on 2014-07-02 21:10:10
