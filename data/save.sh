@@ -13,4 +13,4 @@ else
 	pwd_phrase=" -p$pwd"
 fi
 
-mysqldump$user_phrase$pwd_phrase --no-create-info --replace --complete-insert digidemo > test_data.sql
+mysqldump$user_phrase$pwd_phrase --replace --complete-insert digidemo > load.sql

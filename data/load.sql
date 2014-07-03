@@ -16,6 +16,21 @@
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
 --
+-- Table structure for table `auth_group`
+--
+
+DROP TABLE IF EXISTS `auth_group`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `auth_group` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `name` varchar(80) NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `name` (`name`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
 -- Dumping data for table `auth_group`
 --
 
@@ -25,6 +40,26 @@ LOCK TABLES `auth_group` WRITE;
 UNLOCK TABLES;
 
 --
+-- Table structure for table `auth_group_permissions`
+--
+
+DROP TABLE IF EXISTS `auth_group_permissions`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `auth_group_permissions` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `group_id` int(11) NOT NULL,
+  `permission_id` int(11) NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `group_id` (`group_id`,`permission_id`),
+  KEY `auth_group_permissions_5f412f9a` (`group_id`),
+  KEY `auth_group_permissions_83d7f98b` (`permission_id`),
+  CONSTRAINT `group_id_refs_id_f4b32aac` FOREIGN KEY (`group_id`) REFERENCES `auth_group` (`id`),
+  CONSTRAINT `permission_id_refs_id_6ba0f519` FOREIGN KEY (`permission_id`) REFERENCES `auth_permission` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
 -- Dumping data for table `auth_group_permissions`
 --
 
@@ -32,6 +67,25 @@ LOCK TABLES `auth_group_permissions` WRITE;
 /*!40000 ALTER TABLE `auth_group_permissions` DISABLE KEYS */;
 /*!40000 ALTER TABLE `auth_group_permissions` ENABLE KEYS */;
 UNLOCK TABLES;
+
+--
+-- Table structure for table `auth_permission`
+--
+
+DROP TABLE IF EXISTS `auth_permission`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `auth_permission` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `name` varchar(50) NOT NULL,
+  `content_type_id` int(11) NOT NULL,
+  `codename` varchar(100) NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `content_type_id` (`content_type_id`,`codename`),
+  KEY `auth_permission_37ef4eb4` (`content_type_id`),
+  CONSTRAINT `content_type_id_refs_id_d043b34a` FOREIGN KEY (`content_type_id`) REFERENCES `django_content_type` (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=64 DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
 
 --
 -- Dumping data for table `auth_permission`
@@ -44,6 +98,30 @@ REPLACE INTO `auth_permission` (`id`, `name`, `content_type_id`, `codename`) VAL
 UNLOCK TABLES;
 
 --
+-- Table structure for table `auth_user`
+--
+
+DROP TABLE IF EXISTS `auth_user`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `auth_user` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `password` varchar(128) NOT NULL,
+  `last_login` datetime NOT NULL,
+  `is_superuser` tinyint(1) NOT NULL,
+  `username` varchar(30) NOT NULL,
+  `first_name` varchar(30) NOT NULL,
+  `last_name` varchar(30) NOT NULL,
+  `email` varchar(75) NOT NULL,
+  `is_staff` tinyint(1) NOT NULL,
+  `is_active` tinyint(1) NOT NULL,
+  `date_joined` datetime NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `username` (`username`)
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
 -- Dumping data for table `auth_user`
 --
 
@@ -52,6 +130,26 @@ LOCK TABLES `auth_user` WRITE;
 REPLACE INTO `auth_user` (`id`, `password`, `last_login`, `is_superuser`, `username`, `first_name`, `last_name`, `email`, `is_staff`, `is_active`, `date_joined`) VALUES (1,'pbkdf2_sha256$12000$vdIKgzqx54r5$J3tT4LmxhxzRu/4YX8kPVNcf7GdGYbCDfBrkbUQ6NaI=','2014-06-15 03:38:24',1,'superuser','super','user','super.user@email.com',1,1,'2014-06-15 03:38:24'),(2,'pbkdf2_sha256$12000$LvEWg7RRIxvY$nK9r1ddB9vUhVIc5ORAzES/+rKZHxMFXJQnwkdyIAt8=','2014-07-01 05:20:13',0,'regularuser','regular','user','regular.user@email.com',0,1,'2014-07-01 05:22:06');
 /*!40000 ALTER TABLE `auth_user` ENABLE KEYS */;
 UNLOCK TABLES;
+
+--
+-- Table structure for table `auth_user_groups`
+--
+
+DROP TABLE IF EXISTS `auth_user_groups`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `auth_user_groups` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `user_id` int(11) NOT NULL,
+  `group_id` int(11) NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `user_id` (`user_id`,`group_id`),
+  KEY `auth_user_groups_6340c63c` (`user_id`),
+  KEY `auth_user_groups_5f412f9a` (`group_id`),
+  CONSTRAINT `user_id_refs_id_40c41112` FOREIGN KEY (`user_id`) REFERENCES `auth_user` (`id`),
+  CONSTRAINT `group_id_refs_id_274b862c` FOREIGN KEY (`group_id`) REFERENCES `auth_group` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
 
 --
 -- Dumping data for table `auth_user_groups`
@@ -63,6 +161,26 @@ LOCK TABLES `auth_user_groups` WRITE;
 UNLOCK TABLES;
 
 --
+-- Table structure for table `auth_user_user_permissions`
+--
+
+DROP TABLE IF EXISTS `auth_user_user_permissions`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `auth_user_user_permissions` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `user_id` int(11) NOT NULL,
+  `permission_id` int(11) NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `user_id` (`user_id`,`permission_id`),
+  KEY `auth_user_user_permissions_6340c63c` (`user_id`),
+  KEY `auth_user_user_permissions_83d7f98b` (`permission_id`),
+  CONSTRAINT `user_id_refs_id_4dc23c39` FOREIGN KEY (`user_id`) REFERENCES `auth_user` (`id`),
+  CONSTRAINT `permission_id_refs_id_35d9ac25` FOREIGN KEY (`permission_id`) REFERENCES `auth_permission` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
 -- Dumping data for table `auth_user_user_permissions`
 --
 
@@ -70,6 +188,24 @@ LOCK TABLES `auth_user_user_permissions` WRITE;
 /*!40000 ALTER TABLE `auth_user_user_permissions` DISABLE KEYS */;
 /*!40000 ALTER TABLE `auth_user_user_permissions` ENABLE KEYS */;
 UNLOCK TABLES;
+
+--
+-- Table structure for table `digidemo_capability`
+--
+
+DROP TABLE IF EXISTS `digidemo_capability`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `digidemo_capability` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `name` varchar(64) NOT NULL,
+  `description` varchar(512) NOT NULL,
+  `sector_id` int(11) NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `digidemo_capability_663ed8c9` (`sector_id`),
+  CONSTRAINT `sector_id_refs_id_84257dfd` FOREIGN KEY (`sector_id`) REFERENCES `digidemo_sector` (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=17 DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
 
 --
 -- Dumping data for table `digidemo_capability`
@@ -82,6 +218,27 @@ REPLACE INTO `digidemo_capability` (`id`, `name`, `description`, `sector_id`) VA
 UNLOCK TABLES;
 
 --
+-- Table structure for table `digidemo_comment`
+--
+
+DROP TABLE IF EXISTS `digidemo_comment`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `digidemo_comment` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `author_id` int(11) NOT NULL,
+  `letter_id` int(11) NOT NULL,
+  `body` varchar(512) NOT NULL,
+  `score` smallint(6) NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `digidemo_comment_e969df21` (`author_id`),
+  KEY `digidemo_comment_45f341a0` (`letter_id`),
+  CONSTRAINT `letter_id_refs_id_549c5f06` FOREIGN KEY (`letter_id`) REFERENCES `digidemo_letter` (`id`),
+  CONSTRAINT `author_id_refs_id_b202d78c` FOREIGN KEY (`author_id`) REFERENCES `auth_user` (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
 -- Dumping data for table `digidemo_comment`
 --
 
@@ -90,6 +247,31 @@ LOCK TABLES `digidemo_comment` WRITE;
 REPLACE INTO `digidemo_comment` (`id`, `author_id`, `letter_id`, `body`, `score`) VALUES (1,1,1,'@normaluser I agree with you but I think that you should consider offering some concrete evidence for what you are saying -- back up how the environmental losses will arise and why they are certain.  There\'s plenty of facts in the issue \nwiki to choose from.',1),(2,1,1,'ll',0),(3,1,1,'lll\r\n',0);
 /*!40000 ALTER TABLE `digidemo_comment` ENABLE KEYS */;
 UNLOCK TABLES;
+
+--
+-- Table structure for table `digidemo_discussion`
+--
+
+DROP TABLE IF EXISTS `digidemo_discussion`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `digidemo_discussion` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `proposal_id` int(11) NOT NULL,
+  `title` varchar(256) NOT NULL,
+  `body` longtext NOT NULL,
+  `user_id` int(11) NOT NULL,
+  `score` smallint(6) NOT NULL,
+  `is_open` tinyint(1) NOT NULL,
+  `creation_date` date NOT NULL,
+  `last_activity_date` date NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `digidemo_discussion_ad574d3c` (`proposal_id`),
+  KEY `digidemo_discussion_6340c63c` (`user_id`),
+  CONSTRAINT `user_id_refs_id_dc56e1ff` FOREIGN KEY (`user_id`) REFERENCES `auth_user` (`id`),
+  CONSTRAINT `proposal_id_refs_id_67b12962` FOREIGN KEY (`proposal_id`) REFERENCES `digidemo_proposal` (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
 
 --
 -- Dumping data for table `digidemo_discussion`
@@ -102,6 +284,27 @@ REPLACE INTO `digidemo_discussion` (`id`, `proposal_id`, `title`, `body`, `user_
 UNLOCK TABLES;
 
 --
+-- Table structure for table `digidemo_factor`
+--
+
+DROP TABLE IF EXISTS `digidemo_factor`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `digidemo_factor` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `proposal_id` int(11) NOT NULL,
+  `description` varchar(256) NOT NULL,
+  `capability_id` int(11) NOT NULL,
+  `valence` smallint(6) NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `digidemo_factor_ad574d3c` (`proposal_id`),
+  KEY `digidemo_factor_567242ae` (`capability_id`),
+  CONSTRAINT `capability_id_refs_id_7b69deb5` FOREIGN KEY (`capability_id`) REFERENCES `digidemo_capability` (`id`),
+  CONSTRAINT `proposal_id_refs_id_34acf33f` FOREIGN KEY (`proposal_id`) REFERENCES `digidemo_proposal` (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
 -- Dumping data for table `digidemo_factor`
 --
 
@@ -110,6 +313,31 @@ LOCK TABLES `digidemo_factor` WRITE;
 REPLACE INTO `digidemo_factor` (`id`, `proposal_id`, `description`, `capability_id`, `valence`) VALUES (1,1,'Transport of crude oil by pipeline is safer than by truck and train, which are the current alternatives',13,1),(2,1,'The operation of pipelines for the transport of crude oil poses environmental risks due to the eventuality of leaks',4,-1),(3,1,'Canada\'s readiness to make use of its natural resources will be increased',11,1),(4,1,'Facilitating the development of the tarsands will create additional wealth and income in Canada.',15,1);
 /*!40000 ALTER TABLE `digidemo_factor` ENABLE KEYS */;
 UNLOCK TABLES;
+
+--
+-- Table structure for table `digidemo_letter`
+--
+
+DROP TABLE IF EXISTS `digidemo_letter`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `digidemo_letter` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `parent_letter_id` int(11) DEFAULT NULL,
+  `proposal_id` int(11) NOT NULL,
+  `valence` smallint(6) NOT NULL,
+  `sender_id` int(11) NOT NULL,
+  `body` longtext NOT NULL,
+  `score` smallint(6) NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `digidemo_letter_b0eaace7` (`parent_letter_id`),
+  KEY `digidemo_letter_ad574d3c` (`proposal_id`),
+  KEY `digidemo_letter_0a681a64` (`sender_id`),
+  CONSTRAINT `sender_id_refs_id_747eea8b` FOREIGN KEY (`sender_id`) REFERENCES `auth_user` (`id`),
+  CONSTRAINT `parent_letter_id_refs_id_5234e149` FOREIGN KEY (`parent_letter_id`) REFERENCES `digidemo_letter` (`id`),
+  CONSTRAINT `proposal_id_refs_id_a3d9d864` FOREIGN KEY (`proposal_id`) REFERENCES `digidemo_proposal` (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
 
 --
 -- Dumping data for table `digidemo_letter`
@@ -122,6 +350,26 @@ REPLACE INTO `digidemo_letter` (`id`, `parent_letter_id`, `proposal_id`, `valenc
 UNLOCK TABLES;
 
 --
+-- Table structure for table `digidemo_letter_recipients`
+--
+
+DROP TABLE IF EXISTS `digidemo_letter_recipients`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `digidemo_letter_recipients` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `letter_id` int(11) NOT NULL,
+  `position_id` int(11) NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `digidemo_letter_recipients_letter_id_7632fb1660808629_uniq` (`letter_id`,`position_id`),
+  KEY `digidemo_letter_recipients_45f341a0` (`letter_id`),
+  KEY `digidemo_letter_recipients_1f456125` (`position_id`),
+  CONSTRAINT `position_id_refs_id_0e734fb2` FOREIGN KEY (`position_id`) REFERENCES `digidemo_position` (`id`),
+  CONSTRAINT `letter_id_refs_id_72f69299` FOREIGN KEY (`letter_id`) REFERENCES `digidemo_letter` (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
 -- Dumping data for table `digidemo_letter_recipients`
 --
 
@@ -130,6 +378,26 @@ LOCK TABLES `digidemo_letter_recipients` WRITE;
 REPLACE INTO `digidemo_letter_recipients` (`id`, `letter_id`, `position_id`) VALUES (1,1,1);
 /*!40000 ALTER TABLE `digidemo_letter_recipients` ENABLE KEYS */;
 UNLOCK TABLES;
+
+--
+-- Table structure for table `digidemo_letter_resenders`
+--
+
+DROP TABLE IF EXISTS `digidemo_letter_resenders`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `digidemo_letter_resenders` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `letter_id` int(11) NOT NULL,
+  `user_id` int(11) NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `digidemo_letter_resenders_letter_id_382bd8e9b6d83aa3_uniq` (`letter_id`,`user_id`),
+  KEY `digidemo_letter_resenders_45f341a0` (`letter_id`),
+  KEY `digidemo_letter_resenders_6340c63c` (`user_id`),
+  CONSTRAINT `user_id_refs_id_99a14ef7` FOREIGN KEY (`user_id`) REFERENCES `auth_user` (`id`),
+  CONSTRAINT `letter_id_refs_id_4cfb61f4` FOREIGN KEY (`letter_id`) REFERENCES `digidemo_letter` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
 
 --
 -- Dumping data for table `digidemo_letter_resenders`
@@ -141,6 +409,27 @@ LOCK TABLES `digidemo_letter_resenders` WRITE;
 UNLOCK TABLES;
 
 --
+-- Table structure for table `digidemo_lettervote`
+--
+
+DROP TABLE IF EXISTS `digidemo_lettervote`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `digidemo_lettervote` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `user_id` int(11) NOT NULL,
+  `letter_id` int(11) NOT NULL,
+  `valence` smallint(6) NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `digidemo_lettervote_user_id_114de14f34d25fb7_uniq` (`user_id`,`letter_id`),
+  KEY `digidemo_lettervote_6340c63c` (`user_id`),
+  KEY `digidemo_lettervote_45f341a0` (`letter_id`),
+  CONSTRAINT `letter_id_refs_id_2b6488e6` FOREIGN KEY (`letter_id`) REFERENCES `digidemo_letter` (`id`),
+  CONSTRAINT `user_id_refs_id_955f482c` FOREIGN KEY (`user_id`) REFERENCES `auth_user` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
 -- Dumping data for table `digidemo_lettervote`
 --
 
@@ -148,6 +437,24 @@ LOCK TABLES `digidemo_lettervote` WRITE;
 /*!40000 ALTER TABLE `digidemo_lettervote` DISABLE KEYS */;
 /*!40000 ALTER TABLE `digidemo_lettervote` ENABLE KEYS */;
 UNLOCK TABLES;
+
+--
+-- Table structure for table `digidemo_organization`
+--
+
+DROP TABLE IF EXISTS `digidemo_organization`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `digidemo_organization` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `short_name` varchar(64) NOT NULL,
+  `legal_name` varchar(128) NOT NULL,
+  `legal_classification` varchar(48) NOT NULL,
+  `revenue` bigint(20) NOT NULL,
+  `operations_summary` longtext NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
 
 --
 -- Dumping data for table `digidemo_organization`
@@ -160,6 +467,24 @@ REPLACE INTO `digidemo_organization` (`id`, `short_name`, `legal_name`, `legal_c
 UNLOCK TABLES;
 
 --
+-- Table structure for table `digidemo_person`
+--
+
+DROP TABLE IF EXISTS `digidemo_person`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `digidemo_person` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `fname` varchar(48) NOT NULL,
+  `lname` varchar(48) NOT NULL,
+  `portrait_url` varchar(256) NOT NULL,
+  `wikipedia_url` varchar(256) NOT NULL,
+  `bio_summary` longtext NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
 -- Dumping data for table `digidemo_person`
 --
 
@@ -168,6 +493,30 @@ LOCK TABLES `digidemo_person` WRITE;
 REPLACE INTO `digidemo_person` (`id`, `fname`, `lname`, `portrait_url`, `wikipedia_url`, `bio_summary`) VALUES (1,'stephen','harper','http://upload.wikimedia.org/wikipedia/commons/thumb/1/12/Stephen_Harper_by_Remy_Steinegger.jpg/800px-Stephen_Harper_by_Remy_Steinegger.jpg','http://en.wikipedia.org/wiki/Stephen_Harper','Stephen Joseph Harper (born April 30, 1959) is a Canadian politician who is the 22nd and current Prime Minister of Canada and the Leader of the Conservative Party. Harper became prime minister in 2006, forming a minority government after the 2006 election. He is the first prime minister to come from the newly reconstituted Conservative Party, which formed after a merger of the Progressive Conservative Party and the Canadian Alliance.');
 /*!40000 ALTER TABLE `digidemo_person` ENABLE KEYS */;
 UNLOCK TABLES;
+
+--
+-- Table structure for table `digidemo_position`
+--
+
+DROP TABLE IF EXISTS `digidemo_position`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `digidemo_position` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `name` varchar(128) NOT NULL,
+  `person_id` int(11) NOT NULL,
+  `organization_id` int(11) NOT NULL,
+  `salary` decimal(11,2) NOT NULL,
+  `telephone` varchar(14) NOT NULL,
+  `email` varchar(254) NOT NULL,
+  `mandate_summary` longtext NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `digidemo_position_16f39487` (`person_id`),
+  KEY `digidemo_position_de772da3` (`organization_id`),
+  CONSTRAINT `organization_id_refs_id_e8072702` FOREIGN KEY (`organization_id`) REFERENCES `digidemo_organization` (`id`),
+  CONSTRAINT `person_id_refs_id_791b385c` FOREIGN KEY (`person_id`) REFERENCES `digidemo_person` (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
 
 --
 -- Dumping data for table `digidemo_position`
@@ -180,6 +529,30 @@ REPLACE INTO `digidemo_position` (`id`, `name`, `person_id`, `organization_id`, 
 UNLOCK TABLES;
 
 --
+-- Table structure for table `digidemo_proposal`
+--
+
+DROP TABLE IF EXISTS `digidemo_proposal`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `digidemo_proposal` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `name` varchar(256) NOT NULL,
+  `title` varchar(256) NOT NULL,
+  `text` longtext NOT NULL,
+  `is_published` tinyint(1) NOT NULL,
+  `last_modified` date NOT NULL,
+  `creation_date` date NOT NULL,
+  `author_id` int(11) NOT NULL,
+  `score` smallint(6) NOT NULL,
+  `proposal_image` varchar(100) NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `digidemo_proposal_e969df21` (`author_id`),
+  CONSTRAINT `author_id_refs_id_1f8c5260` FOREIGN KEY (`author_id`) REFERENCES `auth_user` (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
 -- Dumping data for table `digidemo_proposal`
 --
 
@@ -188,6 +561,26 @@ LOCK TABLES `digidemo_proposal` WRITE;
 REPLACE INTO `digidemo_proposal` (`id`, `name`, `title`, `text`, `is_published`, `last_modified`, `creation_date`, `author_id`, `score`, `proposal_image`) VALUES (1,'keystone_xl','Keystone XL Pipeline Extension','<p>The Keystone XL Pipeline is a proposed extension to the existing Keystone Pipeline System, put forward by TransCanada, the corporation that owns the Keystone System. The pipeline would cross the Canada/US border, importing crude oil sourced from the Albertan oil sands, into the United States. The proposal is currently awaiting government approval. The pipeline would be newly constructed, and is similar to existing pipelines in North America.</p><p>The Keystone XL pipeline project is a contentious political issue, owing to probable environmental, economic, and social impacts. Environmentally, the pipeline might present a risk of contaminating groundwater and disturbing sensitive ecosystems, but it might also be a better alternative than ground transport by train or truck. Economically, the pipeline might produce jobs temporarily during its construction, and permanently in additional refinement activities in the US. It would also lead to a redistribution of crude supply, emphasizing export and raising the price of oil in the Midwestern US. Socially, the construction of the pipeline would disturb landowners currently in its path, and would disturb heritage sites of cultural significance.</p>',1,'2014-06-27','2014-06-15',1,0,'/digidemo/proposal-images/'),(2,'test1','no factors','this proposal has no factors',1,'2014-06-20','2014-06-20',1,33,'/digidemo/proposal-images/'),(3,'Quebec','Quebec','a',1,'2014-03-10','2014-02-10',1,-7,'');
 /*!40000 ALTER TABLE `digidemo_proposal` ENABLE KEYS */;
 UNLOCK TABLES;
+
+--
+-- Table structure for table `digidemo_proposal_sector`
+--
+
+DROP TABLE IF EXISTS `digidemo_proposal_sector`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `digidemo_proposal_sector` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `proposal_id` int(11) NOT NULL,
+  `sector_id` int(11) NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `digidemo_proposal_sector_proposal_id_7b9ae77beabec166_uniq` (`proposal_id`,`sector_id`),
+  KEY `digidemo_proposal_sector_ad574d3c` (`proposal_id`),
+  KEY `digidemo_proposal_sector_663ed8c9` (`sector_id`),
+  CONSTRAINT `sector_id_refs_id_85342870` FOREIGN KEY (`sector_id`) REFERENCES `digidemo_sector` (`id`),
+  CONSTRAINT `proposal_id_refs_id_f31a0883` FOREIGN KEY (`proposal_id`) REFERENCES `digidemo_proposal` (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
 
 --
 -- Dumping data for table `digidemo_proposal_sector`
@@ -200,6 +593,27 @@ REPLACE INTO `digidemo_proposal_sector` (`id`, `proposal_id`, `sector_id`) VALUE
 UNLOCK TABLES;
 
 --
+-- Table structure for table `digidemo_proposalvote`
+--
+
+DROP TABLE IF EXISTS `digidemo_proposalvote`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `digidemo_proposalvote` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `user_id` int(11) NOT NULL,
+  `proposal_id` int(11) NOT NULL,
+  `valence` smallint(6) NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `digidemo_proposalvote_user_id_ceb6b116ffcd231_uniq` (`user_id`,`proposal_id`),
+  KEY `digidemo_proposalvote_6340c63c` (`user_id`),
+  KEY `digidemo_proposalvote_ad574d3c` (`proposal_id`),
+  CONSTRAINT `proposal_id_refs_id_2722b1c2` FOREIGN KEY (`proposal_id`) REFERENCES `digidemo_proposal` (`id`),
+  CONSTRAINT `user_id_refs_id_baf64dae` FOREIGN KEY (`user_id`) REFERENCES `auth_user` (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
 -- Dumping data for table `digidemo_proposalvote`
 --
 
@@ -210,6 +624,29 @@ REPLACE INTO `digidemo_proposalvote` (`id`, `user_id`, `proposal_id`, `valence`)
 UNLOCK TABLES;
 
 --
+-- Table structure for table `digidemo_reply`
+--
+
+DROP TABLE IF EXISTS `digidemo_reply`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `digidemo_reply` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `discussion_id` int(11) NOT NULL,
+  `body` longtext NOT NULL,
+  `user_id` int(11) NOT NULL,
+  `score` smallint(6) NOT NULL,
+  `is_open` tinyint(1) NOT NULL,
+  `creation_date` date NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `digidemo_reply_acd02281` (`discussion_id`),
+  KEY `digidemo_reply_6340c63c` (`user_id`),
+  CONSTRAINT `user_id_refs_id_9950cae7` FOREIGN KEY (`user_id`) REFERENCES `auth_user` (`id`),
+  CONSTRAINT `discussion_id_refs_id_0f0a157b` FOREIGN KEY (`discussion_id`) REFERENCES `digidemo_discussion` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
 -- Dumping data for table `digidemo_reply`
 --
 
@@ -217,6 +654,21 @@ LOCK TABLES `digidemo_reply` WRITE;
 /*!40000 ALTER TABLE `digidemo_reply` DISABLE KEYS */;
 /*!40000 ALTER TABLE `digidemo_reply` ENABLE KEYS */;
 UNLOCK TABLES;
+
+--
+-- Table structure for table `digidemo_sector`
+--
+
+DROP TABLE IF EXISTS `digidemo_sector`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `digidemo_sector` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `short_name` varchar(3) NOT NULL,
+  `name` varchar(64) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
 
 --
 -- Dumping data for table `digidemo_sector`
@@ -229,6 +681,29 @@ REPLACE INTO `digidemo_sector` (`id`, `short_name`, `name`) VALUES (1,'ECO','eco
 UNLOCK TABLES;
 
 --
+-- Table structure for table `digidemo_userprofile`
+--
+
+DROP TABLE IF EXISTS `digidemo_userprofile`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `digidemo_userprofile` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `user_id` int(11) NOT NULL,
+  `email_validated` tinyint(1) NOT NULL,
+  `avatar_img` varchar(100) NOT NULL,
+  `rep` int(11) NOT NULL,
+  `street` varchar(128) NOT NULL,
+  `zip_code` varchar(10) NOT NULL,
+  `country` varchar(64) NOT NULL,
+  `province` varchar(32) NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `user_id` (`user_id`),
+  CONSTRAINT `user_id_refs_id_7d86ea27` FOREIGN KEY (`user_id`) REFERENCES `auth_user` (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
 -- Dumping data for table `digidemo_userprofile`
 --
 
@@ -239,6 +714,30 @@ REPLACE INTO `digidemo_userprofile` (`id`, `user_id`, `email_validated`, `avatar
 UNLOCK TABLES;
 
 --
+-- Table structure for table `django_admin_log`
+--
+
+DROP TABLE IF EXISTS `django_admin_log`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `django_admin_log` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `action_time` datetime NOT NULL,
+  `user_id` int(11) NOT NULL,
+  `content_type_id` int(11) DEFAULT NULL,
+  `object_id` longtext,
+  `object_repr` varchar(200) NOT NULL,
+  `action_flag` smallint(5) unsigned NOT NULL,
+  `change_message` longtext NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `django_admin_log_6340c63c` (`user_id`),
+  KEY `django_admin_log_37ef4eb4` (`content_type_id`),
+  CONSTRAINT `content_type_id_refs_id_93d2d1f8` FOREIGN KEY (`content_type_id`) REFERENCES `django_content_type` (`id`),
+  CONSTRAINT `user_id_refs_id_c0d12874` FOREIGN KEY (`user_id`) REFERENCES `auth_user` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
 -- Dumping data for table `django_admin_log`
 --
 
@@ -246,6 +745,23 @@ LOCK TABLES `django_admin_log` WRITE;
 /*!40000 ALTER TABLE `django_admin_log` DISABLE KEYS */;
 /*!40000 ALTER TABLE `django_admin_log` ENABLE KEYS */;
 UNLOCK TABLES;
+
+--
+-- Table structure for table `django_content_type`
+--
+
+DROP TABLE IF EXISTS `django_content_type`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `django_content_type` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `name` varchar(100) NOT NULL,
+  `app_label` varchar(100) NOT NULL,
+  `model` varchar(100) NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `app_label` (`app_label`,`model`)
+) ENGINE=InnoDB AUTO_INCREMENT=22 DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
 
 --
 -- Dumping data for table `django_content_type`
@@ -258,6 +774,22 @@ REPLACE INTO `django_content_type` (`id`, `name`, `app_label`, `model`) VALUES (
 UNLOCK TABLES;
 
 --
+-- Table structure for table `django_session`
+--
+
+DROP TABLE IF EXISTS `django_session`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `django_session` (
+  `session_key` varchar(40) NOT NULL,
+  `session_data` longtext NOT NULL,
+  `expire_date` datetime NOT NULL,
+  PRIMARY KEY (`session_key`),
+  KEY `django_session_b7b81f0c` (`expire_date`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
 -- Dumping data for table `django_session`
 --
 
@@ -265,6 +797,22 @@ LOCK TABLES `django_session` WRITE;
 /*!40000 ALTER TABLE `django_session` DISABLE KEYS */;
 /*!40000 ALTER TABLE `django_session` ENABLE KEYS */;
 UNLOCK TABLES;
+
+--
+-- Table structure for table `south_migrationhistory`
+--
+
+DROP TABLE IF EXISTS `south_migrationhistory`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `south_migrationhistory` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `app_name` varchar(255) NOT NULL,
+  `migration` varchar(255) NOT NULL,
+  `applied` datetime NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=23 DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
 
 --
 -- Dumping data for table `south_migrationhistory`
@@ -285,4 +833,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2014-07-02 20:18:03
+-- Dump completed on 2014-07-02 20:56:14
