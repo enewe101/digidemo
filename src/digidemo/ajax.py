@@ -2,6 +2,8 @@ import json
 from django.core.urlresolvers import reverse
 from django.shortcuts import render, get_object_or_404
 from django.http import HttpResponse, HttpResponseRedirect
+from django.template import Context
+from django.template.loader import get_template
 from digidemo.models import *
 from digidemo.forms import *
 from digidemo.settings import DEBUG
@@ -15,6 +17,11 @@ html_responders = {}
 
 class AjaxError(Exception):
 	pass
+
+
+def ajax_endpoint(f):
+	json_responders[f.__name__] = f
+	return f
 
 
 def handle_ajax_json(request, view='test', *args, **kwargs):
@@ -39,6 +46,7 @@ def handle_ajax_json(request, view='test', *args, **kwargs):
 	# render and return the HttpResponse
 	data = json.dumps(data)
 	return render(request, 'digidemo/ajax.html', {'json_data':data})
+
 
 
 def handle_ajax_html(request, view='test', *args, **kwargs):
@@ -163,21 +171,25 @@ def resend_letter(request):
 		letter_form.save()
 		return {'success':True}
 
-	return {'success':False}
+	return {'success':False, 'msg':'Letter form was not valid'}
 
 json_responders['resend_letter'] = resend_letter
 
 
 
+@ajax_endpoint
 def get_resender_avatar(request):
 
 	# ** Hardcoded the logged in user to be enewe101 **
 	logged_in_user = User.objects.get(pk=1)
 
-	return render(
-		request, 'digidemo/_i_resender_avatar.html', {'resender': logged_in_user})
+	# render an html snippet, containing the avatar
+	template = get_template('digidemo/_i_resender_avatar.html')
+	context = Context({'resender': logged_in_user})
+	reply_html = template.render(context)
 
-html_responders['get_resender_avatar'] = get_resender_avatar
+	# package it up as for a JSON response and return
+	return {'success': True, 'html': reply_html}
 
 	
 def comment(request):

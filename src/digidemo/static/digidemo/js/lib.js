@@ -71,12 +71,7 @@ function ajaxHtml(endpoint, data, handlers) {
 
 	handlers = handlers || {};
 
-	var error = handlers['error'];
-	if (!error && ALERT_AJAX_ERRORS) {
-		var error = function(response, textStatus) { 
-			alert(response.status + ': ' + response.responseText);
-		};
-	}
+	var error = handlers['error'] || alert_ajax_error;
 
 	$.ajax({
 		"url": handle_ajax_html_url + endpoint + '/',
@@ -95,12 +90,7 @@ function ajax(endpoint, data, handlers) {
 
 	handlers = handlers || {};
 
-	var error = handlers['error'];
-	if (!error && ALERT_AJAX_ERRORS) {
-		var error = function(response, textStatus) { 
-			alert(response.status + ': ' + response.responseText);
-		};
-	}
+	var error = handlers['error'] || alert_ajax_error;
 
 	$.ajax({
 		"url": handle_ajax_json_url + endpoint + '/',
@@ -204,8 +194,8 @@ function register_form(form_id, endpoint, form_class, submit_id) {
 function FormWidget(form, endpoint, submit_button, responseType) {
 
 	var events = ['before', 'success', 'error', 'after'];
-
 	var hooks = make_page_hooks(this, events) 
+	hooks.error = alert_ajax_error;
 
 	submit_button.click( $.proxy(
 		function() {
@@ -218,7 +208,11 @@ function FormWidget(form, endpoint, submit_button, responseType) {
 					}, this),
 
 					'success': $.proxy(function(data, textStatus, jqXHR) {
-						hooks['success'](data, textStatus, jqXHR);
+						if(data.success) {
+							hooks['success'](data, textStatus, jqXHR);
+						} else {
+							hooks['error'](data, textStatus);
+						}
 
 					}, this),
 
@@ -477,12 +471,19 @@ function ResenderList(wrapper, init_users) {
 	}
 
 	var get_user_avatar_html = function(user_pk) {
-		ajaxHtml(
+		ajax(
 			'get_resender_avatar',
 		   	{'user_pk':user_pk}, 
-			{'success': $.proxy(function(html){
-				wrapper.prepend(html);
-			}, this)}
+			{
+				'success': $.proxy(function(data){
+					if(data.success) {
+						wrapper.prepend(data.html);
+					} else {
+						js_error(
+							'get_user_avatar_html: json requesnt not accepted')
+					}
+				}, this)
+			}
 		);
 	};
 
@@ -520,13 +521,12 @@ function alert_ajax_error(response, textStatus) {
 
 	// for responses with http error code
 	if(response.status) {
-		alert(response.status + ': ' + response.responseText);
+		js_error(response.status + ': ' + response.responseText);
 
 	// for http success but with application error code
 	} else {
-		alert(response.toSource());
+		js_error(response.msg);
 	}
-
 };
 
 function conditional_ajax_error(handlers) {
