@@ -72,7 +72,7 @@ function ajaxHtml(endpoint, data, handlers) {
 	handlers = handlers || {};
 
 	var error = handlers['error'];
-	if (ALERT_AJAX_ERRORS) {
+	if (!error && ALERT_AJAX_ERRORS) {
 		var error = function(response, textStatus) { 
 			alert(response.status + ': ' + response.responseText);
 		};
@@ -96,7 +96,7 @@ function ajax(endpoint, data, handlers) {
 	handlers = handlers || {};
 
 	var error = handlers['error'];
-	if (ALERT_AJAX_ERRORS) {
+	if (!error && ALERT_AJAX_ERRORS) {
 		var error = function(response, textStatus) { 
 			alert(response.status + ': ' + response.responseText);
 		};
@@ -116,11 +116,20 @@ function ajax(endpoint, data, handlers) {
 // Serializes the form as name-value pairs in a JSON object, sends this to the 
 // django ajax function `endpoint` and optionally fires `success` or `error` 
 // with the parsed JSON response.
-function ajaxForm(endpoint, form, handlers) {
+function ajaxForm(endpoint, form, handlers, responseType) {
+
+	// respond with JSON or HTML? defualt is JSON
+	if(!responseType || responseType == 'json') {
+		ajax_func = ajax;
+	} else if(responseType == 'html') {
+		ajax_func = ajaxHtml;
+	} else {
+		js_error('ajaxForm: responseType must be `json` or `html`');
+	}
+
 	form_as_array = form.serializeArray();
 	as_dict = dict(form_as_array);
-	ajax(endpoint, as_dict, handlers);
-
+	ajax_func(endpoint, as_dict, handlers);
 }
 
 
@@ -180,16 +189,32 @@ function register_form(form_id, endpoint, form_class, submit_id, handlers) {
 
 }
 
-function FormWidget(form, endpoint, submit_button, handlers) {
 
+
+
+
+
+//////////////////////////
+//  					//
+//  generic FormWidget  //
+//  					//
+//////////////////////////
+
+
+function FormWidget(form, endpoint, submit_button, handlers, responseType) {
+
+	var events = ['before', 'success', 'error', 'after'];
+
+	// handlers are optional
 	handlers = handlers || {};
 
-	this.pagehooks = {
-		'before': function(){},
-		'success': function(){},
-		'error': function(){},
-		'after': function(){}
-	};
+	// add an error handler that alerts ajax errors if ALERT_AJAX_ERRORS
+	handlers = conditional_ajax_error(handlers);
+
+	// make all the other handlers noops if they weren't defined
+	handlers = add_noops(handlers, events)
+
+	var hooks = make_page_hooks(this, events) 
 
 	submit_button.click( $.proxy(
 		function() {
@@ -198,26 +223,25 @@ function FormWidget(form, endpoint, submit_button, handlers) {
 				form,
 				{
 					'before': $.proxy(function(data) {
-						this.pagehooks['before']();
+						hooks['before']();
 					}, this),
 
 					'success': $.proxy(function(data, textStatus, jqXHR) {
-						if(data.success) {
-							this.pagehooks['success']();
-						} else {
-							this.pagehooks['error']();
-						}
+						handlers.success(data, textStatus, jqXHR);
+						hooks['success'](data, textStatus, jqXHR);
 
 					}, this),
 
 					'error': $.proxy(function(data, textStatus, jqXHR) {
-						this.pagehooks['error']();
+						handlers.error(data, textStatus, jqXHR);
+						hooks['error'](data, textStatus, jqXHR);
 					}, this),
 
 					'after': $.proxy(function(data, textStatus, jqXHR) {
-						this.pagehooks['after']();
+						hooks['after']();
 					}, this)
-				}
+				},
+				responseType
 			);
 		}, this)
 	);
@@ -362,7 +386,7 @@ function VoteForm(form_id, form_class, start_state, score, endpoint) {
 
 	// this provides placeholders for callbacks that the page in which
 	// this widget will be placed, can use
-	this.pagehooks = {
+	this.hooks = {
 		'before': function(){},
 		'success': function(){},
 		'error': function(){},
@@ -381,28 +405,28 @@ function VoteForm(form_id, form_class, start_state, score, endpoint) {
 			{
 				'before': $.proxy(
 					function(data, textStatus, jqXHR) {
-						this.pagehooks.before(data, textStatus, jqXHR);
+						this.hooks.before(data, textStatus, jqXHR);
 					}, 
 					this
 				),
 
 				'success': $.proxy(
 					function(data, textStatus, jqXHR) {
-						this.pagehooks.success(data, textStatus, jqXHR);
+						this.hooks.success(data, textStatus, jqXHR);
 					}, 
 					this
 				),
 
 				'error': $.proxy(
 					function(data, textStatus, jqXHR) {
-						this.pagehooks.error(data, textStatus, jqXHR);
+						this.hooks.error(data, textStatus, jqXHR);
 					}, 
 					this
 				),
 
 				'after': $.proxy(
 					function(data, textStatus, jqXHR) {
-						this.pagehooks.error(data, textStatus, jqXHR);
+						this.hooks.error(data, textStatus, jqXHR);
 					}, 
 					this
 				)
@@ -493,44 +517,74 @@ function js_error(err_msg) {
 function noop() {
 }
 
-function make_page_hooks(args) {
+function add_noops(handlers, events) {
+	handlers = handlers || {};
+	for(var i=0; i<events.length; i++) {
+		var e = events[i];
+		handlers[e] = handlers[e] || noop;
+	}
+	return handlers;
+}
+
+function alert_ajax_error(response, textStatus) { 
+
+	// for responses with http error code
+	if(response.status) {
+		alert(response.status + ': ' + response.responseText);
+
+	// for http success but with application error code
+	} else {
+		alert(response.toSource());
+	}
+
+};
+
+function conditional_ajax_error(handlers) {
+	handlers = handlers || {}
+	var error = handlers['error'];
+	if(!error && ALERT_AJAX_ERRORS) {
+		handlers['error'] = alert_ajax_error;
+	}
+	return handlers;
+}
+
+
+function make_page_hooks(obj, events) {
 
 	// collect an array of valid hooks and initialize them to noop
 	var valid_hooks = []
-	var pagehooks = {}
+	var hooks = {}
 
-	for(var i=1; i<arguments.length; i++) {
-		var hookname = arguments[i];
-		valid_hooks.push(hookname);
-		pagehooks[hookname] = noop;
+	for(var i=0; i<events.length; i++) {
+		valid_hooks.push(events[i]);
+		hooks[events[i]] = noop;
 	}
 
-
-	// make a public pagehook assignment function
-	var that = arguments[0];
-	that.pagehook = $.proxy( 
+	// make a public hook assignment function
+	var that = obj;
+	that.hook = $.proxy( 
 		function(hookname, f) {
 			// do some validation
 			// ensure hookname is valid
-			if(!(hookname in pagehooks)) {
-				js_error('pagehook error: ' + hookname 
+			if(!(hookname in hooks)) {
+				js_error('hook error: ' + hookname 
 					+ ' is not a valid hookname');
 				return
 			}
 
 			// ensure hook is a function
 			if(typeof f != 'function') {
-				js_error('pagehook error: pagehook must be a function.  Got: ' 
+				js_error('hook error: hook must be a function.  Got: ' 
 					+ f);
 			}
 
 			// everything ok, assign the hook
-			pagehooks[hookname] = f;
+			hooks[hookname] = f;
 		},
 		that
 	);
 
-	return pagehooks;
+	return hooks;
 }
 
 
@@ -550,20 +604,20 @@ function ToggleHidden(toggle_div, content) {
 		state = 'shown';
 	}
 
-	// create pagehooks support
-	var pagehooks = make_page_hooks(this, 'on_show', 'on_hide');
+	// create hooks support
+	var hooks = make_page_hooks(this, ['on_show', 'on_hide']);
 
 	// public
 	this.toggle = function() {
 		if(state == 'shown') {
 			content.css('display', 'none');
 			state = 'hidden';
-			pagehooks.on_hide();
+			hooks.on_hide();
 
 		} else if(state == 'hidden') {
 			content.css('display', 'block');
 			state = 'shown';
-			pagehooks.on_show();
+			hooks.on_show();
 
 		} else {
 			js_error('ToggleHidden: unexpected state');
@@ -572,5 +626,35 @@ function ToggleHidden(toggle_div, content) {
 	
 	// register display toggling behavior to clickable element
 	toggle_div.click(this.toggle);
+}
+
+
+
+
+//////////////////////
+//  				//
+//  Comment widget	//
+//  				//
+//////////////////////
+
+function CommentWidget(
+	form, endpoint, submit_button, handlers) {
+
+	var events = ['before', 'success', 'error', 'after'];
+	var hooks = make_page_hooks(this, events);
+
+	// the CommentWidget decorates a form widget
+	var form_widget = new FormWidget(
+			form, endpoint, submit_button, handlers, 'html');
+
+	// get the comment text-area
+	var comment_input = $('textarea[name=body]', form);
+
+	var success = function(data, statusText, jqXHR) {
+		comment_input.val('');
+		hooks.success(data);
+	}
+
+	form_widget.hook('success', success);
 }
 

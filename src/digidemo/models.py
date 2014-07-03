@@ -7,24 +7,6 @@ NAME_LENGTH = 48
 URL_LENGTH = 256
 TITLE_LENGTH = 256
 
-VALENCE_CHOICES = [
-	(1, 'support'),
-	(-1, 'oppose'),
-	(0, 'ammend'),
-]
-
-VOTE_CHOICES = [
-	(-1, 'down vote'),
-	(0, 'non vote'),
-	(1, 'up vote'),
-]
-
-FACTOR_CHOICES = [
-	(-1, 'risk'),
-	(1, 'benefit')
-]
-
-
 class Sector(models.Model):
 	short_name = models.CharField(max_length=3)
 	name = models.CharField(max_length=64)
@@ -41,7 +23,7 @@ class UserProfile(models.Model):
 	province = models.CharField(max_length=32, choices=PROVINCES, blank=True)
                 
 	def __unicode__(self):
-		return self.avatar_name
+		return self.user.username
 
 
 class Proposal(models.Model):
@@ -155,7 +137,7 @@ class Letter(models.Model):
 
 	def __unicode__(self):
 		return "%s-%s" %(
-			self.sender.avatar_name,
+			self.sender.username,
 			get_choice(VALENCE_CHOICES, self.valence))
 
 
@@ -175,7 +157,7 @@ class Comment(models.Model):
 	score = models.SmallIntegerField(default=0)
 
 	def __unicode__(self):
-		return self.author.avatar_name
+		return self.author.username
 
 
 

@@ -85,55 +85,32 @@
 
 		<div id="_w_toggle_hidden_content_{{include_id}}" 
 			class="resend_letter_form_area">
-			{% include "digidemo/_w_add_letter.html" with form=letter_section.resend_form %}
+			{% include "digidemo/_w_add_letter.html" with form=letter_section.resend_form include_id=include_id %}
 		</div>
-		{% include "digidemo/_w_toggle_hidden.html" with widget_id=include_id %}
 
 		<div class="clear"></div>
 
 		<!-- start of the letter comments area -->
-		<div class"letter_comments">
+		<div id="letter_comments_{{ include_id }}" class="letter_comments">
+
 			{% for comment in letter.comment_set.all %}
-			<div class="letter_comment">
-				<span class="letter_comment_body">
-					{{ comment.body }}
-				</span>
-				<span class="comment_author">
-					~ {{ comment.author.username }}
-				</span>
-			</div>
+				{% include "digidemo/_i_letter_comment.html" %}
 			{% endfor %}
-
-
-			{% with widget_id="comment_"|add:i %}
-			<div class="add_comment">
-				<a id="_w_toggle_hidden_{{ widget_id }}" class="pointer"> 
-					add comment
-				</a>
-				<div id="_w_toggle_hidden_content_{{ widget_id }}"
-					class="add_comment_toggle_content" >
-					<form 
-						method="POST"
-						action="{% url "proposal" proposal.name %}">
-					{{ comment_form.non_field_errors }}
-					{% csrf_token %}
-					{{ comment_form.body.errors }}
-					{{ comment_form.body }}
-					{{ comment_form.letter.errors }}
-					<input type="hidden" name="letter" 
-						value="{{ letter.id }}" />
-					{{ comment_form.author.errors }}
-					<input type="hidden" name="author" 
-						value="{{ logged_in_user.id }}" />
-					<input type="submit" value="post" />
-					</form>
-				</div>
-			</div>
-			{% include "digidemo/_w_toggle_hidden.html" %}
-			{% endwith %}
 
 		</div>
 		<!-- end of letter comments area -->
+
+		<div class="add_comment">
+			<a id="_w_toggle_hidden_comment_{{ include_id }}" class="pointer"> 
+				add comment
+			</a>
+			<div id="_w_toggle_hidden_content_comment_{{ include_id }}"
+				class="add_comment_toggle_content" >
+
+				{% include "digidemo/_w_letter_comment.html" with form=letter_section.comment_form include_id=include_id %}
+
+			</div>
+
 	</div> 
 	<!-- end of letter main content -->
 
@@ -141,25 +118,10 @@
 <!-- end of a letter -->
 
 <script type="text/javascript">
-	$('document').ready(function() {
 
-		// get the resend letter widget, and the resender list
-		var resend_letter_form = widgets[
-			'{{letter_section.resend_form.form_id}}']['widget'];
-		var resender_list = widgets['resender_list_{{include_id}}']['widget'];
-
-		// make a callback function -- when the user resends a letter, she
-		// will get added to the resender list
-		var callback = function(rsl) {
-			return function() {
-				rsl.add_user(django.user.pk);
-			};
-		}(resender_list);
-
-		// now bind this function to the resend letter widget's hook
-		resend_letter_form.pagehooks.success = callback;
-	})
-
+	//
+	// Create a resender list widget using elements on the page
+	//
 	// get the list of existing senders for this letter
 	var existing_senders = [
 		{{ letter.sender.pk }}{% if letter.resenders|length > 0 %},{% endif %}
@@ -173,9 +135,68 @@
 		existing_senders
 	);
 
-
 	// register the resender widget to the page
 	register_widget('resender_list_{{ include_id }}', resender_list, 
 		'resender_list');
 
+
+	//
+	// Create a toggler to show / hide the resend letter form
+	//
+	var toggle_div = $('#_w_toggle_hidden_{{ include_id }}');
+	var content = $('#_w_toggle_hidden_content_{{ include_id }}');
+	var toggler = new ToggleHidden(toggle_div, content);
+	register_widget('toggle_hidden_{{ include_id }}', 
+		toggler, 'toggle_hidden');
+
+
+
+	//
+	// Create a toggler to show / hide the comment form
+	//
+	var toggle_div = $('#_w_toggle_hidden_comment_{{ include_id }}');
+	var content = $('#_w_toggle_hidden_content_comment_{{ include_id }}');
+	var toggler = new ToggleHidden(toggle_div, content);
+	register_widget('toggle_hidden_comment_{{ include_id }}', toggler,
+		 'toggle_hidden');
+
+
+
+	//
+	// Bind a callback to the resend_letter_form which adds a user's avatar
+	// to the list of resenders when they resend a letter
+	//
+	$('document').ready(function() {
+
+		// get the resend letter widget, and the resender list
+		var resend_letter_form = widgets[
+		'{{letter_section.resend_form.form_class}}_{{include_id}}']['widget'];
+		var resender_list = widgets['resender_list_{{include_id}}']['widget'];
+
+		// make a callback function -- when the user resends a letter, she
+		// will get added to the resender list
+		var callback = function(rsl) {
+			return function() {
+				rsl.add_user(django.user.pk);
+			};
+		}(resender_list);
+
+		// now bind this function to the resend letter widget's hook
+		resend_letter_form.hook('success', callback);
+	})
+
+
+
+	//
+	// Bind a callback to the comment form so a comment that when a user 
+	// submits a comment, the comment text gets inserted
+	//
+	$(document).ready(function() {
+		var comment_widget = widgets[
+			'LetterCommentForm_{{ include_id }}'].widget;
+		var show_comment = function(new_comment) {
+			$('#letter_comments_{{ include_id }}').append(new_comment);
+		};
+		comment_widget.hook('success', show_comment);
+	});
 </script>

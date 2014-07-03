@@ -73,6 +73,7 @@ def screen_ajax_error(e):
 
 	
 
+
 def vote_proposal(request):
 
 	existing_vote = get_or_none(ProposalVote,
@@ -137,6 +138,7 @@ def vote_letter(request):
 json_responders['vote_letter'] = vote_letter
 
 
+
 def send_letter(request):
 	letter_form = LetterForm(request.POST)
 
@@ -181,10 +183,22 @@ def get_resender_avatar(request):
 	return render(
 		request, 'digidemo/_i_resender_avatar.html', {'resender': logged_in_user})
 
-
 html_responders['get_resender_avatar'] = get_resender_avatar
 
 	
+def comment(request):
+	comment_form = LetterCommentForm(request.POST)
+	
+	if comment_form.is_valid():
+		comment = comment_form.save()
+		
+		return render(
+			request,
+			'digidemo/_i_letter_comment.html', 
+			{'comment':comment})
+
+html_responders['comment'] = comment
+
 
 def test(request):
 	return {'test':'success!'}

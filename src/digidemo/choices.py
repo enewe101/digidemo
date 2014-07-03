@@ -1,6 +1,23 @@
 def get_choice(choices, pick):
 	return filter(lambda x: x[0]==pick, choices)[0][1]
 
+VALENCE_CHOICES = [
+	(1, 'support'),
+	(-1, 'oppose'),
+	(0, 'ammend'),
+]
+
+VOTE_CHOICES = [
+	(-1, 'down vote'),
+	(0, 'non vote'),
+	(1, 'up vote'),
+]
+
+FACTOR_CHOICES = [
+	(-1, 'risk'),
+	(1, 'benefit')
+]
+
 FACTOR_SECTORS = [
 	('ECO', 'economy'),
 	('ENV', 'environment'),

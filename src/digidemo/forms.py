@@ -2,19 +2,40 @@ from django.utils.translation import ugettext as _
 from django.db import models
 from django.forms import ModelForm 
 from django import forms
+from digidemo.choices import *
 from digidemo.models import *
 
 
-def ajax_form(endpoint=None, form_id=None, form_class='ajax_form'):
+def ajax_form(endpoint):
 	'''
-	A class decorator factory for turning a MyFormClass into an ajax-ready
-	form.  This is a 'decorator facory' so it needs to be actually *called*
-	when decorating your class:
+	A class decorator for turning SomeFormClass into an ajax-ready form.  
 
-	@ajax_form()
-	class MyFormClass(ModelForm):
-		...
+	`endpoint` should be a string corresponding to an ajax handler in the 
+	namespace of the ajax.py module.
 
+	An ajax_form can be rendered in a page by including the 
+	_w_ajax_form.html template.  This template needs the template variables
+	`form` to be set to an ajax_form instance.  It also needs a variable
+	`include_id` to provide a unique string or number.  The include_id only
+	has to be unique among instances of that kind of form on the page.  If
+	there is only one form, it can be ommitted.
+
+	E.g.:
+		{% include "digidemo/_w_ajax_form with form=some_form include_id=4 %}
+
+	This template will create a submit button for the form, and will bind a
+	click event on the submit button to an ajax POST of the form to endpoint.
+
+	The ajax form gets registered as a widget with the widgets manager.
+	It's widget_class is the name of the form class (e.g. SomeFormClass), and 
+	the widget_id is the class plus an underscore and the include_id
+	(e.g. SomeFormClass_4).  
+
+	Note: if the include_id was ommitted, the widget id would be 
+		`SomeFormClass_`.
+
+	The endpoint and the form_class can be overridden for instances, assigning 
+	to the keywords `endpoint` or `form_class` when constructing the form.
 	'''
 
 	def class_decorator(cls):
@@ -32,14 +53,14 @@ def ajax_form(endpoint=None, form_id=None, form_class='ajax_form'):
 					raise ValueError("`endpoint` must be a string "
 						"representing the name of an ajax endpoint.")
 
-				self.form_id = kwargs.pop('form_id', form_id)
-				self.form_class = kwargs.pop('form_class', form_class)
+				self.form_class = kwargs.pop('form_class', cls.__name__)
 				super(NewClass, self).__init__(*args, **kwargs)
 
 		return NewClass
 	return class_decorator
 
 
+@ajax_form('comment')
 class LetterCommentForm(ModelForm):
 	class Meta:
 		model = Comment
@@ -50,14 +71,9 @@ class LetterCommentForm(ModelForm):
 			'letter': forms.HiddenInput(),
 		}
 	
-VALENCE_CHOICES = [
-	(1, 'support'),
-	(-1, 'oppose'),
-	(0, 'ammend'),
-]
 
 
-@ajax_form('send_letter', 'send_letter_form')
+@ajax_form('send_letter')
 class LetterForm(ModelForm):
 	class Meta:
 		model = Letter
