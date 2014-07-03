@@ -88,20 +88,11 @@ function ajax(endpoint, data, handlers) {
 // Serializes the form as name-value pairs in a JSON object, sends this to the 
 // django ajax function `endpoint` and optionally fires `success` or `error` 
 // with the parsed JSON response.
-function ajaxForm(endpoint, form, handlers, responseType) {
-
-	// respond with JSON or HTML? defualt is JSON
-	if(!responseType || responseType == 'json') {
-		ajax_func = ajax;
-	} else if(responseType == 'html') {
-		ajax_func = ajaxHtml;
-	} else {
-		js_error('ajaxForm: responseType must be `json` or `html`');
-	}
+function ajaxForm(endpoint, form, handlers) {
 
 	form_as_array = form.serializeArray();
 	as_dict = dict(form_as_array);
-	ajax_func(endpoint, as_dict, handlers);
+	ajax(endpoint, as_dict, handlers);
 }
 
 
@@ -173,7 +164,7 @@ function register_form(form_id, endpoint, form_class, submit_id) {
 //////////////////////////
 
 
-function FormWidget(form, endpoint, submit_button, responseType) {
+function FormWidget(form, endpoint, submit_button) {
 
 	var events = ['before', 'success', 'error', 'after'];
 	var hooks = make_page_hooks(this, events) 
@@ -205,8 +196,7 @@ function FormWidget(form, endpoint, submit_button, responseType) {
 					'after': $.proxy(function(data, textStatus, jqXHR) {
 						hooks['after']();
 					}, this)
-				},
-				responseType
+				}
 			);
 		}, this)
 	);
