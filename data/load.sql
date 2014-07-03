@@ -821,7 +821,7 @@ CREATE TABLE `south_migrationhistory` (
   `migration` varchar(255) NOT NULL,
   `applied` datetime NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=23 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -830,7 +830,7 @@ CREATE TABLE `south_migrationhistory` (
 
 LOCK TABLES `south_migrationhistory` WRITE;
 /*!40000 ALTER TABLE `south_migrationhistory` DISABLE KEYS */;
-REPLACE INTO `south_migrationhistory` (`id`, `app_name`, `migration`, `applied`) VALUES (1,'digidemo','0001_initial','2014-06-15 03:48:03'),(2,'digidemo','0002_auto__add_field_proposal_score__chg_field_comment_score__add_field_let','2014-06-15 04:07:01'),(3,'digidemo','0003_auto__add_field_letter_valence','2014-06-15 04:15:41'),(4,'digidemo','0004_auto__add_organization__add_person__add_position','2014-06-19 01:21:30'),(5,'digidemo','0005_auto__add_field_organization_short_name__add_field_organization_legal_','2014-06-19 05:00:41'),(6,'digidemo','0006_auto__add_field_position_name','2014-06-19 05:22:36'),(7,'digidemo','0007_auto__add_factor__add_capability','2014-06-19 11:14:48'),(8,'digidemo','0008_auto__chg_field_capability_description','2014-06-19 11:31:44'),(9,'digidemo','0009_auto__add_sector__add_field_user_rep','2014-06-20 05:19:07'),(10,'digidemo','0010_auto__del_field_capability_sector','2014-06-20 05:26:02'),(11,'digidemo','0011_auto__add_field_capability_sector','2014-06-20 05:27:26'),(12,'digidemo','0012_auto','2014-06-20 05:39:16'),(13,'digidemo','0013_auto__add_lettervote__add_unique_lettervote_user_letter__add_proposalv','2014-06-27 21:26:09'),(14,'digidemo','0014_auto__add_field_lettervote_valence__add_field_proposalvote_valence','2014-06-27 21:26:11'),(15,'digidemo','0015_auto__add_field_letter_parent','2014-06-27 21:26:12'),(16,'digidemo','0016_auto__chg_field_letter_parent','2014-06-27 21:26:12'),(17,'digidemo','0017_auto__del_field_letter_parent__add_field_letter_parent_id','2014-06-27 21:26:14'),(18,'digidemo','0018_auto__del_field_letter_parent_id__add_field_letter_parent_letter','2014-06-27 21:26:16'),(19,'digidemo','0019_auto__add_field_user_password','2014-06-27 21:26:16'),(20,'digidemo','0020_auto__add_field_proposal_proposal_image__add_field_user_username__chg_','2014-06-27 21:26:18'),(21,'digidemo','0021_auto__del_field_user_username__del_field_user_password__del_field_user','2014-06-27 22:57:45'),(22,'digidemo','0022_auto__del_user__add_userprofile__chg_field_lettervote_user__chg_field_','2014-06-27 22:58:50');
+REPLACE INTO `south_migrationhistory` (`id`, `app_name`, `migration`, `applied`) VALUES (1,'digidemo','0001_initial','2014-07-03 16:31:04');
 /*!40000 ALTER TABLE `south_migrationhistory` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -843,4 +843,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2014-07-02 22:22:04
+-- Dump completed on 2014-07-03 12:32:00
