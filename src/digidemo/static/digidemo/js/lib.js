@@ -65,24 +65,6 @@ if(typeof ALERT_AJAX_ERRORS == 'undefined') {
 	ALERT_AJAX_ERRORS = false;
 }
 
-// sends the plain js object `data` to the django ajax function `endpoint`
-// and optionally fires `success` or `error` with the plain text content.
-function ajaxHtml(endpoint, data, handlers) {
-
-	handlers = handlers || {};
-
-	var error = handlers['error'] || alert_ajax_error;
-
-	$.ajax({
-		"url": handle_ajax_html_url + endpoint + '/',
-		"data": data,
-		"method":'POST',
-		"dataType": 'text',
-		"success": handlers['success'],
-		"error": error
-	});
-}
-
 
 // sends the plain js object `data` to the django ajax function `endpoint`
 // and optionally fires `success` or `error` with the parsed JSON response.
@@ -93,7 +75,7 @@ function ajax(endpoint, data, handlers) {
 	var error = handlers['error'] || alert_ajax_error;
 
 	$.ajax({
-		"url": handle_ajax_json_url + endpoint + '/',
+		"url": handle_ajax_url + endpoint + '/',
 		"data": data,
 		"method":'POST',
 		"dataType": 'json',
@@ -631,19 +613,25 @@ function CommentWidget(form, endpoint, submit_button) {
 
 	var events = ['before', 'success', 'error', 'after'];
 	var hooks = make_page_hooks(this, events);
+	hooks.error = alert_ajax_error;
 
 	// the CommentWidget decorates a form widget
-	var form_widget = new FormWidget(
-			form, endpoint, submit_button, 'html');
+	var form_widget = new FormWidget(form, endpoint, submit_button);
 
 	// get the comment text-area
 	var comment_input = $('textarea[name=body]', form);
 
+	// when the comment is successfully posted, clear the textarea,
+	// and call the success hook
 	var success = function(data, statusText, jqXHR) {
 		comment_input.val('');
-		hooks.success(data);
+		hooks.success(data, statusText, jqXHR);
 	}
 
+	// forward hooks to the underlying form widget
 	form_widget.hook('success', success);
+	form_widget.hook('before', hooks.before);
+	form_widget.hook('error', hooks.error);
+	form_widget.hook('after', hooks.after);
 }
 

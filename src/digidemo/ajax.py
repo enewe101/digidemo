@@ -10,25 +10,26 @@ from digidemo.settings import DEBUG
 from digidemo.utils import get_or_none
 
 # json responders should return a python dict
-json_responders = {}
+_json_responders = {}
 
-# html responders should return an HttpResponse
-html_responders = {}
 
 class AjaxError(Exception):
 	pass
 
 
+# decorator to register ajax responder endpoints
 def ajax_endpoint(f):
-	json_responders[f.__name__] = f
+	_json_responders[f.__name__] = f
 	return f
 
 
+# entry point handling all incomming ajax requests, 
+# the request will be dispatched to the endpoint identified as `view` 
 def handle_ajax_json(request, view='test', *args, **kwargs):
 
 	# Get the handler, or return an error to the client
 	try:
-		handler = json_responders[view]
+		handler = _json_responders[view]
 
 	except KeyError, e:
 		data = screen_ajax_error(AjaxError('no endpoint named %s.'%view))
@@ -49,27 +50,6 @@ def handle_ajax_json(request, view='test', *args, **kwargs):
 
 
 
-def handle_ajax_html(request, view='test', *args, **kwargs):
-
-	# Get the handler, or return an error to the client
-	try:
-		handler = html_responders[view]
-
-	except KeyError, e:
-		return HttpResponse('<p>' + screen_ajax_error(e) + '</p>')
-
-	try:
-		http_response = handler(request, *args, **kwargs)
-		assert(isinstance(http_response, HttpResponse))
-
-	except Exception, e:
-		return HttpResponse('<p>' + screen_ajax_error(e) + '</p>')
-
-	return http_response
-
-	
-
-
 def screen_ajax_error(e):
 	if DEBUG:
 		err_msg = "%s: %s" %(type(e).__name__, e)
@@ -79,9 +59,17 @@ def screen_ajax_error(e):
 
 	return err_msg
 
-	
 
 
+
+
+#####################
+#					#
+#  ajax endpoints	#
+#					#
+#####################
+
+@ajax_endpoint
 def vote_proposal(request):
 
 	existing_vote = get_or_none(ProposalVote,
@@ -109,11 +97,14 @@ def vote_proposal(request):
 		
 		return {'success':True}
 
-	return {'errors': vote_form.errors}
+	return {
+		'success': False,
+		'msg': 'ajax.py: vote_proposal(): VoteForm was not valid'
+	}
 
-json_responders['vote_proposal'] = vote_proposal
 
 
+@ajax_endpoint
 def vote_letter(request):
 
 	existing_vote = get_or_none(LetterVote,
@@ -140,13 +131,14 @@ def vote_letter(request):
 		
 		return {'success':True}
 
-	return {'errors': vote_form.errors}
+	return {
+		'success': False,
+		'msg':'ajax.py: vote_letter(): VoteForm was not valid'  
+	}
 
 
-json_responders['vote_letter'] = vote_letter
 
-
-
+@ajax_endpoint
 def send_letter(request):
 	letter_form = LetterForm(request.POST)
 
@@ -157,11 +149,13 @@ def send_letter(request):
 
 		return {'success':True}
 
-	return {'success':False}
+	return {
+		'success':False,
+		'msg':'ajax.py: send_letter(): LetterForm was not valid'
+	}
 
-json_responders['send_letter'] = send_letter
 
-
+@ajax_endpoint
 def resend_letter(request):
 	letter_form = ResendLetterForm(request.POST)
 
@@ -171,9 +165,10 @@ def resend_letter(request):
 		letter_form.save()
 		return {'success':True}
 
-	return {'success':False, 'msg':'Letter form was not valid'}
-
-json_responders['resend_letter'] = resend_letter
+	return {
+		'success':False,
+		'msg': 'ajax.py: send_letter(): LetterForm was not valid'
+	}
 
 
 
@@ -191,24 +186,29 @@ def get_resender_avatar(request):
 	# package it up as for a JSON response and return
 	return {'success': True, 'html': reply_html}
 
-	
+
+
+@ajax_endpoint
 def comment(request):
 	comment_form = LetterCommentForm(request.POST)
 	
 	if comment_form.is_valid():
 		comment = comment_form.save()
 		
-		return render(
-			request,
-			'digidemo/_i_letter_comment.html', 
-			{'comment':comment})
+		template = get_template('digidemo/_i_letter_comment.html')
+		context = Context({'comment': comment})
+		reply_html = template.render(context)
+		return {'success': True, 'html': reply_html}
 
-html_responders['comment'] = comment
+	return {
+		'success': False,
+		'msg':'ajax.py: comment(): comment form was not valid'
+	}
 
 
+@ajax_endpoint
 def test(request):
 	return {'test':'success!'}
 
-json_responders['test'] = test
 
 

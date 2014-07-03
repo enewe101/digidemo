@@ -13,9 +13,7 @@
 		var STRUCT = false;
 		var django = {{ django_vars_js|safe }};
 
-		var handle_ajax_json_url = '{% url "ajax_json_test" %}';
-		var handle_ajax_html_url = '{% url "ajax_html_test" %}';
-
+		var handle_ajax_url = '{% url "ajax_json_test" %}';
 
 		// Add page behaviors in response to widgets on the page
 		$(document).ready(function() {

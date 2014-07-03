@@ -2,7 +2,7 @@ from django.conf.urls import patterns, include, url
 
 from django.contrib import admin
 from views import test, overview, discuss, mainPage, login, userRegistration
-from ajax import handle_ajax_json, handle_ajax_html
+from ajax import handle_ajax_json
 
 admin.autodiscover()
 
@@ -10,6 +10,9 @@ urlpatterns = patterns('',
 	# front page urls
 	url(r'^mainPage/$',mainPage),
 	url(r'^mainPage/sort=(?P<sort_type>\w+)/$',mainPage,name='mainPage'),
+
+	# Registration
+	url(r'^userRegistration/$', userRegistration),
 
 	# test url
 	url(r'^$', test, name='test'),
@@ -22,10 +25,6 @@ urlpatterns = patterns('',
 	# ajax urls
 	url(r'^ajaxJson/(?P<view>\w+)/$', handle_ajax_json, 
 		name='handle_ajax_json'),
-	url(r'^ajaxHtml/(?P<view>\w+)/$', handle_ajax_html, 
-		name='handle_ajax_html'),
 	url(r'^ajaxJson/$', handle_ajax_json, name='ajax_json_test'),
-	url(r'^ajaxHtml/$', handle_ajax_html, name='ajax_html_test'),
-        url(r'^userRegistration/$', userRegistration),
 )
 

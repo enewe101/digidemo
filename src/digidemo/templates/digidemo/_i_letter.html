@@ -202,10 +202,12 @@
 	// submits a comment, the comment text gets inserted
 	//
 	$(document).ready(function() {
+		var toggler = widgets['toggle_hidden_comment_{{ include_id }}'].widget;
 		var comment_widget = widgets[
 			'LetterCommentForm_{{ include_id }}'].widget;
-		var show_comment = function(new_comment) {
-			$('#letter_comments_{{ include_id }}').append(new_comment);
+		var show_comment = function(data) {
+			$('#letter_comments_{{ include_id }}').append(data.html);
+			toggler.toggle();
 		};
 		comment_widget.hook('success', show_comment);
 	});
