@@ -161,12 +161,6 @@ def resend_letter(request):
 
 		# add the new (re)sent letter to the database
 		letter_form.save()
-
-		# add the resender to the list of resenders of the original letter
-		parent_letter = letter_form.cleaned_data['parent_letter']
-		parent_letter.resenders.add(letter_form.cleaned_data['sender'])
-		parent_letter.save()
-
 		return {'success':True}
 
 	return {'success':False}

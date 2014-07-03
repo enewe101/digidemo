@@ -68,10 +68,13 @@
 
 					<div class="clear"></div>
 				</div>
-				<a id="_w_toggle_hidden_{{include_id}}" 
-					class="send_letter pointer">
-					send a version of this letter
-				</a>
+				<div>
+					<span id="resend_letter_status_{{include_id}}"></span>
+					<a id="_w_toggle_hidden_{{include_id}}" 
+						class="send_letter pointer">
+						send a version of this letter
+					</a>
+				</div>
 
 			</div>
 			<!-- end of re-senders  -->
@@ -124,8 +127,8 @@
 	//
 	// get the list of existing senders for this letter
 	var existing_senders = [
-		{{ letter.sender.pk }}{% if letter.resenders|length > 0 %},{% endif %}
-		{% for resender in letter.resenders.all %}
+		{{ letter.sender.pk }}{% if letter_section.resenders|length > 0 %},{% endif %}
+		{% for resender in letter_section.resenders %}
 			{{ resender.pk }}{% if not forloop.last %},{% endif %}
 		{% endfor %}
 	];
@@ -173,10 +176,17 @@
 		'{{letter_section.resend_form.form_class}}_{{include_id}}']['widget'];
 		var resender_list = widgets['resender_list_{{include_id}}']['widget'];
 
+		// get the toggler widget for showing / hiding the letter resend form
+		var toggler = widgets['toggle_hidden_{{include_id}}'].widget
+
 		// make a callback function -- when the user resends a letter, she
 		// will get added to the resender list
 		var callback = function(rsl) {
 			return function() {
+				$('#resend_letter_status_{{include_id}}').text(
+					'Your letter was sent!');
+				$('#_w_toggle_hidden_{{ include_id }}').text('Send another');
+				toggler.toggle();
 				rsl.add_user(django.user.pk);
 			};
 		}(resender_list);
