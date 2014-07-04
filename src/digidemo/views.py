@@ -29,22 +29,29 @@ def discuss(request, proposal_name):
 	# ** Hardcoded the logged in user to be enewe101 **
 	logged_in_user = User.objects.get(pk=1)
 	
-	# make the proposal vote form -- this gets rendered as a voting widget
-	proposal_vote = utils.get_or_none(
-		ProposalVote, user=logged_in_user, proposal=this_proposal)
+	discussion_sections = []
+	for discussion in this_proposal.discussion_set.all():
 
-	if proposal_vote:
-		proposal_vote_form = ProposalVoteForm(
-			instance=proposal_vote,
-			cur_score=this_proposal.score)
+		# make a voting form for each discussion
+		discussion_vote = utils.get_or_none(
+			DiscussionVote, user=logged_in_user, discussion=discussion)
 
-	else:
-		proposal_vote_form = ProposalVoteForm(
-			initial={'user':logged_in_user.pk, 'proposal':this_proposal.pk},
-			cur_score=this_proposal.score)
+		if discussion_vote:
+			discussion_vote_form = DiscussionVoteForm(
+				instance=discussion_vote,
+				cur_score=discussion.score)
+		else:
+			discussion_vote_form = DiscussionVoteForm(
+				initial={'user':logged_in_user.pk, 'discussion':discussion.pk},
+				cur_score=discussion.score
+			)
 
-	
-	media = ProposalVoteForm().media
+		discussion_sections.append({
+			'discussion': discussion,
+			'discussion_vote_form': discussion_vote_form,
+			'reply_form': ReplyForm(
+				initial={'user':logged_in_user.pk, 'discussion':discussion.pk})
+		})
 
 	return render(
 		request,
@@ -55,9 +62,8 @@ def discuss(request, proposal_name):
 				logged_in_user, exclude=['password'])}),
 			'proposal': this_proposal,
 			'logged_in_user': logged_in_user,
-			'proposal_vote_form': proposal_vote_form,
-			'media': media,
 			'tab': 'discuss',
+			'discussion_sections': discussion_sections
 		}
 	)
 

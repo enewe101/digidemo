@@ -59,6 +59,15 @@ class Discussion(models.Model):
 		return self.title
 
 
+class DiscussionVote(models.Model):
+	user = models.ForeignKey(User)
+	discussion = models.ForeignKey(Discussion)
+	valence = models.SmallIntegerField(choices=VOTE_CHOICES)
+
+	class Meta:
+		unique_together	= ('user', 'discussion')
+
+
 class Reply(models.Model):
 	discussion = models.ForeignKey(Discussion)
 	body = models.TextField()

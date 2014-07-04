@@ -1,8 +1,16 @@
 {% extends "digidemo/__proposal.html" %}
 {% load apptags %}
 {% block proposal_content %}
+
+
 <!-- start the proposal -->
 <div id="proposal">
+
+	<!-- start of propasal score and icons -->
+	<div class="proposal_status_bar">
+	{% include "digidemo/_w_vote_form.html" with form=proposal_vote_form include_id="proposal_vote" %}
+	</div>
+	<!-- end of proposal score and icons -->
 
 	<!-- start of proposal main area -->
 	<div class="proposal_main">

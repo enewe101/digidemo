@@ -25,8 +25,8 @@
 
 	<div class="discussion_area">
 
-		{% for discussion in proposal.discussion_set.all %}
-			{% include "digidemo/_i_discussion.html" with discussion=discussion %}
+		{% for discussion_section in discussion_sections %}
+			{% include "digidemo/_i_discussion.html" with discussion_section=discussion_section include_id=forloop.counter %}
 		{% endfor %}
 
 	</div>

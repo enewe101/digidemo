@@ -1,19 +1,58 @@
 <!-- start discussion div -->
+{% with discussion=discussion_section.discussion %}
 <div class="discussion">
 
-	<h2 class="discussion_title">{{discussion.title}}</h2>
-	<div class="discussion_body">{{discussion.body}}</div>
-	<div class="discussion_user">
-		{% include "digidemo/_i_user_id.html" with user=discussion.user%}
+	<div class="proposal_status_bar">
+	{% include "digidemo/_w_vote_form.html" with form=discussion_section.discussion_vote_form include_id=include_id %}
 	</div>
 
-	<div class="replies">
-		{% for reply in discussion.replies.all %}
-		<div class="reply">
-			{{reply.body}} ~<span class="bold">{{reply.user.username}}</span>
+	<!-- start discussion main area -->
+	<div class="discussion_main_area">
+
+		<!-- start first post -->
+		<div class="first_post">
+
+			<h2 class="discussion_title">{{discussion.title}}</h2>
+			<div class="discussion_user">
+				{% include "digidemo/_i_user_id.html" with user=discussion.user%}
+			</div>
+			<div class="discussion_body">{{discussion.body}}</div>
+			<div class="clear"></div>
+
+
+			<div class="clear"></div>
 		</div>
-		{% endfor %}
+		<!-- end first post -->
+
+		<!-- start replies -->
+		<div id="replies_{{ include_id }}" class="replies">
+			{% for reply in discussion.reply_set.all %}
+				{% include "digidemo/_i_discussion_reply.html" with reply=reply include_id=forloop.counter %}
+			{% endfor %}
+		</div>
+		<!-- end replies -->
+
+		<!-- start add reply form -->
+		<div class="add_reply_area">
+			{% include "digidemo/_w_discussion_reply.html" with form=discussion_section.reply_form include_id=include_id %}
+		</div>
+		<!-- end add reply form -->
+		<div class="clear"></div>
+
 	</div>
+	<!-- end discussion main area -->
+	<div class="clear"></div>
 
 </div>
+<!-- end discussion -->
+
+{% endwith %}
+<script type="text/javascript">
+	$(document).ready(function() {
+		reply_widget = widgets['ReplyForm_{{ include_id }}'].widget;
+		reply_widget.hook('success', function(data){
+			$('#replies_{{ include_id }}').append(data.html);
+		});
+	});
+</script>
 <!-- end discussion div -->

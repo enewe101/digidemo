@@ -339,15 +339,12 @@ function VoteForm(form_id, form_class, start_state, score, endpoint) {
 		this.state = 1;
 	}
 
+	
 	// this provides placeholders for callbacks that the page in which
 	// this widget will be placed, can use
-	this.hooks = {
-		'before': function(){},
-		'success': function(){},
-		'error': function(){},
-		'after': function(){}
-	}
-
+	var events = ['before', 'success', 'error', 'after'];
+	var hooks = make_page_hooks(this, events);
+	hooks.error = alert_ajax_error;
 
 	// posts the vote using ajax
 	this.send_vote = function() {
@@ -360,28 +357,33 @@ function VoteForm(form_id, form_class, start_state, score, endpoint) {
 			{
 				'before': $.proxy(
 					function(data, textStatus, jqXHR) {
-						this.hooks.before(data, textStatus, jqXHR);
+						hooks.before(data, textStatus, jqXHR);
 					}, 
 					this
 				),
 
 				'success': $.proxy(
 					function(data, textStatus, jqXHR) {
-						this.hooks.success(data, textStatus, jqXHR);
+						if(data.success) {
+							hooks.success(data, textStatus, jqXHR);
+						} else {
+							alert(data.toSource());
+							hooks.error(data, textStatus, jqXHR);
+						}
 					}, 
 					this
 				),
 
 				'error': $.proxy(
 					function(data, textStatus, jqXHR) {
-						this.hooks.error(data, textStatus, jqXHR);
+						hooks.error(data, textStatus, jqXHR);
 					}, 
 					this
 				),
 
 				'after': $.proxy(
 					function(data, textStatus, jqXHR) {
-						this.hooks.error(data, textStatus, jqXHR);
+						hooks.error(data, textStatus, jqXHR);
 					}, 
 					this
 				)
@@ -588,6 +590,41 @@ function ToggleHidden(toggle_div, content) {
 	
 	// register display toggling behavior to clickable element
 	toggle_div.click(this.toggle);
+}
+
+
+
+
+//////////////////////
+//  				//
+//   Reply widget	//
+//  				//
+//////////////////////
+
+function ReplyWidget(form, endpoint, submit_button) {
+
+	var events = ['before', 'success', 'error', 'after'];
+	var hooks = make_page_hooks(this, events);
+	hooks.error = alert_ajax_error;
+
+	// the ReplyWidget decorates a form widget
+	var form_widget = new FormWidget(form, endpoint, submit_button);
+
+	// get the reply text-area
+	var reply_input = $('textarea[name=body]', form);
+
+	// when the reply is successfully posted, clear the textarea,
+	// and call the success hook
+	var success = function(data, statusText, jqXHR) {
+		reply_input.val('');
+		hooks.success(data, statusText, jqXHR);
+	}
+
+	// forward hooks to the underlying form widget
+	form_widget.hook('success', success);
+	form_widget.hook('before', hooks.before);
+	form_widget.hook('error', hooks.error);
+	form_widget.hook('after', hooks.after);
 }
 
 

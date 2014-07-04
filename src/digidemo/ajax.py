@@ -32,9 +32,8 @@ def handle_ajax_json(request, view='test', *args, **kwargs):
 		handler = _json_responders[view]
 
 	except KeyError, e:
-		data = screen_ajax_error(AjaxError('no endpoint named %s.'%view))
-		data = json.dumps(data)
-		return render(request, 'digidemo/ajax.html', {'json_data':data})
+		msg = screen_ajax_error(AjaxError('no endpoint named %s.'%view))
+		return HttpResponse(content=msg, status=404, reason='Not Found')
 
 	# process the request with the handler.	
 	try:
@@ -68,6 +67,43 @@ def screen_ajax_error(e):
 #  ajax endpoints	#
 #					#
 #####################
+
+@ajax_endpoint
+def vote_discussion(request):
+
+	existing_vote = get_or_none(DiscussionVote,
+		user=request.POST['user'], discussion=request.POST['discussion']) 
+
+	if existing_vote is not None:
+		existing_valence = existing_vote.valence
+	else:
+		existing_valence = 0
+
+
+	vote_form = DiscussionVoteForm(request.POST, instance=existing_vote)
+
+	if vote_form.is_valid():
+
+		# record that the user has voted on this discussion
+		vote_form.save()
+
+		# increment or decrement the discussion score
+		discussion = vote_form.cleaned_data['discussion']
+
+		discussion.score += (vote_form.cleaned_data['valence'] 
+			- existing_valence)
+
+		discussion.save()
+		
+		return {'success':True}
+
+	return {
+		'success': False,
+		'msg': 'ajax.py: vote_discussion(): VoteForm was not valid'
+	}
+
+
+
 
 @ajax_endpoint
 def vote_proposal(request):
@@ -186,6 +222,24 @@ def get_resender_avatar(request):
 	# package it up as for a JSON response and return
 	return {'success': True, 'html': reply_html}
 
+
+
+@ajax_endpoint
+def reply(request):
+	reply_form = ReplyForm(request.POST)
+	
+	if reply_form.is_valid():
+		reply = reply_form.save()
+		
+		template = get_template('digidemo/_i_discussion_reply.html')
+		context = Context({'reply': reply})
+		reply_html = template.render(context)
+		return {'success': True, 'html': reply_html}
+
+	return {
+		'success': False,
+		'msg':'ajax.py: reply(): ReplyForm was not valid'
+	}
 
 
 @ajax_endpoint

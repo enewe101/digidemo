@@ -1,0 +1,27 @@
+{% extends "digidemo/_w_ajax_form.html" %}
+{% block ajax_form_form %}
+	{{ block.super }}
+{% endblock ajax_form_form %}
+
+{% block ajax_form_script %}
+<!-- arm the submit button to submit the form to an ajax endpoint -->
+<script type="text/javascript">
+
+(function(){
+
+var reply_widget = new ReplyWidget(
+	$('#{{ form.form_class}}_{{ include_id }}'),
+	'{{ form.endpoint }}',
+	$('#{{ form.form_class}}_{{ include_id }}_submit')
+);
+
+register_widget(
+	'{{ form.form_class }}_{{ include_id }}', 
+	reply_widget,
+	'{{ form.form_class }}'
+);
+
+}());
+
+</script>
+{% endblock ajax_form_script %}

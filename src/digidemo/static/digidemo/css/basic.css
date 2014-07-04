@@ -167,7 +167,7 @@ body {
 
 .proposal_main {
 	float:left;
-	width: 650px;
+	width: 678px;
 }
 
 #proposal {
@@ -424,7 +424,7 @@ li.navitem {
 
 .letter_main {
 	float: left;
-	width: 550px;
+	width: 678px;
 }
 
 .greeting {
@@ -576,16 +576,14 @@ a.send_letter:active {
 }
 
 #overview {
-
-	width: 650px;
-	float: left;
 }
 
 .comment_author {
 	font-weight: bold;
 } 
 .resend_letter_form_area .letter_body_textarea {
-	width: 548px;
+	width: 676px;
+	height: 200px;
 	padding: 0;
 	margin: 0;
 }
@@ -616,5 +614,40 @@ a.send_letter:active {
 .take_note {
 	background: rgb(249, 249, 218);
 	padding: 1px 20px;
-	margin-top: 20px;
+	margin: 20px 0;
+}
+
+.discussion {
+	margin-bottom: 20px;
+}
+
+.discussion h2 {
+	margin:0 0 10px;
+	padding:0;
+	font-size: 18px;
+	border-bottom: dotted 1px rgb(180,180,180);
+}
+
+.add_reply_area, .discussion_reply {
+	border-left: solid 1px rgb(80, 80, 80);
+	border-right: solid 1px rgb(80, 80, 80);
+	border-bottom: solid 1px rgb(80, 80, 80);
+	width: 588px;
+	padding: 20px;
+	float: right;
+}
+
+.discussion_main_area {
+	width: 656px;
+	float: left;
+}
+
+.first_post {
+	border: solid 1px rgb(80,80,80);
+	padding: 10px;
+}
+
+.discussion .discussion_user .sender {
+	float: right;
+	margin: 10px;
 }

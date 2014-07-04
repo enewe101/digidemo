@@ -60,6 +60,20 @@ def ajax_form(endpoint):
 	return class_decorator
 
 
+
+@ajax_form('reply')
+class ReplyForm(ModelForm):
+	class Meta:
+		model = Reply
+		fields = ['body', 'user', 'discussion']
+		widgets = {
+			'body': forms.Textarea(attrs={'class':'reply_input'}),
+			'user': forms.HiddenInput(), 
+			'discussion': forms.HiddenInput(),
+		}
+	
+
+
 @ajax_form('comment')
 class LetterCommentForm(ModelForm):
 	class Meta:
@@ -153,6 +167,27 @@ class LetterVoteForm(ModelForm):
 		widgets = {
 			'user': forms.HiddenInput(),
 			'letter': forms.HiddenInput(),
+			'valence': forms.HiddenInput(),
+		}
+
+
+class DiscussionVoteForm(ModelForm):
+
+	def __init__(self, *args, **kwargs):
+
+		self.form_id = 'discussion_vote_%d' % kwargs.pop('form_id', 0)
+		self.cur_score = kwargs.pop('cur_score', 0)
+		self.endpoint = kwargs.pop('endpoint', 'vote_discussion')
+		super(DiscussionVoteForm, self).__init__(*args, **kwargs)
+
+
+	class Meta:
+		model = DiscussionVote
+		fields = ['user', 'discussion', 'valence']
+
+		widgets = {
+			'user': forms.HiddenInput(),
+			'discussion': forms.HiddenInput(),
 			'valence': forms.HiddenInput(),
 		}
 
