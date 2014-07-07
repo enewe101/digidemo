@@ -21,9 +21,48 @@ class UserProfile(models.Model):
 	zip_code = models.CharField(max_length=10)
 	country = models.CharField(max_length=64, choices=COUNTRIES)
 	province = models.CharField(max_length=32, choices=PROVINCES, blank=True)
+	
+	# non-field class attributes
+	rep_events = {
+		'up_proposal': 10,
+		'dn_proposal': -2,
+		'up_letter': 10,
+		'dn_letter': -2,
+		'do_downvote': -2,
+		'up_comment': 5,
+		'dn_comment': -2,
+		'up_discussion': 10,
+		'dn_discussion': -2,
+	}
                 
 	def __unicode__(self):
 		return self.user.username
+
+
+	def get_rep_delta(self, event_name):
+		# Validation: event_name should be a string
+		if not isinstance(event_name, basestring):
+			raise ValueError('UserProfile.apply_score: event_name should'
+				'be string-like.') 
+
+		try:
+			rep_delta = self.rep_events[event_name]
+
+		except KeyError as e:
+			raise ValueError('UserProfile: there is no %s rep-event.' % 
+					str(event_name))
+
+		return rep_delta
+
+
+	def apply_rep(self, event_name):
+		self.rep += self.get_rep_delta(event_name)
+
+
+	def undo_rep(self, event_name):
+		self.rep -= self.get_rep_delta(event_name)
+
+
 
 
 class Proposal(models.Model):

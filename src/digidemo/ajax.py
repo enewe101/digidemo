@@ -87,14 +87,29 @@ def vote_discussion(request):
 		# record that the user has voted on this discussion
 		vote_form.save()
 
-		# increment or decrement the discussion score
+		# increment or decrement the discussion score and author's rep
 		discussion = vote_form.cleaned_data['discussion']
+		author = discussion.user.profile.get()
 
-		discussion.score += (vote_form.cleaned_data['valence'] 
-			- existing_valence)
+		if existing_valence == 1:
+			discussion.score -= 1
+			author.undo_rep('up_discussion')
+
+		elif existing_valence == -1:
+			discussion.score += 1
+			author.undo_rep('dn_discussion')
+
+		if vote_form.cleaned_data['valence'] == 1:
+			discussion.score += 1
+			author.apply_rep('up_discussion')
+
+		elif vote_form.cleaned_data['valence'] == -1:
+			discussion.score -= 1
+			author.apply_rep('dn_discussion')
 
 		discussion.save()
-		
+		author.save()
+
 		return {'success':True}
 
 	return {
