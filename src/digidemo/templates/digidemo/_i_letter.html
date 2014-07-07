@@ -6,7 +6,8 @@
 	<div class="letter_status_bar">
 		{% include "digidemo/_w_vote_form.html" with form=letter_section.vote_form %}
 
-		<div class="resend"><span class="resend_count">7</span><img class="resend_widget" src="{% static "digidemo/images/mail.png" %}" /></div>
+		<div class="resend"><span class="resend_count">
+			{{ letter.letter_set.distinct.count }}</span><img class="resend_widget" src="{% static "digidemo/images/mail.png" %}" /></div>
 		{% if letter.valence < 0 %}
 		<img class="letter_valence"
 		src="{% static "digidemo/images/oppose.png" %}"
