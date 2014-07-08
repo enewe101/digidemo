@@ -130,90 +130,30 @@ def vote_discussion(request):
 	return vote(vote_spec, request)
 
 
-#@ajax_endpoint
-#def vote_proposal(request):
-#
-#	vote_spec = {
-#		'model' : ProposalVote,
-#		'form': ProposalVoteForm,
-#		'up_event': 'up_proposal',
-#		'dn_event': 'dn_proposal',
-#	}
-#
-#	return vote(vote_spec, request)
-#
-
-	
-
-
-
-
 @ajax_endpoint
 def vote_proposal(request):
 
-	existing_vote = get_or_none(ProposalVote,
-		user=request.POST['user'], target=request.POST['target']) 
-
-	if existing_vote is not None:
-		existing_valence = existing_vote.valence
-	else:
-		existing_valence = 0
-
-
-	vote_form = ProposalVoteForm(request.POST, instance=existing_vote)
-
-	if vote_form.is_valid():
-
-		# record that the user has voted on this proposal
-		vote_form.save()
-
-		# increment or decrement the proposal score
-		proposal = vote_form.cleaned_data['target']
-
-		proposal.score += vote_form.cleaned_data['valence'] - existing_valence
-
-		proposal.save()
-		
-		return {'success':True}
-
-	return {
-		'success': False,
-		'msg': 'ajax.py: vote_proposal(): VoteForm was not valid'
+	vote_spec = {
+		'model' : ProposalVote,
+		'form': ProposalVoteForm,
+		'up_event': 'up_proposal',
+		'dn_event': 'dn_proposal',
 	}
 
+	return vote(vote_spec, request)
 
 
 @ajax_endpoint
 def vote_letter(request):
 
-	existing_vote = get_or_none(LetterVote,
-		user=request.POST['user'], target=request.POST['target']) 
-
-	if existing_vote is not None:
-		existing_valence = existing_vote.valence
-	else:
-		existing_valence = 0
-
-	vote_form = LetterVoteForm(request.POST, instance=existing_vote)
-
-	if vote_form.is_valid():
-
-		# record that the user has voted on this proposal
-		vote_form.save()
-
-		# increment or decrement the proposal score
-		letter = vote_form.cleaned_data['target']
-
-		letter.score += vote_form.cleaned_data['valence'] - existing_valence
-
-		letter.save()
-		
-		return {'success':True}
-
-	return {
-		'success': False,
-		'msg':'ajax.py: vote_letter(): VoteForm was not valid'  
+	vote_spec = {
+		'model' : LetterVote,
+		'form': LetterVoteForm,
+		'up_event': 'up_letter',
+		'dn_event': 'dn_letter',
 	}
+
+	return vote(vote_spec, request)
 
 
 

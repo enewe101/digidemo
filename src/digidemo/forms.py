@@ -78,10 +78,10 @@ class ReplyForm(ModelForm):
 class LetterCommentForm(ModelForm):
 	class Meta:
 		model = Comment
-		fields = ['body', 'author', 'letter']
+		fields = ['body', 'user', 'letter']
 		widgets = {
 			'body': forms.Textarea(attrs={'class':'letter_comment_input'}),
-			'author': forms.HiddenInput(), 
+			'user': forms.HiddenInput(), 
 			'letter': forms.HiddenInput(),
 		}
 	
@@ -92,13 +92,13 @@ class LetterForm(ModelForm):
 	class Meta:
 		model = Letter
 		fields = [
-			'parent_letter', 'proposal', 'sender', 'valence', 'recipients', 
+			'parent_letter', 'proposal', 'user', 'valence', 'recipients', 
 			'body'
 		]
 		widgets = {
 			'parent_letter': forms.HiddenInput(),
 			'proposal': forms.HiddenInput(),
-			'sender': forms.HiddenInput(),
+			'user': forms.HiddenInput(),
 			'body': forms.Textarea(attrs={'class':'letter_body_textarea'})
 		}
 

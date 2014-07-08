@@ -52,7 +52,7 @@
 		<!-- start the list of senders -->
 		<div class="senders">
 
-			{% include "digidemo/_i_user_id.html" with user=letter.sender %}
+			{% include "digidemo/_i_user_id.html" with user=letter.user %}
 
 			<!-- people that have resent the letter -->
 			<div class="resending">
@@ -128,7 +128,7 @@
 	//
 	// get the list of existing senders for this letter
 	var existing_senders = [
-		{{ letter.sender.pk }}{% if letter_section.resenders|length > 0 %},{% endif %}
+		{{ letter.user.pk }}{% if letter_section.resenders|length > 0 %},{% endif %}
 		{% for resender in letter_section.resenders %}
 			{{ resender.pk }}{% if not forloop.last %},{% endif %}
 		{% endfor %}

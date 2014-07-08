@@ -115,20 +115,20 @@ def overview(request, proposal_name):
 				'proposal': this_proposal,
 				'body': letter.body,
 				'recipients': letter.body,
-				'sender': logged_in_user,
+				'user': logged_in_user,
 				'valence': letter.valence
 			}, 
 		   	endpoint='resend_letter',
 		)
 
 		# compile the list of resenders -- don't include the original sender
-		resenders = set([l.sender 
+		resenders = set([l.user 
 			for l in Letter.objects.filter(parent_letter=letter)])
 
 		letter_sections.append({
 			'letter': letter,
 			'comment_form': LetterCommentForm(
-				initial={'author':logged_in_user.pk, 'letter':letter.pk}),
+				initial={'user':logged_in_user.pk, 'letter':letter.pk}),
 			'vote_form': letter_vote_form,
 			'resenders': resenders,
 			'resend_form': resend_form
@@ -139,7 +139,7 @@ def overview(request, proposal_name):
 
 	add_letter_form = LetterForm(initial={
 		'proposal': this_proposal,
-		'sender': logged_in_user,
+		'user': logged_in_user,
 	})
 
 	return render(
