@@ -128,66 +128,33 @@ class ResendLetterForm(LetterForm):
 	
 
 
-
-class ProposalVoteForm(ModelForm):
+class VoteForm(ModelForm):
 	def __init__(self, *args, **kwargs):
-
-		self.form_id = 'proposal_vote_%d' % kwargs.pop('form_id', 0)
 		self.cur_score = kwargs.pop('cur_score', 0)
-		self.endpoint = kwargs.pop('endpoint', 'vote_proposal')
-
-		super(ProposalVoteForm, self).__init__(*args, **kwargs)
-
+		super(VoteForm, self).__init__(*args, **kwargs)
 
 	class Meta:
+		fields = ['user', 'target', 'valence']
+		widgets = {
+			'user': forms.HiddenInput(),
+			'target': forms.HiddenInput(),
+			'valence': forms.HiddenInput(),
+		}
+
+
+@ajax_form('vote_proposal')
+class ProposalVoteForm(VoteForm):
+	class Meta(VoteForm.Meta):
 		model = ProposalVote
-		fields = ['user', 'target', 'valence']
-
-		widgets = {
-			'user': forms.HiddenInput(),
-			'target': forms.HiddenInput(),
-			'valence': forms.HiddenInput(),
-		}
 
 
-class LetterVoteForm(ModelForm):
-
-	def __init__(self, *args, **kwargs):
-
-		self.form_id = 'letter_vote_%d' % kwargs.pop('form_id', 0)
-		self.cur_score = kwargs.pop('cur_score', 0)
-		self.endpoint = kwargs.pop('endpoint', 'vote_letter')
-		super(LetterVoteForm, self).__init__(*args, **kwargs)
-
-
-	class Meta:
+@ajax_form('vote_letter')
+class LetterVoteForm(VoteForm):
+	class Meta(VoteForm.Meta):
 		model = LetterVote
-		fields = ['user', 'target', 'valence']
-
-		widgets = {
-			'user': forms.HiddenInput(),
-			'target': forms.HiddenInput(),
-			'valence': forms.HiddenInput(),
-		}
 
 
-class DiscussionVoteForm(ModelForm):
-
-	def __init__(self, *args, **kwargs):
-
-		self.form_id = 'discussion_vote_%d' % kwargs.pop('form_id', 0)
-		self.cur_score = kwargs.pop('cur_score', 0)
-		self.endpoint = kwargs.pop('endpoint', 'vote_discussion')
-		super(DiscussionVoteForm, self).__init__(*args, **kwargs)
-
-
-	class Meta:
+@ajax_form('vote_discussion')
+class DiscussionVoteForm(VoteForm):
+	class Meta(VoteForm.Meta):
 		model = DiscussionVote
-		fields = ['user', 'target', 'valence']
-
-		widgets = {
-			'user': forms.HiddenInput(),
-			'target': forms.HiddenInput(),
-			'valence': forms.HiddenInput(),
-		}
-
