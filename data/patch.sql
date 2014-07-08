@@ -39,7 +39,7 @@ UNLOCK TABLES;
 
 LOCK TABLES `auth_permission` WRITE;
 /*!40000 ALTER TABLE `auth_permission` DISABLE KEYS */;
-REPLACE INTO `auth_permission` (`id`, `name`, `content_type_id`, `codename`) VALUES (1,'Can add log entry',1,'add_logentry'),(2,'Can change log entry',1,'change_logentry'),(3,'Can delete log entry',1,'delete_logentry'),(4,'Can add permission',2,'add_permission'),(5,'Can change permission',2,'change_permission'),(6,'Can delete permission',2,'delete_permission'),(7,'Can add group',3,'add_group'),(8,'Can change group',3,'change_group'),(9,'Can delete group',3,'delete_group'),(10,'Can add user',4,'add_user'),(11,'Can change user',4,'change_user'),(12,'Can delete user',4,'delete_user'),(13,'Can add content type',5,'add_contenttype'),(14,'Can change content type',5,'change_contenttype'),(15,'Can delete content type',5,'delete_contenttype'),(16,'Can add session',6,'add_session'),(17,'Can change session',6,'change_session'),(18,'Can delete session',6,'delete_session'),(19,'Can add migration history',7,'add_migrationhistory'),(20,'Can change migration history',7,'change_migrationhistory'),(21,'Can delete migration history',7,'delete_migrationhistory'),(25,'Can add proposal',9,'add_proposal'),(26,'Can change proposal',9,'change_proposal'),(27,'Can delete proposal',9,'delete_proposal'),(28,'Can add letter',10,'add_letter'),(29,'Can change letter',10,'change_letter'),(30,'Can delete letter',10,'delete_letter'),(31,'Can add comment',11,'add_comment'),(32,'Can change comment',11,'change_comment'),(33,'Can delete comment',11,'delete_comment'),(34,'Can add person',12,'add_person'),(35,'Can change person',12,'change_person'),(36,'Can delete person',12,'delete_person'),(37,'Can add organization',13,'add_organization'),(38,'Can change organization',13,'change_organization'),(39,'Can delete organization',13,'delete_organization'),(40,'Can add position',14,'add_position'),(41,'Can change position',14,'change_position'),(42,'Can delete position',14,'delete_position'),(43,'Can add capability',15,'add_capability'),(44,'Can change capability',15,'change_capability'),(45,'Can delete capability',15,'delete_capability'),(46,'Can add factor',16,'add_factor'),(47,'Can change factor',16,'change_factor'),(48,'Can delete factor',16,'delete_factor'),(49,'Can add sector',17,'add_sector'),(50,'Can change sector',17,'change_sector'),(51,'Can delete sector',17,'delete_sector'),(52,'Can add proposal vote',18,'add_proposalvote'),(53,'Can change proposal vote',18,'change_proposalvote'),(54,'Can delete proposal vote',18,'delete_proposalvote'),(55,'Can add letter vote',19,'add_lettervote'),(56,'Can change letter vote',19,'change_lettervote'),(57,'Can delete letter vote',19,'delete_lettervote'),(58,'Can add user profile',20,'add_userprofile'),(59,'Can change user profile',20,'change_userprofile'),(60,'Can delete user profile',20,'delete_userprofile'),(61,'Can add comment',21,'add_comment'),(62,'Can change comment',21,'change_comment'),(63,'Can delete comment',21,'delete_comment'),(64,'Can add discussion',22,'add_discussion'),(65,'Can change discussion',22,'change_discussion'),(66,'Can delete discussion',22,'delete_discussion'),(67,'Can add discussion vote',23,'add_discussionvote'),(68,'Can change discussion vote',23,'change_discussionvote'),(69,'Can delete discussion vote',23,'delete_discussionvote'),(70,'Can add reply',24,'add_reply'),(71,'Can change reply',24,'change_reply'),(72,'Can delete reply',24,'delete_reply');
+REPLACE INTO `auth_permission` (`id`, `name`, `content_type_id`, `codename`) VALUES (1,'Can add log entry',1,'add_logentry'),(2,'Can change log entry',1,'change_logentry'),(3,'Can delete log entry',1,'delete_logentry'),(4,'Can add permission',2,'add_permission'),(5,'Can change permission',2,'change_permission'),(6,'Can delete permission',2,'delete_permission'),(7,'Can add group',3,'add_group'),(8,'Can change group',3,'change_group'),(9,'Can delete group',3,'delete_group'),(10,'Can add user',4,'add_user'),(11,'Can change user',4,'change_user'),(12,'Can delete user',4,'delete_user'),(13,'Can add content type',5,'add_contenttype'),(14,'Can change content type',5,'change_contenttype'),(15,'Can delete content type',5,'delete_contenttype'),(16,'Can add session',6,'add_session'),(17,'Can change session',6,'change_session'),(18,'Can delete session',6,'delete_session'),(19,'Can add migration history',7,'add_migrationhistory'),(20,'Can change migration history',7,'change_migrationhistory'),(21,'Can delete migration history',7,'delete_migrationhistory'),(25,'Can add proposal',9,'add_proposal'),(26,'Can change proposal',9,'change_proposal'),(27,'Can delete proposal',9,'delete_proposal'),(28,'Can add letter',10,'add_letter'),(29,'Can change letter',10,'change_letter'),(30,'Can delete letter',10,'delete_letter'),(31,'Can add comment',11,'add_comment'),(32,'Can change comment',11,'change_comment'),(33,'Can delete comment',11,'delete_comment'),(34,'Can add person',12,'add_person'),(35,'Can change person',12,'change_person'),(36,'Can delete person',12,'delete_person'),(37,'Can add organization',13,'add_organization'),(38,'Can change organization',13,'change_organization'),(39,'Can delete organization',13,'delete_organization'),(40,'Can add position',14,'add_position'),(41,'Can change position',14,'change_position'),(42,'Can delete position',14,'delete_position'),(43,'Can add capability',15,'add_capability'),(44,'Can change capability',15,'change_capability'),(45,'Can delete capability',15,'delete_capability'),(46,'Can add factor',16,'add_factor'),(47,'Can change factor',16,'change_factor'),(48,'Can delete factor',16,'delete_factor'),(49,'Can add sector',17,'add_sector'),(50,'Can change sector',17,'change_sector'),(51,'Can delete sector',17,'delete_sector'),(52,'Can add proposal vote',18,'add_proposalvote'),(53,'Can change proposal vote',18,'change_proposalvote'),(54,'Can delete proposal vote',18,'delete_proposalvote'),(55,'Can add letter vote',19,'add_lettervote'),(56,'Can change letter vote',19,'change_lettervote'),(57,'Can delete letter vote',19,'delete_lettervote'),(58,'Can add user profile',20,'add_userprofile'),(59,'Can change user profile',20,'change_userprofile'),(60,'Can delete user profile',20,'delete_userprofile'),(61,'Can add comment',21,'add_comment'),(62,'Can change comment',21,'change_comment'),(63,'Can delete comment',21,'delete_comment'),(64,'Can add discussion',22,'add_discussion'),(65,'Can change discussion',22,'change_discussion'),(66,'Can delete discussion',22,'delete_discussion'),(67,'Can add discussion vote',23,'add_discussionvote'),(68,'Can change discussion vote',23,'change_discussionvote'),(69,'Can delete discussion vote',23,'delete_discussionvote'),(70,'Can add reply',24,'add_reply'),(71,'Can change reply',24,'change_reply'),(72,'Can delete reply',24,'delete_reply'),(73,'Can add reply vote',25,'add_replyvote'),(74,'Can change reply vote',25,'change_replyvote'),(75,'Can delete reply vote',25,'delete_replyvote'),(76,'Can add comment vote',26,'add_commentvote'),(77,'Can change comment vote',26,'change_commentvote'),(78,'Can delete comment vote',26,'delete_commentvote');
 /*!40000 ALTER TABLE `auth_permission` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -87,8 +87,17 @@ UNLOCK TABLES;
 
 LOCK TABLES `digidemo_comment` WRITE;
 /*!40000 ALTER TABLE `digidemo_comment` DISABLE KEYS */;
-REPLACE INTO `digidemo_comment` (`id`, `author_id`, `letter_id`, `body`, `score`) VALUES (1,1,1,'@normaluser I agree with you but I think that you should consider offering some concrete evidence for what you are saying -- back up how the environmental losses will arise and why they are certain.  There\'s plenty of facts in the issue \nwiki to choose from.',1),(2,1,1,'ll',0),(3,1,1,'lll\r\n',0),(4,1,1,'bic!',0),(5,1,1,'super',0),(6,1,14,'lame!',0),(7,1,1,'kilp',0),(8,1,1,'froze',0),(9,1,1,'Blip',0),(10,1,40,'Jimmi',0),(11,1,1,'james',0);
+REPLACE INTO `digidemo_comment` (`id`, `author_id`, `letter_id`, `body`, `score`) VALUES (1,1,1,'@normaluser I agree with you but I think that you should consider offering some concrete evidence for what you are saying -- back up how the environmental losses will arise and why they are certain.  There\'s plenty of facts in the issue \nwiki to choose from.',1),(2,1,1,'ll',0),(3,1,1,'lll\r\n',0),(4,1,1,'bic!',0),(5,1,1,'super',0),(6,1,14,'lame!',0),(7,1,1,'kilp',0),(8,1,1,'froze',0),(9,1,1,'Blip',0),(10,1,40,'Jimmi',0),(11,1,1,'james',0),(12,1,14,'blatant comment.',0),(13,1,1,'pequifi',0);
 /*!40000 ALTER TABLE `digidemo_comment` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Dumping data for table `digidemo_commentvote`
+--
+
+LOCK TABLES `digidemo_commentvote` WRITE;
+/*!40000 ALTER TABLE `digidemo_commentvote` DISABLE KEYS */;
+/*!40000 ALTER TABLE `digidemo_commentvote` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -97,7 +106,7 @@ UNLOCK TABLES;
 
 LOCK TABLES `digidemo_discussion` WRITE;
 /*!40000 ALTER TABLE `digidemo_discussion` DISABLE KEYS */;
-REPLACE INTO `digidemo_discussion` (`id`, `proposal_id`, `title`, `body`, `user_id`, `score`, `is_open`, `creation_date`, `last_activity_date`) VALUES (1,1,'Social Factors','I think that we need more material covering the social factors of this proposal.  There is only a brief mention of the displacement of people.  It would be better to get some statistics together on how many people are likely to be displaced, and how this w I think that we need more material covering the social factors of this proposal.  There is only a brief mention of the displacement of people.  It would be better to get some statistics together on how many people are likely to be displaced, and how this w',1,1,1,'2014-06-30','2014-07-04'),(2,1,'Social Factors','I think that we need more material covering the social factors of this proposal.  There is only a brief mention of the displacement of people.  It would be better to get some statistics together on how many people are likely to be displaced, and how this w I think that we need more material covering the social factors of this proposal.  There is only a brief mention of the displacement of people.  It would be better to get some statistics together on how many people are likely to be displaced, and how this w',1,1,1,'2014-07-04','2014-07-04');
+REPLACE INTO `digidemo_discussion` (`id`, `proposal_id`, `title`, `body`, `user_id`, `score`, `is_open`, `creation_date`, `last_activity_date`) VALUES (1,1,'Social Factors','I think that we need more material covering the social factors of this proposal.  There is only a brief mention of the displacement of people.  It would be better to get some statistics together on how many people are likely to be displaced, and how this w I think that we need more material covering the social factors of this proposal.  There is only a brief mention of the displacement of people.  It would be better to get some statistics together on how many people are likely to be displaced, and how this w',1,1,1,'2014-06-30','2014-07-07'),(2,1,'Social Factors','I think that we need more material covering the social factors of this proposal.  There is only a brief mention of the displacement of people.  It would be better to get some statistics together on how many people are likely to be displaced, and how this w I think that we need more material covering the social factors of this proposal.  There is only a brief mention of the displacement of people.  It would be better to get some statistics together on how many people are likely to be displaced, and how this w',1,1,1,'2014-07-04','2014-07-04');
 /*!40000 ALTER TABLE `digidemo_discussion` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -107,7 +116,7 @@ UNLOCK TABLES;
 
 LOCK TABLES `digidemo_discussionvote` WRITE;
 /*!40000 ALTER TABLE `digidemo_discussionvote` DISABLE KEYS */;
-REPLACE INTO `digidemo_discussionvote` (`id`, `user_id`, `discussion_id`, `valence`) VALUES (1,1,1,0),(2,1,2,-1);
+REPLACE INTO `digidemo_discussionvote` (`id`, `user_id`, `valence`, `target_id`) VALUES (1,1,0,1),(2,1,-1,2);
 /*!40000 ALTER TABLE `digidemo_discussionvote` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -127,7 +136,7 @@ UNLOCK TABLES;
 
 LOCK TABLES `digidemo_letter` WRITE;
 /*!40000 ALTER TABLE `digidemo_letter` DISABLE KEYS */;
-REPLACE INTO `digidemo_letter` (`id`, `parent_letter_id`, `proposal_id`, `valence`, `sender_id`, `body`, `score`) VALUES (1,NULL,1,-1,2,'I do not support the project to expand the Keystone Pipeline System.  This proposal generates serious and certain  environmental losses, which do not justify the economic gains.  Furthermore, the development will bring wealth mainly to foreign shareholders, so that the actual economic gains will be much less than they should  be.',1),(14,NULL,1,0,2,'A new letter!',0),(16,NULL,1,1,2,'aoeu',0),(38,14,1,0,1,'A new letter!',0),(39,1,1,-1,1,'I do not support the project to expand the Keystone Pipeline System.  This proposal generates serious and certain  environmental losses, which do not justify the economic gains.  Furthermore, the development will bring wealth mainly to foreign shareholders, so that the actual economic gains will be much less than they should  be.',0),(40,NULL,1,1,1,'Wadatay',0),(41,1,1,-1,1,'I do not support the project to expand the Keystone Pipeline System.  This proposal generates serious and certain  environmental losses, which do not justify the economic gains.  Furthermore, the development will bring wealth mainly to foreign shareholders, so that the actual economic gains will be much less than they should  be.',0);
+REPLACE INTO `digidemo_letter` (`id`, `parent_letter_id`, `proposal_id`, `valence`, `sender_id`, `body`, `score`) VALUES (1,NULL,1,-1,2,'I do not support the project to expand the Keystone Pipeline System.  This proposal generates serious and certain  environmental losses, which do not justify the economic gains.  Furthermore, the development will bring wealth mainly to foreign shareholders, so that the actual economic gains will be much less than they should  be.',3),(14,NULL,1,0,2,'A new letter!',0),(16,NULL,1,1,2,'aoeu',0),(38,14,1,0,1,'A new letter!',0),(39,1,1,-1,1,'I do not support the project to expand the Keystone Pipeline System.  This proposal generates serious and certain  environmental losses, which do not justify the economic gains.  Furthermore, the development will bring wealth mainly to foreign shareholders, so that the actual economic gains will be much less than they should  be.',0),(40,NULL,1,1,1,'Wadatay',0),(41,1,1,-1,1,'I do not support the project to expand the Keystone Pipeline System.  This proposal generates serious and certain  environmental losses, which do not justify the economic gains.  Furthermore, the development will bring wealth mainly to foreign shareholders, so that the actual economic gains will be much less than they should  be.',0),(42,1,1,-1,1,'I do not support the project to expand the Keystone Pipeline System.  This proposal generates serious and certain  environmental losses, which do not justify the economic gains.  Furthermore, the development will bring wealth mainly to foreign shareholders, so that the actual economic gains will be much less than they should  be.',0),(43,1,1,-1,1,'I do not support the project to expand the Keystone Pipeline System.  This proposal generates serious and certain  environmental losses, which do not justify the economic gains.  Furthermore, the development will bring wealth mainly to foreign shareholders, so that the actual economic gains will be much less than they should  be.',0),(44,16,1,1,1,'aoeu',0),(45,1,1,-1,1,'I do not support the project to expand the Keystone Pipeline System.  This proposal generates serious and certain  environmental losses, which do not justify the economic gains.  Furthermore, the development will bring wealth mainly to foreign shareholders, so that the actual economic gains will be much less than they should  be.',0);
 /*!40000 ALTER TABLE `digidemo_letter` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -137,7 +146,7 @@ UNLOCK TABLES;
 
 LOCK TABLES `digidemo_letter_recipients` WRITE;
 /*!40000 ALTER TABLE `digidemo_letter_recipients` DISABLE KEYS */;
-REPLACE INTO `digidemo_letter_recipients` (`id`, `letter_id`, `position_id`) VALUES (1,1,1),(14,14,1),(16,16,1),(38,38,1),(39,39,1),(40,40,1),(41,41,1);
+REPLACE INTO `digidemo_letter_recipients` (`id`, `letter_id`, `position_id`) VALUES (1,1,1),(14,14,1),(16,16,1),(38,38,1),(39,39,1),(40,40,1),(41,41,1),(42,42,1),(43,43,1),(44,44,1),(45,45,1);
 /*!40000 ALTER TABLE `digidemo_letter_recipients` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -147,7 +156,7 @@ UNLOCK TABLES;
 
 LOCK TABLES `digidemo_lettervote` WRITE;
 /*!40000 ALTER TABLE `digidemo_lettervote` DISABLE KEYS */;
-REPLACE INTO `digidemo_lettervote` (`id`, `user_id`, `letter_id`, `valence`) VALUES (1,1,1,-1),(2,1,16,0);
+REPLACE INTO `digidemo_lettervote` (`id`, `user_id`, `valence`, `target_id`) VALUES (1,1,1,1),(2,1,0,16);
 /*!40000 ALTER TABLE `digidemo_lettervote` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -187,7 +196,7 @@ UNLOCK TABLES;
 
 LOCK TABLES `digidemo_proposal` WRITE;
 /*!40000 ALTER TABLE `digidemo_proposal` DISABLE KEYS */;
-REPLACE INTO `digidemo_proposal` (`id`, `name`, `title`, `text`, `is_published`, `last_modified`, `creation_date`, `author_id`, `score`, `proposal_image`) VALUES (1,'keystone_xl','Keystone XL Pipeline Extension','The Keystone XL Pipeline is a proposed extension to the existing Keystone Pipeline System, put forward by TransCanada, the corporation that owns the Keystone System. The pipeline would cross the Canada/US border, importing crude oil sourced from the Albertan oil sands, into the United States. The proposal is currently awaiting government approval. The pipeline would be newly constructed, and is similar to existing pipelines in North America.\n\nThe Keystone XL pipeline project is a contentious political issue, owing to probable environmental, economic, and social impacts. Environmentally, the pipeline might present a risk of contaminating groundwater and disturbing sensitive ecosystems, but it might also be a better alternative than ground transport by train or truck. Economically, the pipeline might produce jobs temporarily during its construction, and permanently in additional refinement activities in the US. It would also lead to a redistribution of crude supply, emphasizing export and raising the price of oil in the Midwestern US. Socially, the construction of the pipeline would disturb landowners currently in its path, and would disturb heritage sites of cultural significance.',1,'2014-07-03','2014-06-15',1,1,'/digidemo/proposal-images/'),(2,'test1','no factors','this proposal has no factors',1,'2014-06-20','2014-06-20',1,33,'/digidemo/proposal-images/'),(3,'Quebec','Quebec','a',1,'2014-03-10','2014-02-10',1,-7,'');
+REPLACE INTO `digidemo_proposal` (`id`, `name`, `title`, `text`, `is_published`, `last_modified`, `creation_date`, `author_id`, `score`, `proposal_image`) VALUES (1,'keystone_xl','Keystone XL Pipeline Extension','The Keystone XL Pipeline is a proposed extension to the existing Keystone Pipeline System, put forward by TransCanada, the corporation that owns the Keystone System. The pipeline would cross the Canada/US border, importing crude oil sourced from the Albertan oil sands, into the United States. The proposal is currently awaiting government approval. The pipeline would be newly constructed, and is similar to existing pipelines in North America.\n\nThe Keystone XL pipeline project is a contentious political issue, owing to probable environmental, economic, and social impacts. Environmentally, the pipeline might present a risk of contaminating groundwater and disturbing sensitive ecosystems, but it might also be a better alternative than ground transport by train or truck. Economically, the pipeline might produce jobs temporarily during its construction, and permanently in additional refinement activities in the US. It would also lead to a redistribution of crude supply, emphasizing export and raising the price of oil in the Midwestern US. Socially, the construction of the pipeline would disturb landowners currently in its path, and would disturb heritage sites of cultural significance.',1,'2014-07-05','2014-06-15',1,1,'/digidemo/proposal-images/'),(2,'test1','no factors','this proposal has no factors',1,'2014-06-20','2014-06-20',1,33,'/digidemo/proposal-images/'),(3,'Quebec','Quebec','a',1,'2014-03-10','2014-02-10',1,-7,'');
 /*!40000 ALTER TABLE `digidemo_proposal` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -207,7 +216,7 @@ UNLOCK TABLES;
 
 LOCK TABLES `digidemo_proposalvote` WRITE;
 /*!40000 ALTER TABLE `digidemo_proposalvote` DISABLE KEYS */;
-REPLACE INTO `digidemo_proposalvote` (`id`, `user_id`, `proposal_id`, `valence`) VALUES (1,1,1,1);
+REPLACE INTO `digidemo_proposalvote` (`id`, `user_id`, `valence`, `target_id`) VALUES (1,1,1,1);
 /*!40000 ALTER TABLE `digidemo_proposalvote` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -217,8 +226,17 @@ UNLOCK TABLES;
 
 LOCK TABLES `digidemo_reply` WRITE;
 /*!40000 ALTER TABLE `digidemo_reply` DISABLE KEYS */;
-REPLACE INTO `digidemo_reply` (`id`, `discussion_id`, `body`, `user_id`, `score`, `is_open`, `creation_date`) VALUES (24,2,'A comment.',1,0,0,'2014-07-04'),(25,2,'Another comment.',1,0,0,'2014-07-04'),(26,1,'Comment on the first discussion.',1,0,0,'2014-07-04');
+REPLACE INTO `digidemo_reply` (`id`, `discussion_id`, `body`, `user_id`, `score`, `is_open`, `creation_date`) VALUES (24,2,'A comment.',1,0,0,'2014-07-04'),(25,2,'Another comment.',1,0,0,'2014-07-04'),(26,1,'Comment on the first discussion.',1,0,0,'2014-07-04'),(27,1,'AONETHTNH',1,0,0,'2014-07-05');
 /*!40000 ALTER TABLE `digidemo_reply` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Dumping data for table `digidemo_replyvote`
+--
+
+LOCK TABLES `digidemo_replyvote` WRITE;
+/*!40000 ALTER TABLE `digidemo_replyvote` DISABLE KEYS */;
+/*!40000 ALTER TABLE `digidemo_replyvote` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -237,7 +255,7 @@ UNLOCK TABLES;
 
 LOCK TABLES `digidemo_userprofile` WRITE;
 /*!40000 ALTER TABLE `digidemo_userprofile` DISABLE KEYS */;
-REPLACE INTO `digidemo_userprofile` (`id`, `user_id`, `email_validated`, `avatar_img`, `rep`, `street`, `zip_code`, `country`, `province`) VALUES (1,1,1,'avatars/superuser.jpg',4,'Somewhere','560072','India','Karnatka'),(2,2,1,'avatars/regularuser.jpg',12,'56 Long Ave.','51515','CAN','QC');
+REPLACE INTO `digidemo_userprofile` (`id`, `user_id`, `email_validated`, `avatar_img`, `rep`, `street`, `zip_code`, `country`, `province`) VALUES (1,1,1,'avatars/superuser.jpg',34,'Somewhere','560072','India','Karnatka'),(2,2,1,'avatars/regularuser.jpg',12,'56 Long Ave.','51515','CAN','QC');
 /*!40000 ALTER TABLE `digidemo_userprofile` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -256,7 +274,7 @@ UNLOCK TABLES;
 
 LOCK TABLES `django_content_type` WRITE;
 /*!40000 ALTER TABLE `django_content_type` DISABLE KEYS */;
-REPLACE INTO `django_content_type` (`id`, `name`, `app_label`, `model`) VALUES (1,'log entry','admin','logentry'),(2,'permission','auth','permission'),(3,'group','auth','group'),(4,'user','auth','user'),(5,'content type','contenttypes','contenttype'),(6,'session','sessions','session'),(7,'migration history','south','migrationhistory'),(9,'proposal','digidemo','proposal'),(10,'letter','digidemo','letter'),(11,'comment','digidemo','comment'),(12,'person','digidemo','person'),(13,'organization','digidemo','organization'),(14,'position','digidemo','position'),(15,'capability','digidemo','capability'),(16,'factor','digidemo','factor'),(17,'sector','digidemo','sector'),(18,'proposal vote','digidemo','proposalvote'),(19,'letter vote','digidemo','lettervote'),(20,'user profile','digidemo','userprofile'),(22,'discussion','digidemo','discussion'),(23,'discussion vote','digidemo','discussionvote'),(24,'reply','digidemo','reply');
+REPLACE INTO `django_content_type` (`id`, `name`, `app_label`, `model`) VALUES (1,'log entry','admin','logentry'),(2,'permission','auth','permission'),(3,'group','auth','group'),(4,'user','auth','user'),(5,'content type','contenttypes','contenttype'),(6,'session','sessions','session'),(7,'migration history','south','migrationhistory'),(9,'proposal','digidemo','proposal'),(10,'letter','digidemo','letter'),(11,'comment','digidemo','comment'),(12,'person','digidemo','person'),(13,'organization','digidemo','organization'),(14,'position','digidemo','position'),(15,'capability','digidemo','capability'),(16,'factor','digidemo','factor'),(17,'sector','digidemo','sector'),(18,'proposal vote','digidemo','proposalvote'),(19,'letter vote','digidemo','lettervote'),(20,'user profile','digidemo','userprofile'),(22,'discussion','digidemo','discussion'),(23,'discussion vote','digidemo','discussionvote'),(24,'reply','digidemo','reply'),(25,'reply vote','digidemo','replyvote'),(26,'comment vote','digidemo','commentvote');
 /*!40000 ALTER TABLE `django_content_type` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -278,4 +296,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2014-07-04  2:12:24
+-- Dump completed on 2014-07-08  0:33:10
