@@ -98,14 +98,6 @@ class Discussion(models.Model):
 		return self.title
 
 
-class DiscussionVote(models.Model):
-	user = models.ForeignKey(User)
-	discussion = models.ForeignKey(Discussion)
-	valence = models.SmallIntegerField(choices=VOTE_CHOICES)
-
-	class Meta:
-		unique_together	= ('user', 'discussion')
-
 
 class Reply(models.Model):
 	discussion = models.ForeignKey(Discussion)
@@ -119,14 +111,6 @@ class Reply(models.Model):
 		return self.user.username
 
 
-
-class ProposalVote(models.Model):
-	user = models.ForeignKey(User)
-	proposal = models.ForeignKey(Proposal)
-	valence = models.SmallIntegerField(choices=VOTE_CHOICES)
-
-	class Meta:
-		unique_together	= ('user', 'proposal')
 
 
 class Capability(models.Model):
@@ -188,14 +172,6 @@ class Letter(models.Model):
 			get_choice(VALENCE_CHOICES, self.valence))
 
 
-class LetterVote(models.Model):
-	user = models.ForeignKey(User)
-	letter = models.ForeignKey(Letter)
-	valence = models.SmallIntegerField(choices=VOTE_CHOICES)
-
-	class Meta:
-		unique_together = ('user', 'letter')
-
 
 class Comment(models.Model):
 	author = models.ForeignKey(User)
@@ -207,4 +183,42 @@ class Comment(models.Model):
 		return self.author.username
 
 
+
+
+class Vote(models.Model):
+	user = models.ForeignKey(User)
+	valence = models.SmallIntegerField(choices=VOTE_CHOICES)
+
+	class Meta:
+		abstract=True
+
+class DiscussionVote(Vote):
+	target = models.ForeignKey(Discussion)
+
+	class Meta:
+		unique_together = ('user', 'target')
+
+class ProposalVote(Vote):
+	target = models.ForeignKey(Proposal)
+
+	class Meta:
+		unique_together	= ('user', 'target')
+
+class LetterVote(Vote):
+	target = models.ForeignKey(Letter)
+
+	class Meta:
+		unique_together = ('user', 'target')
+
+class ReplyVote(Vote):
+	target = models.ForeignKey(Reply, related_name='reply', null=True)
+
+	class Meta:
+		unique_together = ('user', 'target')
+
+class CommentVote(Vote):
+	target = models.ForeignKey(Comment, related_name='comment', null=True)
+
+	class Meta:
+		unique_together = ('user', 'target')
 

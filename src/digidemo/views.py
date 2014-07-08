@@ -76,7 +76,7 @@ def overview(request, proposal_name):
 	logged_in_user = User.objects.get(pk=1)
 	
 	proposal_vote = utils.get_or_none(
-		ProposalVote, user=logged_in_user, proposal=this_proposal)
+		ProposalVote, user=logged_in_user, target=this_proposal)
 
 	if proposal_vote:
 		proposal_vote_form = ProposalVoteForm(
@@ -85,7 +85,7 @@ def overview(request, proposal_name):
 
 	else:
 		proposal_vote_form = ProposalVoteForm(
-			initial={'user':logged_in_user.pk, 'proposal':this_proposal.pk},
+			initial={'user':logged_in_user.pk, 'target':this_proposal.pk},
 			cur_score=this_proposal.score)
 
 	# Get all of the letters which are associated with this proposal
@@ -96,7 +96,7 @@ def overview(request, proposal_name):
 
 		# make a voting form for each letter
 		letter_vote = utils.get_or_none(
-			LetterVote, user=logged_in_user, letter=letter)
+			LetterVote, user=logged_in_user, target=letter)
 
 		if letter_vote:
 			letter_vote_form = LetterVoteForm(
@@ -104,7 +104,7 @@ def overview(request, proposal_name):
 				cur_score=letter.score)
 		else:
 			letter_vote_form = LetterVoteForm(
-				initial={'user':logged_in_user.pk, 'letter':letter.pk},
+				initial={'user':logged_in_user.pk, 'target':letter.pk},
 				cur_score=letter.score
 			)
 

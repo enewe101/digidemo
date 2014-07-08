@@ -141,11 +141,11 @@ class ProposalVoteForm(ModelForm):
 
 	class Meta:
 		model = ProposalVote
-		fields = ['user', 'proposal', 'valence']
+		fields = ['user', 'target', 'valence']
 
 		widgets = {
 			'user': forms.HiddenInput(),
-			'proposal': forms.HiddenInput(),
+			'target': forms.HiddenInput(),
 			'valence': forms.HiddenInput(),
 		}
 
@@ -162,11 +162,11 @@ class LetterVoteForm(ModelForm):
 
 	class Meta:
 		model = LetterVote
-		fields = ['user', 'letter', 'valence']
+		fields = ['user', 'target', 'valence']
 
 		widgets = {
 			'user': forms.HiddenInput(),
-			'letter': forms.HiddenInput(),
+			'target': forms.HiddenInput(),
 			'valence': forms.HiddenInput(),
 		}
 
@@ -183,11 +183,11 @@ class DiscussionVoteForm(ModelForm):
 
 	class Meta:
 		model = DiscussionVote
-		fields = ['user', 'discussion', 'valence']
+		fields = ['user', 'target', 'valence']
 
 		widgets = {
 			'user': forms.HiddenInput(),
-			'discussion': forms.HiddenInput(),
+			'target': forms.HiddenInput(),
 			'valence': forms.HiddenInput(),
 		}
 
