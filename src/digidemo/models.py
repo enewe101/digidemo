@@ -72,11 +72,12 @@ class Proposal(models.Model):
 	is_published = models.BooleanField(default=False)
 	last_modified = models.DateField(auto_now=True)
 	creation_date = models.DateField()
-	author = models.ForeignKey(User)
+	user = models.ForeignKey(User)
+
 	score = models.SmallIntegerField(default=0)
 	sector = models.ManyToManyField(Sector, related_name='proposals')
 	proposal_image = models.ImageField(upload_to='proposal_avatars',default='/digidemo/proposal-images/');
-	
+
 	def __unicode__(self):
 		return self.title
 
@@ -161,7 +162,7 @@ class Letter(models.Model):
 	parent_letter = models.ForeignKey('self', blank=True, null=True)
 	proposal = models.ForeignKey(Proposal)
 	valence = models.SmallIntegerField(choices=VALENCE_CHOICES)
-	sender = models.ForeignKey(User)
+	user = models.ForeignKey(User)
 	body = models.TextField()
 	recipients = models.ManyToManyField(Position, related_name='letters')
 	score = models.SmallIntegerField(default=0)
@@ -174,7 +175,7 @@ class Letter(models.Model):
 
 
 class Comment(models.Model):
-	author = models.ForeignKey(User)
+	user = models.ForeignKey(User)
 	letter = models.ForeignKey(Letter)
 	body = models.CharField(max_length=512)
 	score = models.SmallIntegerField(default=0)
@@ -211,13 +212,13 @@ class LetterVote(Vote):
 		unique_together = ('user', 'target')
 
 class ReplyVote(Vote):
-	target = models.ForeignKey(Reply, related_name='reply', null=True)
+	target = models.ForeignKey(Reply)
 
 	class Meta:
 		unique_together = ('user', 'target')
 
 class CommentVote(Vote):
-	target = models.ForeignKey(Comment, related_name='comment', null=True)
+	target = models.ForeignKey(Comment)
 
 	class Meta:
 		unique_together = ('user', 'target')

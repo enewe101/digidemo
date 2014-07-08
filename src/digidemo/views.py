@@ -34,7 +34,7 @@ def discuss(request, proposal_name):
 
 		# make a voting form for each discussion
 		discussion_vote = utils.get_or_none(
-			DiscussionVote, user=logged_in_user, discussion=discussion)
+			DiscussionVote, user=logged_in_user, target=discussion)
 
 		if discussion_vote:
 			discussion_vote_form = DiscussionVoteForm(
@@ -42,7 +42,7 @@ def discuss(request, proposal_name):
 				cur_score=discussion.score)
 		else:
 			discussion_vote_form = DiscussionVoteForm(
-				initial={'user':logged_in_user.pk, 'discussion':discussion.pk},
+				initial={'user':logged_in_user.pk, 'target':discussion.pk},
 				cur_score=discussion.score
 			)
 

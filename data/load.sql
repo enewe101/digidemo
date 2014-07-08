@@ -236,15 +236,15 @@ DROP TABLE IF EXISTS `digidemo_comment`;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `digidemo_comment` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `author_id` int(11) NOT NULL,
   `letter_id` int(11) NOT NULL,
   `body` varchar(512) NOT NULL,
   `score` smallint(6) NOT NULL,
+  `user_id` int(11) NOT NULL,
   PRIMARY KEY (`id`),
-  KEY `digidemo_comment_e969df21` (`author_id`),
   KEY `digidemo_comment_45f341a0` (`letter_id`),
-  CONSTRAINT `letter_id_refs_id_549c5f06` FOREIGN KEY (`letter_id`) REFERENCES `digidemo_letter` (`id`),
-  CONSTRAINT `author_id_refs_id_b202d78c` FOREIGN KEY (`author_id`) REFERENCES `auth_user` (`id`)
+  KEY `digidemo_comment_6340c63c` (`user_id`),
+  CONSTRAINT `user_id_refs_id_b202d78c` FOREIGN KEY (`user_id`) REFERENCES `auth_user` (`id`),
+  CONSTRAINT `letter_id_refs_id_549c5f06` FOREIGN KEY (`letter_id`) REFERENCES `digidemo_letter` (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=14 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -254,7 +254,7 @@ CREATE TABLE `digidemo_comment` (
 
 LOCK TABLES `digidemo_comment` WRITE;
 /*!40000 ALTER TABLE `digidemo_comment` DISABLE KEYS */;
-REPLACE INTO `digidemo_comment` (`id`, `author_id`, `letter_id`, `body`, `score`) VALUES (1,1,1,'@normaluser I agree with you but I think that you should consider offering some concrete evidence for what you are saying -- back up how the environmental losses will arise and why they are certain.  There\'s plenty of facts in the issue \nwiki to choose from.',1),(2,1,1,'ll',0),(3,1,1,'lll\r\n',0),(4,1,1,'bic!',0),(5,1,1,'super',0),(6,1,14,'lame!',0),(7,1,1,'kilp',0),(8,1,1,'froze',0),(9,1,1,'Blip',0),(10,1,40,'Jimmi',0),(11,1,1,'james',0),(12,1,14,'blatant comment.',0),(13,1,1,'pequifi',0);
+REPLACE INTO `digidemo_comment` (`id`, `letter_id`, `body`, `score`, `user_id`) VALUES (1,1,'@normaluser I agree with you but I think that you should consider offering some concrete evidence for what you are saying -- back up how the environmental losses will arise and why they are certain.  There\'s plenty of facts in the issue \nwiki to choose from.',1,1),(2,1,'ll',0,1),(3,1,'lll\r\n',0,1),(4,1,'bic!',0,1),(5,1,'super',0,1),(6,14,'lame!',0,1),(7,1,'kilp',0,1),(8,1,'froze',0,1),(9,1,'Blip',0,1),(10,40,'Jimmi',0,1),(11,1,'james',0,1),(12,14,'blatant comment.',0,1),(13,1,'pequifi',0,1);
 /*!40000 ALTER TABLE `digidemo_comment` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -269,7 +269,7 @@ CREATE TABLE `digidemo_commentvote` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `user_id` int(11) NOT NULL,
   `valence` smallint(6) NOT NULL,
-  `target_id` int(11) DEFAULT NULL,
+  `target_id` int(11) NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `digidemo_commentvote_user_id_4530cab3fc8005b8_uniq` (`user_id`,`target_id`),
   KEY `digidemo_commentvote_6340c63c` (`user_id`),
@@ -319,7 +319,7 @@ CREATE TABLE `digidemo_discussion` (
 
 LOCK TABLES `digidemo_discussion` WRITE;
 /*!40000 ALTER TABLE `digidemo_discussion` DISABLE KEYS */;
-REPLACE INTO `digidemo_discussion` (`id`, `proposal_id`, `title`, `body`, `user_id`, `score`, `is_open`, `creation_date`, `last_activity_date`) VALUES (1,1,'Social Factors','I think that we need more material covering the social factors of this proposal.  There is only a brief mention of the displacement of people.  It would be better to get some statistics together on how many people are likely to be displaced, and how this w I think that we need more material covering the social factors of this proposal.  There is only a brief mention of the displacement of people.  It would be better to get some statistics together on how many people are likely to be displaced, and how this w',1,1,1,'2014-06-30','2014-07-07'),(2,1,'Social Factors','I think that we need more material covering the social factors of this proposal.  There is only a brief mention of the displacement of people.  It would be better to get some statistics together on how many people are likely to be displaced, and how this w I think that we need more material covering the social factors of this proposal.  There is only a brief mention of the displacement of people.  It would be better to get some statistics together on how many people are likely to be displaced, and how this w',1,1,1,'2014-07-04','2014-07-04');
+REPLACE INTO `digidemo_discussion` (`id`, `proposal_id`, `title`, `body`, `user_id`, `score`, `is_open`, `creation_date`, `last_activity_date`) VALUES (1,1,'Social Factors','I think that we need more material covering the social factors of this proposal.  There is only a brief mention of the displacement of people.  It would be better to get some statistics together on how many people are likely to be displaced, and how this w I think that we need more material covering the social factors of this proposal.  There is only a brief mention of the displacement of people.  It would be better to get some statistics together on how many people are likely to be displaced, and how this w',1,2,1,'2014-06-30','2014-07-08'),(2,1,'Social Factors','I think that we need more material covering the social factors of this proposal.  There is only a brief mention of the displacement of people.  It would be better to get some statistics together on how many people are likely to be displaced, and how this w I think that we need more material covering the social factors of this proposal.  There is only a brief mention of the displacement of people.  It would be better to get some statistics together on how many people are likely to be displaced, and how this w',1,1,1,'2014-07-04','2014-07-04');
 /*!40000 ALTER TABLE `digidemo_discussion` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -350,7 +350,7 @@ CREATE TABLE `digidemo_discussionvote` (
 
 LOCK TABLES `digidemo_discussionvote` WRITE;
 /*!40000 ALTER TABLE `digidemo_discussionvote` DISABLE KEYS */;
-REPLACE INTO `digidemo_discussionvote` (`id`, `user_id`, `valence`, `target_id`) VALUES (1,1,0,1),(2,1,-1,2);
+REPLACE INTO `digidemo_discussionvote` (`id`, `user_id`, `valence`, `target_id`) VALUES (1,1,1,1),(2,1,-1,2);
 /*!40000 ALTER TABLE `digidemo_discussionvote` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -397,14 +397,14 @@ CREATE TABLE `digidemo_letter` (
   `parent_letter_id` int(11) DEFAULT NULL,
   `proposal_id` int(11) NOT NULL,
   `valence` smallint(6) NOT NULL,
-  `sender_id` int(11) NOT NULL,
   `body` longtext NOT NULL,
   `score` smallint(6) NOT NULL,
+  `user_id` int(11) NOT NULL,
   PRIMARY KEY (`id`),
   KEY `digidemo_letter_b0eaace7` (`parent_letter_id`),
   KEY `digidemo_letter_ad574d3c` (`proposal_id`),
-  KEY `digidemo_letter_0a681a64` (`sender_id`),
-  CONSTRAINT `sender_id_refs_id_747eea8b` FOREIGN KEY (`sender_id`) REFERENCES `auth_user` (`id`),
+  KEY `digidemo_letter_6340c63c` (`user_id`),
+  CONSTRAINT `user_id_refs_id_747eea8b` FOREIGN KEY (`user_id`) REFERENCES `auth_user` (`id`),
   CONSTRAINT `parent_letter_id_refs_id_5234e149` FOREIGN KEY (`parent_letter_id`) REFERENCES `digidemo_letter` (`id`),
   CONSTRAINT `proposal_id_refs_id_a3d9d864` FOREIGN KEY (`proposal_id`) REFERENCES `digidemo_proposal` (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=46 DEFAULT CHARSET=utf8;
@@ -416,7 +416,7 @@ CREATE TABLE `digidemo_letter` (
 
 LOCK TABLES `digidemo_letter` WRITE;
 /*!40000 ALTER TABLE `digidemo_letter` DISABLE KEYS */;
-REPLACE INTO `digidemo_letter` (`id`, `parent_letter_id`, `proposal_id`, `valence`, `sender_id`, `body`, `score`) VALUES (1,NULL,1,-1,2,'I do not support the project to expand the Keystone Pipeline System.  This proposal generates serious and certain  environmental losses, which do not justify the economic gains.  Furthermore, the development will bring wealth mainly to foreign shareholders, so that the actual economic gains will be much less than they should  be.',3),(14,NULL,1,0,2,'A new letter!',0),(16,NULL,1,1,2,'aoeu',0),(38,14,1,0,1,'A new letter!',0),(39,1,1,-1,1,'I do not support the project to expand the Keystone Pipeline System.  This proposal generates serious and certain  environmental losses, which do not justify the economic gains.  Furthermore, the development will bring wealth mainly to foreign shareholders, so that the actual economic gains will be much less than they should  be.',0),(40,NULL,1,1,1,'Wadatay',0),(41,1,1,-1,1,'I do not support the project to expand the Keystone Pipeline System.  This proposal generates serious and certain  environmental losses, which do not justify the economic gains.  Furthermore, the development will bring wealth mainly to foreign shareholders, so that the actual economic gains will be much less than they should  be.',0),(42,1,1,-1,1,'I do not support the project to expand the Keystone Pipeline System.  This proposal generates serious and certain  environmental losses, which do not justify the economic gains.  Furthermore, the development will bring wealth mainly to foreign shareholders, so that the actual economic gains will be much less than they should  be.',0),(43,1,1,-1,1,'I do not support the project to expand the Keystone Pipeline System.  This proposal generates serious and certain  environmental losses, which do not justify the economic gains.  Furthermore, the development will bring wealth mainly to foreign shareholders, so that the actual economic gains will be much less than they should  be.',0),(44,16,1,1,1,'aoeu',0),(45,1,1,-1,1,'I do not support the project to expand the Keystone Pipeline System.  This proposal generates serious and certain  environmental losses, which do not justify the economic gains.  Furthermore, the development will bring wealth mainly to foreign shareholders, so that the actual economic gains will be much less than they should  be.',0);
+REPLACE INTO `digidemo_letter` (`id`, `parent_letter_id`, `proposal_id`, `valence`, `body`, `score`, `user_id`) VALUES (1,NULL,1,-1,'I do not support the project to expand the Keystone Pipeline System.  This proposal generates serious and certain  environmental losses, which do not justify the economic gains.  Furthermore, the development will bring wealth mainly to foreign shareholders, so that the actual economic gains will be much less than they should  be.',1,2),(14,NULL,1,0,'A new letter!',0,2),(16,NULL,1,1,'aoeu',0,2),(38,14,1,0,'A new letter!',0,1),(39,1,1,-1,'I do not support the project to expand the Keystone Pipeline System.  This proposal generates serious and certain  environmental losses, which do not justify the economic gains.  Furthermore, the development will bring wealth mainly to foreign shareholders, so that the actual economic gains will be much less than they should  be.',0,1),(40,NULL,1,1,'Wadatay',0,1),(41,1,1,-1,'I do not support the project to expand the Keystone Pipeline System.  This proposal generates serious and certain  environmental losses, which do not justify the economic gains.  Furthermore, the development will bring wealth mainly to foreign shareholders, so that the actual economic gains will be much less than they should  be.',0,1),(42,1,1,-1,'I do not support the project to expand the Keystone Pipeline System.  This proposal generates serious and certain  environmental losses, which do not justify the economic gains.  Furthermore, the development will bring wealth mainly to foreign shareholders, so that the actual economic gains will be much less than they should  be.',0,1),(43,1,1,-1,'I do not support the project to expand the Keystone Pipeline System.  This proposal generates serious and certain  environmental losses, which do not justify the economic gains.  Furthermore, the development will bring wealth mainly to foreign shareholders, so that the actual economic gains will be much less than they should  be.',0,1),(44,16,1,1,'aoeu',0,1),(45,1,1,-1,'I do not support the project to expand the Keystone Pipeline System.  This proposal generates serious and certain  environmental losses, which do not justify the economic gains.  Furthermore, the development will bring wealth mainly to foreign shareholders, so that the actual economic gains will be much less than they should  be.',0,1);
 /*!40000 ALTER TABLE `digidemo_letter` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -477,7 +477,7 @@ CREATE TABLE `digidemo_lettervote` (
 
 LOCK TABLES `digidemo_lettervote` WRITE;
 /*!40000 ALTER TABLE `digidemo_lettervote` DISABLE KEYS */;
-REPLACE INTO `digidemo_lettervote` (`id`, `user_id`, `valence`, `target_id`) VALUES (1,1,1,1),(2,1,0,16);
+REPLACE INTO `digidemo_lettervote` (`id`, `user_id`, `valence`, `target_id`) VALUES (1,1,-1,1),(2,1,0,16);
 /*!40000 ALTER TABLE `digidemo_lettervote` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -586,12 +586,12 @@ CREATE TABLE `digidemo_proposal` (
   `is_published` tinyint(1) NOT NULL,
   `last_modified` date NOT NULL,
   `creation_date` date NOT NULL,
-  `author_id` int(11) NOT NULL,
   `score` smallint(6) NOT NULL,
   `proposal_image` varchar(100) NOT NULL,
+  `user_id` int(11) NOT NULL,
   PRIMARY KEY (`id`),
-  KEY `digidemo_proposal_e969df21` (`author_id`),
-  CONSTRAINT `author_id_refs_id_1f8c5260` FOREIGN KEY (`author_id`) REFERENCES `auth_user` (`id`)
+  KEY `digidemo_proposal_6340c63c` (`user_id`),
+  CONSTRAINT `user_id_refs_id_1f8c5260` FOREIGN KEY (`user_id`) REFERENCES `auth_user` (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -601,7 +601,7 @@ CREATE TABLE `digidemo_proposal` (
 
 LOCK TABLES `digidemo_proposal` WRITE;
 /*!40000 ALTER TABLE `digidemo_proposal` DISABLE KEYS */;
-REPLACE INTO `digidemo_proposal` (`id`, `name`, `title`, `text`, `is_published`, `last_modified`, `creation_date`, `author_id`, `score`, `proposal_image`) VALUES (1,'keystone_xl','Keystone XL Pipeline Extension','The Keystone XL Pipeline is a proposed extension to the existing Keystone Pipeline System, put forward by TransCanada, the corporation that owns the Keystone System. The pipeline would cross the Canada/US border, importing crude oil sourced from the Albertan oil sands, into the United States. The proposal is currently awaiting government approval. The pipeline would be newly constructed, and is similar to existing pipelines in North America.\n\nThe Keystone XL pipeline project is a contentious political issue, owing to probable environmental, economic, and social impacts. Environmentally, the pipeline might present a risk of contaminating groundwater and disturbing sensitive ecosystems, but it might also be a better alternative than ground transport by train or truck. Economically, the pipeline might produce jobs temporarily during its construction, and permanently in additional refinement activities in the US. It would also lead to a redistribution of crude supply, emphasizing export and raising the price of oil in the Midwestern US. Socially, the construction of the pipeline would disturb landowners currently in its path, and would disturb heritage sites of cultural significance.',1,'2014-07-05','2014-06-15',1,1,'/digidemo/proposal-images/'),(2,'test1','no factors','this proposal has no factors',1,'2014-06-20','2014-06-20',1,33,'/digidemo/proposal-images/'),(3,'Quebec','Quebec','a',1,'2014-03-10','2014-02-10',1,-7,'');
+REPLACE INTO `digidemo_proposal` (`id`, `name`, `title`, `text`, `is_published`, `last_modified`, `creation_date`, `score`, `proposal_image`, `user_id`) VALUES (1,'keystone_xl','Keystone XL Pipeline Extension','The Keystone XL Pipeline is a proposed extension to the existing Keystone Pipeline System, put forward by TransCanada, the corporation that owns the Keystone System. The pipeline would cross the Canada/US border, importing crude oil sourced from the Albertan oil sands, into the United States. The proposal is currently awaiting government approval. The pipeline would be newly constructed, and is similar to existing pipelines in North America.\n\nThe Keystone XL pipeline project is a contentious political issue, owing to probable environmental, economic, and social impacts. Environmentally, the pipeline might present a risk of contaminating groundwater and disturbing sensitive ecosystems, but it might also be a better alternative than ground transport by train or truck. Economically, the pipeline might produce jobs temporarily during its construction, and permanently in additional refinement activities in the US. It would also lead to a redistribution of crude supply, emphasizing export and raising the price of oil in the Midwestern US. Socially, the construction of the pipeline would disturb landowners currently in its path, and would disturb heritage sites of cultural significance.',1,'2014-07-08','2014-06-15',2,'/digidemo/proposal-images/',1),(2,'test1','no factors','this proposal has no factors',1,'2014-07-08','2014-06-20',33,'/digidemo/proposal-images/',1),(3,'Quebec','Quebec','a',1,'2014-07-08','2014-02-10',-7,'',1);
 /*!40000 ALTER TABLE `digidemo_proposal` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -710,7 +710,7 @@ CREATE TABLE `digidemo_replyvote` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `user_id` int(11) NOT NULL,
   `valence` smallint(6) NOT NULL,
-  `target_id` int(11) DEFAULT NULL,
+  `target_id` int(11) NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `digidemo_replyvote_user_id_78c651572506a215_uniq` (`user_id`,`target_id`),
   KEY `digidemo_replyvote_6340c63c` (`user_id`),
@@ -783,7 +783,7 @@ CREATE TABLE `digidemo_userprofile` (
 
 LOCK TABLES `digidemo_userprofile` WRITE;
 /*!40000 ALTER TABLE `digidemo_userprofile` DISABLE KEYS */;
-REPLACE INTO `digidemo_userprofile` (`id`, `user_id`, `email_validated`, `avatar_img`, `rep`, `street`, `zip_code`, `country`, `province`) VALUES (1,1,1,'avatars/superuser.jpg',34,'Somewhere','560072','India','Karnatka'),(2,2,1,'avatars/regularuser.jpg',12,'56 Long Ave.','51515','CAN','QC');
+REPLACE INTO `digidemo_userprofile` (`id`, `user_id`, `email_validated`, `avatar_img`, `rep`, `street`, `zip_code`, `country`, `province`) VALUES (1,1,1,'avatars/superuser.jpg',44,'Somewhere','560072','India','Karnatka'),(2,2,1,'avatars/regularuser.jpg',12,'56 Long Ave.','51515','CAN','QC');
 /*!40000 ALTER TABLE `digidemo_userprofile` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -885,7 +885,7 @@ CREATE TABLE `south_migrationhistory` (
   `migration` varchar(255) NOT NULL,
   `applied` datetime NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -894,7 +894,7 @@ CREATE TABLE `south_migrationhistory` (
 
 LOCK TABLES `south_migrationhistory` WRITE;
 /*!40000 ALTER TABLE `south_migrationhistory` DISABLE KEYS */;
-REPLACE INTO `south_migrationhistory` (`id`, `app_name`, `migration`, `applied`) VALUES (1,'digidemo','0001_initial','2014-07-03 16:31:04'),(2,'digidemo','0002_auto','2014-07-03 16:46:56'),(3,'digidemo','0003_auto__add_discussionvote__add_unique_discussionvote_user_discussion','2014-07-04 04:19:51'),(4,'digidemo','0004_auto__add_field_discussionvote_target__del_unique_discussionvote_discu','2014-07-08 03:51:14'),(5,'digidemo','0005_move_discussion_to_target','2014-07-08 03:51:14'),(6,'digidemo','0006_auto__del_field_discussionvote_discussion__chg_field_discussionvote_ta','2014-07-08 03:54:42'),(7,'digidemo','0007_auto__add_commentvote__add_unique_commentvote_user_target__add_replyvo','2014-07-08 04:10:02'),(8,'digidemo','0008_migrate_votes','2014-07-08 04:10:02'),(9,'digidemo','0009_auto__del_field_proposalvote_proposal__chg_field_proposalvote_target__','2014-07-08 04:10:02');
+REPLACE INTO `south_migrationhistory` (`id`, `app_name`, `migration`, `applied`) VALUES (1,'digidemo','0001_initial','2014-07-03 16:31:04'),(2,'digidemo','0002_auto','2014-07-03 16:46:56'),(3,'digidemo','0003_auto__add_discussionvote__add_unique_discussionvote_user_discussion','2014-07-04 04:19:51'),(4,'digidemo','0004_auto__add_field_discussionvote_target__del_unique_discussionvote_discu','2014-07-08 03:51:14'),(5,'digidemo','0005_move_discussion_to_target','2014-07-08 03:51:14'),(6,'digidemo','0006_auto__del_field_discussionvote_discussion__chg_field_discussionvote_ta','2014-07-08 03:54:42'),(7,'digidemo','0007_auto__add_commentvote__add_unique_commentvote_user_target__add_replyvo','2014-07-08 04:10:02'),(8,'digidemo','0008_migrate_votes','2014-07-08 04:10:02'),(9,'digidemo','0009_auto__del_field_proposalvote_proposal__chg_field_proposalvote_target__','2014-07-08 04:10:02'),(10,'digidemo','0010_auto__add_field_proposal_user__add_field_letter_user__add_field_commen','2014-07-08 05:55:12'),(11,'digidemo','0011_rename_content_author_fields_as_user','2014-07-08 05:56:23'),(12,'digidemo','0012_auto__del_field_proposal_author__chg_field_proposal_user__del_field_le','2014-07-08 05:56:24');
 /*!40000 ALTER TABLE `south_migrationhistory` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -907,4 +907,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2014-07-08  0:33:09
+-- Dump completed on 2014-07-08  1:56:58

@@ -62,52 +62,44 @@ def screen_ajax_error(e):
 
 
 
-#####################
-#					#
-#  ajax endpoints	#
-#					#
-#####################
+def vote(vote_spec, request):
 
-@ajax_endpoint
-def vote_discussion(request):
-
-	existing_vote = get_or_none(DiscussionVote,
-		user=request.POST['user'], discussion=request.POST['discussion']) 
+	existing_vote = get_or_none(vote_spec['model'],
+		user=request.POST['user'], target=request.POST['target']) 
 
 	if existing_vote is not None:
 		existing_valence = existing_vote.valence
 	else:
 		existing_valence = 0
 
-
-	vote_form = DiscussionVoteForm(request.POST, instance=existing_vote)
+	vote_form = vote_spec['form'](request.POST, instance=existing_vote)
 
 	if vote_form.is_valid():
 
-		# record that the user has voted on this discussion
+		# record that the user has voted on this target
 		vote_form.save()
 
-		# increment or decrement the discussion score and author's rep
-		discussion = vote_form.cleaned_data['discussion']
-		author = discussion.user.profile.get()
+		# increment or decrement the target score and author's rep
+		target = vote_form.cleaned_data['target']
+		author = target.user.profile.get()
 
 		if existing_valence == 1:
-			discussion.score -= 1
-			author.undo_rep('up_discussion')
+			target.score -= 1
+			author.undo_rep(vote_spec['up_event'])
 
 		elif existing_valence == -1:
-			discussion.score += 1
-			author.undo_rep('dn_discussion')
+			target.score += 1
+			author.undo_rep(vote_spec['dn_event'])
 
 		if vote_form.cleaned_data['valence'] == 1:
-			discussion.score += 1
-			author.apply_rep('up_discussion')
+			target.score += 1
+			author.apply_rep(vote_spec['up_event'])
 
 		elif vote_form.cleaned_data['valence'] == -1:
-			discussion.score -= 1
-			author.apply_rep('dn_discussion')
+			target.score -= 1
+			author.apply_rep(vote_spec['dn_event'])
 
-		discussion.save()
+		target.save()
 		author.save()
 
 		return {'success':True}
@@ -119,12 +111,48 @@ def vote_discussion(request):
 
 
 
+#####################
+#					#
+#  ajax endpoints	#
+#					#
+#####################
+
+@ajax_endpoint
+def vote_discussion(request):
+	
+	vote_spec = {
+		'model' : DiscussionVote,
+		'form': DiscussionVoteForm,
+		'up_event': 'up_discussion',
+		'dn_event': 'dn_discussion',
+	}
+
+	return vote(vote_spec, request)
+
+
+#@ajax_endpoint
+#def vote_proposal(request):
+#
+#	vote_spec = {
+#		'model' : ProposalVote,
+#		'form': ProposalVoteForm,
+#		'up_event': 'up_proposal',
+#		'dn_event': 'dn_proposal',
+#	}
+#
+#	return vote(vote_spec, request)
+#
+
+	
+
+
+
 
 @ajax_endpoint
 def vote_proposal(request):
 
 	existing_vote = get_or_none(ProposalVote,
-		user=request.POST['user'], proposal=request.POST['proposal']) 
+		user=request.POST['user'], target=request.POST['target']) 
 
 	if existing_vote is not None:
 		existing_valence = existing_vote.valence
@@ -140,7 +168,7 @@ def vote_proposal(request):
 		vote_form.save()
 
 		# increment or decrement the proposal score
-		proposal = vote_form.cleaned_data['proposal']
+		proposal = vote_form.cleaned_data['target']
 
 		proposal.score += vote_form.cleaned_data['valence'] - existing_valence
 
@@ -159,7 +187,7 @@ def vote_proposal(request):
 def vote_letter(request):
 
 	existing_vote = get_or_none(LetterVote,
-		user=request.POST['user'], letter=request.POST['letter']) 
+		user=request.POST['user'], target=request.POST['target']) 
 
 	if existing_vote is not None:
 		existing_valence = existing_vote.valence
@@ -174,7 +202,7 @@ def vote_letter(request):
 		vote_form.save()
 
 		# increment or decrement the proposal score
-		letter = vote_form.cleaned_data['letter']
+		letter = vote_form.cleaned_data['target']
 
 		letter.score += vote_form.cleaned_data['valence'] - existing_valence
 
