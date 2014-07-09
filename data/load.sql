@@ -103,7 +103,7 @@ CREATE TABLE `auth_permission` (
 
 LOCK TABLES `auth_permission` WRITE;
 /*!40000 ALTER TABLE `auth_permission` DISABLE KEYS */;
-REPLACE INTO `auth_permission` (`id`, `name`, `content_type_id`, `codename`) VALUES (1,'Can add log entry',1,'add_logentry'),(2,'Can change log entry',1,'change_logentry'),(3,'Can delete log entry',1,'delete_logentry'),(4,'Can add permission',2,'add_permission'),(5,'Can change permission',2,'change_permission'),(6,'Can delete permission',2,'delete_permission'),(7,'Can add group',3,'add_group'),(8,'Can change group',3,'change_group'),(9,'Can delete group',3,'delete_group'),(10,'Can add user',4,'add_user'),(11,'Can change user',4,'change_user'),(12,'Can delete user',4,'delete_user'),(13,'Can add content type',5,'add_contenttype'),(14,'Can change content type',5,'change_contenttype'),(15,'Can delete content type',5,'delete_contenttype'),(16,'Can add session',6,'add_session'),(17,'Can change session',6,'change_session'),(18,'Can delete session',6,'delete_session'),(19,'Can add migration history',7,'add_migrationhistory'),(20,'Can change migration history',7,'change_migrationhistory'),(21,'Can delete migration history',7,'delete_migrationhistory'),(25,'Can add proposal',9,'add_proposal'),(26,'Can change proposal',9,'change_proposal'),(27,'Can delete proposal',9,'delete_proposal'),(28,'Can add letter',10,'add_letter'),(29,'Can change letter',10,'change_letter'),(30,'Can delete letter',10,'delete_letter'),(31,'Can add comment',11,'add_comment'),(32,'Can change comment',11,'change_comment'),(33,'Can delete comment',11,'delete_comment'),(34,'Can add person',12,'add_person'),(35,'Can change person',12,'change_person'),(36,'Can delete person',12,'delete_person'),(37,'Can add organization',13,'add_organization'),(38,'Can change organization',13,'change_organization'),(39,'Can delete organization',13,'delete_organization'),(40,'Can add position',14,'add_position'),(41,'Can change position',14,'change_position'),(42,'Can delete position',14,'delete_position'),(43,'Can add capability',15,'add_capability'),(44,'Can change capability',15,'change_capability'),(45,'Can delete capability',15,'delete_capability'),(46,'Can add factor',16,'add_factor'),(47,'Can change factor',16,'change_factor'),(48,'Can delete factor',16,'delete_factor'),(49,'Can add sector',17,'add_sector'),(50,'Can change sector',17,'change_sector'),(51,'Can delete sector',17,'delete_sector'),(52,'Can add proposal vote',18,'add_proposalvote'),(53,'Can change proposal vote',18,'change_proposalvote'),(54,'Can delete proposal vote',18,'delete_proposalvote'),(55,'Can add letter vote',19,'add_lettervote'),(56,'Can change letter vote',19,'change_lettervote'),(57,'Can delete letter vote',19,'delete_lettervote'),(58,'Can add user profile',20,'add_userprofile'),(59,'Can change user profile',20,'change_userprofile'),(60,'Can delete user profile',20,'delete_userprofile'),(61,'Can add comment',21,'add_comment'),(62,'Can change comment',21,'change_comment'),(63,'Can delete comment',21,'delete_comment'),(64,'Can add discussion',22,'add_discussion'),(65,'Can change discussion',22,'change_discussion'),(66,'Can delete discussion',22,'delete_discussion'),(67,'Can add discussion vote',23,'add_discussionvote'),(68,'Can change discussion vote',23,'change_discussionvote'),(69,'Can delete discussion vote',23,'delete_discussionvote'),(70,'Can add reply',24,'add_reply'),(71,'Can change reply',24,'change_reply'),(72,'Can delete reply',24,'delete_reply'),(73,'Can add reply vote',25,'add_replyvote'),(74,'Can change reply vote',25,'change_replyvote'),(75,'Can delete reply vote',25,'delete_replyvote'),(76,'Can add comment vote',26,'add_commentvote'),(77,'Can change comment vote',26,'change_commentvote'),(78,'Can delete comment vote',26,'delete_commentvote');
+REPLACE INTO `auth_permission` (`id`, `name`, `content_type_id`, `codename`) VALUES (1,'Can add log entry',1,'add_logentry'),(2,'Can change log entry',1,'change_logentry'),(3,'Can delete log entry',1,'delete_logentry'),(4,'Can add permission',2,'add_permission'),(5,'Can change permission',2,'change_permission'),(6,'Can delete permission',2,'delete_permission'),(7,'Can add group',3,'add_group'),(8,'Can change group',3,'change_group'),(9,'Can delete group',3,'delete_group'),(10,'Can add user',4,'add_user'),(11,'Can change user',4,'change_user'),(12,'Can delete user',4,'delete_user'),(13,'Can add content type',5,'add_contenttype'),(14,'Can change content type',5,'change_contenttype'),(15,'Can delete content type',5,'delete_contenttype'),(16,'Can add session',6,'add_session'),(17,'Can change session',6,'change_session'),(18,'Can delete session',6,'delete_session'),(19,'Can add migration history',7,'add_migrationhistory'),(20,'Can change migration history',7,'change_migrationhistory'),(21,'Can delete migration history',7,'delete_migrationhistory'),(22,'Can add sector',8,'add_sector'),(23,'Can change sector',8,'change_sector'),(24,'Can delete sector',8,'delete_sector'),(25,'Can add proposal',9,'add_proposal'),(26,'Can change proposal',9,'change_proposal'),(27,'Can delete proposal',9,'delete_proposal'),(28,'Can add letter',10,'add_letter'),(29,'Can change letter',10,'change_letter'),(30,'Can delete letter',10,'delete_letter'),(31,'Can add comment',11,'add_comment'),(32,'Can change comment',11,'change_comment'),(33,'Can delete comment',11,'delete_comment'),(34,'Can add person',12,'add_person'),(35,'Can change person',12,'change_person'),(36,'Can delete person',12,'delete_person'),(37,'Can add organization',13,'add_organization'),(38,'Can change organization',13,'change_organization'),(39,'Can delete organization',13,'delete_organization'),(40,'Can add position',14,'add_position'),(41,'Can change position',14,'change_position'),(42,'Can delete position',14,'delete_position'),(43,'Can add capability',15,'add_capability'),(44,'Can change capability',15,'change_capability'),(45,'Can delete capability',15,'delete_capability'),(46,'Can add factor',16,'add_factor'),(47,'Can change factor',16,'change_factor'),(48,'Can delete factor',16,'delete_factor'),(49,'Can add sector',17,'add_sector'),(50,'Can change sector',17,'change_sector'),(51,'Can delete sector',17,'delete_sector'),(52,'Can add proposal vote',18,'add_proposalvote'),(53,'Can change proposal vote',18,'change_proposalvote'),(54,'Can delete proposal vote',18,'delete_proposalvote'),(55,'Can add letter vote',19,'add_lettervote'),(56,'Can change letter vote',19,'change_lettervote'),(57,'Can delete letter vote',19,'delete_lettervote'),(58,'Can add user profile',20,'add_userprofile'),(59,'Can change user profile',20,'change_userprofile'),(60,'Can delete user profile',20,'delete_userprofile'),(61,'Can add comment',21,'add_comment'),(62,'Can change comment',21,'change_comment'),(63,'Can delete comment',21,'delete_comment'),(64,'Can add discussion',22,'add_discussion'),(65,'Can change discussion',22,'change_discussion'),(66,'Can delete discussion',22,'delete_discussion'),(67,'Can add discussion vote',23,'add_discussionvote'),(68,'Can change discussion vote',23,'change_discussionvote'),(69,'Can delete discussion vote',23,'delete_discussionvote'),(70,'Can add reply',24,'add_reply'),(71,'Can change reply',24,'change_reply'),(72,'Can delete reply',24,'delete_reply'),(73,'Can add reply vote',25,'add_replyvote'),(74,'Can change reply vote',25,'change_replyvote'),(75,'Can delete reply vote',25,'delete_replyvote'),(76,'Can add comment vote',26,'add_commentvote'),(77,'Can change comment vote',26,'change_commentvote'),(78,'Can delete comment vote',26,'delete_commentvote');
 /*!40000 ALTER TABLE `auth_permission` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -213,7 +213,7 @@ CREATE TABLE `digidemo_capability` (
   `sector_id` int(11) NOT NULL,
   PRIMARY KEY (`id`),
   KEY `digidemo_capability_663ed8c9` (`sector_id`),
-  CONSTRAINT `sector_id_refs_id_84257dfd` FOREIGN KEY (`sector_id`) REFERENCES `digidemo_sector` (`id`)
+  CONSTRAINT `sector_id_refs_id_5a36480220d799ed` FOREIGN KEY (`sector_id`) REFERENCES `digidemo_sector` (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=17 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -236,15 +236,17 @@ DROP TABLE IF EXISTS `digidemo_comment`;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `digidemo_comment` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
+  `user_id` int(11) NOT NULL,
   `letter_id` int(11) NOT NULL,
   `body` varchar(512) NOT NULL,
-  `score` smallint(6) NOT NULL,
-  `user_id` int(11) NOT NULL,
+  `score` smallint(6) NOT NULL DEFAULT '0',
+  `creation_date` datetime NOT NULL,
+  `last_modified` datetime NOT NULL,
   PRIMARY KEY (`id`),
-  KEY `digidemo_comment_45f341a0` (`letter_id`),
   KEY `digidemo_comment_6340c63c` (`user_id`),
-  CONSTRAINT `user_id_refs_id_b202d78c` FOREIGN KEY (`user_id`) REFERENCES `auth_user` (`id`),
-  CONSTRAINT `letter_id_refs_id_549c5f06` FOREIGN KEY (`letter_id`) REFERENCES `digidemo_letter` (`id`)
+  KEY `digidemo_comment_45f341a0` (`letter_id`),
+  CONSTRAINT `letter_id_refs_id_b67a4ed63200129` FOREIGN KEY (`letter_id`) REFERENCES `digidemo_letter` (`id`),
+  CONSTRAINT `user_id_refs_id_29113dd6c891dc2e` FOREIGN KEY (`user_id`) REFERENCES `auth_user` (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=14 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -254,7 +256,7 @@ CREATE TABLE `digidemo_comment` (
 
 LOCK TABLES `digidemo_comment` WRITE;
 /*!40000 ALTER TABLE `digidemo_comment` DISABLE KEYS */;
-REPLACE INTO `digidemo_comment` (`id`, `letter_id`, `body`, `score`, `user_id`) VALUES (1,1,'@normaluser I agree with you but I think that you should consider offering some concrete evidence for what you are saying -- back up how the environmental losses will arise and why they are certain.  There\'s plenty of facts in the issue \nwiki to choose from.',1,1),(2,1,'ll',0,1),(3,1,'lll\r\n',0,1),(4,1,'bic!',0,1),(5,1,'super',0,1),(6,14,'lame!',0,1),(7,1,'kilp',0,1),(8,1,'froze',0,1),(9,1,'Blip',0,1),(10,40,'Jimmi',0,1),(11,1,'james',0,1),(12,14,'blatant comment.',0,1),(13,1,'pequifi',0,1);
+REPLACE INTO `digidemo_comment` (`id`, `user_id`, `letter_id`, `body`, `score`, `creation_date`, `last_modified`) VALUES (1,1,1,'@normaluser I agree with you but I think that you should consider offering some concrete evidence for what you are saying -- back up how the environmental losses will arise and why they are certain.  There\'s plenty of facts in the issue \nwiki to choose from.',1,'0000-00-00 00:00:00','0000-00-00 00:00:00'),(2,1,1,'ll',0,'0000-00-00 00:00:00','0000-00-00 00:00:00'),(3,1,1,'lll\r\n',0,'0000-00-00 00:00:00','0000-00-00 00:00:00'),(4,1,1,'bic!',0,'0000-00-00 00:00:00','0000-00-00 00:00:00'),(5,1,1,'super',0,'0000-00-00 00:00:00','0000-00-00 00:00:00'),(6,1,14,'lame!',0,'0000-00-00 00:00:00','0000-00-00 00:00:00'),(7,1,1,'kilp',0,'0000-00-00 00:00:00','0000-00-00 00:00:00'),(8,1,1,'froze',0,'0000-00-00 00:00:00','0000-00-00 00:00:00'),(9,1,1,'Blip',0,'0000-00-00 00:00:00','0000-00-00 00:00:00'),(10,1,40,'Jimmi',0,'0000-00-00 00:00:00','0000-00-00 00:00:00'),(11,1,1,'james',0,'0000-00-00 00:00:00','0000-00-00 00:00:00'),(12,1,14,'blatant comment.',0,'0000-00-00 00:00:00','0000-00-00 00:00:00'),(13,1,1,'pequifi',0,'0000-00-00 00:00:00','0000-00-00 00:00:00');
 /*!40000 ALTER TABLE `digidemo_comment` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -269,13 +271,15 @@ CREATE TABLE `digidemo_commentvote` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `user_id` int(11) NOT NULL,
   `valence` smallint(6) NOT NULL,
+  `creation_date` datetime NOT NULL,
+  `last_modified` datetime NOT NULL,
   `target_id` int(11) NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `digidemo_commentvote_user_id_4530cab3fc8005b8_uniq` (`user_id`,`target_id`),
   KEY `digidemo_commentvote_6340c63c` (`user_id`),
   KEY `digidemo_commentvote_70bfdfd1` (`target_id`),
-  CONSTRAINT `target_id_refs_id_29c7728e` FOREIGN KEY (`target_id`) REFERENCES `digidemo_comment` (`id`),
-  CONSTRAINT `user_id_refs_id_5b5404b8` FOREIGN KEY (`user_id`) REFERENCES `auth_user` (`id`)
+  CONSTRAINT `target_id_refs_id_29520103d8d3039f` FOREIGN KEY (`target_id`) REFERENCES `digidemo_comment` (`id`),
+  CONSTRAINT `user_id_refs_id_44d67432bdf3999a` FOREIGN KEY (`user_id`) REFERENCES `auth_user` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -301,15 +305,15 @@ CREATE TABLE `digidemo_discussion` (
   `title` varchar(256) NOT NULL,
   `body` longtext NOT NULL,
   `user_id` int(11) NOT NULL,
-  `score` smallint(6) NOT NULL,
-  `is_open` tinyint(1) NOT NULL,
-  `creation_date` date NOT NULL,
-  `last_activity_date` date NOT NULL,
+  `score` smallint(6) NOT NULL DEFAULT '0',
+  `is_open` tinyint(1) NOT NULL DEFAULT '0',
+  `creation_date` datetime NOT NULL,
+  `last_activity_date` datetime NOT NULL,
   PRIMARY KEY (`id`),
   KEY `digidemo_discussion_ad574d3c` (`proposal_id`),
   KEY `digidemo_discussion_6340c63c` (`user_id`),
-  CONSTRAINT `user_id_refs_id_dc56e1ff` FOREIGN KEY (`user_id`) REFERENCES `auth_user` (`id`),
-  CONSTRAINT `proposal_id_refs_id_67b12962` FOREIGN KEY (`proposal_id`) REFERENCES `digidemo_proposal` (`id`)
+  CONSTRAINT `user_id_refs_id_5908f5fb4ab911d0` FOREIGN KEY (`user_id`) REFERENCES `auth_user` (`id`),
+  CONSTRAINT `proposal_id_refs_id_76313396dd66fbf1` FOREIGN KEY (`proposal_id`) REFERENCES `digidemo_proposal` (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -319,7 +323,7 @@ CREATE TABLE `digidemo_discussion` (
 
 LOCK TABLES `digidemo_discussion` WRITE;
 /*!40000 ALTER TABLE `digidemo_discussion` DISABLE KEYS */;
-REPLACE INTO `digidemo_discussion` (`id`, `proposal_id`, `title`, `body`, `user_id`, `score`, `is_open`, `creation_date`, `last_activity_date`) VALUES (1,1,'Social Factors','I think that we need more material covering the social factors of this proposal.  There is only a brief mention of the displacement of people.  It would be better to get some statistics together on how many people are likely to be displaced, and how this w I think that we need more material covering the social factors of this proposal.  There is only a brief mention of the displacement of people.  It would be better to get some statistics together on how many people are likely to be displaced, and how this w',1,2,1,'2014-06-30','2014-07-08'),(2,1,'Social Factors','I think that we need more material covering the social factors of this proposal.  There is only a brief mention of the displacement of people.  It would be better to get some statistics together on how many people are likely to be displaced, and how this w I think that we need more material covering the social factors of this proposal.  There is only a brief mention of the displacement of people.  It would be better to get some statistics together on how many people are likely to be displaced, and how this w',1,1,1,'2014-07-04','2014-07-04');
+REPLACE INTO `digidemo_discussion` (`id`, `proposal_id`, `title`, `body`, `user_id`, `score`, `is_open`, `creation_date`, `last_activity_date`) VALUES (1,1,'Social Factors','I think that we need more material covering the social factors of this proposal.  There is only a brief mention of the displacement of people.  It would be better to get some statistics together on how many people are likely to be displaced, and how this w I think that we need more material covering the social factors of this proposal.  There is only a brief mention of the displacement of people.  It would be better to get some statistics together on how many people are likely to be displaced, and how this w',1,2,1,'2014-06-30 00:00:00','2014-07-08 00:00:00'),(2,1,'Social Factors','I think that we need more material covering the social factors of this proposal.  There is only a brief mention of the displacement of people.  It would be better to get some statistics together on how many people are likely to be displaced, and how this w I think that we need more material covering the social factors of this proposal.  There is only a brief mention of the displacement of people.  It would be better to get some statistics together on how many people are likely to be displaced, and how this w',1,1,1,'2014-07-04 00:00:00','2014-07-04 00:00:00');
 /*!40000 ALTER TABLE `digidemo_discussion` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -334,13 +338,15 @@ CREATE TABLE `digidemo_discussionvote` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `user_id` int(11) NOT NULL,
   `valence` smallint(6) NOT NULL,
+  `creation_date` datetime NOT NULL,
+  `last_modified` datetime NOT NULL,
   `target_id` int(11) NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `digidemo_discussionvote_user_id_5285bcac4a3c370e_uniq` (`user_id`,`target_id`),
   KEY `digidemo_discussionvote_6340c63c` (`user_id`),
   KEY `digidemo_discussionvote_70bfdfd1` (`target_id`),
-  CONSTRAINT `target_id_refs_id_4355b2d1` FOREIGN KEY (`target_id`) REFERENCES `digidemo_discussion` (`id`),
-  CONSTRAINT `user_id_refs_id_ae8336d4` FOREIGN KEY (`user_id`) REFERENCES `auth_user` (`id`)
+  CONSTRAINT `target_id_refs_id_f53e3bb16842971` FOREIGN KEY (`target_id`) REFERENCES `digidemo_discussion` (`id`),
+  CONSTRAINT `user_id_refs_id_5572b405898ee8d4` FOREIGN KEY (`user_id`) REFERENCES `auth_user` (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -350,7 +356,7 @@ CREATE TABLE `digidemo_discussionvote` (
 
 LOCK TABLES `digidemo_discussionvote` WRITE;
 /*!40000 ALTER TABLE `digidemo_discussionvote` DISABLE KEYS */;
-REPLACE INTO `digidemo_discussionvote` (`id`, `user_id`, `valence`, `target_id`) VALUES (1,1,1,1),(2,1,-1,2);
+REPLACE INTO `digidemo_discussionvote` (`id`, `user_id`, `valence`, `creation_date`, `last_modified`, `target_id`) VALUES (1,1,1,'0000-00-00 00:00:00','0000-00-00 00:00:00',1),(2,1,-1,'0000-00-00 00:00:00','0000-00-00 00:00:00',2);
 /*!40000 ALTER TABLE `digidemo_discussionvote` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -367,11 +373,13 @@ CREATE TABLE `digidemo_factor` (
   `description` varchar(256) NOT NULL,
   `capability_id` int(11) NOT NULL,
   `valence` smallint(6) NOT NULL,
+  `creation_date` datetime NOT NULL,
+  `last_modified` datetime NOT NULL,
   PRIMARY KEY (`id`),
   KEY `digidemo_factor_ad574d3c` (`proposal_id`),
   KEY `digidemo_factor_567242ae` (`capability_id`),
-  CONSTRAINT `capability_id_refs_id_7b69deb5` FOREIGN KEY (`capability_id`) REFERENCES `digidemo_capability` (`id`),
-  CONSTRAINT `proposal_id_refs_id_34acf33f` FOREIGN KEY (`proposal_id`) REFERENCES `digidemo_proposal` (`id`)
+  CONSTRAINT `capability_id_refs_id_3c0f3df101a6bb58` FOREIGN KEY (`capability_id`) REFERENCES `digidemo_capability` (`id`),
+  CONSTRAINT `proposal_id_refs_id_7d4b68241787b5ea` FOREIGN KEY (`proposal_id`) REFERENCES `digidemo_proposal` (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -381,7 +389,7 @@ CREATE TABLE `digidemo_factor` (
 
 LOCK TABLES `digidemo_factor` WRITE;
 /*!40000 ALTER TABLE `digidemo_factor` DISABLE KEYS */;
-REPLACE INTO `digidemo_factor` (`id`, `proposal_id`, `description`, `capability_id`, `valence`) VALUES (1,1,'Transport of crude oil by pipeline is safer than by truck and train, which are the current alternatives',13,1),(2,1,'The operation of pipelines for the transport of crude oil poses environmental risks due to the eventuality of leaks',4,-1),(3,1,'Canada\'s readiness to make use of its natural resources will be increased',11,1),(4,1,'Facilitating the development of the tarsands will create additional wealth and income in Canada.',15,1);
+REPLACE INTO `digidemo_factor` (`id`, `proposal_id`, `description`, `capability_id`, `valence`, `creation_date`, `last_modified`) VALUES (1,1,'Transport of crude oil by pipeline is safer than by truck and train, which are the current alternatives',13,1,'0000-00-00 00:00:00','0000-00-00 00:00:00'),(2,1,'The operation of pipelines for the transport of crude oil poses environmental risks due to the eventuality of leaks',4,-1,'0000-00-00 00:00:00','0000-00-00 00:00:00'),(3,1,'Canada\'s readiness to make use of its natural resources will be increased',11,1,'0000-00-00 00:00:00','0000-00-00 00:00:00'),(4,1,'Facilitating the development of the tarsands will create additional wealth and income in Canada.',15,1,'0000-00-00 00:00:00','0000-00-00 00:00:00');
 /*!40000 ALTER TABLE `digidemo_factor` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -397,16 +405,18 @@ CREATE TABLE `digidemo_letter` (
   `parent_letter_id` int(11) DEFAULT NULL,
   `proposal_id` int(11) NOT NULL,
   `valence` smallint(6) NOT NULL,
-  `body` longtext NOT NULL,
-  `score` smallint(6) NOT NULL,
   `user_id` int(11) NOT NULL,
+  `body` longtext NOT NULL,
+  `score` smallint(6) NOT NULL DEFAULT '0',
+  `creation_date` datetime NOT NULL,
+  `last_modified` datetime NOT NULL,
   PRIMARY KEY (`id`),
   KEY `digidemo_letter_b0eaace7` (`parent_letter_id`),
   KEY `digidemo_letter_ad574d3c` (`proposal_id`),
   KEY `digidemo_letter_6340c63c` (`user_id`),
-  CONSTRAINT `user_id_refs_id_747eea8b` FOREIGN KEY (`user_id`) REFERENCES `auth_user` (`id`),
-  CONSTRAINT `parent_letter_id_refs_id_5234e149` FOREIGN KEY (`parent_letter_id`) REFERENCES `digidemo_letter` (`id`),
-  CONSTRAINT `proposal_id_refs_id_a3d9d864` FOREIGN KEY (`proposal_id`) REFERENCES `digidemo_proposal` (`id`)
+  CONSTRAINT `user_id_refs_id_6821755b83d0f908` FOREIGN KEY (`user_id`) REFERENCES `auth_user` (`id`),
+  CONSTRAINT `parent_letter_id_refs_id_1e7f08641d5dd8c3` FOREIGN KEY (`parent_letter_id`) REFERENCES `digidemo_letter` (`id`),
+  CONSTRAINT `proposal_id_refs_id_bccc6ffa9c011b9` FOREIGN KEY (`proposal_id`) REFERENCES `digidemo_proposal` (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=46 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -416,7 +426,7 @@ CREATE TABLE `digidemo_letter` (
 
 LOCK TABLES `digidemo_letter` WRITE;
 /*!40000 ALTER TABLE `digidemo_letter` DISABLE KEYS */;
-REPLACE INTO `digidemo_letter` (`id`, `parent_letter_id`, `proposal_id`, `valence`, `body`, `score`, `user_id`) VALUES (1,NULL,1,-1,'I do not support the project to expand the Keystone Pipeline System.  This proposal generates serious and certain  environmental losses, which do not justify the economic gains.  Furthermore, the development will bring wealth mainly to foreign shareholders, so that the actual economic gains will be much less than they should  be.',1,2),(14,NULL,1,0,'A new letter!',0,2),(16,NULL,1,1,'aoeu',0,2),(38,14,1,0,'A new letter!',0,1),(39,1,1,-1,'I do not support the project to expand the Keystone Pipeline System.  This proposal generates serious and certain  environmental losses, which do not justify the economic gains.  Furthermore, the development will bring wealth mainly to foreign shareholders, so that the actual economic gains will be much less than they should  be.',0,1),(40,NULL,1,1,'Wadatay',0,1),(41,1,1,-1,'I do not support the project to expand the Keystone Pipeline System.  This proposal generates serious and certain  environmental losses, which do not justify the economic gains.  Furthermore, the development will bring wealth mainly to foreign shareholders, so that the actual economic gains will be much less than they should  be.',0,1),(42,1,1,-1,'I do not support the project to expand the Keystone Pipeline System.  This proposal generates serious and certain  environmental losses, which do not justify the economic gains.  Furthermore, the development will bring wealth mainly to foreign shareholders, so that the actual economic gains will be much less than they should  be.',0,1),(43,1,1,-1,'I do not support the project to expand the Keystone Pipeline System.  This proposal generates serious and certain  environmental losses, which do not justify the economic gains.  Furthermore, the development will bring wealth mainly to foreign shareholders, so that the actual economic gains will be much less than they should  be.',0,1),(44,16,1,1,'aoeu',0,1),(45,1,1,-1,'I do not support the project to expand the Keystone Pipeline System.  This proposal generates serious and certain  environmental losses, which do not justify the economic gains.  Furthermore, the development will bring wealth mainly to foreign shareholders, so that the actual economic gains will be much less than they should  be.',0,1);
+REPLACE INTO `digidemo_letter` (`id`, `parent_letter_id`, `proposal_id`, `valence`, `user_id`, `body`, `score`, `creation_date`, `last_modified`) VALUES (1,NULL,1,-1,2,'I do not support the project to expand the Keystone Pipeline System.  This proposal generates serious and certain  environmental losses, which do not justify the economic gains.  Furthermore, the development will bring wealth mainly to foreign shareholders, so that the actual economic gains will be much less than they should  be.',1,'0000-00-00 00:00:00','0000-00-00 00:00:00'),(14,NULL,1,0,2,'A new letter!',0,'0000-00-00 00:00:00','0000-00-00 00:00:00'),(16,NULL,1,1,2,'aoeu',0,'0000-00-00 00:00:00','0000-00-00 00:00:00'),(38,14,1,0,1,'A new letter!',0,'0000-00-00 00:00:00','0000-00-00 00:00:00'),(39,1,1,-1,1,'I do not support the project to expand the Keystone Pipeline System.  This proposal generates serious and certain  environmental losses, which do not justify the economic gains.  Furthermore, the development will bring wealth mainly to foreign shareholders, so that the actual economic gains will be much less than they should  be.',0,'0000-00-00 00:00:00','0000-00-00 00:00:00'),(40,NULL,1,1,1,'Wadatay',0,'0000-00-00 00:00:00','0000-00-00 00:00:00'),(41,1,1,-1,1,'I do not support the project to expand the Keystone Pipeline System.  This proposal generates serious and certain  environmental losses, which do not justify the economic gains.  Furthermore, the development will bring wealth mainly to foreign shareholders, so that the actual economic gains will be much less than they should  be.',0,'0000-00-00 00:00:00','0000-00-00 00:00:00'),(42,1,1,-1,1,'I do not support the project to expand the Keystone Pipeline System.  This proposal generates serious and certain  environmental losses, which do not justify the economic gains.  Furthermore, the development will bring wealth mainly to foreign shareholders, so that the actual economic gains will be much less than they should  be.',0,'0000-00-00 00:00:00','0000-00-00 00:00:00'),(43,1,1,-1,1,'I do not support the project to expand the Keystone Pipeline System.  This proposal generates serious and certain  environmental losses, which do not justify the economic gains.  Furthermore, the development will bring wealth mainly to foreign shareholders, so that the actual economic gains will be much less than they should  be.',0,'0000-00-00 00:00:00','0000-00-00 00:00:00'),(44,16,1,1,1,'aoeu',0,'0000-00-00 00:00:00','0000-00-00 00:00:00'),(45,1,1,-1,1,'I do not support the project to expand the Keystone Pipeline System.  This proposal generates serious and certain  environmental losses, which do not justify the economic gains.  Furthermore, the development will bring wealth mainly to foreign shareholders, so that the actual economic gains will be much less than they should  be.',0,'0000-00-00 00:00:00','0000-00-00 00:00:00');
 /*!40000 ALTER TABLE `digidemo_letter` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -435,8 +445,8 @@ CREATE TABLE `digidemo_letter_recipients` (
   UNIQUE KEY `digidemo_letter_recipients_letter_id_7632fb1660808629_uniq` (`letter_id`,`position_id`),
   KEY `digidemo_letter_recipients_45f341a0` (`letter_id`),
   KEY `digidemo_letter_recipients_1f456125` (`position_id`),
-  CONSTRAINT `position_id_refs_id_0e734fb2` FOREIGN KEY (`position_id`) REFERENCES `digidemo_position` (`id`),
-  CONSTRAINT `letter_id_refs_id_72f69299` FOREIGN KEY (`letter_id`) REFERENCES `digidemo_letter` (`id`)
+  CONSTRAINT `position_id_refs_id_5aa39d667c602672` FOREIGN KEY (`position_id`) REFERENCES `digidemo_position` (`id`),
+  CONSTRAINT `letter_id_refs_id_3de7646f71c38497` FOREIGN KEY (`letter_id`) REFERENCES `digidemo_letter` (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=46 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -461,13 +471,15 @@ CREATE TABLE `digidemo_lettervote` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `user_id` int(11) NOT NULL,
   `valence` smallint(6) NOT NULL,
+  `creation_date` datetime NOT NULL,
+  `last_modified` datetime NOT NULL,
   `target_id` int(11) NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `digidemo_lettervote_user_id_67abd4fb259aeed2_uniq` (`user_id`,`target_id`),
   KEY `digidemo_lettervote_6340c63c` (`user_id`),
   KEY `digidemo_lettervote_70bfdfd1` (`target_id`),
-  CONSTRAINT `target_id_refs_id_2b6488e6` FOREIGN KEY (`target_id`) REFERENCES `digidemo_letter` (`id`),
-  CONSTRAINT `user_id_refs_id_955f482c` FOREIGN KEY (`user_id`) REFERENCES `auth_user` (`id`)
+  CONSTRAINT `target_id_refs_id_50c6d78f2099dbd7` FOREIGN KEY (`target_id`) REFERENCES `digidemo_letter` (`id`),
+  CONSTRAINT `user_id_refs_id_7a8f5a04916492f4` FOREIGN KEY (`user_id`) REFERENCES `auth_user` (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -477,7 +489,7 @@ CREATE TABLE `digidemo_lettervote` (
 
 LOCK TABLES `digidemo_lettervote` WRITE;
 /*!40000 ALTER TABLE `digidemo_lettervote` DISABLE KEYS */;
-REPLACE INTO `digidemo_lettervote` (`id`, `user_id`, `valence`, `target_id`) VALUES (1,1,-1,1),(2,1,0,16);
+REPLACE INTO `digidemo_lettervote` (`id`, `user_id`, `valence`, `creation_date`, `last_modified`, `target_id`) VALUES (1,1,-1,'0000-00-00 00:00:00','0000-00-00 00:00:00',1),(2,1,0,'0000-00-00 00:00:00','0000-00-00 00:00:00',16);
 /*!40000 ALTER TABLE `digidemo_lettervote` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -495,6 +507,8 @@ CREATE TABLE `digidemo_organization` (
   `legal_classification` varchar(48) NOT NULL,
   `revenue` bigint(20) NOT NULL,
   `operations_summary` longtext NOT NULL,
+  `creation_date` datetime NOT NULL,
+  `last_modified` datetime NOT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -505,7 +519,7 @@ CREATE TABLE `digidemo_organization` (
 
 LOCK TABLES `digidemo_organization` WRITE;
 /*!40000 ALTER TABLE `digidemo_organization` DISABLE KEYS */;
-REPLACE INTO `digidemo_organization` (`id`, `short_name`, `legal_name`, `legal_classification`, `revenue`, `operations_summary`) VALUES (1,'The Conservative Party of Canada','The Conservative Party of Canada','NPT',-1,'Stephen Harper’s Conservative Government is focused on the priorities of Canadians – job creation and economic growth.\nWith the support of our Economic Action Plan, the Canadian economy has created approximately one million net new jobs since the depths of the global economic recession.  While the job isn’t done yet, this job creation record is the best in the G7 and shows that Canada is on the right track.');
+REPLACE INTO `digidemo_organization` (`id`, `short_name`, `legal_name`, `legal_classification`, `revenue`, `operations_summary`, `creation_date`, `last_modified`) VALUES (1,'The Conservative Party of Canada','The Conservative Party of Canada','NPT',-1,'Stephen Harper’s Conservative Government is focused on the priorities of Canadians – job creation and economic growth.\nWith the support of our Economic Action Plan, the Canadian economy has created approximately one million net new jobs since the depths of the global economic recession.  While the job isn’t done yet, this job creation record is the best in the G7 and shows that Canada is on the right track.','0000-00-00 00:00:00','0000-00-00 00:00:00');
 /*!40000 ALTER TABLE `digidemo_organization` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -523,6 +537,8 @@ CREATE TABLE `digidemo_person` (
   `portrait_url` varchar(256) NOT NULL,
   `wikipedia_url` varchar(256) NOT NULL,
   `bio_summary` longtext NOT NULL,
+  `creation_date` datetime NOT NULL,
+  `last_modified` datetime NOT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -533,7 +549,7 @@ CREATE TABLE `digidemo_person` (
 
 LOCK TABLES `digidemo_person` WRITE;
 /*!40000 ALTER TABLE `digidemo_person` DISABLE KEYS */;
-REPLACE INTO `digidemo_person` (`id`, `fname`, `lname`, `portrait_url`, `wikipedia_url`, `bio_summary`) VALUES (1,'stephen','harper','http://upload.wikimedia.org/wikipedia/commons/thumb/1/12/Stephen_Harper_by_Remy_Steinegger.jpg/800px-Stephen_Harper_by_Remy_Steinegger.jpg','http://en.wikipedia.org/wiki/Stephen_Harper','Stephen Joseph Harper (born April 30, 1959) is a Canadian politician who is the 22nd and current Prime Minister of Canada and the Leader of the Conservative Party. Harper became prime minister in 2006, forming a minority government after the 2006 election. He is the first prime minister to come from the newly reconstituted Conservative Party, which formed after a merger of the Progressive Conservative Party and the Canadian Alliance.');
+REPLACE INTO `digidemo_person` (`id`, `fname`, `lname`, `portrait_url`, `wikipedia_url`, `bio_summary`, `creation_date`, `last_modified`) VALUES (1,'stephen','harper','http://upload.wikimedia.org/wikipedia/commons/thumb/1/12/Stephen_Harper_by_Remy_Steinegger.jpg/800px-Stephen_Harper_by_Remy_Steinegger.jpg','http://en.wikipedia.org/wiki/Stephen_Harper','Stephen Joseph Harper (born April 30, 1959) is a Canadian politician who is the 22nd and current Prime Minister of Canada and the Leader of the Conservative Party. Harper became prime minister in 2006, forming a minority government after the 2006 election. He is the first prime minister to come from the newly reconstituted Conservative Party, which formed after a merger of the Progressive Conservative Party and the Canadian Alliance.','0000-00-00 00:00:00','0000-00-00 00:00:00');
 /*!40000 ALTER TABLE `digidemo_person` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -553,11 +569,13 @@ CREATE TABLE `digidemo_position` (
   `telephone` varchar(14) NOT NULL,
   `email` varchar(254) NOT NULL,
   `mandate_summary` longtext NOT NULL,
+  `creation_date` datetime NOT NULL,
+  `last_modified` datetime NOT NULL,
   PRIMARY KEY (`id`),
   KEY `digidemo_position_16f39487` (`person_id`),
   KEY `digidemo_position_de772da3` (`organization_id`),
-  CONSTRAINT `organization_id_refs_id_e8072702` FOREIGN KEY (`organization_id`) REFERENCES `digidemo_organization` (`id`),
-  CONSTRAINT `person_id_refs_id_791b385c` FOREIGN KEY (`person_id`) REFERENCES `digidemo_person` (`id`)
+  CONSTRAINT `organization_id_refs_id_2fd159c54309c761` FOREIGN KEY (`organization_id`) REFERENCES `digidemo_organization` (`id`),
+  CONSTRAINT `person_id_refs_id_2b2bd94aa4d9cb63` FOREIGN KEY (`person_id`) REFERENCES `digidemo_person` (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -567,7 +585,7 @@ CREATE TABLE `digidemo_position` (
 
 LOCK TABLES `digidemo_position` WRITE;
 /*!40000 ALTER TABLE `digidemo_position` DISABLE KEYS */;
-REPLACE INTO `digidemo_position` (`id`, `name`, `person_id`, `organization_id`, `salary`, `telephone`, `email`, `mandate_summary`) VALUES (1,'Prime minister of Canada',1,1,317574.00,'613-992-4211','stephen.harper@parl.gc.ca','');
+REPLACE INTO `digidemo_position` (`id`, `name`, `person_id`, `organization_id`, `salary`, `telephone`, `email`, `mandate_summary`, `creation_date`, `last_modified`) VALUES (1,'Prime minister of Canada',1,1,317574.00,'613-992-4211','stephen.harper@parl.gc.ca','','0000-00-00 00:00:00','0000-00-00 00:00:00');
 /*!40000 ALTER TABLE `digidemo_position` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -583,15 +601,15 @@ CREATE TABLE `digidemo_proposal` (
   `name` varchar(256) NOT NULL,
   `title` varchar(256) NOT NULL,
   `text` longtext NOT NULL,
-  `is_published` tinyint(1) NOT NULL,
-  `last_modified` date NOT NULL,
-  `creation_date` date NOT NULL,
-  `score` smallint(6) NOT NULL,
-  `proposal_image` varchar(100) NOT NULL,
+  `is_published` tinyint(1) NOT NULL DEFAULT '0',
+  `last_modified` datetime NOT NULL,
+  `creation_date` datetime NOT NULL,
   `user_id` int(11) NOT NULL,
+  `score` smallint(6) NOT NULL DEFAULT '0',
+  `proposal_image` varchar(100) NOT NULL DEFAULT '/digidemo/proposal-images/',
   PRIMARY KEY (`id`),
   KEY `digidemo_proposal_6340c63c` (`user_id`),
-  CONSTRAINT `user_id_refs_id_1f8c5260` FOREIGN KEY (`user_id`) REFERENCES `auth_user` (`id`)
+  CONSTRAINT `user_id_refs_id_2e7aa04be35b0cd4` FOREIGN KEY (`user_id`) REFERENCES `auth_user` (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -601,7 +619,7 @@ CREATE TABLE `digidemo_proposal` (
 
 LOCK TABLES `digidemo_proposal` WRITE;
 /*!40000 ALTER TABLE `digidemo_proposal` DISABLE KEYS */;
-REPLACE INTO `digidemo_proposal` (`id`, `name`, `title`, `text`, `is_published`, `last_modified`, `creation_date`, `score`, `proposal_image`, `user_id`) VALUES (1,'keystone_xl','Keystone XL Pipeline Extension','The Keystone XL Pipeline is a proposed extension to the existing Keystone Pipeline System, put forward by TransCanada, the corporation that owns the Keystone System. The pipeline would cross the Canada/US border, importing crude oil sourced from the Albertan oil sands, into the United States. The proposal is currently awaiting government approval. The pipeline would be newly constructed, and is similar to existing pipelines in North America.\n\nThe Keystone XL pipeline project is a contentious political issue, owing to probable environmental, economic, and social impacts. Environmentally, the pipeline might present a risk of contaminating groundwater and disturbing sensitive ecosystems, but it might also be a better alternative than ground transport by train or truck. Economically, the pipeline might produce jobs temporarily during its construction, and permanently in additional refinement activities in the US. It would also lead to a redistribution of crude supply, emphasizing export and raising the price of oil in the Midwestern US. Socially, the construction of the pipeline would disturb landowners currently in its path, and would disturb heritage sites of cultural significance.',1,'2014-07-08','2014-06-15',2,'/digidemo/proposal-images/',1),(2,'test1','no factors','this proposal has no factors',1,'2014-07-08','2014-06-20',33,'/digidemo/proposal-images/',1),(3,'Quebec','Quebec','a',1,'2014-07-08','2014-02-10',-7,'',1);
+REPLACE INTO `digidemo_proposal` (`id`, `name`, `title`, `text`, `is_published`, `last_modified`, `creation_date`, `user_id`, `score`, `proposal_image`) VALUES (1,'keystone_xl','Keystone XL Pipeline Extension','The Keystone XL Pipeline is a proposed extension to the existing Keystone Pipeline System, put forward by TransCanada, the corporation that owns the Keystone System. The pipeline would cross the Canada/US border, importing crude oil sourced from the Albertan oil sands, into the United States. The proposal is currently awaiting government approval. The pipeline would be newly constructed, and is similar to existing pipelines in North America.\n\nThe Keystone XL pipeline project is a contentious political issue, owing to probable environmental, economic, and social impacts. Environmentally, the pipeline might present a risk of contaminating groundwater and disturbing sensitive ecosystems, but it might also be a better alternative than ground transport by train or truck. Economically, the pipeline might produce jobs temporarily during its construction, and permanently in additional refinement activities in the US. It would also lead to a redistribution of crude supply, emphasizing export and raising the price of oil in the Midwestern US. Socially, the construction of the pipeline would disturb landowners currently in its path, and would disturb heritage sites of cultural significance.',1,'2014-07-08 00:00:00','2014-06-15 00:00:00',1,2,'/digidemo/proposal-images/'),(2,'test1','no factors','this proposal has no factors',1,'2014-07-08 00:00:00','2014-06-20 00:00:00',1,33,'/digidemo/proposal-images/'),(3,'Quebec','Quebec','a',1,'2014-07-08 00:00:00','2014-02-10 00:00:00',1,-7,'');
 /*!40000 ALTER TABLE `digidemo_proposal` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -620,8 +638,8 @@ CREATE TABLE `digidemo_proposal_sector` (
   UNIQUE KEY `digidemo_proposal_sector_proposal_id_7b9ae77beabec166_uniq` (`proposal_id`,`sector_id`),
   KEY `digidemo_proposal_sector_ad574d3c` (`proposal_id`),
   KEY `digidemo_proposal_sector_663ed8c9` (`sector_id`),
-  CONSTRAINT `sector_id_refs_id_85342870` FOREIGN KEY (`sector_id`) REFERENCES `digidemo_sector` (`id`),
-  CONSTRAINT `proposal_id_refs_id_f31a0883` FOREIGN KEY (`proposal_id`) REFERENCES `digidemo_proposal` (`id`)
+  CONSTRAINT `sector_id_refs_id_31da56d1fd009a13` FOREIGN KEY (`sector_id`) REFERENCES `digidemo_sector` (`id`),
+  CONSTRAINT `proposal_id_refs_id_2d8bcd7a7cb11807` FOREIGN KEY (`proposal_id`) REFERENCES `digidemo_proposal` (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -646,13 +664,15 @@ CREATE TABLE `digidemo_proposalvote` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `user_id` int(11) NOT NULL,
   `valence` smallint(6) NOT NULL,
+  `creation_date` datetime NOT NULL,
+  `last_modified` datetime NOT NULL,
   `target_id` int(11) NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `digidemo_proposalvote_user_id_740d737b332c4512_uniq` (`user_id`,`target_id`),
   KEY `digidemo_proposalvote_6340c63c` (`user_id`),
   KEY `digidemo_proposalvote_70bfdfd1` (`target_id`),
-  CONSTRAINT `target_id_refs_id_2722b1c2` FOREIGN KEY (`target_id`) REFERENCES `digidemo_proposal` (`id`),
-  CONSTRAINT `user_id_refs_id_baf64dae` FOREIGN KEY (`user_id`) REFERENCES `auth_user` (`id`)
+  CONSTRAINT `target_id_refs_id_27ae3b2558f67c41` FOREIGN KEY (`target_id`) REFERENCES `digidemo_proposal` (`id`),
+  CONSTRAINT `user_id_refs_id_3c8985d2f39d0a40` FOREIGN KEY (`user_id`) REFERENCES `auth_user` (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -662,7 +682,7 @@ CREATE TABLE `digidemo_proposalvote` (
 
 LOCK TABLES `digidemo_proposalvote` WRITE;
 /*!40000 ALTER TABLE `digidemo_proposalvote` DISABLE KEYS */;
-REPLACE INTO `digidemo_proposalvote` (`id`, `user_id`, `valence`, `target_id`) VALUES (1,1,1,1);
+REPLACE INTO `digidemo_proposalvote` (`id`, `user_id`, `valence`, `creation_date`, `last_modified`, `target_id`) VALUES (1,1,1,'0000-00-00 00:00:00','0000-00-00 00:00:00',1);
 /*!40000 ALTER TABLE `digidemo_proposalvote` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -678,14 +698,15 @@ CREATE TABLE `digidemo_reply` (
   `discussion_id` int(11) NOT NULL,
   `body` longtext NOT NULL,
   `user_id` int(11) NOT NULL,
-  `score` smallint(6) NOT NULL,
-  `is_open` tinyint(1) NOT NULL,
-  `creation_date` date NOT NULL,
+  `score` smallint(6) NOT NULL DEFAULT '0',
+  `is_open` tinyint(1) NOT NULL DEFAULT '0',
+  `creation_date` datetime NOT NULL,
+  `last_modified` datetime NOT NULL,
   PRIMARY KEY (`id`),
   KEY `digidemo_reply_acd02281` (`discussion_id`),
   KEY `digidemo_reply_6340c63c` (`user_id`),
-  CONSTRAINT `user_id_refs_id_9950cae7` FOREIGN KEY (`user_id`) REFERENCES `auth_user` (`id`),
-  CONSTRAINT `discussion_id_refs_id_0f0a157b` FOREIGN KEY (`discussion_id`) REFERENCES `digidemo_discussion` (`id`)
+  CONSTRAINT `user_id_refs_id_583cea9e83d27fcd` FOREIGN KEY (`user_id`) REFERENCES `auth_user` (`id`),
+  CONSTRAINT `discussion_id_refs_id_1bb70e74f8bc38d0` FOREIGN KEY (`discussion_id`) REFERENCES `digidemo_discussion` (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=28 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -695,7 +716,7 @@ CREATE TABLE `digidemo_reply` (
 
 LOCK TABLES `digidemo_reply` WRITE;
 /*!40000 ALTER TABLE `digidemo_reply` DISABLE KEYS */;
-REPLACE INTO `digidemo_reply` (`id`, `discussion_id`, `body`, `user_id`, `score`, `is_open`, `creation_date`) VALUES (24,2,'A comment.',1,0,0,'2014-07-04'),(25,2,'Another comment.',1,0,0,'2014-07-04'),(26,1,'Comment on the first discussion.',1,0,0,'2014-07-04'),(27,1,'AONETHTNH',1,0,0,'2014-07-05');
+REPLACE INTO `digidemo_reply` (`id`, `discussion_id`, `body`, `user_id`, `score`, `is_open`, `creation_date`, `last_modified`) VALUES (24,2,'A comment.',1,0,0,'2014-07-04 00:00:00','0000-00-00 00:00:00'),(25,2,'Another comment.',1,0,0,'2014-07-04 00:00:00','0000-00-00 00:00:00'),(26,1,'Comment on the first discussion.',1,0,0,'2014-07-04 00:00:00','0000-00-00 00:00:00'),(27,1,'AONETHTNH',1,0,0,'2014-07-05 00:00:00','0000-00-00 00:00:00');
 /*!40000 ALTER TABLE `digidemo_reply` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -710,13 +731,15 @@ CREATE TABLE `digidemo_replyvote` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `user_id` int(11) NOT NULL,
   `valence` smallint(6) NOT NULL,
+  `creation_date` datetime NOT NULL,
+  `last_modified` datetime NOT NULL,
   `target_id` int(11) NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `digidemo_replyvote_user_id_78c651572506a215_uniq` (`user_id`,`target_id`),
   KEY `digidemo_replyvote_6340c63c` (`user_id`),
   KEY `digidemo_replyvote_70bfdfd1` (`target_id`),
-  CONSTRAINT `target_id_refs_id_9f87ff39` FOREIGN KEY (`target_id`) REFERENCES `digidemo_reply` (`id`),
-  CONSTRAINT `user_id_refs_id_d659ef00` FOREIGN KEY (`user_id`) REFERENCES `auth_user` (`id`)
+  CONSTRAINT `target_id_refs_id_59991718e5c37e71` FOREIGN KEY (`target_id`) REFERENCES `digidemo_reply` (`id`),
+  CONSTRAINT `user_id_refs_id_7f2a7d91561319b1` FOREIGN KEY (`user_id`) REFERENCES `auth_user` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -740,6 +763,8 @@ CREATE TABLE `digidemo_sector` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `short_name` varchar(3) NOT NULL,
   `name` varchar(64) NOT NULL,
+  `creation_date` datetime NOT NULL,
+  `last_modified` datetime NOT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -750,7 +775,7 @@ CREATE TABLE `digidemo_sector` (
 
 LOCK TABLES `digidemo_sector` WRITE;
 /*!40000 ALTER TABLE `digidemo_sector` DISABLE KEYS */;
-REPLACE INTO `digidemo_sector` (`id`, `short_name`, `name`) VALUES (1,'ECO','economy'),(2,'ENV','environment'),(3,'HEA','health'),(4,'EDU','education'),(5,'IR','international relations'),(6,'SOC','society and culture'),(7,'SEC','security and readiness'),(8,'DEM','democratic mechanisms');
+REPLACE INTO `digidemo_sector` (`id`, `short_name`, `name`, `creation_date`, `last_modified`) VALUES (1,'ECO','economy','0000-00-00 00:00:00','0000-00-00 00:00:00'),(2,'ENV','environment','0000-00-00 00:00:00','0000-00-00 00:00:00'),(3,'HEA','health','0000-00-00 00:00:00','0000-00-00 00:00:00'),(4,'EDU','education','0000-00-00 00:00:00','0000-00-00 00:00:00'),(5,'IR','international relations','0000-00-00 00:00:00','0000-00-00 00:00:00'),(6,'SOC','society and culture','0000-00-00 00:00:00','0000-00-00 00:00:00'),(7,'SEC','security and readiness','0000-00-00 00:00:00','0000-00-00 00:00:00'),(8,'DEM','democratic mechanisms','0000-00-00 00:00:00','0000-00-00 00:00:00');
 /*!40000 ALTER TABLE `digidemo_sector` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -764,16 +789,16 @@ DROP TABLE IF EXISTS `digidemo_userprofile`;
 CREATE TABLE `digidemo_userprofile` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `user_id` int(11) NOT NULL,
-  `email_validated` tinyint(1) NOT NULL,
+  `email_validated` tinyint(1) NOT NULL DEFAULT '0',
   `avatar_img` varchar(100) NOT NULL,
-  `rep` int(11) NOT NULL,
+  `rep` int(11) NOT NULL DEFAULT '0',
   `street` varchar(128) NOT NULL,
   `zip_code` varchar(10) NOT NULL,
   `country` varchar(64) NOT NULL,
   `province` varchar(32) NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `user_id` (`user_id`),
-  CONSTRAINT `user_id_refs_id_7d86ea27` FOREIGN KEY (`user_id`) REFERENCES `auth_user` (`id`)
+  CONSTRAINT `user_id_refs_id_2eed54179b5eb105` FOREIGN KEY (`user_id`) REFERENCES `auth_user` (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -885,7 +910,7 @@ CREATE TABLE `south_migrationhistory` (
   `migration` varchar(255) NOT NULL,
   `applied` datetime NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -894,7 +919,7 @@ CREATE TABLE `south_migrationhistory` (
 
 LOCK TABLES `south_migrationhistory` WRITE;
 /*!40000 ALTER TABLE `south_migrationhistory` DISABLE KEYS */;
-REPLACE INTO `south_migrationhistory` (`id`, `app_name`, `migration`, `applied`) VALUES (1,'digidemo','0001_initial','2014-07-03 16:31:04'),(2,'digidemo','0002_auto','2014-07-03 16:46:56'),(3,'digidemo','0003_auto__add_discussionvote__add_unique_discussionvote_user_discussion','2014-07-04 04:19:51'),(4,'digidemo','0004_auto__add_field_discussionvote_target__del_unique_discussionvote_discu','2014-07-08 03:51:14'),(5,'digidemo','0005_move_discussion_to_target','2014-07-08 03:51:14'),(6,'digidemo','0006_auto__del_field_discussionvote_discussion__chg_field_discussionvote_ta','2014-07-08 03:54:42'),(7,'digidemo','0007_auto__add_commentvote__add_unique_commentvote_user_target__add_replyvo','2014-07-08 04:10:02'),(8,'digidemo','0008_migrate_votes','2014-07-08 04:10:02'),(9,'digidemo','0009_auto__del_field_proposalvote_proposal__chg_field_proposalvote_target__','2014-07-08 04:10:02'),(10,'digidemo','0010_auto__add_field_proposal_user__add_field_letter_user__add_field_commen','2014-07-08 05:55:12'),(11,'digidemo','0011_rename_content_author_fields_as_user','2014-07-08 05:56:23'),(12,'digidemo','0012_auto__del_field_proposal_author__chg_field_proposal_user__del_field_le','2014-07-08 05:56:24');
+REPLACE INTO `south_migrationhistory` (`id`, `app_name`, `migration`, `applied`) VALUES (1,'digidemo','0001_initial','2014-07-09 05:37:31');
 /*!40000 ALTER TABLE `south_migrationhistory` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -907,4 +932,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2014-07-08  1:56:58
+-- Dump completed on 2014-07-09  1:38:11

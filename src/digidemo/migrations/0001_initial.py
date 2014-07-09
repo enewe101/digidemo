@@ -1,18 +1,20 @@
-# -*- coding: utf-8 -*-
+# encoding: utf-8
 import datetime
 from south.db import db
 from south.v2 import SchemaMigration
 from django.db import models
 
-
 class Migration(SchemaMigration):
 
     def forwards(self, orm):
+        
         # Adding model 'Sector'
         db.create_table(u'digidemo_sector', (
             (u'id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
             ('short_name', self.gf('django.db.models.fields.CharField')(max_length=3)),
             ('name', self.gf('django.db.models.fields.CharField')(max_length=64)),
+            ('creation_date', self.gf('django.db.models.fields.DateTimeField')(auto_now_add=True, blank=True)),
+            ('last_modified', self.gf('django.db.models.fields.DateTimeField')(auto_now=True, blank=True)),
         ))
         db.send_create_signal(u'digidemo', ['Sector'])
 
@@ -37,22 +39,21 @@ class Migration(SchemaMigration):
             ('title', self.gf('django.db.models.fields.CharField')(max_length=256)),
             ('text', self.gf('django.db.models.fields.TextField')()),
             ('is_published', self.gf('django.db.models.fields.BooleanField')(default=False)),
-            ('last_modified', self.gf('django.db.models.fields.DateField')(auto_now=True, blank=True)),
-            ('creation_date', self.gf('django.db.models.fields.DateField')()),
-            ('author', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['auth.User'])),
+            ('last_modified', self.gf('django.db.models.fields.DateTimeField')(auto_now=True, blank=True)),
+            ('creation_date', self.gf('django.db.models.fields.DateTimeField')(auto_now_add=True, blank=True)),
+            ('user', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['auth.User'])),
             ('score', self.gf('django.db.models.fields.SmallIntegerField')(default=0)),
             ('proposal_image', self.gf('django.db.models.fields.files.ImageField')(default='/digidemo/proposal-images/', max_length=100)),
         ))
         db.send_create_signal(u'digidemo', ['Proposal'])
 
         # Adding M2M table for field sector on 'Proposal'
-        m2m_table_name = db.shorten_name(u'digidemo_proposal_sector')
-        db.create_table(m2m_table_name, (
+        db.create_table(u'digidemo_proposal_sector', (
             ('id', models.AutoField(verbose_name='ID', primary_key=True, auto_created=True)),
             ('proposal', models.ForeignKey(orm[u'digidemo.proposal'], null=False)),
             ('sector', models.ForeignKey(orm[u'digidemo.sector'], null=False))
         ))
-        db.create_unique(m2m_table_name, ['proposal_id', 'sector_id'])
+        db.create_unique(u'digidemo_proposal_sector', ['proposal_id', 'sector_id'])
 
         # Adding model 'Discussion'
         db.create_table(u'digidemo_discussion', (
@@ -63,8 +64,8 @@ class Migration(SchemaMigration):
             ('user', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['auth.User'])),
             ('score', self.gf('django.db.models.fields.SmallIntegerField')(default=0)),
             ('is_open', self.gf('django.db.models.fields.BooleanField')(default=False)),
-            ('creation_date', self.gf('django.db.models.fields.DateField')(auto_now_add=True, blank=True)),
-            ('last_activity_date', self.gf('django.db.models.fields.DateField')(auto_now=True, blank=True)),
+            ('creation_date', self.gf('django.db.models.fields.DateTimeField')(auto_now_add=True, blank=True)),
+            ('last_activity_date', self.gf('django.db.models.fields.DateTimeField')(auto_now=True, blank=True)),
         ))
         db.send_create_signal(u'digidemo', ['Discussion'])
 
@@ -76,21 +77,10 @@ class Migration(SchemaMigration):
             ('user', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['auth.User'])),
             ('score', self.gf('django.db.models.fields.SmallIntegerField')(default=0)),
             ('is_open', self.gf('django.db.models.fields.BooleanField')(default=False)),
-            ('creation_date', self.gf('django.db.models.fields.DateField')(auto_now_add=True, blank=True)),
+            ('creation_date', self.gf('django.db.models.fields.DateTimeField')(auto_now_add=True, blank=True)),
+            ('last_modified', self.gf('django.db.models.fields.DateTimeField')(auto_now=True, blank=True)),
         ))
         db.send_create_signal(u'digidemo', ['Reply'])
-
-        # Adding model 'ProposalVote'
-        db.create_table(u'digidemo_proposalvote', (
-            (u'id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
-            ('user', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['auth.User'])),
-            ('proposal', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['digidemo.Proposal'])),
-            ('valence', self.gf('django.db.models.fields.SmallIntegerField')()),
-        ))
-        db.send_create_signal(u'digidemo', ['ProposalVote'])
-
-        # Adding unique constraint on 'ProposalVote', fields ['user', 'proposal']
-        db.create_unique(u'digidemo_proposalvote', ['user_id', 'proposal_id'])
 
         # Adding model 'Capability'
         db.create_table(u'digidemo_capability', (
@@ -108,6 +98,8 @@ class Migration(SchemaMigration):
             ('description', self.gf('django.db.models.fields.CharField')(max_length=256)),
             ('capability', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['digidemo.Capability'])),
             ('valence', self.gf('django.db.models.fields.SmallIntegerField')()),
+            ('creation_date', self.gf('django.db.models.fields.DateTimeField')(auto_now_add=True, blank=True)),
+            ('last_modified', self.gf('django.db.models.fields.DateTimeField')(auto_now=True, blank=True)),
         ))
         db.send_create_signal(u'digidemo', ['Factor'])
 
@@ -119,6 +111,8 @@ class Migration(SchemaMigration):
             ('portrait_url', self.gf('django.db.models.fields.CharField')(max_length=256)),
             ('wikipedia_url', self.gf('django.db.models.fields.CharField')(max_length=256)),
             ('bio_summary', self.gf('django.db.models.fields.TextField')()),
+            ('creation_date', self.gf('django.db.models.fields.DateTimeField')(auto_now_add=True, blank=True)),
+            ('last_modified', self.gf('django.db.models.fields.DateTimeField')(auto_now=True, blank=True)),
         ))
         db.send_create_signal(u'digidemo', ['Person'])
 
@@ -130,6 +124,8 @@ class Migration(SchemaMigration):
             ('legal_classification', self.gf('django.db.models.fields.CharField')(max_length=48)),
             ('revenue', self.gf('django.db.models.fields.BigIntegerField')()),
             ('operations_summary', self.gf('django.db.models.fields.TextField')()),
+            ('creation_date', self.gf('django.db.models.fields.DateTimeField')(auto_now_add=True, blank=True)),
+            ('last_modified', self.gf('django.db.models.fields.DateTimeField')(auto_now=True, blank=True)),
         ))
         db.send_create_signal(u'digidemo', ['Organization'])
 
@@ -143,6 +139,8 @@ class Migration(SchemaMigration):
             ('telephone', self.gf('django.db.models.fields.CharField')(max_length=14)),
             ('email', self.gf('django.db.models.fields.EmailField')(max_length=254)),
             ('mandate_summary', self.gf('django.db.models.fields.TextField')()),
+            ('creation_date', self.gf('django.db.models.fields.DateTimeField')(auto_now_add=True, blank=True)),
+            ('last_modified', self.gf('django.db.models.fields.DateTimeField')(auto_now=True, blank=True)),
         ))
         db.send_create_signal(u'digidemo', ['Position'])
 
@@ -152,59 +150,121 @@ class Migration(SchemaMigration):
             ('parent_letter', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['digidemo.Letter'], null=True, blank=True)),
             ('proposal', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['digidemo.Proposal'])),
             ('valence', self.gf('django.db.models.fields.SmallIntegerField')()),
-            ('sender', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['auth.User'])),
+            ('user', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['auth.User'])),
             ('body', self.gf('django.db.models.fields.TextField')()),
             ('score', self.gf('django.db.models.fields.SmallIntegerField')(default=0)),
+            ('creation_date', self.gf('django.db.models.fields.DateTimeField')(auto_now_add=True, blank=True)),
+            ('last_modified', self.gf('django.db.models.fields.DateTimeField')(auto_now=True, blank=True)),
         ))
         db.send_create_signal(u'digidemo', ['Letter'])
 
-        # Adding M2M table for field resenders on 'Letter'
-        m2m_table_name = db.shorten_name(u'digidemo_letter_resenders')
-        db.create_table(m2m_table_name, (
-            ('id', models.AutoField(verbose_name='ID', primary_key=True, auto_created=True)),
-            ('letter', models.ForeignKey(orm[u'digidemo.letter'], null=False)),
-            ('user', models.ForeignKey(orm[u'auth.user'], null=False))
-        ))
-        db.create_unique(m2m_table_name, ['letter_id', 'user_id'])
-
         # Adding M2M table for field recipients on 'Letter'
-        m2m_table_name = db.shorten_name(u'digidemo_letter_recipients')
-        db.create_table(m2m_table_name, (
+        db.create_table(u'digidemo_letter_recipients', (
             ('id', models.AutoField(verbose_name='ID', primary_key=True, auto_created=True)),
             ('letter', models.ForeignKey(orm[u'digidemo.letter'], null=False)),
             ('position', models.ForeignKey(orm[u'digidemo.position'], null=False))
         ))
-        db.create_unique(m2m_table_name, ['letter_id', 'position_id'])
+        db.create_unique(u'digidemo_letter_recipients', ['letter_id', 'position_id'])
+
+        # Adding model 'Comment'
+        db.create_table(u'digidemo_comment', (
+            (u'id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
+            ('user', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['auth.User'])),
+            ('letter', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['digidemo.Letter'])),
+            ('body', self.gf('django.db.models.fields.CharField')(max_length=512)),
+            ('score', self.gf('django.db.models.fields.SmallIntegerField')(default=0)),
+            ('creation_date', self.gf('django.db.models.fields.DateTimeField')(auto_now_add=True, blank=True)),
+            ('last_modified', self.gf('django.db.models.fields.DateTimeField')(auto_now=True, blank=True)),
+        ))
+        db.send_create_signal(u'digidemo', ['Comment'])
+
+        # Adding model 'DiscussionVote'
+        db.create_table(u'digidemo_discussionvote', (
+            (u'id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
+            ('user', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['auth.User'])),
+            ('valence', self.gf('django.db.models.fields.SmallIntegerField')()),
+            ('creation_date', self.gf('django.db.models.fields.DateTimeField')(auto_now_add=True, blank=True)),
+            ('last_modified', self.gf('django.db.models.fields.DateTimeField')(auto_now=True, blank=True)),
+            ('target', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['digidemo.Discussion'])),
+        ))
+        db.send_create_signal(u'digidemo', ['DiscussionVote'])
+
+        # Adding unique constraint on 'DiscussionVote', fields ['user', 'target']
+        db.create_unique(u'digidemo_discussionvote', ['user_id', 'target_id'])
+
+        # Adding model 'ProposalVote'
+        db.create_table(u'digidemo_proposalvote', (
+            (u'id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
+            ('user', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['auth.User'])),
+            ('valence', self.gf('django.db.models.fields.SmallIntegerField')()),
+            ('creation_date', self.gf('django.db.models.fields.DateTimeField')(auto_now_add=True, blank=True)),
+            ('last_modified', self.gf('django.db.models.fields.DateTimeField')(auto_now=True, blank=True)),
+            ('target', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['digidemo.Proposal'])),
+        ))
+        db.send_create_signal(u'digidemo', ['ProposalVote'])
+
+        # Adding unique constraint on 'ProposalVote', fields ['user', 'target']
+        db.create_unique(u'digidemo_proposalvote', ['user_id', 'target_id'])
 
         # Adding model 'LetterVote'
         db.create_table(u'digidemo_lettervote', (
             (u'id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
             ('user', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['auth.User'])),
-            ('letter', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['digidemo.Letter'])),
             ('valence', self.gf('django.db.models.fields.SmallIntegerField')()),
+            ('creation_date', self.gf('django.db.models.fields.DateTimeField')(auto_now_add=True, blank=True)),
+            ('last_modified', self.gf('django.db.models.fields.DateTimeField')(auto_now=True, blank=True)),
+            ('target', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['digidemo.Letter'])),
         ))
         db.send_create_signal(u'digidemo', ['LetterVote'])
 
-        # Adding unique constraint on 'LetterVote', fields ['user', 'letter']
-        db.create_unique(u'digidemo_lettervote', ['user_id', 'letter_id'])
+        # Adding unique constraint on 'LetterVote', fields ['user', 'target']
+        db.create_unique(u'digidemo_lettervote', ['user_id', 'target_id'])
 
-        # Adding model 'Comment'
-        db.create_table(u'digidemo_comment', (
+        # Adding model 'ReplyVote'
+        db.create_table(u'digidemo_replyvote', (
             (u'id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
-            ('author', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['auth.User'])),
-            ('letter', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['digidemo.Letter'])),
-            ('body', self.gf('django.db.models.fields.CharField')(max_length=512)),
-            ('score', self.gf('django.db.models.fields.SmallIntegerField')(default=0)),
+            ('user', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['auth.User'])),
+            ('valence', self.gf('django.db.models.fields.SmallIntegerField')()),
+            ('creation_date', self.gf('django.db.models.fields.DateTimeField')(auto_now_add=True, blank=True)),
+            ('last_modified', self.gf('django.db.models.fields.DateTimeField')(auto_now=True, blank=True)),
+            ('target', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['digidemo.Reply'])),
         ))
-        db.send_create_signal(u'digidemo', ['Comment'])
+        db.send_create_signal(u'digidemo', ['ReplyVote'])
+
+        # Adding unique constraint on 'ReplyVote', fields ['user', 'target']
+        db.create_unique(u'digidemo_replyvote', ['user_id', 'target_id'])
+
+        # Adding model 'CommentVote'
+        db.create_table(u'digidemo_commentvote', (
+            (u'id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
+            ('user', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['auth.User'])),
+            ('valence', self.gf('django.db.models.fields.SmallIntegerField')()),
+            ('creation_date', self.gf('django.db.models.fields.DateTimeField')(auto_now_add=True, blank=True)),
+            ('last_modified', self.gf('django.db.models.fields.DateTimeField')(auto_now=True, blank=True)),
+            ('target', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['digidemo.Comment'])),
+        ))
+        db.send_create_signal(u'digidemo', ['CommentVote'])
+
+        # Adding unique constraint on 'CommentVote', fields ['user', 'target']
+        db.create_unique(u'digidemo_commentvote', ['user_id', 'target_id'])
 
 
     def backwards(self, orm):
-        # Removing unique constraint on 'LetterVote', fields ['user', 'letter']
-        db.delete_unique(u'digidemo_lettervote', ['user_id', 'letter_id'])
+        
+        # Removing unique constraint on 'CommentVote', fields ['user', 'target']
+        db.delete_unique(u'digidemo_commentvote', ['user_id', 'target_id'])
 
-        # Removing unique constraint on 'ProposalVote', fields ['user', 'proposal']
-        db.delete_unique(u'digidemo_proposalvote', ['user_id', 'proposal_id'])
+        # Removing unique constraint on 'ReplyVote', fields ['user', 'target']
+        db.delete_unique(u'digidemo_replyvote', ['user_id', 'target_id'])
+
+        # Removing unique constraint on 'LetterVote', fields ['user', 'target']
+        db.delete_unique(u'digidemo_lettervote', ['user_id', 'target_id'])
+
+        # Removing unique constraint on 'ProposalVote', fields ['user', 'target']
+        db.delete_unique(u'digidemo_proposalvote', ['user_id', 'target_id'])
+
+        # Removing unique constraint on 'DiscussionVote', fields ['user', 'target']
+        db.delete_unique(u'digidemo_discussionvote', ['user_id', 'target_id'])
 
         # Deleting model 'Sector'
         db.delete_table(u'digidemo_sector')
@@ -216,16 +276,13 @@ class Migration(SchemaMigration):
         db.delete_table(u'digidemo_proposal')
 
         # Removing M2M table for field sector on 'Proposal'
-        db.delete_table(db.shorten_name(u'digidemo_proposal_sector'))
+        db.delete_table('digidemo_proposal_sector')
 
         # Deleting model 'Discussion'
         db.delete_table(u'digidemo_discussion')
 
         # Deleting model 'Reply'
         db.delete_table(u'digidemo_reply')
-
-        # Deleting model 'ProposalVote'
-        db.delete_table(u'digidemo_proposalvote')
 
         # Deleting model 'Capability'
         db.delete_table(u'digidemo_capability')
@@ -245,17 +302,26 @@ class Migration(SchemaMigration):
         # Deleting model 'Letter'
         db.delete_table(u'digidemo_letter')
 
-        # Removing M2M table for field resenders on 'Letter'
-        db.delete_table(db.shorten_name(u'digidemo_letter_resenders'))
-
         # Removing M2M table for field recipients on 'Letter'
-        db.delete_table(db.shorten_name(u'digidemo_letter_recipients'))
+        db.delete_table('digidemo_letter_recipients')
+
+        # Deleting model 'Comment'
+        db.delete_table(u'digidemo_comment')
+
+        # Deleting model 'DiscussionVote'
+        db.delete_table(u'digidemo_discussionvote')
+
+        # Deleting model 'ProposalVote'
+        db.delete_table(u'digidemo_proposalvote')
 
         # Deleting model 'LetterVote'
         db.delete_table(u'digidemo_lettervote')
 
-        # Deleting model 'Comment'
-        db.delete_table(u'digidemo_comment')
+        # Deleting model 'ReplyVote'
+        db.delete_table(u'digidemo_replyvote')
+
+        # Deleting model 'CommentVote'
+        db.delete_table(u'digidemo_commentvote')
 
 
     models = {
@@ -274,7 +340,7 @@ class Migration(SchemaMigration):
         },
         u'auth.user': {
             'Meta': {'object_name': 'User'},
-            'date_joined': ('django.db.models.fields.DateTimeField', [], {'default': 'datetime.datetime.now'}),
+            'date_joined': ('django.db.models.fields.DateTimeField', [], {'default': 'datetime.datetime.now()'}),
             'email': ('django.db.models.fields.EmailField', [], {'max_length': '75', 'blank': 'True'}),
             'first_name': ('django.db.models.fields.CharField', [], {'max_length': '30', 'blank': 'True'}),
             'groups': ('django.db.models.fields.related.ManyToManyField', [], {'symmetrical': 'False', 'related_name': "u'user_set'", 'blank': 'True', 'to': u"orm['auth.Group']"}),
@@ -282,7 +348,7 @@ class Migration(SchemaMigration):
             'is_active': ('django.db.models.fields.BooleanField', [], {'default': 'True'}),
             'is_staff': ('django.db.models.fields.BooleanField', [], {'default': 'False'}),
             'is_superuser': ('django.db.models.fields.BooleanField', [], {'default': 'False'}),
-            'last_login': ('django.db.models.fields.DateTimeField', [], {'default': 'datetime.datetime.now'}),
+            'last_login': ('django.db.models.fields.DateTimeField', [], {'default': 'datetime.datetime.now()'}),
             'last_name': ('django.db.models.fields.CharField', [], {'max_length': '30', 'blank': 'True'}),
             'password': ('django.db.models.fields.CharField', [], {'max_length': '128'}),
             'user_permissions': ('django.db.models.fields.related.ManyToManyField', [], {'symmetrical': 'False', 'related_name': "u'user_set'", 'blank': 'True', 'to': u"orm['auth.Permission']"}),
@@ -304,54 +370,81 @@ class Migration(SchemaMigration):
         },
         u'digidemo.comment': {
             'Meta': {'object_name': 'Comment'},
-            'author': ('django.db.models.fields.related.ForeignKey', [], {'to': u"orm['auth.User']"}),
             'body': ('django.db.models.fields.CharField', [], {'max_length': '512'}),
+            'creation_date': ('django.db.models.fields.DateTimeField', [], {'auto_now_add': 'True', 'blank': 'True'}),
             u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
+            'last_modified': ('django.db.models.fields.DateTimeField', [], {'auto_now': 'True', 'blank': 'True'}),
             'letter': ('django.db.models.fields.related.ForeignKey', [], {'to': u"orm['digidemo.Letter']"}),
-            'score': ('django.db.models.fields.SmallIntegerField', [], {'default': '0'})
+            'score': ('django.db.models.fields.SmallIntegerField', [], {'default': '0'}),
+            'user': ('django.db.models.fields.related.ForeignKey', [], {'to': u"orm['auth.User']"})
+        },
+        u'digidemo.commentvote': {
+            'Meta': {'unique_together': "(('user', 'target'),)", 'object_name': 'CommentVote'},
+            'creation_date': ('django.db.models.fields.DateTimeField', [], {'auto_now_add': 'True', 'blank': 'True'}),
+            u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
+            'last_modified': ('django.db.models.fields.DateTimeField', [], {'auto_now': 'True', 'blank': 'True'}),
+            'target': ('django.db.models.fields.related.ForeignKey', [], {'to': u"orm['digidemo.Comment']"}),
+            'user': ('django.db.models.fields.related.ForeignKey', [], {'to': u"orm['auth.User']"}),
+            'valence': ('django.db.models.fields.SmallIntegerField', [], {})
         },
         u'digidemo.discussion': {
             'Meta': {'object_name': 'Discussion'},
             'body': ('django.db.models.fields.TextField', [], {}),
-            'creation_date': ('django.db.models.fields.DateField', [], {'auto_now_add': 'True', 'blank': 'True'}),
+            'creation_date': ('django.db.models.fields.DateTimeField', [], {'auto_now_add': 'True', 'blank': 'True'}),
             u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
             'is_open': ('django.db.models.fields.BooleanField', [], {'default': 'False'}),
-            'last_activity_date': ('django.db.models.fields.DateField', [], {'auto_now': 'True', 'blank': 'True'}),
+            'last_activity_date': ('django.db.models.fields.DateTimeField', [], {'auto_now': 'True', 'blank': 'True'}),
             'proposal': ('django.db.models.fields.related.ForeignKey', [], {'to': u"orm['digidemo.Proposal']"}),
             'score': ('django.db.models.fields.SmallIntegerField', [], {'default': '0'}),
             'title': ('django.db.models.fields.CharField', [], {'max_length': '256'}),
             'user': ('django.db.models.fields.related.ForeignKey', [], {'to': u"orm['auth.User']"})
         },
+        u'digidemo.discussionvote': {
+            'Meta': {'unique_together': "(('user', 'target'),)", 'object_name': 'DiscussionVote'},
+            'creation_date': ('django.db.models.fields.DateTimeField', [], {'auto_now_add': 'True', 'blank': 'True'}),
+            u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
+            'last_modified': ('django.db.models.fields.DateTimeField', [], {'auto_now': 'True', 'blank': 'True'}),
+            'target': ('django.db.models.fields.related.ForeignKey', [], {'to': u"orm['digidemo.Discussion']"}),
+            'user': ('django.db.models.fields.related.ForeignKey', [], {'to': u"orm['auth.User']"}),
+            'valence': ('django.db.models.fields.SmallIntegerField', [], {})
+        },
         u'digidemo.factor': {
             'Meta': {'object_name': 'Factor'},
             'capability': ('django.db.models.fields.related.ForeignKey', [], {'to': u"orm['digidemo.Capability']"}),
+            'creation_date': ('django.db.models.fields.DateTimeField', [], {'auto_now_add': 'True', 'blank': 'True'}),
             'description': ('django.db.models.fields.CharField', [], {'max_length': '256'}),
             u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
+            'last_modified': ('django.db.models.fields.DateTimeField', [], {'auto_now': 'True', 'blank': 'True'}),
             'proposal': ('django.db.models.fields.related.ForeignKey', [], {'to': u"orm['digidemo.Proposal']"}),
             'valence': ('django.db.models.fields.SmallIntegerField', [], {})
         },
         u'digidemo.letter': {
             'Meta': {'object_name': 'Letter'},
             'body': ('django.db.models.fields.TextField', [], {}),
+            'creation_date': ('django.db.models.fields.DateTimeField', [], {'auto_now_add': 'True', 'blank': 'True'}),
             u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
+            'last_modified': ('django.db.models.fields.DateTimeField', [], {'auto_now': 'True', 'blank': 'True'}),
             'parent_letter': ('django.db.models.fields.related.ForeignKey', [], {'to': u"orm['digidemo.Letter']", 'null': 'True', 'blank': 'True'}),
             'proposal': ('django.db.models.fields.related.ForeignKey', [], {'to': u"orm['digidemo.Proposal']"}),
             'recipients': ('django.db.models.fields.related.ManyToManyField', [], {'related_name': "'letters'", 'symmetrical': 'False', 'to': u"orm['digidemo.Position']"}),
-            'resenders': ('django.db.models.fields.related.ManyToManyField', [], {'related_name': "'resent_letters'", 'symmetrical': 'False', 'to': u"orm['auth.User']"}),
             'score': ('django.db.models.fields.SmallIntegerField', [], {'default': '0'}),
-            'sender': ('django.db.models.fields.related.ForeignKey', [], {'to': u"orm['auth.User']"}),
+            'user': ('django.db.models.fields.related.ForeignKey', [], {'to': u"orm['auth.User']"}),
             'valence': ('django.db.models.fields.SmallIntegerField', [], {})
         },
         u'digidemo.lettervote': {
-            'Meta': {'unique_together': "(('user', 'letter'),)", 'object_name': 'LetterVote'},
+            'Meta': {'unique_together': "(('user', 'target'),)", 'object_name': 'LetterVote'},
+            'creation_date': ('django.db.models.fields.DateTimeField', [], {'auto_now_add': 'True', 'blank': 'True'}),
             u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
-            'letter': ('django.db.models.fields.related.ForeignKey', [], {'to': u"orm['digidemo.Letter']"}),
+            'last_modified': ('django.db.models.fields.DateTimeField', [], {'auto_now': 'True', 'blank': 'True'}),
+            'target': ('django.db.models.fields.related.ForeignKey', [], {'to': u"orm['digidemo.Letter']"}),
             'user': ('django.db.models.fields.related.ForeignKey', [], {'to': u"orm['auth.User']"}),
             'valence': ('django.db.models.fields.SmallIntegerField', [], {})
         },
         u'digidemo.organization': {
             'Meta': {'object_name': 'Organization'},
+            'creation_date': ('django.db.models.fields.DateTimeField', [], {'auto_now_add': 'True', 'blank': 'True'}),
             u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
+            'last_modified': ('django.db.models.fields.DateTimeField', [], {'auto_now': 'True', 'blank': 'True'}),
             'legal_classification': ('django.db.models.fields.CharField', [], {'max_length': '48'}),
             'legal_name': ('django.db.models.fields.CharField', [], {'max_length': '128'}),
             'operations_summary': ('django.db.models.fields.TextField', [], {}),
@@ -361,16 +454,20 @@ class Migration(SchemaMigration):
         u'digidemo.person': {
             'Meta': {'object_name': 'Person'},
             'bio_summary': ('django.db.models.fields.TextField', [], {}),
+            'creation_date': ('django.db.models.fields.DateTimeField', [], {'auto_now_add': 'True', 'blank': 'True'}),
             'fname': ('django.db.models.fields.CharField', [], {'max_length': '48'}),
             u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
+            'last_modified': ('django.db.models.fields.DateTimeField', [], {'auto_now': 'True', 'blank': 'True'}),
             'lname': ('django.db.models.fields.CharField', [], {'max_length': '48'}),
             'portrait_url': ('django.db.models.fields.CharField', [], {'max_length': '256'}),
             'wikipedia_url': ('django.db.models.fields.CharField', [], {'max_length': '256'})
         },
         u'digidemo.position': {
             'Meta': {'object_name': 'Position'},
+            'creation_date': ('django.db.models.fields.DateTimeField', [], {'auto_now_add': 'True', 'blank': 'True'}),
             'email': ('django.db.models.fields.EmailField', [], {'max_length': '254'}),
             u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
+            'last_modified': ('django.db.models.fields.DateTimeField', [], {'auto_now': 'True', 'blank': 'True'}),
             'mandate_summary': ('django.db.models.fields.TextField', [], {}),
             'name': ('django.db.models.fields.CharField', [], {'max_length': '128'}),
             'organization': ('django.db.models.fields.related.ForeignKey', [], {'to': u"orm['digidemo.Organization']"}),
@@ -380,38 +477,52 @@ class Migration(SchemaMigration):
         },
         u'digidemo.proposal': {
             'Meta': {'object_name': 'Proposal'},
-            'author': ('django.db.models.fields.related.ForeignKey', [], {'to': u"orm['auth.User']"}),
-            'creation_date': ('django.db.models.fields.DateField', [], {}),
+            'creation_date': ('django.db.models.fields.DateTimeField', [], {'auto_now_add': 'True', 'blank': 'True'}),
             u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
             'is_published': ('django.db.models.fields.BooleanField', [], {'default': 'False'}),
-            'last_modified': ('django.db.models.fields.DateField', [], {'auto_now': 'True', 'blank': 'True'}),
+            'last_modified': ('django.db.models.fields.DateTimeField', [], {'auto_now': 'True', 'blank': 'True'}),
             'name': ('django.db.models.fields.CharField', [], {'max_length': '256'}),
             'proposal_image': ('django.db.models.fields.files.ImageField', [], {'default': "'/digidemo/proposal-images/'", 'max_length': '100'}),
             'score': ('django.db.models.fields.SmallIntegerField', [], {'default': '0'}),
             'sector': ('django.db.models.fields.related.ManyToManyField', [], {'related_name': "'proposals'", 'symmetrical': 'False', 'to': u"orm['digidemo.Sector']"}),
             'text': ('django.db.models.fields.TextField', [], {}),
-            'title': ('django.db.models.fields.CharField', [], {'max_length': '256'})
+            'title': ('django.db.models.fields.CharField', [], {'max_length': '256'}),
+            'user': ('django.db.models.fields.related.ForeignKey', [], {'to': u"orm['auth.User']"})
         },
         u'digidemo.proposalvote': {
-            'Meta': {'unique_together': "(('user', 'proposal'),)", 'object_name': 'ProposalVote'},
+            'Meta': {'unique_together': "(('user', 'target'),)", 'object_name': 'ProposalVote'},
+            'creation_date': ('django.db.models.fields.DateTimeField', [], {'auto_now_add': 'True', 'blank': 'True'}),
             u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
-            'proposal': ('django.db.models.fields.related.ForeignKey', [], {'to': u"orm['digidemo.Proposal']"}),
+            'last_modified': ('django.db.models.fields.DateTimeField', [], {'auto_now': 'True', 'blank': 'True'}),
+            'target': ('django.db.models.fields.related.ForeignKey', [], {'to': u"orm['digidemo.Proposal']"}),
             'user': ('django.db.models.fields.related.ForeignKey', [], {'to': u"orm['auth.User']"}),
             'valence': ('django.db.models.fields.SmallIntegerField', [], {})
         },
         u'digidemo.reply': {
             'Meta': {'object_name': 'Reply'},
             'body': ('django.db.models.fields.TextField', [], {}),
-            'creation_date': ('django.db.models.fields.DateField', [], {'auto_now_add': 'True', 'blank': 'True'}),
+            'creation_date': ('django.db.models.fields.DateTimeField', [], {'auto_now_add': 'True', 'blank': 'True'}),
             'discussion': ('django.db.models.fields.related.ForeignKey', [], {'to': u"orm['digidemo.Discussion']"}),
             u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
             'is_open': ('django.db.models.fields.BooleanField', [], {'default': 'False'}),
+            'last_modified': ('django.db.models.fields.DateTimeField', [], {'auto_now': 'True', 'blank': 'True'}),
             'score': ('django.db.models.fields.SmallIntegerField', [], {'default': '0'}),
             'user': ('django.db.models.fields.related.ForeignKey', [], {'to': u"orm['auth.User']"})
         },
+        u'digidemo.replyvote': {
+            'Meta': {'unique_together': "(('user', 'target'),)", 'object_name': 'ReplyVote'},
+            'creation_date': ('django.db.models.fields.DateTimeField', [], {'auto_now_add': 'True', 'blank': 'True'}),
+            u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
+            'last_modified': ('django.db.models.fields.DateTimeField', [], {'auto_now': 'True', 'blank': 'True'}),
+            'target': ('django.db.models.fields.related.ForeignKey', [], {'to': u"orm['digidemo.Reply']"}),
+            'user': ('django.db.models.fields.related.ForeignKey', [], {'to': u"orm['auth.User']"}),
+            'valence': ('django.db.models.fields.SmallIntegerField', [], {})
+        },
         u'digidemo.sector': {
             'Meta': {'object_name': 'Sector'},
+            'creation_date': ('django.db.models.fields.DateTimeField', [], {'auto_now_add': 'True', 'blank': 'True'}),
             u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
+            'last_modified': ('django.db.models.fields.DateTimeField', [], {'auto_now': 'True', 'blank': 'True'}),
             'name': ('django.db.models.fields.CharField', [], {'max_length': '64'}),
             'short_name': ('django.db.models.fields.CharField', [], {'max_length': '3'})
         },

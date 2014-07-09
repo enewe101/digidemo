@@ -10,6 +10,8 @@ TITLE_LENGTH = 256
 class Sector(models.Model):
 	short_name = models.CharField(max_length=3)
 	name = models.CharField(max_length=64)
+	creation_date = models.DateTimeField(auto_now_add=True)
+	last_modified = models.DateTimeField(auto_now=True)
 
 
 class UserProfile(models.Model):
@@ -70,8 +72,8 @@ class Proposal(models.Model):
 	title = models.CharField(max_length=256)
 	text = models.TextField()
 	is_published = models.BooleanField(default=False)
-	last_modified = models.DateField(auto_now=True)
-	creation_date = models.DateField()
+	last_modified = models.DateTimeField(auto_now=True)
+	creation_date = models.DateTimeField(auto_now_add=True)
 	user = models.ForeignKey(User)
 
 	score = models.SmallIntegerField(default=0)
@@ -92,8 +94,8 @@ class Discussion(models.Model):
 	user = models.ForeignKey(User)
 	score = models.SmallIntegerField(default=0)
 	is_open = models.BooleanField(default=False)
-	creation_date = models.DateField(auto_now_add=True)
-	last_activity_date = models.DateField(auto_now=True)
+	creation_date = models.DateTimeField(auto_now_add=True)
+	last_activity_date = models.DateTimeField(auto_now=True)
 
 	def __unicode__(self):
 		return self.title
@@ -106,7 +108,8 @@ class Reply(models.Model):
 	user = models.ForeignKey(User)
 	score = models.SmallIntegerField(default=0)
 	is_open = models.BooleanField(default=False)
-	creation_date = models.DateField(auto_now_add=True)
+	creation_date = models.DateTimeField(auto_now_add=True)
+	last_modified = models.DateTimeField(auto_now=True)
 
 	def __unicode__(self):
 		return self.user.username
@@ -125,6 +128,8 @@ class Factor(models.Model):
 	description = models.CharField(max_length=256)
 	capability = models.ForeignKey(Capability)
 	valence = models.SmallIntegerField(choices=FACTOR_CHOICES)
+	creation_date = models.DateTimeField(auto_now_add=True)
+	last_modified = models.DateTimeField(auto_now=True)
 
 
 class Person(models.Model):
@@ -133,6 +138,8 @@ class Person(models.Model):
 	portrait_url = models.CharField(max_length=URL_LENGTH)
 	wikipedia_url = models.CharField(max_length=URL_LENGTH)
 	bio_summary = models.TextField()
+	creation_date = models.DateTimeField(auto_now_add=True)
+	last_modified = models.DateTimeField(auto_now=True)
 
 	
 class Organization(models.Model):
@@ -142,6 +149,8 @@ class Organization(models.Model):
 		max_length=48, choices=LEGAL_CLASSIFICATIONS)
 	revenue = models.BigIntegerField()
 	operations_summary = models.TextField()
+	creation_date = models.DateTimeField(auto_now_add=True)
+	last_modified = models.DateTimeField(auto_now=True)
 
 
 class Position(models.Model):
@@ -152,6 +161,8 @@ class Position(models.Model):
 	telephone = models.CharField(max_length=14)
 	email = models.EmailField(max_length=254)
 	mandate_summary = models.TextField()
+	creation_date = models.DateTimeField(auto_now_add=True)
+	last_modified = models.DateTimeField(auto_now=True)
 
 	def __unicode__(self):
 		return "%s, %s %s" %(self.name, self.person.fname, 
@@ -166,6 +177,8 @@ class Letter(models.Model):
 	body = models.TextField()
 	recipients = models.ManyToManyField(Position, related_name='letters')
 	score = models.SmallIntegerField(default=0)
+	creation_date = models.DateTimeField(auto_now_add=True)
+	last_modified = models.DateTimeField(auto_now=True)
 
 	def __unicode__(self):
 		return "%s-%s" %(
@@ -179,6 +192,8 @@ class Comment(models.Model):
 	letter = models.ForeignKey(Letter)
 	body = models.CharField(max_length=512)
 	score = models.SmallIntegerField(default=0)
+	creation_date = models.DateTimeField(auto_now_add=True)
+	last_modified = models.DateTimeField(auto_now=True)
 
 	def __unicode__(self):
 		return self.author.username
@@ -189,6 +204,8 @@ class Comment(models.Model):
 class Vote(models.Model):
 	user = models.ForeignKey(User)
 	valence = models.SmallIntegerField(choices=VOTE_CHOICES)
+	creation_date = models.DateTimeField(auto_now_add=True)
+	last_modified = models.DateTimeField(auto_now=True)
 
 	class Meta:
 		abstract=True
