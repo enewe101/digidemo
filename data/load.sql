@@ -103,7 +103,7 @@ CREATE TABLE `auth_permission` (
 
 LOCK TABLES `auth_permission` WRITE;
 /*!40000 ALTER TABLE `auth_permission` DISABLE KEYS */;
-REPLACE INTO `auth_permission` (`id`, `name`, `content_type_id`, `codename`) VALUES (1,'Can add log entry',1,'add_logentry'),(2,'Can change log entry',1,'change_logentry'),(3,'Can delete log entry',1,'delete_logentry'),(4,'Can add permission',2,'add_permission'),(5,'Can change permission',2,'change_permission'),(6,'Can delete permission',2,'delete_permission'),(7,'Can add group',3,'add_group'),(8,'Can change group',3,'change_group'),(9,'Can delete group',3,'delete_group'),(10,'Can add user',4,'add_user'),(11,'Can change user',4,'change_user'),(12,'Can delete user',4,'delete_user'),(13,'Can add content type',5,'add_contenttype'),(14,'Can change content type',5,'change_contenttype'),(15,'Can delete content type',5,'delete_contenttype'),(16,'Can add session',6,'add_session'),(17,'Can change session',6,'change_session'),(18,'Can delete session',6,'delete_session'),(19,'Can add migration history',7,'add_migrationhistory'),(20,'Can change migration history',7,'change_migrationhistory'),(21,'Can delete migration history',7,'delete_migrationhistory'),(22,'Can add sector',8,'add_sector'),(23,'Can change sector',8,'change_sector'),(24,'Can delete sector',8,'delete_sector'),(25,'Can add proposal',9,'add_proposal'),(26,'Can change proposal',9,'change_proposal'),(27,'Can delete proposal',9,'delete_proposal'),(28,'Can add letter',10,'add_letter'),(29,'Can change letter',10,'change_letter'),(30,'Can delete letter',10,'delete_letter'),(31,'Can add comment',11,'add_comment'),(32,'Can change comment',11,'change_comment'),(33,'Can delete comment',11,'delete_comment'),(34,'Can add person',12,'add_person'),(35,'Can change person',12,'change_person'),(36,'Can delete person',12,'delete_person'),(37,'Can add organization',13,'add_organization'),(38,'Can change organization',13,'change_organization'),(39,'Can delete organization',13,'delete_organization'),(40,'Can add position',14,'add_position'),(41,'Can change position',14,'change_position'),(42,'Can delete position',14,'delete_position'),(43,'Can add capability',15,'add_capability'),(44,'Can change capability',15,'change_capability'),(45,'Can delete capability',15,'delete_capability'),(46,'Can add factor',16,'add_factor'),(47,'Can change factor',16,'change_factor'),(48,'Can delete factor',16,'delete_factor'),(49,'Can add sector',17,'add_sector'),(50,'Can change sector',17,'change_sector'),(51,'Can delete sector',17,'delete_sector'),(52,'Can add proposal vote',18,'add_proposalvote'),(53,'Can change proposal vote',18,'change_proposalvote'),(54,'Can delete proposal vote',18,'delete_proposalvote'),(55,'Can add letter vote',19,'add_lettervote'),(56,'Can change letter vote',19,'change_lettervote'),(57,'Can delete letter vote',19,'delete_lettervote'),(58,'Can add user profile',20,'add_userprofile'),(59,'Can change user profile',20,'change_userprofile'),(60,'Can delete user profile',20,'delete_userprofile'),(61,'Can add comment',21,'add_comment'),(62,'Can change comment',21,'change_comment'),(63,'Can delete comment',21,'delete_comment'),(64,'Can add discussion',22,'add_discussion'),(65,'Can change discussion',22,'change_discussion'),(66,'Can delete discussion',22,'delete_discussion'),(67,'Can add discussion vote',23,'add_discussionvote'),(68,'Can change discussion vote',23,'change_discussionvote'),(69,'Can delete discussion vote',23,'delete_discussionvote'),(70,'Can add reply',24,'add_reply'),(71,'Can change reply',24,'change_reply'),(72,'Can delete reply',24,'delete_reply'),(73,'Can add reply vote',25,'add_replyvote'),(74,'Can change reply vote',25,'change_replyvote'),(75,'Can delete reply vote',25,'delete_replyvote'),(76,'Can add comment vote',26,'add_commentvote'),(77,'Can change comment vote',26,'change_commentvote'),(78,'Can delete comment vote',26,'delete_commentvote');
+REPLACE INTO `auth_permission` (`id`, `name`, `content_type_id`, `codename`) VALUES (1,'Can add log entry',1,'add_logentry'),(2,'Can change log entry',1,'change_logentry'),(3,'Can delete log entry',1,'delete_logentry'),(4,'Can add permission',2,'add_permission'),(5,'Can change permission',2,'change_permission'),(6,'Can delete permission',2,'delete_permission'),(7,'Can add group',3,'add_group'),(8,'Can change group',3,'change_group'),(9,'Can delete group',3,'delete_group'),(10,'Can add user',4,'add_user'),(11,'Can change user',4,'change_user'),(12,'Can delete user',4,'delete_user'),(13,'Can add content type',5,'add_contenttype'),(14,'Can change content type',5,'change_contenttype'),(15,'Can delete content type',5,'delete_contenttype'),(16,'Can add session',6,'add_session'),(17,'Can change session',6,'change_session'),(18,'Can delete session',6,'delete_session'),(19,'Can add migration history',7,'add_migrationhistory'),(20,'Can change migration history',7,'change_migrationhistory'),(21,'Can delete migration history',7,'delete_migrationhistory'),(22,'Can add sector',8,'add_sector'),(23,'Can change sector',8,'change_sector'),(24,'Can delete sector',8,'delete_sector'),(25,'Can add proposal',9,'add_proposal'),(26,'Can change proposal',9,'change_proposal'),(27,'Can delete proposal',9,'delete_proposal'),(28,'Can add letter',10,'add_letter'),(29,'Can change letter',10,'change_letter'),(30,'Can delete letter',10,'delete_letter'),(31,'Can add comment',11,'add_comment'),(32,'Can change comment',11,'change_comment'),(33,'Can delete comment',11,'delete_comment'),(34,'Can add person',12,'add_person'),(35,'Can change person',12,'change_person'),(36,'Can delete person',12,'delete_person'),(37,'Can add organization',13,'add_organization'),(38,'Can change organization',13,'change_organization'),(39,'Can delete organization',13,'delete_organization'),(40,'Can add position',14,'add_position'),(41,'Can change position',14,'change_position'),(42,'Can delete position',14,'delete_position'),(43,'Can add position',15,'add_position'),(44,'Can change position',15,'change_position'),(45,'Can delete position',15,'delete_position'),(46,'Can add factor',16,'add_factor'),(47,'Can change factor',16,'change_factor'),(48,'Can delete factor',16,'delete_factor'),(49,'Can add sector',17,'add_sector'),(50,'Can change sector',17,'change_sector'),(51,'Can delete sector',17,'delete_sector'),(52,'Can add proposal vote',18,'add_proposalvote'),(53,'Can change proposal vote',18,'change_proposalvote'),(54,'Can delete proposal vote',18,'delete_proposalvote'),(55,'Can add letter vote',19,'add_lettervote'),(56,'Can change letter vote',19,'change_lettervote'),(57,'Can delete letter vote',19,'delete_lettervote'),(58,'Can add user profile',20,'add_userprofile'),(59,'Can change user profile',20,'change_userprofile'),(60,'Can delete user profile',20,'delete_userprofile'),(61,'Can add comment',21,'add_comment'),(62,'Can change comment',21,'change_comment'),(63,'Can delete comment',21,'delete_comment'),(64,'Can add discussion',22,'add_discussion'),(65,'Can change discussion',22,'change_discussion'),(66,'Can delete discussion',22,'delete_discussion'),(67,'Can add discussion vote',23,'add_discussionvote'),(68,'Can change discussion vote',23,'change_discussionvote'),(69,'Can delete discussion vote',23,'delete_discussionvote'),(70,'Can add reply',24,'add_reply'),(71,'Can change reply',24,'change_reply'),(72,'Can delete reply',24,'delete_reply'),(73,'Can add reply vote',25,'add_replyvote'),(74,'Can change reply vote',25,'change_replyvote'),(75,'Can delete reply vote',25,'delete_replyvote'),(76,'Can add comment vote',26,'add_commentvote'),(77,'Can change comment vote',26,'change_commentvote'),(78,'Can delete comment vote',26,'delete_commentvote');
 /*!40000 ALTER TABLE `auth_permission` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -200,34 +200,6 @@ LOCK TABLES `auth_user_user_permissions` WRITE;
 UNLOCK TABLES;
 
 --
--- Table structure for table `digidemo_capability`
---
-
-DROP TABLE IF EXISTS `digidemo_capability`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `digidemo_capability` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `name` varchar(64) NOT NULL,
-  `description` varchar(512) NOT NULL,
-  `sector_id` int(11) NOT NULL,
-  PRIMARY KEY (`id`),
-  KEY `digidemo_capability_663ed8c9` (`sector_id`),
-  CONSTRAINT `sector_id_refs_id_84257dfd` FOREIGN KEY (`sector_id`) REFERENCES `digidemo_sector` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=17 DEFAULT CHARSET=utf8;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `digidemo_capability`
---
-
-LOCK TABLES `digidemo_capability` WRITE;
-/*!40000 ALTER TABLE `digidemo_capability` DISABLE KEYS */;
-REPLACE INTO `digidemo_capability` (`id`, `name`, `description`, `sector_id`) VALUES (3,'~ obtain quality education','Universal access to quality education, including: literacy, numeracy, computer skills; history, human rights, political rights and process; self esteem, morality, automomy; natural sciences, cosmological and ecological origins; life skills, practical arts, expressive arts.',4),(4,'~ live in harmony with the natural world','A lifestyle that, without unusual inconvenience, does not pollute the environment in a way that renders it unfit or unpleasant, nor brings hopeless struggle or devastation to other life, and which provides access to nature and tranquility, and extracts resources from nature only at a rate that is either replenished, or exausted in a timeframe that allows our adaptation to alternatives',2),(5,'~ be represented politically','The capability to have one\'s interests and stakes in society considered, guarded, and improved by a political process that reconciles these stakes with those of others in a way that is fair, proportionate, efficient, and transparent',8),(6,'~ have meaningful political participation','The ability to participate in collective decisionmaking regarding matters with one holds stake, and for that participation to have substancial effect, in proportion to one\'s stake and that of others, and to be safe from harm, discrimination, or retribution for one\'s participation.',8),(8,'safeguarding capabilities with good international relations','Diplomatic cooperation and coordination which fosters amicable relations, through demands on and compromises with other nations, which are compatible with the longterm flourishing of human capabilities.',5),(9,'~ live a healthy life to its natural end','The ability to live a healthy life, to have full use of one\'s body, to be free of suffering and disease, and to live a long life to its natural end.',3),(10,'~ be free from undue descrimination','The ability to embrace one\'s nature, including for example body form and appearance, language, sexality, and so on, insofar as it does no harm to others, without being arbitrarily descriminated against.',6),(11,'safeguarding capabilities with security and readiness','Collective readiness to make use of natural resources, in a way that is sustainable, or consistent with reasonable expectations for adaptive exit, and exact gains in the national wealth by such usage',7),(12,'safeguarding capabilities with security','Collective readiness to defend the security of the nation, for example, defending sovereign territory from invasion and exploit, to protect against excessive foreign economic claim, to protect the integrity of computer systems and networks, and exert reasonable and proportionate pressure in the maintenance of treaty agreements.',7),(13,'~ to live free from harm and hazards','The ability to live without the fear or risk of hazards from reasonably forseable sources, including protection against natural disaster, economic disaster, and negligence in business and professional practice.',7),(14,'~ obtain the material necessities of life','The ability to obtain the basics of food, shelter, clothing, transportation, access to hygiene facilities, transportation, and communication which are necessary to live most lifestyles.',1),(15,'~ do meaningful work','The ability to earn the basic necessities of life through meaninful activities that contribute to society and make effecient use of ones talents, without putting oneself or others at risk.',1),(16,'~ enjoy freedom of choice in lifestyle','The capability to gain a sufficiency of income such that, after securing ones basic necessities, one still has some time and income to dispose of, in the ways of ones choosing, such as for entertainment, relaxation, intellectual or cultural enrichment, artistic expression, political engagement, human relationships, and so on.',1);
-/*!40000 ALTER TABLE `digidemo_capability` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
 -- Table structure for table `digidemo_comment`
 --
 
@@ -312,8 +284,8 @@ CREATE TABLE `digidemo_discussion` (
   PRIMARY KEY (`id`),
   KEY `digidemo_discussion_ad574d3c` (`proposal_id`),
   KEY `digidemo_discussion_6340c63c` (`user_id`),
-  CONSTRAINT `proposal_id_refs_id_67b12962` FOREIGN KEY (`proposal_id`) REFERENCES `digidemo_proposal` (`id`),
-  CONSTRAINT `user_id_refs_id_dc56e1ff` FOREIGN KEY (`user_id`) REFERENCES `auth_user` (`id`)
+  CONSTRAINT `user_id_refs_id_dc56e1ff` FOREIGN KEY (`user_id`) REFERENCES `auth_user` (`id`),
+  CONSTRAINT `proposal_id_refs_id_67b12962` FOREIGN KEY (`proposal_id`) REFERENCES `digidemo_proposal` (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -371,16 +343,13 @@ CREATE TABLE `digidemo_factor` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `proposal_id` int(11) NOT NULL,
   `description` varchar(256) NOT NULL,
-  `capability_id` int(11) NOT NULL,
   `valence` smallint(6) NOT NULL,
   `creation_date` datetime NOT NULL,
   `last_modified` datetime NOT NULL,
   `sector_id` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `digidemo_factor_ad574d3c` (`proposal_id`),
-  KEY `digidemo_factor_567242ae` (`capability_id`),
   KEY `digidemo_factor_663ed8c9` (`sector_id`),
-  CONSTRAINT `capability_id_refs_id_7b69deb5` FOREIGN KEY (`capability_id`) REFERENCES `digidemo_capability` (`id`),
   CONSTRAINT `proposal_id_refs_id_34acf33f` FOREIGN KEY (`proposal_id`) REFERENCES `digidemo_proposal` (`id`),
   CONSTRAINT `sector_id_refs_id_7ab86ae0` FOREIGN KEY (`sector_id`) REFERENCES `digidemo_sector` (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8;
@@ -392,7 +361,7 @@ CREATE TABLE `digidemo_factor` (
 
 LOCK TABLES `digidemo_factor` WRITE;
 /*!40000 ALTER TABLE `digidemo_factor` DISABLE KEYS */;
-REPLACE INTO `digidemo_factor` (`id`, `proposal_id`, `description`, `capability_id`, `valence`, `creation_date`, `last_modified`, `sector_id`) VALUES (1,1,'Transport of crude oil by pipeline is safer than by truck and train, which are the current alternatives',13,1,'2014-07-09 05:57:04','2014-07-09 05:57:04',7),(2,1,'The operation of pipelines for the transport of crude oil poses environmental risks due to the eventuality of leaks',4,-1,'2014-07-09 05:57:04','2014-07-09 05:57:04',2),(3,1,'Canada\'s readiness to make use of its natural resources will be increased',11,1,'2014-07-09 05:57:04','2014-07-09 05:57:04',7),(4,1,'Facilitating the development of the tarsands will create additional wealth and income in Canada.',15,1,'2014-07-09 05:57:04','2014-07-09 05:57:04',1);
+REPLACE INTO `digidemo_factor` (`id`, `proposal_id`, `description`, `valence`, `creation_date`, `last_modified`, `sector_id`) VALUES (1,1,'Transport of crude oil by pipeline is safer than by truck and train, which are the current alternatives',1,'2014-07-09 05:57:04','2014-07-09 05:57:04',7),(2,1,'The operation of pipelines for the transport of crude oil poses environmental risks due to the eventuality of leaks',-1,'2014-07-09 05:57:04','2014-07-09 05:57:04',2),(3,1,'Canada\'s readiness to make use of its natural resources will be increased',1,'2014-07-09 05:57:04','2014-07-09 05:57:04',7),(4,1,'Facilitating the development of the tarsands will create additional wealth and income in Canada.',1,'2014-07-09 05:57:04','2014-07-09 05:57:04',1);
 /*!40000 ALTER TABLE `digidemo_factor` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -417,9 +386,9 @@ CREATE TABLE `digidemo_letter` (
   KEY `digidemo_letter_b0eaace7` (`parent_letter_id`),
   KEY `digidemo_letter_ad574d3c` (`proposal_id`),
   KEY `digidemo_letter_6340c63c` (`user_id`),
-  CONSTRAINT `proposal_id_refs_id_a3d9d864` FOREIGN KEY (`proposal_id`) REFERENCES `digidemo_proposal` (`id`),
+  CONSTRAINT `user_id_refs_id_747eea8b` FOREIGN KEY (`user_id`) REFERENCES `auth_user` (`id`),
   CONSTRAINT `parent_letter_id_refs_id_5234e149` FOREIGN KEY (`parent_letter_id`) REFERENCES `digidemo_letter` (`id`),
-  CONSTRAINT `user_id_refs_id_747eea8b` FOREIGN KEY (`user_id`) REFERENCES `auth_user` (`id`)
+  CONSTRAINT `proposal_id_refs_id_a3d9d864` FOREIGN KEY (`proposal_id`) REFERENCES `digidemo_proposal` (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=46 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -741,8 +710,8 @@ CREATE TABLE `digidemo_replyvote` (
   UNIQUE KEY `user_id` (`user_id`,`target_id`),
   KEY `digidemo_replyvote_6340c63c` (`user_id`),
   KEY `digidemo_replyvote_70bfdfd1` (`target_id`),
-  CONSTRAINT `user_id_refs_id_d659ef00` FOREIGN KEY (`user_id`) REFERENCES `auth_user` (`id`),
-  CONSTRAINT `target_id_refs_id_9f87ff39` FOREIGN KEY (`target_id`) REFERENCES `digidemo_reply` (`id`)
+  CONSTRAINT `target_id_refs_id_9f87ff39` FOREIGN KEY (`target_id`) REFERENCES `digidemo_reply` (`id`),
+  CONSTRAINT `user_id_refs_id_d659ef00` FOREIGN KEY (`user_id`) REFERENCES `auth_user` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -909,4 +878,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2014-07-09  2:01:15
+-- Dump completed on 2014-07-09  2:16:10
