@@ -3,8 +3,8 @@
 <div class="sender">
 	<div class="sender_avatar_image">
 		<img class="avatar_image_medium"
-		src="{{ user.profile.get.avatar_img.url }}"
-		alt="{{ user.profile.get.username }}" />
+		src="{{ user.profile.avatar_img.url }}"
+		alt="{{ user.profile.username }}" />
 
 		<img class="avatar_mask_medium"
 		src="{% static "digidemo/images/avatar_mask.png" %}" />
@@ -15,7 +15,7 @@
 			{{ user.username }}
 		</div>
 		<div class="sender_bling">
-			{{ user.profile.get.rep }} &nbsp;&nbsp; 13 
+			{{ user.profile.rep }} &nbsp;&nbsp; 13 
 			<img src="{% static "digidemo/images/bronze.png" %}" alt="bronze badge" />
 		</div>
 	</div>
