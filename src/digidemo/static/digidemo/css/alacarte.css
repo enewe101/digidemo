@@ -1,0 +1,28 @@
+.pointer {
+	cursor: pointer;
+}
+
+.centered {
+	text-align: center;
+}
+
+.italic {
+	font-style: italic;
+}
+
+.bold {
+	font-weight: bold;
+}
+
+.grey {
+	color: rgb(200,200,200);
+}
+
+.float_left {
+	float: left;
+}
+
+.clear {
+	clear: both;
+}
+

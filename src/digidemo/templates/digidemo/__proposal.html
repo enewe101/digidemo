@@ -5,6 +5,13 @@
 	{{ proposal.title }} | {{ block.super }}
 {% endblock title %}
 
+{% block css %}
+	{{ block.super }}
+	<link rel="stylesheet" type="text/css" 
+		href="{% static "digidemo/css/proposal.css" %}" />
+{% endblock css %}
+
+
 {% block js %}
 	{{ block.super }}
 	<script type="text/javascript">

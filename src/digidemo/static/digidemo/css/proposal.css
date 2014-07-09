@@ -1,128 +1,3 @@
-@font-face{
-	font-family: comp-bottom: 1em;uterModern;
-	src: url(../fonts/computer_modern/cmunrm.eot);
-}   
-@font-face{
-	font-family: computerModern;
-	src: url(../fonts/computer_modern/cmunrm.ttf);
-}   
-@font-face{
-	font-family: computerModern;
-	font-style: italic;
-	src: url(../fonts/computer_modern/cmunci.eot);
-}   
-@font-face{
-	font-family: computerModern;
-	font-style: italic;
-	src: url(../fonts/computer_modern/cmunci.ttf);
-}   
-@font-face{
-	font-family: computerModern;
-	font-weight: bold;
-	src: url(../fonts/computer_modern/cmunbx.eot);
-}   
-@font-face{
-	font-family: computerModern;
-	font-weight: bold;
-	src: url(../fonts/computer_modern/cmunbx.ttf);
-}   
-@font-face{
-	font-family: computerModern;
-	font-weight: bold;
-	font-style: italic;
-	src: url(../fonts/computer_modern/cmunbi.eot);
-}   
-@font-face{
-	font-family: computerModern;
-	font-weight: bold;
-	font-style: italic;
-	src: url(../fonts/computer_modern/cmunbi.ttf);
-}   
-
-@font-face{
-	font-family: ubuntu;
-	src: url(../fonts/ubuntu/Ubuntu-R.eot);
-}   
-@font-face{
-	font-family: ubuntu;
-	src: url(../fonts/ubuntu/Ubuntu-R.ttf);
-}   
-@font-face{
-	font-family: ubuntu;
-	font-style: italic;
-	src: url(../fonts/ubuntu/Ubuntu-RI.eot);
-}   
-@font-face{
-	font-family: ubuntu;
-	font-style: italic;
-	src: url(../fonts/ubuntu/Ubuntu-RI.ttf);
-}   
-@font-face{
-	font-family: ubuntu;
-	font-weight: bold;
-	src: url(../fonts/ubuntu/Ubuntu-B.eot);
-}   
-@font-face{
-	font-family: ubuntu;
-	font-weight: bold;
-	src: url(../fonts/ubuntu/Ubuntu-B.ttf);
-}   
-@font-face{
-	font-family: ubuntu;
-	font-weight: bold;
-	font-style: italic;
-	src: url(../fonts/ubuntu/Ubuntu-BI.eot);
-}   
-@font-face{
-	font-family: ubuntu;
-	font-weight: bold;
-	font-style: italic;
-	src: url(../fonts/ubuntu/Ubuntu-BI.ttf);
-}   
-
-p {
-}
-
-.pointer {
-	cursor: pointer;
-}
-
-.centered {
-	text-align: center;
-}
-
-.italic {
-	font-style: italic;
-}
-
-.bold {
-	font-weight: bold;
-}
-
-.grey {
-	color: rgb(200,200,200);
-}
-
-.float_left {
-	float: left;
-}
-
-.note_icon {
-	margin: 20px 10px 10px 0;
-	float:left;
-}
-
-body {
-	font-family: ubuntu;
-	margin: 0;
-	padding: 0;
-}
-
-#header {
-	height: 40px;
-	clear: both;
-}
-
 #middle {
 	clear: both;
 }
@@ -139,12 +14,6 @@ body {
 	text-align: left;
 	margin: auto;
 	width: 1124px;
-}
-
-#colophon {
-	float: left;
-	width: 40px;
-	height: 40px;
 }
 
 #user {
@@ -187,10 +56,6 @@ h1.proposal_title {
 #proposal_factors {
 	clear: both;
 	margin: 40px 0 0 0;
-}
-
-.clear {
-	clear: both;
 }
 
 .factor_list {
