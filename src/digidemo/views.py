@@ -7,6 +7,7 @@ from digidemo.forms import *
 from digidemo import utils
 from settings import DEBUG
 import json
+from django.shortcuts import redirect
 
 def get_django_vars(additional_vars={}):
 	django_vars = {
@@ -66,6 +67,29 @@ def discuss(request, proposal_name):
 			'discussion_sections': discussion_sections
 		}
 	)
+
+def edit(request, proposal_name):
+
+	this_proposal = Proposal.objects.get(name=proposal_name)
+
+	# ** Hardcoded the logged in user to be enewe101 **
+	logged_in_user = User.objects.get(pk=1)
+	
+
+	return render(
+		request,
+		'digidemo/edit.html', 
+		{
+			'django_vars_js': get_django_vars_JSON(
+				{'user': utils.obj_to_dict(
+				logged_in_user, exclude=['password'])}),
+			'proposal': this_proposal,
+			'logged_in_user': logged_in_user,
+			'tab': 'edit',
+		}
+	)
+
+
 
 
 def overview(request, proposal_name):
@@ -237,12 +261,42 @@ def mainPage(request,sort_type='most_recent'):
 
 def userRegistration(request):
         if(request.method == 'POST'):
-                print "working till here"
-                user = User(request.POST)
-                print user
-                print "now"
+                user = NameForm(request.POST)
+                
+                if user.is_valid():
+                        print "absbsbbadsaasdasd"
+                        passwordPass = user.cleaned_data['password']
+                        userNamePass = user.cleaned_data['userName']
+                        emailPass = user.cleaned_data['email']
+                        firstNamePass = user.cleaned_data['firstName']
+                        lastNamePass = user.cleaned_data['lastName']
+                        userCreate = User.objects.create_user(username=userNamePass,
+                                                        email= emailPass,
+                                                        password = passwordPass,
+                                                        first_name = firstNamePass,
+                                                        last_name = lastNamePass)
+                        print "absbsbbadsaasdasd"
+                        userCreate.save();
+                        streetPass = user.cleaned_data['street']
+                        zipCodePass = user.cleaned_data['zipCode']
+                        countryPass =  user.cleaned_data['country']
+                        provincePass =  user.cleaned_data['province']
+                        userProfile = UserProfile (user=userCreate,
+                                                   email_validated = 0,
+                                                   rep=0,
+                                                   street = streetPass,
+                                                   country = countryPass,
+                                                   zip_code = zipCodePass,
+                                                   province = provincePass)
+                        userProfile.save();
+                return redirect('../mainPage')
+
+        registrationForm = NameForm();
+               
         return render(
                 request,
                 'digidemo/User_registration.html',
+                { 'form' : registrationForm,}
                 )
+
 

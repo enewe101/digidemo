@@ -1,0 +1,26 @@
+{% extends "digidemo/__proposal.html" %}
+{% load staticfiles %}
+{% block proposal_content %}
+	<input type="hidden" id="proposalName" value="{{proposal.name}}">
+	<div align="right"> Last Modified {{proposal.last_modified}} </div>
+	<h2> Proposal Tile </h2>
+	<textarea id="proposalTitle" rows="2" cols="70"> {{proposal.title}} </textarea>
+	
+	<h2> Proposal Text </h2>
+	<div class="take_note">
+	<textarea id="proposalText" rows="25" cols="70"> {{proposal.text}} </textarea>
+	</div>
+	
+	<h2> Proposal Factors </h2>
+	<div class="factor_left_column">
+	<textarea id="goodFactors" rows="10" cols="35">{% for factor in proposal.factor_set.all %}{% if factor.valence > 0 %}<br>{{ factor.description }}
+{% endif %}{% endfor %}</textarea>
+	</div>
+	<div class="factor_list_heading">
+	<textarea id="badFactors" rows="10" cols="35">{% for factor in proposal.factor_set.all %}{% if factor.valence < 0 %}<br>{{ factor.description }}
+{% endif %}{% endfor %}</textarea>
+	</div>
+<div align="right">{% include "digidemo/_w_post_edit.html" %} </div>
+{% endblock proposal_content %}
+
+	

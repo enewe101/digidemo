@@ -8,7 +8,9 @@ from digidemo.models import *
 from digidemo.forms import *
 from digidemo.settings import DEBUG
 from digidemo.utils import get_or_none
-
+from django.utils import timezone
+from django.views.decorators.csrf import csrf_exempt
+from django.contrib.auth import authenticate
 # json responders should return a python dict
 _json_responders = {}
 
@@ -241,6 +243,44 @@ def comment(request):
 		'success': False,
 		'msg':'ajax.py: comment(): comment form was not valid'
 	}
+
+@ajax_endpoint
+def editProposal(request):
+        pName = request.GET['name']
+        title = request.GET['title']
+        text = request.GET['text']
+        goodFactors = request.GET['goodFactors']
+        badFactors = request.GET['badFactors']
+        proposal = Proposal.objects.get(name=pName)
+        proposal.title = title
+        proposal.text= text
+        proposal.last_modified = timezone.now()
+        
+        proposal.save()
+        print "Here222"
+	return {'test':'success!'}
+
+
+
+def handle_ajax_login(request):
+        username_pass = request.GET['username']
+        password_pass = request.GET['password']
+        user = authenticate(username=username_pass, password=password_pass)
+        data = 0;
+        if user is not None:
+                data = "accepted";
+                request.session['user']=username_pass;
+        else :
+                data = "denied";
+        #data = test(request)
+        return render(request, 'digidemo/ajax.html', {'json_data':data})
+
+
+def handle_ajax_logout(request):
+        request.session.pop("user",None)
+        data = test(request)
+        return render(request, 'digidemo/ajax.html', {'json_data':data})
+
 
 
 @ajax_endpoint

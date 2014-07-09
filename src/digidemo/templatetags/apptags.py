@@ -10,8 +10,7 @@ register = template.Library()
 
 @register.filter(name='getAuthor')
 def getAuthor(users, proposal):
-    print users.get(id=proposal.author_id).user.first_name
-    return users.get(id=proposal.author_id).avatar_name
+    return users.get(id=proposal.user_id).user.first_name
 
 
 @register.filter(name='getSummary')
@@ -19,6 +18,14 @@ def getSummary(proposal):
     returnText = proposal[0:200];
     returnText+= '......';
     return returnText
+
+
+@register.filter(name='getLoggedInUser')
+def getLoggedInUser(request):
+    print request.session.keys()
+    if(request.session.has_key("user")):
+        return(request.session['user'])
+    return "false"
 
 
 @register.filter(needs_autoescape=True)

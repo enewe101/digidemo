@@ -23,9 +23,12 @@
 	</div></a>
 
 	<div class="tab_thin_space"></div>
+	<a href="{% url "edit" proposal.name %}">
 	<div class="_w_tab_1 {% if tab == "edit" %}tab_active{% else %}tab{% endif %}">
 			Edit
-	</div>
+	</div></a>
+	
+
 	<div class="tab_thin_space"></div>
 	<div class="_w_tab_1 {% if tab == "save" %}tab_active{% else %}tab{% endif %}">
 		<span class='disabled'>

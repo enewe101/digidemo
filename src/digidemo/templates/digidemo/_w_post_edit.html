@@ -1,0 +1,35 @@
+{% load staticfiles %}
+{% load apptags %}
+
+<input type ="button" id="postEdit" value="Edit">
+
+<script>
+$( "#postEdit").click(function( event ) {
+	var nameCollect = document.getElementById('proposalName').value;
+	var titleCollect = document.getElementById('proposalTitle').value;
+	var textCollect = document.getElementById('proposalText').value;
+	var goodFactorsCollect = document.getElementById('goodFactors').value;
+	var badFactorsCollect =  document.getElementById('badFactors').value;
+  	  $.ajax({
+   	   url:"http://127.0.0.1:8000/ajaxJson/editProposal",
+	   type: 'GET',
+   	   async: false,
+           data: {
+		name : nameCollect,
+               title : titleCollect,
+         	text : textCollect,
+		goodFactors: goodFactorsCollect,
+		badFactors:badFactorsCollect,
+               csrfmiddlewaretoken: '{{ csrf_token }}'
+                },  
+      	   success:function(data) {
+		location.reload();
+		}
+   }); 
+});
+
+
+
+
+
+</script>

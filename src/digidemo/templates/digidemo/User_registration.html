@@ -31,13 +31,14 @@ $(document).ready(function(){
         Log in <span>?</span>
       </a>
       <div id="login-content">
-        <form>
+        <form method = "POST" action = "Login">
+		{% csrf_token %}	
           <fieldset id="inputs">
-            <input id="username" type="email" name="Email" placeholder="Your email address" required>   
-            <input id="password" type="password" name="Password" placeholder="Password" required>
+               <input id="id_userName" maxlength="48" name="userName" type="text" placeholder="Enter your username" />    
+               <input id="id_password" name="password" type="password" palceholder="Enter password" /> 
           </fieldset>
           <fieldset id="actions">
-            <input type="submit" id="submit" value="Log in">
+            <input type="button" id="submit" value="Log in">
             <label><input type="checkbox" checked="checked"> Keep me signed in</label>
           </fieldset>
         </form>
@@ -75,26 +76,36 @@ $(document).ready(function(){
   <div id="content">
 
 	<form method="POST" tag="Create Logon" >
-{% csrf_token %}		
-<div align="left"
-		<br>
-			Username *: <input type="username" name="username" id="username" />
- 	<br>	<br>
-			Password *: <input type="password" name="password" id="password" />
- <br>	<br>
-			First Name*: <input type="first_name" name="first_name" id="first_name" />
- <br>	<br>
-			Last Name *: <input type="last_name" name="last_name" id="last_name" />
- <br>	<br>
-			Email *: <input type="email" name="email" id="email" />
- <br>	<br>
-				Telephone: <input type="avatar_name" name="avatar_name" id="avatar_name" />
- <br>	<br>
-			Street *: <input type="street" name="street" id="street" />
- <br>	<br>
-			Post Code *: <input type="postcode" name="zip_code" id="zip_code" />
- <br>	<br>
-
+	{% csrf_token %}		
+	{{ form.non_field_errors }}
+  		{{ form.subject.errors }}
+		userName :
+		{{ form.userName }} 
+		<br> <br>
+		Password :
+		{{ form.password }} 
+		<br> <br>
+		Email :
+		{{ form.email }} 
+		<br> <br>
+		First Name:
+		{{ form.firstName }} 
+		<br> <br>
+		Last Name :
+		{{ form.lastName }} 
+		<br> <br>
+		Street :
+		{{ form.street }} 
+		<br> <br>
+		PIN :
+		{{ form.zipCode }} 
+		<br> <br>
+		Country :
+		{{ form.country }} 
+		<br> <br>
+		Province :
+		{{ form.province }} 
+		<br> <br>
 		<input type="submit" value="Submit" />
 		</div>
 	</form>

@@ -158,3 +158,14 @@ class LetterVoteForm(VoteForm):
 class DiscussionVoteForm(VoteForm):
 	class Meta(VoteForm.Meta):
 		model = DiscussionVote
+
+class NameForm(forms.Form):
+        userName = forms.CharField(label='UserName', max_length=16)
+        password = forms.CharField(label='Password',widget=forms.PasswordInput())
+        email = forms.EmailField(label='Email')
+        firstName =  forms.CharField(max_length = 16)
+        lastName = forms.CharField(max_length = 32)
+        street = forms.CharField(max_length = 32)
+        zipCode = forms.CharField(max_length = 8)
+        country = forms.CharField(max_length = 20)
+        province = forms.CharField(max_length = 30)
