@@ -317,8 +317,8 @@ CREATE TABLE `digidemo_discussionvote` (
   UNIQUE KEY `user_id` (`user_id`,`target_id`),
   KEY `digidemo_discussionvote_6340c63c` (`user_id`),
   KEY `digidemo_discussionvote_70bfdfd1` (`target_id`),
-  CONSTRAINT `user_id_refs_id_ae8336d4` FOREIGN KEY (`user_id`) REFERENCES `auth_user` (`id`),
-  CONSTRAINT `target_id_refs_id_4355b2d1` FOREIGN KEY (`target_id`) REFERENCES `digidemo_discussion` (`id`)
+  CONSTRAINT `target_id_refs_id_4355b2d1` FOREIGN KEY (`target_id`) REFERENCES `digidemo_discussion` (`id`),
+  CONSTRAINT `user_id_refs_id_ae8336d4` FOREIGN KEY (`user_id`) REFERENCES `auth_user` (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -386,9 +386,9 @@ CREATE TABLE `digidemo_letter` (
   KEY `digidemo_letter_b0eaace7` (`parent_letter_id`),
   KEY `digidemo_letter_ad574d3c` (`proposal_id`),
   KEY `digidemo_letter_6340c63c` (`user_id`),
-  CONSTRAINT `user_id_refs_id_747eea8b` FOREIGN KEY (`user_id`) REFERENCES `auth_user` (`id`),
   CONSTRAINT `parent_letter_id_refs_id_5234e149` FOREIGN KEY (`parent_letter_id`) REFERENCES `digidemo_letter` (`id`),
-  CONSTRAINT `proposal_id_refs_id_a3d9d864` FOREIGN KEY (`proposal_id`) REFERENCES `digidemo_proposal` (`id`)
+  CONSTRAINT `proposal_id_refs_id_a3d9d864` FOREIGN KEY (`proposal_id`) REFERENCES `digidemo_proposal` (`id`),
+  CONSTRAINT `user_id_refs_id_747eea8b` FOREIGN KEY (`user_id`) REFERENCES `auth_user` (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=46 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -571,7 +571,8 @@ DROP TABLE IF EXISTS `digidemo_proposal`;
 CREATE TABLE `digidemo_proposal` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `title` varchar(256) NOT NULL,
-  `text` longtext NOT NULL,
+  `summary` longtext NOT NULL,
+  `text` longtext,
   `is_published` tinyint(1) NOT NULL,
   `last_modified` datetime NOT NULL,
   `creation_date` datetime NOT NULL,
@@ -590,7 +591,7 @@ CREATE TABLE `digidemo_proposal` (
 
 LOCK TABLES `digidemo_proposal` WRITE;
 /*!40000 ALTER TABLE `digidemo_proposal` DISABLE KEYS */;
-REPLACE INTO `digidemo_proposal` (`id`, `title`, `text`, `is_published`, `last_modified`, `creation_date`, `user_id`, `score`, `proposal_image`) VALUES (1,'Keystone XL Pipeline Extension','The Keystone XL Pipeline is a proposed extension to the existing Keystone Pipeline System, put forward by TransCanada, the corporation that owns the Keystone System. The pipeline would cross the Canada/US border, importing crude oil sourced from the Albertan oil sands, into the United States. The proposal is currently awaiting government approval. The pipeline would be newly constructed, and is similar to existing pipelines in North America.\n\nThe Keystone XL pipeline project is a contentious political issue, owing to probable environmental, economic, and social impacts. Environmentally, the pipeline might present a risk of contaminating groundwater and disturbing sensitive ecosystems, but it might also be a better alternative than ground transport by train or truck. Economically, the pipeline might produce jobs temporarily during its construction, and permanently in additional refinement activities in the US. It would also lead to a redistribution of crude supply, emphasizing export and raising the price of oil in the Midwestern US. Socially, the construction of the pipeline would disturb landowners currently in its path, and would disturb heritage sites of cultural significance.',1,'2014-07-08 00:00:00','2014-06-15 00:00:00',1,2,'/digidemo/proposal-images/'),(2,'no factors','this proposal has no factors',1,'2014-07-08 00:00:00','2014-06-20 00:00:00',1,33,'/digidemo/proposal-images/'),(3,'Quebec','a',1,'2014-07-08 00:00:00','2014-02-10 00:00:00',1,-7,'');
+REPLACE INTO `digidemo_proposal` (`id`, `title`, `summary`, `text`, `is_published`, `last_modified`, `creation_date`, `user_id`, `score`, `proposal_image`) VALUES (1,'Keystone XL Pipeline Extension','The Keystone XL Pipeline is a proposed extension to the existing Keystone Pipeline System, put forward by TransCanada, the corporation that owns the Keystone System. The pipeline would cross the Canada/US border, importing crude oil sourced from the Albertan oil sands, into the United States. The proposal is currently awaiting government approval. The pipeline would be newly constructed, and is similar to existing pipelines in North America.\n\nThe Keystone XL pipeline project is a contentious political issue, owing to probable environmental, economic, and social impacts. Environmentally, the pipeline might present a risk of contaminating groundwater and disturbing sensitive ecosystems, but it might also be a better alternative than ground transport by train or truck. Economically, the pipeline might produce jobs temporarily during its construction, and permanently in additional refinement activities in the US. It would also lead to a redistribution of crude supply, emphasizing export and raising the price of oil in the Midwestern US. Socially, the construction of the pipeline would disturb landowners currently in its path, and would disturb heritage sites of cultural significance.','# Actors #\n - **TransCanada**: Corporation that owns the existing Keysone Pipeline System, and which has put forward the proposal to state and federal authorities for the Keystone XL extension.\n - **ConocoPhillips**: Corporation that was part-owner of the Keystone Pipeline System, bought out by TransCanada.\n - **Cardno Entrix**: Environmental Assessment Consultancy, contracted by TransCanada to produce an environmental assessment of the Keystone XL proposal.\n- **US Government**:\n        - **President Obama**: Can approve or reject the application for a Presidential Permit, legally needed to proceed with the construction project. \n         - **Environmental Protection Agency**: Oversees the environmental assessment of the project, and approves or rejects the application for an environmental permit, legally needed to proceed with the construction project.\n         - **US State Governments**: Each US state through which the proposed pipeline would pass can approve or reject the construction activities within its borders.\n     - **Canadian Government**:\n             - **National Energy Board of Canada** (NEB): Responsible for approving or rejecting the construction activities within Canada.\n         - WorleyParsons: Corporation acting as the general contractor for the pipeline construction.\n        \n        # Impacts #\n        ## Environmental Impacts ##\n        **Hazards relating to oil spills**. The originally proposed route traversed the Sand Hills region and the Ogallala aquifer.  The Sand Hills region is a sensitive wetland ecosystem in Nebraska.  The Ogallala aquifer is one of the largest reserves of fresh water in the world, spans eight states, provides drinking water for two million people, and supports a US$20 billion worth of agricultural activity.\n        \n        The path of the pipeline has been revised by TransCanada to avoid the Sand Hills region, and reduce the length\n        of piping running over the Ogallala aquifer.  The actual risks of a spill in the region of the aquifer are unclear, and the severity of impact is debated.  The pipeline, with a normal depth of 4 feet would be separated from the aquifer by a layer of fine clay, which might drastically reduce the actual effects on drinking water.  Thousands of miles of existing pipelines carrying crude oil and refined liquid hydrocarbons have crossed over the Ogallala Aquifer for years, so the severity of risk could be evaluated empirically.  The pipeline will be newly constructed, which should be considered when comparing to existing pipelines which do not benefit from technological advances or were converted from natural gas pipelines.\n        \n        **Greenhouse Gas Emissions**.  The Keystone XL pipeline would carry crude oil to refineries for conversion into fuels, among other products.  The activities of extracting, refining, and burning petroleum-derived fuels is a major contributor to CO2 accumulation in the atmosphere and climate change.  By providing access to US and global markets, the Keystone XL pipeline would facilitate further extraction in the oilsands of Alberta.  \n        If the Keystone XL pipeline is not built, crude from the Albertan tarsands might be refined and exported from\n        Canada, based on alternative Canadian pipeline  construction projects which would bring the crude to tidewater.  Additionally, ground transport of crude, by train and tanker, might be used instead, which adds to greenhouse gas emissions and poses its own safety hazards.\n        \n        ## Economic Impacts ##\n        **Employment**.  Construction of the pipeline would provide temporary employment for about 2 years.  Estimates of the amount of employment vary widely.  A report by Perryman Group, a financial analysis firm that was hired by TransCanada, estimates construction would employ 20,000 US workers and spend US$7 billion.  A study conducted by Cornell ILR Global Labor Institute estimated construction would employ 2500 to 4650 US workers.  The US State Department estimated 5000 to 6000 temporary construction jobs.  It\'s Supplemenntal Environmental Impact Statement estimated 3900 US workers directly employed and 42000 US workers indirectly employed by construction activities. \n        \n        **Risk of impact due to spills**.  The original route proposed for the Keystone XL pipeline passed over the Ogallala aquifer.  The aquifer supports about US$20 billion in agricultural activity.  If a spill contaminated the water, it could have serious economic impact.  The amended proposal has reduced the length of piping that crosses the aquifer.  The 2010 Enbridge oil spill along the Kalamazoo river in Michigan showed that spills can result in significant economic costs beyond environmental ones.\n        \n        # Social Impacts #\n        **Displacement of people**.  Land owners in the path of the pipeline would be displaced.  Landowners have already complained about threats by TransCanada to confiscate private land and some have faced lawsuits.  As of October 17, 2011 Transcanada had 34 eminent domain actions against landowners in Texas and 22 in South Dakota.\n        \n        **Damage to public goods (excluding the environment)**.  Various sacred sites, and prehistoric or historic archeological sites, and sites with traditional cultural value to Native Americans and other groups might be disturbed, removed or demolished.  TransCanada made a major donation to the University of Toronto to promote education and research in the health of the Aboriginal population.\n        \n        **Safety**.  Ground transport by tanker truck and rail is less safe.  As an example, the derailment of a train transporting crude oil at Lac-Mégantic in 2013 kiled 50 people.  Increased production in North Dakota has exceeded pipeline capacity since 2010, leading to increasing volumes of crude being shipped by truck or rail to refineries.  Alberta is expected to running up against a pipeline capacity limit around 2016.\n        \n        # In Perspective #\n         - The Alberta oil sands account for a quantity of GHG emissions equal to \n             - the coal-fired power plants in the State of Wisconsin \n             - 2.5% of total GHG emissions from the coal-fired power plants of the US\n             - 0.1% of global GHG emissions from all sources\n         - The Enbridge \"Alberta Clipper\" expansion has continued during late 2013, adding approximately the same cross-border capacity.\n         - The Keystone XL expansion is Phase 4 in the Keystone Pipeline system.\n             - it corresponds to between 1897 km, later revised to 1408 km of piping or 28% revised to 23% of the Keystone system by length.\n             - it will account for about 40% of the Keystone system\'s capacity if built.\n         - There are currently about 320,000 km of similar oil pipelines in the US.\n         - Alternative projects are being considered:\n                 - An all-Canadian pipeline north to the Arctic coast for shipping to markets in Europe and Asia\n                 - An all-Canadian pipeline (\"Energy East\") that would extend to Saint John, New Brunswick for export, while also supplying Montreal, Quebec City, and Saint John refineries.',1,'2014-07-09 06:58:08','2014-06-15 00:00:00',1,2,'/digidemo/proposal-images/'),(2,'no factors','this proposal has no factors','this proposal has no factors',1,'2014-07-09 06:55:19','2014-06-20 00:00:00',1,33,'/digidemo/proposal-images/'),(3,'Quebec','a','a',1,'2014-07-09 06:55:19','2014-02-10 00:00:00',1,-7,'');
 /*!40000 ALTER TABLE `digidemo_proposal` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -671,8 +672,8 @@ CREATE TABLE `digidemo_proposalvote` (
   UNIQUE KEY `user_id` (`user_id`,`target_id`),
   KEY `digidemo_proposalvote_6340c63c` (`user_id`),
   KEY `digidemo_proposalvote_70bfdfd1` (`target_id`),
-  CONSTRAINT `target_id_refs_id_2722b1c2` FOREIGN KEY (`target_id`) REFERENCES `digidemo_proposal` (`id`),
-  CONSTRAINT `user_id_refs_id_baf64dae` FOREIGN KEY (`user_id`) REFERENCES `auth_user` (`id`)
+  CONSTRAINT `user_id_refs_id_baf64dae` FOREIGN KEY (`user_id`) REFERENCES `auth_user` (`id`),
+  CONSTRAINT `target_id_refs_id_2722b1c2` FOREIGN KEY (`target_id`) REFERENCES `digidemo_proposal` (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -705,8 +706,8 @@ CREATE TABLE `digidemo_reply` (
   PRIMARY KEY (`id`),
   KEY `digidemo_reply_acd02281` (`discussion_id`),
   KEY `digidemo_reply_6340c63c` (`user_id`),
-  CONSTRAINT `user_id_refs_id_9950cae7` FOREIGN KEY (`user_id`) REFERENCES `auth_user` (`id`),
-  CONSTRAINT `discussion_id_refs_id_0f0a157b` FOREIGN KEY (`discussion_id`) REFERENCES `digidemo_discussion` (`id`)
+  CONSTRAINT `discussion_id_refs_id_0f0a157b` FOREIGN KEY (`discussion_id`) REFERENCES `digidemo_discussion` (`id`),
+  CONSTRAINT `user_id_refs_id_9950cae7` FOREIGN KEY (`user_id`) REFERENCES `auth_user` (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=28 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -738,8 +739,8 @@ CREATE TABLE `digidemo_replyvote` (
   UNIQUE KEY `user_id` (`user_id`,`target_id`),
   KEY `digidemo_replyvote_6340c63c` (`user_id`),
   KEY `digidemo_replyvote_70bfdfd1` (`target_id`),
-  CONSTRAINT `target_id_refs_id_9f87ff39` FOREIGN KEY (`target_id`) REFERENCES `digidemo_reply` (`id`),
-  CONSTRAINT `user_id_refs_id_d659ef00` FOREIGN KEY (`user_id`) REFERENCES `auth_user` (`id`)
+  CONSTRAINT `user_id_refs_id_d659ef00` FOREIGN KEY (`user_id`) REFERENCES `auth_user` (`id`),
+  CONSTRAINT `target_id_refs_id_9f87ff39` FOREIGN KEY (`target_id`) REFERENCES `digidemo_reply` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -930,4 +931,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2014-07-09  2:51:08
+-- Dump completed on 2014-07-09  2:58:57

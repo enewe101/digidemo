@@ -72,7 +72,8 @@ class Tag(models.Model):
 
 class Proposal(models.Model):
 	title = models.CharField(max_length=256)
-	text = models.TextField()
+	summary = models.TextField()
+	text = models.TextField(null=True)
 	is_published = models.BooleanField(default=False)
 	last_modified = models.DateTimeField(auto_now=True)
 	creation_date = models.DateTimeField(auto_now_add=True)
