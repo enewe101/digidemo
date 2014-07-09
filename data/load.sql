@@ -208,12 +208,12 @@ DROP TABLE IF EXISTS `digidemo_comment`;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `digidemo_comment` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
+  `creation_date` datetime NOT NULL,
+  `last_modified` datetime NOT NULL,
   `user_id` int(11) NOT NULL,
   `letter_id` int(11) NOT NULL,
   `body` varchar(512) NOT NULL,
   `score` smallint(6) NOT NULL,
-  `creation_date` datetime NOT NULL,
-  `last_modified` datetime NOT NULL,
   PRIMARY KEY (`id`),
   KEY `digidemo_comment_6340c63c` (`user_id`),
   KEY `digidemo_comment_45f341a0` (`letter_id`),
@@ -228,7 +228,7 @@ CREATE TABLE `digidemo_comment` (
 
 LOCK TABLES `digidemo_comment` WRITE;
 /*!40000 ALTER TABLE `digidemo_comment` DISABLE KEYS */;
-REPLACE INTO `digidemo_comment` (`id`, `user_id`, `letter_id`, `body`, `score`, `creation_date`, `last_modified`) VALUES (1,1,1,'@normaluser I agree with you but I think that you should consider offering some concrete evidence for what you are saying -- back up how the environmental losses will arise and why they are certain.  There\'s plenty of facts in the issue \nwiki to choose from.',1,'0000-00-00 00:00:00','0000-00-00 00:00:00'),(2,1,1,'ll',0,'0000-00-00 00:00:00','0000-00-00 00:00:00'),(3,1,1,'lll\r\n',0,'0000-00-00 00:00:00','0000-00-00 00:00:00'),(4,1,1,'bic!',0,'0000-00-00 00:00:00','0000-00-00 00:00:00'),(5,1,1,'super',0,'0000-00-00 00:00:00','0000-00-00 00:00:00'),(6,1,14,'lame!',0,'0000-00-00 00:00:00','0000-00-00 00:00:00'),(7,1,1,'kilp',0,'0000-00-00 00:00:00','0000-00-00 00:00:00'),(8,1,1,'froze',0,'0000-00-00 00:00:00','0000-00-00 00:00:00'),(9,1,1,'Blip',0,'0000-00-00 00:00:00','0000-00-00 00:00:00'),(10,1,40,'Jimmi',0,'0000-00-00 00:00:00','0000-00-00 00:00:00'),(11,1,1,'james',0,'0000-00-00 00:00:00','0000-00-00 00:00:00'),(12,1,14,'blatant comment.',0,'0000-00-00 00:00:00','0000-00-00 00:00:00'),(13,1,1,'pequifi',0,'0000-00-00 00:00:00','0000-00-00 00:00:00');
+REPLACE INTO `digidemo_comment` (`id`, `creation_date`, `last_modified`, `user_id`, `letter_id`, `body`, `score`) VALUES (1,'0000-00-00 00:00:00','0000-00-00 00:00:00',1,1,'@normaluser I agree with you but I think that you should consider offering some concrete evidence for what you are saying -- back up how the environmental losses will arise and why they are certain.  There\'s plenty of facts in the issue \nwiki to choose from.',1),(2,'0000-00-00 00:00:00','0000-00-00 00:00:00',1,1,'ll',0),(3,'0000-00-00 00:00:00','0000-00-00 00:00:00',1,1,'lll\r\n',0),(4,'0000-00-00 00:00:00','0000-00-00 00:00:00',1,1,'bic!',0),(5,'0000-00-00 00:00:00','0000-00-00 00:00:00',1,1,'super',0),(6,'0000-00-00 00:00:00','0000-00-00 00:00:00',1,14,'lame!',0),(7,'0000-00-00 00:00:00','0000-00-00 00:00:00',1,1,'kilp',0),(8,'0000-00-00 00:00:00','0000-00-00 00:00:00',1,1,'froze',0),(9,'0000-00-00 00:00:00','0000-00-00 00:00:00',1,1,'Blip',0),(10,'0000-00-00 00:00:00','0000-00-00 00:00:00',1,40,'Jimmi',0),(11,'0000-00-00 00:00:00','0000-00-00 00:00:00',1,1,'james',0),(12,'0000-00-00 00:00:00','0000-00-00 00:00:00',1,14,'blatant comment.',0),(13,'0000-00-00 00:00:00','0000-00-00 00:00:00',1,1,'pequifi',0);
 /*!40000 ALTER TABLE `digidemo_comment` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -241,17 +241,17 @@ DROP TABLE IF EXISTS `digidemo_commentvote`;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `digidemo_commentvote` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `user_id` int(11) NOT NULL,
-  `valence` smallint(6) NOT NULL,
   `creation_date` datetime NOT NULL,
   `last_modified` datetime NOT NULL,
+  `user_id` int(11) NOT NULL,
+  `valence` smallint(6) NOT NULL,
   `target_id` int(11) NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `user_id` (`user_id`,`target_id`),
   KEY `digidemo_commentvote_6340c63c` (`user_id`),
   KEY `digidemo_commentvote_70bfdfd1` (`target_id`),
-  CONSTRAINT `user_id_refs_id_5b5404b8` FOREIGN KEY (`user_id`) REFERENCES `auth_user` (`id`),
-  CONSTRAINT `target_id_refs_id_29c7728e` FOREIGN KEY (`target_id`) REFERENCES `digidemo_comment` (`id`)
+  CONSTRAINT `target_id_refs_id_29c7728e` FOREIGN KEY (`target_id`) REFERENCES `digidemo_comment` (`id`),
+  CONSTRAINT `user_id_refs_id_5b5404b8` FOREIGN KEY (`user_id`) REFERENCES `auth_user` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -273,19 +273,19 @@ DROP TABLE IF EXISTS `digidemo_discussion`;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `digidemo_discussion` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
+  `creation_date` datetime NOT NULL,
+  `last_modified` datetime NOT NULL,
   `proposal_id` int(11) NOT NULL,
   `title` varchar(256) NOT NULL,
   `body` longtext NOT NULL,
   `user_id` int(11) NOT NULL,
   `score` smallint(6) NOT NULL,
   `is_open` tinyint(1) NOT NULL,
-  `creation_date` datetime NOT NULL,
-  `last_activity_date` datetime NOT NULL,
   PRIMARY KEY (`id`),
   KEY `digidemo_discussion_ad574d3c` (`proposal_id`),
   KEY `digidemo_discussion_6340c63c` (`user_id`),
-  CONSTRAINT `user_id_refs_id_dc56e1ff` FOREIGN KEY (`user_id`) REFERENCES `auth_user` (`id`),
-  CONSTRAINT `proposal_id_refs_id_67b12962` FOREIGN KEY (`proposal_id`) REFERENCES `digidemo_proposal` (`id`)
+  CONSTRAINT `proposal_id_refs_id_67b12962` FOREIGN KEY (`proposal_id`) REFERENCES `digidemo_proposal` (`id`),
+  CONSTRAINT `user_id_refs_id_dc56e1ff` FOREIGN KEY (`user_id`) REFERENCES `auth_user` (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -295,7 +295,7 @@ CREATE TABLE `digidemo_discussion` (
 
 LOCK TABLES `digidemo_discussion` WRITE;
 /*!40000 ALTER TABLE `digidemo_discussion` DISABLE KEYS */;
-REPLACE INTO `digidemo_discussion` (`id`, `proposal_id`, `title`, `body`, `user_id`, `score`, `is_open`, `creation_date`, `last_activity_date`) VALUES (1,1,'Social Factors','I think that we need more material covering the social factors of this proposal.  There is only a brief mention of the displacement of people.  It would be better to get some statistics together on how many people are likely to be displaced, and how this w I think that we need more material covering the social factors of this proposal.  There is only a brief mention of the displacement of people.  It would be better to get some statistics together on how many people are likely to be displaced, and how this w',1,2,1,'2014-06-30 00:00:00','2014-07-08 00:00:00'),(2,1,'Social Factors','I think that we need more material covering the social factors of this proposal.  There is only a brief mention of the displacement of people.  It would be better to get some statistics together on how many people are likely to be displaced, and how this w I think that we need more material covering the social factors of this proposal.  There is only a brief mention of the displacement of people.  It would be better to get some statistics together on how many people are likely to be displaced, and how this w',1,1,1,'2014-07-04 00:00:00','2014-07-04 00:00:00');
+REPLACE INTO `digidemo_discussion` (`id`, `creation_date`, `last_modified`, `proposal_id`, `title`, `body`, `user_id`, `score`, `is_open`) VALUES (1,'2014-06-30 00:00:00','2014-07-08 00:00:00',1,'Social Factors','I think that we need more material covering the social factors of this proposal.  There is only a brief mention of the displacement of people.  It would be better to get some statistics together on how many people are likely to be displaced, and how this w I think that we need more material covering the social factors of this proposal.  There is only a brief mention of the displacement of people.  It would be better to get some statistics together on how many people are likely to be displaced, and how this w',1,2,1),(2,'2014-07-04 00:00:00','2014-07-04 00:00:00',1,'Social Factors','I think that we need more material covering the social factors of this proposal.  There is only a brief mention of the displacement of people.  It would be better to get some statistics together on how many people are likely to be displaced, and how this w I think that we need more material covering the social factors of this proposal.  There is only a brief mention of the displacement of people.  It would be better to get some statistics together on how many people are likely to be displaced, and how this w',1,1,1);
 /*!40000 ALTER TABLE `digidemo_discussion` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -308,10 +308,10 @@ DROP TABLE IF EXISTS `digidemo_discussionvote`;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `digidemo_discussionvote` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `user_id` int(11) NOT NULL,
-  `valence` smallint(6) NOT NULL,
   `creation_date` datetime NOT NULL,
   `last_modified` datetime NOT NULL,
+  `user_id` int(11) NOT NULL,
+  `valence` smallint(6) NOT NULL,
   `target_id` int(11) NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `user_id` (`user_id`,`target_id`),
@@ -328,7 +328,7 @@ CREATE TABLE `digidemo_discussionvote` (
 
 LOCK TABLES `digidemo_discussionvote` WRITE;
 /*!40000 ALTER TABLE `digidemo_discussionvote` DISABLE KEYS */;
-REPLACE INTO `digidemo_discussionvote` (`id`, `user_id`, `valence`, `creation_date`, `last_modified`, `target_id`) VALUES (1,1,1,'0000-00-00 00:00:00','0000-00-00 00:00:00',1),(2,1,-1,'0000-00-00 00:00:00','0000-00-00 00:00:00',2);
+REPLACE INTO `digidemo_discussionvote` (`id`, `creation_date`, `last_modified`, `user_id`, `valence`, `target_id`) VALUES (1,'0000-00-00 00:00:00','0000-00-00 00:00:00',1,1,1),(2,'0000-00-00 00:00:00','0000-00-00 00:00:00',1,-1,2);
 /*!40000 ALTER TABLE `digidemo_discussionvote` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -341,11 +341,11 @@ DROP TABLE IF EXISTS `digidemo_factor`;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `digidemo_factor` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
+  `creation_date` datetime NOT NULL,
+  `last_modified` datetime NOT NULL,
   `proposal_id` int(11) NOT NULL,
   `description` varchar(256) NOT NULL,
   `valence` smallint(6) NOT NULL,
-  `creation_date` datetime NOT NULL,
-  `last_modified` datetime NOT NULL,
   `sector_id` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `digidemo_factor_ad574d3c` (`proposal_id`),
@@ -361,7 +361,7 @@ CREATE TABLE `digidemo_factor` (
 
 LOCK TABLES `digidemo_factor` WRITE;
 /*!40000 ALTER TABLE `digidemo_factor` DISABLE KEYS */;
-REPLACE INTO `digidemo_factor` (`id`, `proposal_id`, `description`, `valence`, `creation_date`, `last_modified`, `sector_id`) VALUES (1,1,'Transport of crude oil by pipeline is safer than by truck and train, which are the current alternatives',1,'2014-07-09 05:57:04','2014-07-09 05:57:04',7),(2,1,'The operation of pipelines for the transport of crude oil poses environmental risks due to the eventuality of leaks',-1,'2014-07-09 05:57:04','2014-07-09 05:57:04',2),(3,1,'Canada\'s readiness to make use of its natural resources will be increased',1,'2014-07-09 05:57:04','2014-07-09 05:57:04',7),(4,1,'Facilitating the development of the tarsands will create additional wealth and income in Canada.',1,'2014-07-09 05:57:04','2014-07-09 05:57:04',1);
+REPLACE INTO `digidemo_factor` (`id`, `creation_date`, `last_modified`, `proposal_id`, `description`, `valence`, `sector_id`) VALUES (1,'2014-07-09 05:57:04','2014-07-09 05:57:04',1,'Transport of crude oil by pipeline is safer than by truck and train, which are the current alternatives',1,7),(2,'2014-07-09 05:57:04','2014-07-09 05:57:04',1,'The operation of pipelines for the transport of crude oil poses environmental risks due to the eventuality of leaks',-1,2),(3,'2014-07-09 05:57:04','2014-07-09 05:57:04',1,'Canada\'s readiness to make use of its natural resources will be increased',1,7),(4,'2014-07-09 05:57:04','2014-07-09 05:57:04',1,'Facilitating the development of the tarsands will create additional wealth and income in Canada.',1,1);
 /*!40000 ALTER TABLE `digidemo_factor` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -374,20 +374,20 @@ DROP TABLE IF EXISTS `digidemo_letter`;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `digidemo_letter` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
+  `creation_date` datetime NOT NULL,
+  `last_modified` datetime NOT NULL,
   `parent_letter_id` int(11) DEFAULT NULL,
   `proposal_id` int(11) NOT NULL,
   `valence` smallint(6) NOT NULL,
   `user_id` int(11) NOT NULL,
   `body` longtext NOT NULL,
   `score` smallint(6) NOT NULL,
-  `creation_date` datetime NOT NULL,
-  `last_modified` datetime NOT NULL,
   PRIMARY KEY (`id`),
   KEY `digidemo_letter_b0eaace7` (`parent_letter_id`),
   KEY `digidemo_letter_ad574d3c` (`proposal_id`),
   KEY `digidemo_letter_6340c63c` (`user_id`),
-  CONSTRAINT `parent_letter_id_refs_id_5234e149` FOREIGN KEY (`parent_letter_id`) REFERENCES `digidemo_letter` (`id`),
   CONSTRAINT `proposal_id_refs_id_a3d9d864` FOREIGN KEY (`proposal_id`) REFERENCES `digidemo_proposal` (`id`),
+  CONSTRAINT `parent_letter_id_refs_id_5234e149` FOREIGN KEY (`parent_letter_id`) REFERENCES `digidemo_letter` (`id`),
   CONSTRAINT `user_id_refs_id_747eea8b` FOREIGN KEY (`user_id`) REFERENCES `auth_user` (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=46 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -398,7 +398,7 @@ CREATE TABLE `digidemo_letter` (
 
 LOCK TABLES `digidemo_letter` WRITE;
 /*!40000 ALTER TABLE `digidemo_letter` DISABLE KEYS */;
-REPLACE INTO `digidemo_letter` (`id`, `parent_letter_id`, `proposal_id`, `valence`, `user_id`, `body`, `score`, `creation_date`, `last_modified`) VALUES (1,NULL,1,-1,2,'I do not support the project to expand the Keystone Pipeline System.  This proposal generates serious and certain  environmental losses, which do not justify the economic gains.  Furthermore, the development will bring wealth mainly to foreign shareholders, so that the actual economic gains will be much less than they should  be.',1,'0000-00-00 00:00:00','0000-00-00 00:00:00'),(14,NULL,1,0,2,'A new letter!',0,'0000-00-00 00:00:00','0000-00-00 00:00:00'),(16,NULL,1,1,2,'aoeu',0,'0000-00-00 00:00:00','0000-00-00 00:00:00'),(38,14,1,0,1,'A new letter!',0,'0000-00-00 00:00:00','0000-00-00 00:00:00'),(39,1,1,-1,1,'I do not support the project to expand the Keystone Pipeline System.  This proposal generates serious and certain  environmental losses, which do not justify the economic gains.  Furthermore, the development will bring wealth mainly to foreign shareholders, so that the actual economic gains will be much less than they should  be.',0,'0000-00-00 00:00:00','0000-00-00 00:00:00'),(40,NULL,1,1,1,'Wadatay',0,'0000-00-00 00:00:00','0000-00-00 00:00:00'),(41,1,1,-1,1,'I do not support the project to expand the Keystone Pipeline System.  This proposal generates serious and certain  environmental losses, which do not justify the economic gains.  Furthermore, the development will bring wealth mainly to foreign shareholders, so that the actual economic gains will be much less than they should  be.',0,'0000-00-00 00:00:00','0000-00-00 00:00:00'),(42,1,1,-1,1,'I do not support the project to expand the Keystone Pipeline System.  This proposal generates serious and certain  environmental losses, which do not justify the economic gains.  Furthermore, the development will bring wealth mainly to foreign shareholders, so that the actual economic gains will be much less than they should  be.',0,'0000-00-00 00:00:00','0000-00-00 00:00:00'),(43,1,1,-1,1,'I do not support the project to expand the Keystone Pipeline System.  This proposal generates serious and certain  environmental losses, which do not justify the economic gains.  Furthermore, the development will bring wealth mainly to foreign shareholders, so that the actual economic gains will be much less than they should  be.',0,'0000-00-00 00:00:00','0000-00-00 00:00:00'),(44,16,1,1,1,'aoeu',0,'0000-00-00 00:00:00','0000-00-00 00:00:00'),(45,1,1,-1,1,'I do not support the project to expand the Keystone Pipeline System.  This proposal generates serious and certain  environmental losses, which do not justify the economic gains.  Furthermore, the development will bring wealth mainly to foreign shareholders, so that the actual economic gains will be much less than they should  be.',0,'0000-00-00 00:00:00','0000-00-00 00:00:00');
+REPLACE INTO `digidemo_letter` (`id`, `creation_date`, `last_modified`, `parent_letter_id`, `proposal_id`, `valence`, `user_id`, `body`, `score`) VALUES (1,'0000-00-00 00:00:00','0000-00-00 00:00:00',NULL,1,-1,2,'I do not support the project to expand the Keystone Pipeline System.  This proposal generates serious and certain  environmental losses, which do not justify the economic gains.  Furthermore, the development will bring wealth mainly to foreign shareholders, so that the actual economic gains will be much less than they should  be.',1),(14,'0000-00-00 00:00:00','0000-00-00 00:00:00',NULL,1,0,2,'A new letter!',0),(16,'0000-00-00 00:00:00','0000-00-00 00:00:00',NULL,1,1,2,'aoeu',0),(38,'0000-00-00 00:00:00','0000-00-00 00:00:00',14,1,0,1,'A new letter!',0),(39,'0000-00-00 00:00:00','0000-00-00 00:00:00',1,1,-1,1,'I do not support the project to expand the Keystone Pipeline System.  This proposal generates serious and certain  environmental losses, which do not justify the economic gains.  Furthermore, the development will bring wealth mainly to foreign shareholders, so that the actual economic gains will be much less than they should  be.',0),(40,'0000-00-00 00:00:00','0000-00-00 00:00:00',NULL,1,1,1,'Wadatay',0),(41,'0000-00-00 00:00:00','0000-00-00 00:00:00',1,1,-1,1,'I do not support the project to expand the Keystone Pipeline System.  This proposal generates serious and certain  environmental losses, which do not justify the economic gains.  Furthermore, the development will bring wealth mainly to foreign shareholders, so that the actual economic gains will be much less than they should  be.',0),(42,'0000-00-00 00:00:00','0000-00-00 00:00:00',1,1,-1,1,'I do not support the project to expand the Keystone Pipeline System.  This proposal generates serious and certain  environmental losses, which do not justify the economic gains.  Furthermore, the development will bring wealth mainly to foreign shareholders, so that the actual economic gains will be much less than they should  be.',0),(43,'0000-00-00 00:00:00','0000-00-00 00:00:00',1,1,-1,1,'I do not support the project to expand the Keystone Pipeline System.  This proposal generates serious and certain  environmental losses, which do not justify the economic gains.  Furthermore, the development will bring wealth mainly to foreign shareholders, so that the actual economic gains will be much less than they should  be.',0),(44,'0000-00-00 00:00:00','0000-00-00 00:00:00',16,1,1,1,'aoeu',0),(45,'0000-00-00 00:00:00','0000-00-00 00:00:00',1,1,-1,1,'I do not support the project to expand the Keystone Pipeline System.  This proposal generates serious and certain  environmental losses, which do not justify the economic gains.  Furthermore, the development will bring wealth mainly to foreign shareholders, so that the actual economic gains will be much less than they should  be.',0);
 /*!40000 ALTER TABLE `digidemo_letter` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -441,10 +441,10 @@ DROP TABLE IF EXISTS `digidemo_lettervote`;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `digidemo_lettervote` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `user_id` int(11) NOT NULL,
-  `valence` smallint(6) NOT NULL,
   `creation_date` datetime NOT NULL,
   `last_modified` datetime NOT NULL,
+  `user_id` int(11) NOT NULL,
+  `valence` smallint(6) NOT NULL,
   `target_id` int(11) NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `user_id` (`user_id`,`target_id`),
@@ -461,7 +461,7 @@ CREATE TABLE `digidemo_lettervote` (
 
 LOCK TABLES `digidemo_lettervote` WRITE;
 /*!40000 ALTER TABLE `digidemo_lettervote` DISABLE KEYS */;
-REPLACE INTO `digidemo_lettervote` (`id`, `user_id`, `valence`, `creation_date`, `last_modified`, `target_id`) VALUES (1,1,-1,'0000-00-00 00:00:00','0000-00-00 00:00:00',1),(2,1,0,'0000-00-00 00:00:00','0000-00-00 00:00:00',16);
+REPLACE INTO `digidemo_lettervote` (`id`, `creation_date`, `last_modified`, `user_id`, `valence`, `target_id`) VALUES (1,'0000-00-00 00:00:00','0000-00-00 00:00:00',1,-1,1),(2,'0000-00-00 00:00:00','0000-00-00 00:00:00',1,0,16);
 /*!40000 ALTER TABLE `digidemo_lettervote` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -474,13 +474,13 @@ DROP TABLE IF EXISTS `digidemo_organization`;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `digidemo_organization` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
+  `creation_date` datetime NOT NULL,
+  `last_modified` datetime NOT NULL,
   `short_name` varchar(64) NOT NULL,
   `legal_name` varchar(128) NOT NULL,
   `legal_classification` varchar(48) NOT NULL,
   `revenue` bigint(20) NOT NULL,
   `operations_summary` longtext NOT NULL,
-  `creation_date` datetime NOT NULL,
-  `last_modified` datetime NOT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -491,7 +491,7 @@ CREATE TABLE `digidemo_organization` (
 
 LOCK TABLES `digidemo_organization` WRITE;
 /*!40000 ALTER TABLE `digidemo_organization` DISABLE KEYS */;
-REPLACE INTO `digidemo_organization` (`id`, `short_name`, `legal_name`, `legal_classification`, `revenue`, `operations_summary`, `creation_date`, `last_modified`) VALUES (1,'The Conservative Party of Canada','The Conservative Party of Canada','NPT',-1,'Stephen Harper’s Conservative Government is focused on the priorities of Canadians – job creation and economic growth.\nWith the support of our Economic Action Plan, the Canadian economy has created approximately one million net new jobs since the depths of the global economic recession.  While the job isn’t done yet, this job creation record is the best in the G7 and shows that Canada is on the right track.','0000-00-00 00:00:00','0000-00-00 00:00:00');
+REPLACE INTO `digidemo_organization` (`id`, `creation_date`, `last_modified`, `short_name`, `legal_name`, `legal_classification`, `revenue`, `operations_summary`) VALUES (1,'0000-00-00 00:00:00','0000-00-00 00:00:00','The Conservative Party of Canada','The Conservative Party of Canada','NPT',-1,'Stephen Harper’s Conservative Government is focused on the priorities of Canadians – job creation and economic growth.\nWith the support of our Economic Action Plan, the Canadian economy has created approximately one million net new jobs since the depths of the global economic recession.  While the job isn’t done yet, this job creation record is the best in the G7 and shows that Canada is on the right track.');
 /*!40000 ALTER TABLE `digidemo_organization` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -504,13 +504,13 @@ DROP TABLE IF EXISTS `digidemo_person`;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `digidemo_person` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
+  `creation_date` datetime NOT NULL,
+  `last_modified` datetime NOT NULL,
   `fname` varchar(48) NOT NULL,
   `lname` varchar(48) NOT NULL,
   `portrait_url` varchar(256) NOT NULL,
   `wikipedia_url` varchar(256) NOT NULL,
   `bio_summary` longtext NOT NULL,
-  `creation_date` datetime NOT NULL,
-  `last_modified` datetime NOT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -521,7 +521,7 @@ CREATE TABLE `digidemo_person` (
 
 LOCK TABLES `digidemo_person` WRITE;
 /*!40000 ALTER TABLE `digidemo_person` DISABLE KEYS */;
-REPLACE INTO `digidemo_person` (`id`, `fname`, `lname`, `portrait_url`, `wikipedia_url`, `bio_summary`, `creation_date`, `last_modified`) VALUES (1,'stephen','harper','http://upload.wikimedia.org/wikipedia/commons/thumb/1/12/Stephen_Harper_by_Remy_Steinegger.jpg/800px-Stephen_Harper_by_Remy_Steinegger.jpg','http://en.wikipedia.org/wiki/Stephen_Harper','Stephen Joseph Harper (born April 30, 1959) is a Canadian politician who is the 22nd and current Prime Minister of Canada and the Leader of the Conservative Party. Harper became prime minister in 2006, forming a minority government after the 2006 election. He is the first prime minister to come from the newly reconstituted Conservative Party, which formed after a merger of the Progressive Conservative Party and the Canadian Alliance.','0000-00-00 00:00:00','0000-00-00 00:00:00');
+REPLACE INTO `digidemo_person` (`id`, `creation_date`, `last_modified`, `fname`, `lname`, `portrait_url`, `wikipedia_url`, `bio_summary`) VALUES (1,'0000-00-00 00:00:00','0000-00-00 00:00:00','stephen','harper','http://upload.wikimedia.org/wikipedia/commons/thumb/1/12/Stephen_Harper_by_Remy_Steinegger.jpg/800px-Stephen_Harper_by_Remy_Steinegger.jpg','http://en.wikipedia.org/wiki/Stephen_Harper','Stephen Joseph Harper (born April 30, 1959) is a Canadian politician who is the 22nd and current Prime Minister of Canada and the Leader of the Conservative Party. Harper became prime minister in 2006, forming a minority government after the 2006 election. He is the first prime minister to come from the newly reconstituted Conservative Party, which formed after a merger of the Progressive Conservative Party and the Canadian Alliance.');
 /*!40000 ALTER TABLE `digidemo_person` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -534,6 +534,8 @@ DROP TABLE IF EXISTS `digidemo_position`;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `digidemo_position` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
+  `creation_date` datetime NOT NULL,
+  `last_modified` datetime NOT NULL,
   `name` varchar(128) NOT NULL,
   `person_id` int(11) NOT NULL,
   `organization_id` int(11) NOT NULL,
@@ -541,8 +543,6 @@ CREATE TABLE `digidemo_position` (
   `telephone` varchar(14) NOT NULL,
   `email` varchar(254) NOT NULL,
   `mandate_summary` longtext NOT NULL,
-  `creation_date` datetime NOT NULL,
-  `last_modified` datetime NOT NULL,
   PRIMARY KEY (`id`),
   KEY `digidemo_position_16f39487` (`person_id`),
   KEY `digidemo_position_de772da3` (`organization_id`),
@@ -557,7 +557,7 @@ CREATE TABLE `digidemo_position` (
 
 LOCK TABLES `digidemo_position` WRITE;
 /*!40000 ALTER TABLE `digidemo_position` DISABLE KEYS */;
-REPLACE INTO `digidemo_position` (`id`, `name`, `person_id`, `organization_id`, `salary`, `telephone`, `email`, `mandate_summary`, `creation_date`, `last_modified`) VALUES (1,'Prime minister of Canada',1,1,317574.00,'613-992-4211','stephen.harper@parl.gc.ca','','0000-00-00 00:00:00','0000-00-00 00:00:00');
+REPLACE INTO `digidemo_position` (`id`, `creation_date`, `last_modified`, `name`, `person_id`, `organization_id`, `salary`, `telephone`, `email`, `mandate_summary`) VALUES (1,'0000-00-00 00:00:00','0000-00-00 00:00:00','Prime minister of Canada',1,1,317574.00,'613-992-4211','stephen.harper@parl.gc.ca','');
 /*!40000 ALTER TABLE `digidemo_position` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -570,12 +570,12 @@ DROP TABLE IF EXISTS `digidemo_proposal`;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `digidemo_proposal` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
+  `creation_date` datetime NOT NULL,
+  `last_modified` datetime NOT NULL,
   `title` varchar(256) NOT NULL,
   `summary` longtext NOT NULL,
   `text` longtext,
   `is_published` tinyint(1) NOT NULL,
-  `last_modified` datetime NOT NULL,
-  `creation_date` datetime NOT NULL,
   `user_id` int(11) NOT NULL,
   `score` smallint(6) NOT NULL,
   `proposal_image` varchar(100) NOT NULL,
@@ -591,7 +591,7 @@ CREATE TABLE `digidemo_proposal` (
 
 LOCK TABLES `digidemo_proposal` WRITE;
 /*!40000 ALTER TABLE `digidemo_proposal` DISABLE KEYS */;
-REPLACE INTO `digidemo_proposal` (`id`, `title`, `summary`, `text`, `is_published`, `last_modified`, `creation_date`, `user_id`, `score`, `proposal_image`) VALUES (1,'Keystone XL Pipeline Extension','The Keystone XL Pipeline is a proposed extension to the existing Keystone Pipeline System, put forward by TransCanada, the corporation that owns the Keystone System. The pipeline would cross the Canada/US border, importing crude oil sourced from the Albertan oil sands, into the United States. The proposal is currently awaiting government approval. The pipeline would be newly constructed, and is similar to existing pipelines in North America.\n\nThe Keystone XL pipeline project is a contentious political issue, owing to probable environmental, economic, and social impacts. Environmentally, the pipeline might present a risk of contaminating groundwater and disturbing sensitive ecosystems, but it might also be a better alternative than ground transport by train or truck. Economically, the pipeline might produce jobs temporarily during its construction, and permanently in additional refinement activities in the US. It would also lead to a redistribution of crude supply, emphasizing export and raising the price of oil in the Midwestern US. Socially, the construction of the pipeline would disturb landowners currently in its path, and would disturb heritage sites of cultural significance.','# Actors #\n - **TransCanada**: Corporation that owns the existing Keysone Pipeline System, and which has put forward the proposal to state and federal authorities for the Keystone XL extension.\n - **ConocoPhillips**: Corporation that was part-owner of the Keystone Pipeline System, bought out by TransCanada.\n - **Cardno Entrix**: Environmental Assessment Consultancy, contracted by TransCanada to produce an environmental assessment of the Keystone XL proposal.\n- **US Government**:\n        - **President Obama**: Can approve or reject the application for a Presidential Permit, legally needed to proceed with the construction project. \n         - **Environmental Protection Agency**: Oversees the environmental assessment of the project, and approves or rejects the application for an environmental permit, legally needed to proceed with the construction project.\n         - **US State Governments**: Each US state through which the proposed pipeline would pass can approve or reject the construction activities within its borders.\n     - **Canadian Government**:\n             - **National Energy Board of Canada** (NEB): Responsible for approving or rejecting the construction activities within Canada.\n         - WorleyParsons: Corporation acting as the general contractor for the pipeline construction.\n        \n        # Impacts #\n        ## Environmental Impacts ##\n        **Hazards relating to oil spills**. The originally proposed route traversed the Sand Hills region and the Ogallala aquifer.  The Sand Hills region is a sensitive wetland ecosystem in Nebraska.  The Ogallala aquifer is one of the largest reserves of fresh water in the world, spans eight states, provides drinking water for two million people, and supports a US$20 billion worth of agricultural activity.\n        \n        The path of the pipeline has been revised by TransCanada to avoid the Sand Hills region, and reduce the length\n        of piping running over the Ogallala aquifer.  The actual risks of a spill in the region of the aquifer are unclear, and the severity of impact is debated.  The pipeline, with a normal depth of 4 feet would be separated from the aquifer by a layer of fine clay, which might drastically reduce the actual effects on drinking water.  Thousands of miles of existing pipelines carrying crude oil and refined liquid hydrocarbons have crossed over the Ogallala Aquifer for years, so the severity of risk could be evaluated empirically.  The pipeline will be newly constructed, which should be considered when comparing to existing pipelines which do not benefit from technological advances or were converted from natural gas pipelines.\n        \n        **Greenhouse Gas Emissions**.  The Keystone XL pipeline would carry crude oil to refineries for conversion into fuels, among other products.  The activities of extracting, refining, and burning petroleum-derived fuels is a major contributor to CO2 accumulation in the atmosphere and climate change.  By providing access to US and global markets, the Keystone XL pipeline would facilitate further extraction in the oilsands of Alberta.  \n        If the Keystone XL pipeline is not built, crude from the Albertan tarsands might be refined and exported from\n        Canada, based on alternative Canadian pipeline  construction projects which would bring the crude to tidewater.  Additionally, ground transport of crude, by train and tanker, might be used instead, which adds to greenhouse gas emissions and poses its own safety hazards.\n        \n        ## Economic Impacts ##\n        **Employment**.  Construction of the pipeline would provide temporary employment for about 2 years.  Estimates of the amount of employment vary widely.  A report by Perryman Group, a financial analysis firm that was hired by TransCanada, estimates construction would employ 20,000 US workers and spend US$7 billion.  A study conducted by Cornell ILR Global Labor Institute estimated construction would employ 2500 to 4650 US workers.  The US State Department estimated 5000 to 6000 temporary construction jobs.  It\'s Supplemenntal Environmental Impact Statement estimated 3900 US workers directly employed and 42000 US workers indirectly employed by construction activities. \n        \n        **Risk of impact due to spills**.  The original route proposed for the Keystone XL pipeline passed over the Ogallala aquifer.  The aquifer supports about US$20 billion in agricultural activity.  If a spill contaminated the water, it could have serious economic impact.  The amended proposal has reduced the length of piping that crosses the aquifer.  The 2010 Enbridge oil spill along the Kalamazoo river in Michigan showed that spills can result in significant economic costs beyond environmental ones.\n        \n        # Social Impacts #\n        **Displacement of people**.  Land owners in the path of the pipeline would be displaced.  Landowners have already complained about threats by TransCanada to confiscate private land and some have faced lawsuits.  As of October 17, 2011 Transcanada had 34 eminent domain actions against landowners in Texas and 22 in South Dakota.\n        \n        **Damage to public goods (excluding the environment)**.  Various sacred sites, and prehistoric or historic archeological sites, and sites with traditional cultural value to Native Americans and other groups might be disturbed, removed or demolished.  TransCanada made a major donation to the University of Toronto to promote education and research in the health of the Aboriginal population.\n        \n        **Safety**.  Ground transport by tanker truck and rail is less safe.  As an example, the derailment of a train transporting crude oil at Lac-Mégantic in 2013 kiled 50 people.  Increased production in North Dakota has exceeded pipeline capacity since 2010, leading to increasing volumes of crude being shipped by truck or rail to refineries.  Alberta is expected to running up against a pipeline capacity limit around 2016.\n        \n        # In Perspective #\n         - The Alberta oil sands account for a quantity of GHG emissions equal to \n             - the coal-fired power plants in the State of Wisconsin \n             - 2.5% of total GHG emissions from the coal-fired power plants of the US\n             - 0.1% of global GHG emissions from all sources\n         - The Enbridge \"Alberta Clipper\" expansion has continued during late 2013, adding approximately the same cross-border capacity.\n         - The Keystone XL expansion is Phase 4 in the Keystone Pipeline system.\n             - it corresponds to between 1897 km, later revised to 1408 km of piping or 28% revised to 23% of the Keystone system by length.\n             - it will account for about 40% of the Keystone system\'s capacity if built.\n         - There are currently about 320,000 km of similar oil pipelines in the US.\n         - Alternative projects are being considered:\n                 - An all-Canadian pipeline north to the Arctic coast for shipping to markets in Europe and Asia\n                 - An all-Canadian pipeline (\"Energy East\") that would extend to Saint John, New Brunswick for export, while also supplying Montreal, Quebec City, and Saint John refineries.',1,'2014-07-09 06:58:08','2014-06-15 00:00:00',1,2,'/digidemo/proposal-images/'),(2,'no factors','this proposal has no factors','this proposal has no factors',1,'2014-07-09 06:55:19','2014-06-20 00:00:00',1,33,'/digidemo/proposal-images/'),(3,'Quebec','a','a',1,'2014-07-09 06:55:19','2014-02-10 00:00:00',1,-7,'');
+REPLACE INTO `digidemo_proposal` (`id`, `creation_date`, `last_modified`, `title`, `summary`, `text`, `is_published`, `user_id`, `score`, `proposal_image`) VALUES (1,'2014-06-15 00:00:00','2014-07-09 06:58:08','Keystone XL Pipeline Extension','The Keystone XL Pipeline is a proposed extension to the existing Keystone Pipeline System, put forward by TransCanada, the corporation that owns the Keystone System. The pipeline would cross the Canada/US border, importing crude oil sourced from the Albertan oil sands, into the United States. The proposal is currently awaiting government approval. The pipeline would be newly constructed, and is similar to existing pipelines in North America.\n\nThe Keystone XL pipeline project is a contentious political issue, owing to probable environmental, economic, and social impacts. Environmentally, the pipeline might present a risk of contaminating groundwater and disturbing sensitive ecosystems, but it might also be a better alternative than ground transport by train or truck. Economically, the pipeline might produce jobs temporarily during its construction, and permanently in additional refinement activities in the US. It would also lead to a redistribution of crude supply, emphasizing export and raising the price of oil in the Midwestern US. Socially, the construction of the pipeline would disturb landowners currently in its path, and would disturb heritage sites of cultural significance.','# Actors #\n - **TransCanada**: Corporation that owns the existing Keysone Pipeline System, and which has put forward the proposal to state and federal authorities for the Keystone XL extension.\n - **ConocoPhillips**: Corporation that was part-owner of the Keystone Pipeline System, bought out by TransCanada.\n - **Cardno Entrix**: Environmental Assessment Consultancy, contracted by TransCanada to produce an environmental assessment of the Keystone XL proposal.\n- **US Government**:\n        - **President Obama**: Can approve or reject the application for a Presidential Permit, legally needed to proceed with the construction project. \n         - **Environmental Protection Agency**: Oversees the environmental assessment of the project, and approves or rejects the application for an environmental permit, legally needed to proceed with the construction project.\n         - **US State Governments**: Each US state through which the proposed pipeline would pass can approve or reject the construction activities within its borders.\n     - **Canadian Government**:\n             - **National Energy Board of Canada** (NEB): Responsible for approving or rejecting the construction activities within Canada.\n         - WorleyParsons: Corporation acting as the general contractor for the pipeline construction.\n        \n        # Impacts #\n        ## Environmental Impacts ##\n        **Hazards relating to oil spills**. The originally proposed route traversed the Sand Hills region and the Ogallala aquifer.  The Sand Hills region is a sensitive wetland ecosystem in Nebraska.  The Ogallala aquifer is one of the largest reserves of fresh water in the world, spans eight states, provides drinking water for two million people, and supports a US$20 billion worth of agricultural activity.\n        \n        The path of the pipeline has been revised by TransCanada to avoid the Sand Hills region, and reduce the length\n        of piping running over the Ogallala aquifer.  The actual risks of a spill in the region of the aquifer are unclear, and the severity of impact is debated.  The pipeline, with a normal depth of 4 feet would be separated from the aquifer by a layer of fine clay, which might drastically reduce the actual effects on drinking water.  Thousands of miles of existing pipelines carrying crude oil and refined liquid hydrocarbons have crossed over the Ogallala Aquifer for years, so the severity of risk could be evaluated empirically.  The pipeline will be newly constructed, which should be considered when comparing to existing pipelines which do not benefit from technological advances or were converted from natural gas pipelines.\n        \n        **Greenhouse Gas Emissions**.  The Keystone XL pipeline would carry crude oil to refineries for conversion into fuels, among other products.  The activities of extracting, refining, and burning petroleum-derived fuels is a major contributor to CO2 accumulation in the atmosphere and climate change.  By providing access to US and global markets, the Keystone XL pipeline would facilitate further extraction in the oilsands of Alberta.  \n        If the Keystone XL pipeline is not built, crude from the Albertan tarsands might be refined and exported from\n        Canada, based on alternative Canadian pipeline  construction projects which would bring the crude to tidewater.  Additionally, ground transport of crude, by train and tanker, might be used instead, which adds to greenhouse gas emissions and poses its own safety hazards.\n        \n        ## Economic Impacts ##\n        **Employment**.  Construction of the pipeline would provide temporary employment for about 2 years.  Estimates of the amount of employment vary widely.  A report by Perryman Group, a financial analysis firm that was hired by TransCanada, estimates construction would employ 20,000 US workers and spend US$7 billion.  A study conducted by Cornell ILR Global Labor Institute estimated construction would employ 2500 to 4650 US workers.  The US State Department estimated 5000 to 6000 temporary construction jobs.  It\'s Supplemenntal Environmental Impact Statement estimated 3900 US workers directly employed and 42000 US workers indirectly employed by construction activities. \n        \n        **Risk of impact due to spills**.  The original route proposed for the Keystone XL pipeline passed over the Ogallala aquifer.  The aquifer supports about US$20 billion in agricultural activity.  If a spill contaminated the water, it could have serious economic impact.  The amended proposal has reduced the length of piping that crosses the aquifer.  The 2010 Enbridge oil spill along the Kalamazoo river in Michigan showed that spills can result in significant economic costs beyond environmental ones.\n        \n        # Social Impacts #\n        **Displacement of people**.  Land owners in the path of the pipeline would be displaced.  Landowners have already complained about threats by TransCanada to confiscate private land and some have faced lawsuits.  As of October 17, 2011 Transcanada had 34 eminent domain actions against landowners in Texas and 22 in South Dakota.\n        \n        **Damage to public goods (excluding the environment)**.  Various sacred sites, and prehistoric or historic archeological sites, and sites with traditional cultural value to Native Americans and other groups might be disturbed, removed or demolished.  TransCanada made a major donation to the University of Toronto to promote education and research in the health of the Aboriginal population.\n        \n        **Safety**.  Ground transport by tanker truck and rail is less safe.  As an example, the derailment of a train transporting crude oil at Lac-Mégantic in 2013 kiled 50 people.  Increased production in North Dakota has exceeded pipeline capacity since 2010, leading to increasing volumes of crude being shipped by truck or rail to refineries.  Alberta is expected to running up against a pipeline capacity limit around 2016.\n        \n        # In Perspective #\n         - The Alberta oil sands account for a quantity of GHG emissions equal to \n             - the coal-fired power plants in the State of Wisconsin \n             - 2.5% of total GHG emissions from the coal-fired power plants of the US\n             - 0.1% of global GHG emissions from all sources\n         - The Enbridge \"Alberta Clipper\" expansion has continued during late 2013, adding approximately the same cross-border capacity.\n         - The Keystone XL expansion is Phase 4 in the Keystone Pipeline system.\n             - it corresponds to between 1897 km, later revised to 1408 km of piping or 28% revised to 23% of the Keystone system by length.\n             - it will account for about 40% of the Keystone system\'s capacity if built.\n         - There are currently about 320,000 km of similar oil pipelines in the US.\n         - Alternative projects are being considered:\n                 - An all-Canadian pipeline north to the Arctic coast for shipping to markets in Europe and Asia\n                 - An all-Canadian pipeline (\"Energy East\") that would extend to Saint John, New Brunswick for export, while also supplying Montreal, Quebec City, and Saint John refineries.',1,1,2,'/digidemo/proposal-images/'),(2,'2014-06-20 00:00:00','2014-07-09 06:55:19','no factors','this proposal has no factors','this proposal has no factors',1,1,33,'/digidemo/proposal-images/'),(3,'2014-02-10 00:00:00','2014-07-09 06:55:19','Quebec','a','a',1,1,-7,'');
 /*!40000 ALTER TABLE `digidemo_proposal` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -663,17 +663,17 @@ DROP TABLE IF EXISTS `digidemo_proposalvote`;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `digidemo_proposalvote` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `user_id` int(11) NOT NULL,
-  `valence` smallint(6) NOT NULL,
   `creation_date` datetime NOT NULL,
   `last_modified` datetime NOT NULL,
+  `user_id` int(11) NOT NULL,
+  `valence` smallint(6) NOT NULL,
   `target_id` int(11) NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `user_id` (`user_id`,`target_id`),
   KEY `digidemo_proposalvote_6340c63c` (`user_id`),
   KEY `digidemo_proposalvote_70bfdfd1` (`target_id`),
-  CONSTRAINT `user_id_refs_id_baf64dae` FOREIGN KEY (`user_id`) REFERENCES `auth_user` (`id`),
-  CONSTRAINT `target_id_refs_id_2722b1c2` FOREIGN KEY (`target_id`) REFERENCES `digidemo_proposal` (`id`)
+  CONSTRAINT `target_id_refs_id_2722b1c2` FOREIGN KEY (`target_id`) REFERENCES `digidemo_proposal` (`id`),
+  CONSTRAINT `user_id_refs_id_baf64dae` FOREIGN KEY (`user_id`) REFERENCES `auth_user` (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -683,7 +683,7 @@ CREATE TABLE `digidemo_proposalvote` (
 
 LOCK TABLES `digidemo_proposalvote` WRITE;
 /*!40000 ALTER TABLE `digidemo_proposalvote` DISABLE KEYS */;
-REPLACE INTO `digidemo_proposalvote` (`id`, `user_id`, `valence`, `creation_date`, `last_modified`, `target_id`) VALUES (1,1,1,'0000-00-00 00:00:00','0000-00-00 00:00:00',1);
+REPLACE INTO `digidemo_proposalvote` (`id`, `creation_date`, `last_modified`, `user_id`, `valence`, `target_id`) VALUES (1,'0000-00-00 00:00:00','0000-00-00 00:00:00',1,1,1);
 /*!40000 ALTER TABLE `digidemo_proposalvote` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -696,18 +696,18 @@ DROP TABLE IF EXISTS `digidemo_reply`;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `digidemo_reply` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
+  `creation_date` datetime NOT NULL,
+  `last_modified` datetime NOT NULL,
   `discussion_id` int(11) NOT NULL,
   `body` longtext NOT NULL,
   `user_id` int(11) NOT NULL,
   `score` smallint(6) NOT NULL,
   `is_open` tinyint(1) NOT NULL,
-  `creation_date` datetime NOT NULL,
-  `last_modified` datetime NOT NULL,
   PRIMARY KEY (`id`),
   KEY `digidemo_reply_acd02281` (`discussion_id`),
   KEY `digidemo_reply_6340c63c` (`user_id`),
-  CONSTRAINT `discussion_id_refs_id_0f0a157b` FOREIGN KEY (`discussion_id`) REFERENCES `digidemo_discussion` (`id`),
-  CONSTRAINT `user_id_refs_id_9950cae7` FOREIGN KEY (`user_id`) REFERENCES `auth_user` (`id`)
+  CONSTRAINT `user_id_refs_id_9950cae7` FOREIGN KEY (`user_id`) REFERENCES `auth_user` (`id`),
+  CONSTRAINT `discussion_id_refs_id_0f0a157b` FOREIGN KEY (`discussion_id`) REFERENCES `digidemo_discussion` (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=28 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -717,7 +717,7 @@ CREATE TABLE `digidemo_reply` (
 
 LOCK TABLES `digidemo_reply` WRITE;
 /*!40000 ALTER TABLE `digidemo_reply` DISABLE KEYS */;
-REPLACE INTO `digidemo_reply` (`id`, `discussion_id`, `body`, `user_id`, `score`, `is_open`, `creation_date`, `last_modified`) VALUES (24,2,'A comment.',1,0,0,'2014-07-04 00:00:00','0000-00-00 00:00:00'),(25,2,'Another comment.',1,0,0,'2014-07-04 00:00:00','0000-00-00 00:00:00'),(26,1,'Comment on the first discussion.',1,0,0,'2014-07-04 00:00:00','0000-00-00 00:00:00'),(27,1,'AONETHTNH',1,0,0,'2014-07-05 00:00:00','0000-00-00 00:00:00');
+REPLACE INTO `digidemo_reply` (`id`, `creation_date`, `last_modified`, `discussion_id`, `body`, `user_id`, `score`, `is_open`) VALUES (24,'2014-07-04 00:00:00','0000-00-00 00:00:00',2,'A comment.',1,0,0),(25,'2014-07-04 00:00:00','0000-00-00 00:00:00',2,'Another comment.',1,0,0),(26,'2014-07-04 00:00:00','0000-00-00 00:00:00',1,'Comment on the first discussion.',1,0,0),(27,'2014-07-05 00:00:00','0000-00-00 00:00:00',1,'AONETHTNH',1,0,0);
 /*!40000 ALTER TABLE `digidemo_reply` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -730,10 +730,10 @@ DROP TABLE IF EXISTS `digidemo_replyvote`;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `digidemo_replyvote` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `user_id` int(11) NOT NULL,
-  `valence` smallint(6) NOT NULL,
   `creation_date` datetime NOT NULL,
   `last_modified` datetime NOT NULL,
+  `user_id` int(11) NOT NULL,
+  `valence` smallint(6) NOT NULL,
   `target_id` int(11) NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `user_id` (`user_id`,`target_id`),
@@ -762,10 +762,10 @@ DROP TABLE IF EXISTS `digidemo_sector`;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `digidemo_sector` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `short_name` varchar(3) NOT NULL,
-  `name` varchar(64) NOT NULL,
   `creation_date` datetime NOT NULL,
   `last_modified` datetime NOT NULL,
+  `short_name` varchar(3) NOT NULL,
+  `name` varchar(64) NOT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -776,7 +776,7 @@ CREATE TABLE `digidemo_sector` (
 
 LOCK TABLES `digidemo_sector` WRITE;
 /*!40000 ALTER TABLE `digidemo_sector` DISABLE KEYS */;
-REPLACE INTO `digidemo_sector` (`id`, `short_name`, `name`, `creation_date`, `last_modified`) VALUES (1,'ECO','economy','0000-00-00 00:00:00','0000-00-00 00:00:00'),(2,'ENV','environment','0000-00-00 00:00:00','0000-00-00 00:00:00'),(3,'HEA','health','0000-00-00 00:00:00','0000-00-00 00:00:00'),(4,'EDU','education','0000-00-00 00:00:00','0000-00-00 00:00:00'),(5,'IR','international relations','0000-00-00 00:00:00','0000-00-00 00:00:00'),(6,'SOC','society and culture','0000-00-00 00:00:00','0000-00-00 00:00:00'),(7,'SEC','security and readiness','0000-00-00 00:00:00','0000-00-00 00:00:00'),(8,'DEM','democratic mechanisms','0000-00-00 00:00:00','0000-00-00 00:00:00');
+REPLACE INTO `digidemo_sector` (`id`, `creation_date`, `last_modified`, `short_name`, `name`) VALUES (1,'0000-00-00 00:00:00','0000-00-00 00:00:00','ECO','economy'),(2,'0000-00-00 00:00:00','0000-00-00 00:00:00','ENV','environment'),(3,'0000-00-00 00:00:00','0000-00-00 00:00:00','HEA','health'),(4,'0000-00-00 00:00:00','0000-00-00 00:00:00','EDU','education'),(5,'0000-00-00 00:00:00','0000-00-00 00:00:00','IR','international relations'),(6,'0000-00-00 00:00:00','0000-00-00 00:00:00','SOC','society and culture'),(7,'0000-00-00 00:00:00','0000-00-00 00:00:00','SEC','security and readiness'),(8,'0000-00-00 00:00:00','0000-00-00 00:00:00','DEM','democratic mechanisms');
 /*!40000 ALTER TABLE `digidemo_sector` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -789,8 +789,9 @@ DROP TABLE IF EXISTS `digidemo_tag`;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `digidemo_tag` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `name` varchar(48) NOT NULL,
   `creation_date` datetime NOT NULL,
+  `last_modified` datetime NOT NULL,
+  `name` varchar(48) NOT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -813,6 +814,8 @@ DROP TABLE IF EXISTS `digidemo_userprofile`;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `digidemo_userprofile` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
+  `creation_date` datetime NOT NULL,
+  `last_modified` datetime NOT NULL,
   `user_id` int(11) NOT NULL,
   `email_validated` tinyint(1) NOT NULL,
   `avatar_img` varchar(100) NOT NULL,
@@ -833,7 +836,7 @@ CREATE TABLE `digidemo_userprofile` (
 
 LOCK TABLES `digidemo_userprofile` WRITE;
 /*!40000 ALTER TABLE `digidemo_userprofile` DISABLE KEYS */;
-REPLACE INTO `digidemo_userprofile` (`id`, `user_id`, `email_validated`, `avatar_img`, `rep`, `street`, `zip_code`, `country`, `province`) VALUES (1,1,1,'avatars/superuser.jpg',44,'Somewhere','560072','India','Karnatka'),(2,2,1,'avatars/regularuser.jpg',12,'56 Long Ave.','51515','CAN','QC');
+REPLACE INTO `digidemo_userprofile` (`id`, `creation_date`, `last_modified`, `user_id`, `email_validated`, `avatar_img`, `rep`, `street`, `zip_code`, `country`, `province`) VALUES (1,'0000-00-00 00:00:00','0000-00-00 00:00:00',1,1,'avatars/superuser.jpg',44,'Somewhere','560072','India','Karnatka'),(2,'0000-00-00 00:00:00','0000-00-00 00:00:00',2,1,'avatars/regularuser.jpg',12,'56 Long Ave.','51515','CAN','QC');
 /*!40000 ALTER TABLE `digidemo_userprofile` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -931,4 +934,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2014-07-09  2:58:57
+-- Dump completed on 2014-07-09 16:21:09

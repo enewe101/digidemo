@@ -11,6 +11,7 @@ from digidemo.utils import get_or_none
 from django.utils import timezone
 from django.views.decorators.csrf import csrf_exempt
 from django.contrib.auth import authenticate
+
 # json responders should return a python dict
 _json_responders = {}
 
@@ -83,7 +84,7 @@ def vote(vote_spec, request):
 
 		# increment or decrement the target score and author's rep
 		target = vote_form.cleaned_data['target']
-		author = target.user.profile.get()
+		author = target.user.profile
 
 		if existing_valence == 1:
 			target.score -= 1

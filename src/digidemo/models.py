@@ -1,20 +1,35 @@
 from django.db import models
 from digidemo.choices import *
 from django.contrib.auth.models import User
+from django.utils import timezone 
 import re
 
 NAME_LENGTH = 48
 URL_LENGTH = 256
 TITLE_LENGTH = 256
 
-class Sector(models.Model):
+
+class TimeStamped(models.Model):
+	creation_date = models.DateTimeField(editable=False)
+	last_modified = models.DateTimeField(editable=False)
+
+	def save(self, *args, **kwargs):
+		if not self.creation_date:
+			self.creation_date = timezone.now()
+		
+		self.last_modified = timezone.now()
+		return super(TimeStamped, self).save(*args, **kwargs)
+
+	class Meta:
+		abstract = True
+
+
+class Sector(TimeStamped):
 	short_name = models.CharField(max_length=3)
 	name = models.CharField(max_length=64)
-	creation_date = models.DateTimeField(auto_now_add=True)
-	last_modified = models.DateTimeField(auto_now=True)
 
 
-class UserProfile(models.Model):
+class UserProfile(TimeStamped):
 	user = models.OneToOneField(User, related_name='profile')
 	email_validated = models.BooleanField(default=False)
 	avatar_img = models.ImageField(upload_to='avatars')
@@ -65,18 +80,15 @@ class UserProfile(models.Model):
 		self.rep -= self.get_rep_delta(event_name)
 
 
-class Tag(models.Model):
+class Tag(TimeStamped):
 	name = models.CharField(max_length=48)
-	creation_date = models.DateTimeField(auto_now_add=True)
 
 
-class Proposal(models.Model):
+class Proposal(TimeStamped):
 	title = models.CharField(max_length=256)
 	summary = models.TextField()
 	text = models.TextField(null=True)
 	is_published = models.BooleanField(default=False)
-	last_modified = models.DateTimeField(auto_now=True)
-	creation_date = models.DateTimeField(auto_now_add=True)
 	user = models.ForeignKey(User)
 	score = models.SmallIntegerField(default=0)
 	sector = models.ManyToManyField(Sector, related_name='proposals')
@@ -93,65 +105,55 @@ class Proposal(models.Model):
 		get_latest_by = 'creation_date'
 
 
-class Discussion(models.Model):
+class Discussion(TimeStamped):
 	proposal = models.ForeignKey(Proposal)
 	title = models.CharField(max_length=TITLE_LENGTH)
 	body = models.TextField()
 	user = models.ForeignKey(User)
 	score = models.SmallIntegerField(default=0)
 	is_open = models.BooleanField(default=False)
-	creation_date = models.DateTimeField(auto_now_add=True)
-	last_activity_date = models.DateTimeField(auto_now=True)
 
 	def __unicode__(self):
 		return self.title
 
 
 
-class Reply(models.Model):
+class Reply(TimeStamped):
 	discussion = models.ForeignKey(Discussion)
 	body = models.TextField()
 	user = models.ForeignKey(User)
 	score = models.SmallIntegerField(default=0)
 	is_open = models.BooleanField(default=False)
-	creation_date = models.DateTimeField(auto_now_add=True)
-	last_modified = models.DateTimeField(auto_now=True)
 
 	def __unicode__(self):
 		return self.user.username
 
 
-class Factor(models.Model):
+class Factor(TimeStamped):
 	proposal = models.ForeignKey(Proposal)
 	description = models.CharField(max_length=256)
 	valence = models.SmallIntegerField(choices=FACTOR_CHOICES)
-	creation_date = models.DateTimeField(auto_now_add=True)
-	last_modified = models.DateTimeField(auto_now=True)
 	sector = models.ForeignKey(Sector, null=True)
 
 
-class Person(models.Model):
+class Person(TimeStamped):
 	fname = models.CharField(max_length=NAME_LENGTH)
 	lname = models.CharField(max_length=NAME_LENGTH)
 	portrait_url = models.CharField(max_length=URL_LENGTH)
 	wikipedia_url = models.CharField(max_length=URL_LENGTH)
 	bio_summary = models.TextField()
-	creation_date = models.DateTimeField(auto_now_add=True)
-	last_modified = models.DateTimeField(auto_now=True)
 
 	
-class Organization(models.Model):
+class Organization(TimeStamped):
 	short_name = models.CharField(max_length=64)
 	legal_name = models.CharField(max_length=128)
 	legal_classification = models.CharField(
 		max_length=48, choices=LEGAL_CLASSIFICATIONS)
 	revenue = models.BigIntegerField()
 	operations_summary = models.TextField()
-	creation_date = models.DateTimeField(auto_now_add=True)
-	last_modified = models.DateTimeField(auto_now=True)
 
 
-class Position(models.Model):
+class Position(TimeStamped):
 	name = models.CharField(max_length=128) # name of position (i.e. title)
 	person = models.ForeignKey(Person)
 	organization = models.ForeignKey(Organization)
@@ -159,15 +161,13 @@ class Position(models.Model):
 	telephone = models.CharField(max_length=14)
 	email = models.EmailField(max_length=254)
 	mandate_summary = models.TextField()
-	creation_date = models.DateTimeField(auto_now_add=True)
-	last_modified = models.DateTimeField(auto_now=True)
 
 	def __unicode__(self):
 		return "%s, %s %s" %(self.name, self.person.fname, 
 			self.person.lname)
 
 
-class Letter(models.Model):
+class Letter(TimeStamped):
 	parent_letter = models.ForeignKey('self', blank=True, null=True)
 	proposal = models.ForeignKey(Proposal)
 	valence = models.SmallIntegerField(choices=VALENCE_CHOICES)
@@ -175,8 +175,6 @@ class Letter(models.Model):
 	body = models.TextField()
 	recipients = models.ManyToManyField(Position, related_name='letters')
 	score = models.SmallIntegerField(default=0)
-	creation_date = models.DateTimeField(auto_now_add=True)
-	last_modified = models.DateTimeField(auto_now=True)
 
 	def __unicode__(self):
 		return "%s-%s" %(
@@ -185,13 +183,11 @@ class Letter(models.Model):
 
 
 
-class Comment(models.Model):
+class Comment(TimeStamped):
 	user = models.ForeignKey(User)
 	letter = models.ForeignKey(Letter)
 	body = models.CharField(max_length=512)
 	score = models.SmallIntegerField(default=0)
-	creation_date = models.DateTimeField(auto_now_add=True)
-	last_modified = models.DateTimeField(auto_now=True)
 
 	def __unicode__(self):
 		return self.author.username
@@ -199,11 +195,9 @@ class Comment(models.Model):
 
 
 
-class Vote(models.Model):
+class Vote(TimeStamped):
 	user = models.ForeignKey(User)
 	valence = models.SmallIntegerField(choices=VOTE_CHOICES)
-	creation_date = models.DateTimeField(auto_now_add=True)
-	last_modified = models.DateTimeField(auto_now=True)
 
 	class Meta:
 		abstract=True
