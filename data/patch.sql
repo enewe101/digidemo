@@ -201,6 +201,15 @@ REPLACE INTO `digidemo_proposal_sector` (`id`, `proposal_id`, `sector_id`) VALUE
 UNLOCK TABLES;
 
 --
+-- Dumping data for table `digidemo_proposal_tags`
+--
+
+LOCK TABLES `digidemo_proposal_tags` WRITE;
+/*!40000 ALTER TABLE `digidemo_proposal_tags` DISABLE KEYS */;
+/*!40000 ALTER TABLE `digidemo_proposal_tags` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Dumping data for table `digidemo_proposalvote`
 --
 
@@ -237,6 +246,15 @@ LOCK TABLES `digidemo_sector` WRITE;
 /*!40000 ALTER TABLE `digidemo_sector` DISABLE KEYS */;
 REPLACE INTO `digidemo_sector` (`id`, `short_name`, `name`, `creation_date`, `last_modified`) VALUES (1,'ECO','economy','0000-00-00 00:00:00','0000-00-00 00:00:00'),(2,'ENV','environment','0000-00-00 00:00:00','0000-00-00 00:00:00'),(3,'HEA','health','0000-00-00 00:00:00','0000-00-00 00:00:00'),(4,'EDU','education','0000-00-00 00:00:00','0000-00-00 00:00:00'),(5,'IR','international relations','0000-00-00 00:00:00','0000-00-00 00:00:00'),(6,'SOC','society and culture','0000-00-00 00:00:00','0000-00-00 00:00:00'),(7,'SEC','security and readiness','0000-00-00 00:00:00','0000-00-00 00:00:00'),(8,'DEM','democratic mechanisms','0000-00-00 00:00:00','0000-00-00 00:00:00');
 /*!40000 ALTER TABLE `digidemo_sector` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Dumping data for table `digidemo_tag`
+--
+
+LOCK TABLES `digidemo_tag` WRITE;
+/*!40000 ALTER TABLE `digidemo_tag` DISABLE KEYS */;
+/*!40000 ALTER TABLE `digidemo_tag` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -286,4 +304,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2014-07-09  2:44:01
+-- Dump completed on 2014-07-09  2:51:09

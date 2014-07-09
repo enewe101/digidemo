@@ -217,8 +217,8 @@ CREATE TABLE `digidemo_comment` (
   PRIMARY KEY (`id`),
   KEY `digidemo_comment_6340c63c` (`user_id`),
   KEY `digidemo_comment_45f341a0` (`letter_id`),
-  CONSTRAINT `user_id_refs_id_b202d78c` FOREIGN KEY (`user_id`) REFERENCES `auth_user` (`id`),
-  CONSTRAINT `letter_id_refs_id_549c5f06` FOREIGN KEY (`letter_id`) REFERENCES `digidemo_letter` (`id`)
+  CONSTRAINT `letter_id_refs_id_549c5f06` FOREIGN KEY (`letter_id`) REFERENCES `digidemo_letter` (`id`),
+  CONSTRAINT `user_id_refs_id_b202d78c` FOREIGN KEY (`user_id`) REFERENCES `auth_user` (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=14 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -450,8 +450,8 @@ CREATE TABLE `digidemo_lettervote` (
   UNIQUE KEY `user_id` (`user_id`,`target_id`),
   KEY `digidemo_lettervote_6340c63c` (`user_id`),
   KEY `digidemo_lettervote_70bfdfd1` (`target_id`),
-  CONSTRAINT `user_id_refs_id_955f482c` FOREIGN KEY (`user_id`) REFERENCES `auth_user` (`id`),
-  CONSTRAINT `target_id_refs_id_2b6488e6` FOREIGN KEY (`target_id`) REFERENCES `digidemo_letter` (`id`)
+  CONSTRAINT `target_id_refs_id_2b6488e6` FOREIGN KEY (`target_id`) REFERENCES `digidemo_letter` (`id`),
+  CONSTRAINT `user_id_refs_id_955f482c` FOREIGN KEY (`user_id`) REFERENCES `auth_user` (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -625,6 +625,35 @@ REPLACE INTO `digidemo_proposal_sector` (`id`, `proposal_id`, `sector_id`) VALUE
 UNLOCK TABLES;
 
 --
+-- Table structure for table `digidemo_proposal_tags`
+--
+
+DROP TABLE IF EXISTS `digidemo_proposal_tags`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `digidemo_proposal_tags` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `proposal_id` int(11) NOT NULL,
+  `tag_id` int(11) NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `proposal_id` (`proposal_id`,`tag_id`),
+  KEY `digidemo_proposal_tags_ad574d3c` (`proposal_id`),
+  KEY `digidemo_proposal_tags_5659cca2` (`tag_id`),
+  CONSTRAINT `proposal_id_refs_id_b71410b6` FOREIGN KEY (`proposal_id`) REFERENCES `digidemo_proposal` (`id`),
+  CONSTRAINT `tag_id_refs_id_e1334569` FOREIGN KEY (`tag_id`) REFERENCES `digidemo_tag` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `digidemo_proposal_tags`
+--
+
+LOCK TABLES `digidemo_proposal_tags` WRITE;
+/*!40000 ALTER TABLE `digidemo_proposal_tags` DISABLE KEYS */;
+/*!40000 ALTER TABLE `digidemo_proposal_tags` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `digidemo_proposalvote`
 --
 
@@ -642,8 +671,8 @@ CREATE TABLE `digidemo_proposalvote` (
   UNIQUE KEY `user_id` (`user_id`,`target_id`),
   KEY `digidemo_proposalvote_6340c63c` (`user_id`),
   KEY `digidemo_proposalvote_70bfdfd1` (`target_id`),
-  CONSTRAINT `user_id_refs_id_baf64dae` FOREIGN KEY (`user_id`) REFERENCES `auth_user` (`id`),
-  CONSTRAINT `target_id_refs_id_2722b1c2` FOREIGN KEY (`target_id`) REFERENCES `digidemo_proposal` (`id`)
+  CONSTRAINT `target_id_refs_id_2722b1c2` FOREIGN KEY (`target_id`) REFERENCES `digidemo_proposal` (`id`),
+  CONSTRAINT `user_id_refs_id_baf64dae` FOREIGN KEY (`user_id`) REFERENCES `auth_user` (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -748,6 +777,30 @@ LOCK TABLES `digidemo_sector` WRITE;
 /*!40000 ALTER TABLE `digidemo_sector` DISABLE KEYS */;
 REPLACE INTO `digidemo_sector` (`id`, `short_name`, `name`, `creation_date`, `last_modified`) VALUES (1,'ECO','economy','0000-00-00 00:00:00','0000-00-00 00:00:00'),(2,'ENV','environment','0000-00-00 00:00:00','0000-00-00 00:00:00'),(3,'HEA','health','0000-00-00 00:00:00','0000-00-00 00:00:00'),(4,'EDU','education','0000-00-00 00:00:00','0000-00-00 00:00:00'),(5,'IR','international relations','0000-00-00 00:00:00','0000-00-00 00:00:00'),(6,'SOC','society and culture','0000-00-00 00:00:00','0000-00-00 00:00:00'),(7,'SEC','security and readiness','0000-00-00 00:00:00','0000-00-00 00:00:00'),(8,'DEM','democratic mechanisms','0000-00-00 00:00:00','0000-00-00 00:00:00');
 /*!40000 ALTER TABLE `digidemo_sector` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `digidemo_tag`
+--
+
+DROP TABLE IF EXISTS `digidemo_tag`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `digidemo_tag` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `name` varchar(48) NOT NULL,
+  `creation_date` datetime NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `digidemo_tag`
+--
+
+LOCK TABLES `digidemo_tag` WRITE;
+/*!40000 ALTER TABLE `digidemo_tag` DISABLE KEYS */;
+/*!40000 ALTER TABLE `digidemo_tag` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -877,4 +930,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2014-07-09  2:44:01
+-- Dump completed on 2014-07-09  2:51:08

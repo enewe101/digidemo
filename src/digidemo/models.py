@@ -65,6 +65,9 @@ class UserProfile(models.Model):
 		self.rep -= self.get_rep_delta(event_name)
 
 
+class Tag(models.Model):
+	name = models.CharField(max_length=48)
+	creation_date = models.DateTimeField(auto_now_add=True)
 
 
 class Proposal(models.Model):
@@ -74,10 +77,10 @@ class Proposal(models.Model):
 	last_modified = models.DateTimeField(auto_now=True)
 	creation_date = models.DateTimeField(auto_now_add=True)
 	user = models.ForeignKey(User)
-
 	score = models.SmallIntegerField(default=0)
 	sector = models.ManyToManyField(Sector, related_name='proposals')
 	proposal_image = models.ImageField(upload_to='proposal_avatars',default='/digidemo/proposal-images/');
+	tags = models.ManyToManyField(Tag, related_name='proposals', null=True)
 
 	def __unicode__(self):
 		return self.title
