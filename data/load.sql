@@ -213,7 +213,7 @@ CREATE TABLE `digidemo_capability` (
   `sector_id` int(11) NOT NULL,
   PRIMARY KEY (`id`),
   KEY `digidemo_capability_663ed8c9` (`sector_id`),
-  CONSTRAINT `sector_id_refs_id_5a36480220d799ed` FOREIGN KEY (`sector_id`) REFERENCES `digidemo_sector` (`id`)
+  CONSTRAINT `sector_id_refs_id_84257dfd` FOREIGN KEY (`sector_id`) REFERENCES `digidemo_sector` (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=17 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -239,14 +239,14 @@ CREATE TABLE `digidemo_comment` (
   `user_id` int(11) NOT NULL,
   `letter_id` int(11) NOT NULL,
   `body` varchar(512) NOT NULL,
-  `score` smallint(6) NOT NULL DEFAULT '0',
+  `score` smallint(6) NOT NULL,
   `creation_date` datetime NOT NULL,
   `last_modified` datetime NOT NULL,
   PRIMARY KEY (`id`),
   KEY `digidemo_comment_6340c63c` (`user_id`),
   KEY `digidemo_comment_45f341a0` (`letter_id`),
-  CONSTRAINT `letter_id_refs_id_b67a4ed63200129` FOREIGN KEY (`letter_id`) REFERENCES `digidemo_letter` (`id`),
-  CONSTRAINT `user_id_refs_id_29113dd6c891dc2e` FOREIGN KEY (`user_id`) REFERENCES `auth_user` (`id`)
+  CONSTRAINT `user_id_refs_id_b202d78c` FOREIGN KEY (`user_id`) REFERENCES `auth_user` (`id`),
+  CONSTRAINT `letter_id_refs_id_549c5f06` FOREIGN KEY (`letter_id`) REFERENCES `digidemo_letter` (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=14 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -275,11 +275,11 @@ CREATE TABLE `digidemo_commentvote` (
   `last_modified` datetime NOT NULL,
   `target_id` int(11) NOT NULL,
   PRIMARY KEY (`id`),
-  UNIQUE KEY `digidemo_commentvote_user_id_4530cab3fc8005b8_uniq` (`user_id`,`target_id`),
+  UNIQUE KEY `user_id` (`user_id`,`target_id`),
   KEY `digidemo_commentvote_6340c63c` (`user_id`),
   KEY `digidemo_commentvote_70bfdfd1` (`target_id`),
-  CONSTRAINT `target_id_refs_id_29520103d8d3039f` FOREIGN KEY (`target_id`) REFERENCES `digidemo_comment` (`id`),
-  CONSTRAINT `user_id_refs_id_44d67432bdf3999a` FOREIGN KEY (`user_id`) REFERENCES `auth_user` (`id`)
+  CONSTRAINT `user_id_refs_id_5b5404b8` FOREIGN KEY (`user_id`) REFERENCES `auth_user` (`id`),
+  CONSTRAINT `target_id_refs_id_29c7728e` FOREIGN KEY (`target_id`) REFERENCES `digidemo_comment` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -305,15 +305,15 @@ CREATE TABLE `digidemo_discussion` (
   `title` varchar(256) NOT NULL,
   `body` longtext NOT NULL,
   `user_id` int(11) NOT NULL,
-  `score` smallint(6) NOT NULL DEFAULT '0',
-  `is_open` tinyint(1) NOT NULL DEFAULT '0',
+  `score` smallint(6) NOT NULL,
+  `is_open` tinyint(1) NOT NULL,
   `creation_date` datetime NOT NULL,
   `last_activity_date` datetime NOT NULL,
   PRIMARY KEY (`id`),
   KEY `digidemo_discussion_ad574d3c` (`proposal_id`),
   KEY `digidemo_discussion_6340c63c` (`user_id`),
-  CONSTRAINT `user_id_refs_id_5908f5fb4ab911d0` FOREIGN KEY (`user_id`) REFERENCES `auth_user` (`id`),
-  CONSTRAINT `proposal_id_refs_id_76313396dd66fbf1` FOREIGN KEY (`proposal_id`) REFERENCES `digidemo_proposal` (`id`)
+  CONSTRAINT `proposal_id_refs_id_67b12962` FOREIGN KEY (`proposal_id`) REFERENCES `digidemo_proposal` (`id`),
+  CONSTRAINT `user_id_refs_id_dc56e1ff` FOREIGN KEY (`user_id`) REFERENCES `auth_user` (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -342,11 +342,11 @@ CREATE TABLE `digidemo_discussionvote` (
   `last_modified` datetime NOT NULL,
   `target_id` int(11) NOT NULL,
   PRIMARY KEY (`id`),
-  UNIQUE KEY `digidemo_discussionvote_user_id_5285bcac4a3c370e_uniq` (`user_id`,`target_id`),
+  UNIQUE KEY `user_id` (`user_id`,`target_id`),
   KEY `digidemo_discussionvote_6340c63c` (`user_id`),
   KEY `digidemo_discussionvote_70bfdfd1` (`target_id`),
-  CONSTRAINT `target_id_refs_id_f53e3bb16842971` FOREIGN KEY (`target_id`) REFERENCES `digidemo_discussion` (`id`),
-  CONSTRAINT `user_id_refs_id_5572b405898ee8d4` FOREIGN KEY (`user_id`) REFERENCES `auth_user` (`id`)
+  CONSTRAINT `user_id_refs_id_ae8336d4` FOREIGN KEY (`user_id`) REFERENCES `auth_user` (`id`),
+  CONSTRAINT `target_id_refs_id_4355b2d1` FOREIGN KEY (`target_id`) REFERENCES `digidemo_discussion` (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -375,11 +375,14 @@ CREATE TABLE `digidemo_factor` (
   `valence` smallint(6) NOT NULL,
   `creation_date` datetime NOT NULL,
   `last_modified` datetime NOT NULL,
+  `sector_id` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `digidemo_factor_ad574d3c` (`proposal_id`),
   KEY `digidemo_factor_567242ae` (`capability_id`),
-  CONSTRAINT `capability_id_refs_id_3c0f3df101a6bb58` FOREIGN KEY (`capability_id`) REFERENCES `digidemo_capability` (`id`),
-  CONSTRAINT `proposal_id_refs_id_7d4b68241787b5ea` FOREIGN KEY (`proposal_id`) REFERENCES `digidemo_proposal` (`id`)
+  KEY `digidemo_factor_663ed8c9` (`sector_id`),
+  CONSTRAINT `capability_id_refs_id_7b69deb5` FOREIGN KEY (`capability_id`) REFERENCES `digidemo_capability` (`id`),
+  CONSTRAINT `proposal_id_refs_id_34acf33f` FOREIGN KEY (`proposal_id`) REFERENCES `digidemo_proposal` (`id`),
+  CONSTRAINT `sector_id_refs_id_7ab86ae0` FOREIGN KEY (`sector_id`) REFERENCES `digidemo_sector` (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -389,7 +392,7 @@ CREATE TABLE `digidemo_factor` (
 
 LOCK TABLES `digidemo_factor` WRITE;
 /*!40000 ALTER TABLE `digidemo_factor` DISABLE KEYS */;
-REPLACE INTO `digidemo_factor` (`id`, `proposal_id`, `description`, `capability_id`, `valence`, `creation_date`, `last_modified`) VALUES (1,1,'Transport of crude oil by pipeline is safer than by truck and train, which are the current alternatives',13,1,'0000-00-00 00:00:00','0000-00-00 00:00:00'),(2,1,'The operation of pipelines for the transport of crude oil poses environmental risks due to the eventuality of leaks',4,-1,'0000-00-00 00:00:00','0000-00-00 00:00:00'),(3,1,'Canada\'s readiness to make use of its natural resources will be increased',11,1,'0000-00-00 00:00:00','0000-00-00 00:00:00'),(4,1,'Facilitating the development of the tarsands will create additional wealth and income in Canada.',15,1,'0000-00-00 00:00:00','0000-00-00 00:00:00');
+REPLACE INTO `digidemo_factor` (`id`, `proposal_id`, `description`, `capability_id`, `valence`, `creation_date`, `last_modified`, `sector_id`) VALUES (1,1,'Transport of crude oil by pipeline is safer than by truck and train, which are the current alternatives',13,1,'2014-07-09 05:57:04','2014-07-09 05:57:04',7),(2,1,'The operation of pipelines for the transport of crude oil poses environmental risks due to the eventuality of leaks',4,-1,'2014-07-09 05:57:04','2014-07-09 05:57:04',2),(3,1,'Canada\'s readiness to make use of its natural resources will be increased',11,1,'2014-07-09 05:57:04','2014-07-09 05:57:04',7),(4,1,'Facilitating the development of the tarsands will create additional wealth and income in Canada.',15,1,'2014-07-09 05:57:04','2014-07-09 05:57:04',1);
 /*!40000 ALTER TABLE `digidemo_factor` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -407,16 +410,16 @@ CREATE TABLE `digidemo_letter` (
   `valence` smallint(6) NOT NULL,
   `user_id` int(11) NOT NULL,
   `body` longtext NOT NULL,
-  `score` smallint(6) NOT NULL DEFAULT '0',
+  `score` smallint(6) NOT NULL,
   `creation_date` datetime NOT NULL,
   `last_modified` datetime NOT NULL,
   PRIMARY KEY (`id`),
   KEY `digidemo_letter_b0eaace7` (`parent_letter_id`),
   KEY `digidemo_letter_ad574d3c` (`proposal_id`),
   KEY `digidemo_letter_6340c63c` (`user_id`),
-  CONSTRAINT `user_id_refs_id_6821755b83d0f908` FOREIGN KEY (`user_id`) REFERENCES `auth_user` (`id`),
-  CONSTRAINT `parent_letter_id_refs_id_1e7f08641d5dd8c3` FOREIGN KEY (`parent_letter_id`) REFERENCES `digidemo_letter` (`id`),
-  CONSTRAINT `proposal_id_refs_id_bccc6ffa9c011b9` FOREIGN KEY (`proposal_id`) REFERENCES `digidemo_proposal` (`id`)
+  CONSTRAINT `proposal_id_refs_id_a3d9d864` FOREIGN KEY (`proposal_id`) REFERENCES `digidemo_proposal` (`id`),
+  CONSTRAINT `parent_letter_id_refs_id_5234e149` FOREIGN KEY (`parent_letter_id`) REFERENCES `digidemo_letter` (`id`),
+  CONSTRAINT `user_id_refs_id_747eea8b` FOREIGN KEY (`user_id`) REFERENCES `auth_user` (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=46 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -442,11 +445,11 @@ CREATE TABLE `digidemo_letter_recipients` (
   `letter_id` int(11) NOT NULL,
   `position_id` int(11) NOT NULL,
   PRIMARY KEY (`id`),
-  UNIQUE KEY `digidemo_letter_recipients_letter_id_7632fb1660808629_uniq` (`letter_id`,`position_id`),
+  UNIQUE KEY `letter_id` (`letter_id`,`position_id`),
   KEY `digidemo_letter_recipients_45f341a0` (`letter_id`),
   KEY `digidemo_letter_recipients_1f456125` (`position_id`),
-  CONSTRAINT `position_id_refs_id_5aa39d667c602672` FOREIGN KEY (`position_id`) REFERENCES `digidemo_position` (`id`),
-  CONSTRAINT `letter_id_refs_id_3de7646f71c38497` FOREIGN KEY (`letter_id`) REFERENCES `digidemo_letter` (`id`)
+  CONSTRAINT `letter_id_refs_id_72f69299` FOREIGN KEY (`letter_id`) REFERENCES `digidemo_letter` (`id`),
+  CONSTRAINT `position_id_refs_id_0e734fb2` FOREIGN KEY (`position_id`) REFERENCES `digidemo_position` (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=46 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -475,11 +478,11 @@ CREATE TABLE `digidemo_lettervote` (
   `last_modified` datetime NOT NULL,
   `target_id` int(11) NOT NULL,
   PRIMARY KEY (`id`),
-  UNIQUE KEY `digidemo_lettervote_user_id_67abd4fb259aeed2_uniq` (`user_id`,`target_id`),
+  UNIQUE KEY `user_id` (`user_id`,`target_id`),
   KEY `digidemo_lettervote_6340c63c` (`user_id`),
   KEY `digidemo_lettervote_70bfdfd1` (`target_id`),
-  CONSTRAINT `target_id_refs_id_50c6d78f2099dbd7` FOREIGN KEY (`target_id`) REFERENCES `digidemo_letter` (`id`),
-  CONSTRAINT `user_id_refs_id_7a8f5a04916492f4` FOREIGN KEY (`user_id`) REFERENCES `auth_user` (`id`)
+  CONSTRAINT `user_id_refs_id_955f482c` FOREIGN KEY (`user_id`) REFERENCES `auth_user` (`id`),
+  CONSTRAINT `target_id_refs_id_2b6488e6` FOREIGN KEY (`target_id`) REFERENCES `digidemo_letter` (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -574,8 +577,8 @@ CREATE TABLE `digidemo_position` (
   PRIMARY KEY (`id`),
   KEY `digidemo_position_16f39487` (`person_id`),
   KEY `digidemo_position_de772da3` (`organization_id`),
-  CONSTRAINT `organization_id_refs_id_2fd159c54309c761` FOREIGN KEY (`organization_id`) REFERENCES `digidemo_organization` (`id`),
-  CONSTRAINT `person_id_refs_id_2b2bd94aa4d9cb63` FOREIGN KEY (`person_id`) REFERENCES `digidemo_person` (`id`)
+  CONSTRAINT `person_id_refs_id_791b385c` FOREIGN KEY (`person_id`) REFERENCES `digidemo_person` (`id`),
+  CONSTRAINT `organization_id_refs_id_e8072702` FOREIGN KEY (`organization_id`) REFERENCES `digidemo_organization` (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -601,15 +604,15 @@ CREATE TABLE `digidemo_proposal` (
   `name` varchar(256) NOT NULL,
   `title` varchar(256) NOT NULL,
   `text` longtext NOT NULL,
-  `is_published` tinyint(1) NOT NULL DEFAULT '0',
+  `is_published` tinyint(1) NOT NULL,
   `last_modified` datetime NOT NULL,
   `creation_date` datetime NOT NULL,
   `user_id` int(11) NOT NULL,
-  `score` smallint(6) NOT NULL DEFAULT '0',
-  `proposal_image` varchar(100) NOT NULL DEFAULT '/digidemo/proposal-images/',
+  `score` smallint(6) NOT NULL,
+  `proposal_image` varchar(100) NOT NULL,
   PRIMARY KEY (`id`),
   KEY `digidemo_proposal_6340c63c` (`user_id`),
-  CONSTRAINT `user_id_refs_id_2e7aa04be35b0cd4` FOREIGN KEY (`user_id`) REFERENCES `auth_user` (`id`)
+  CONSTRAINT `user_id_refs_id_1f8c5260` FOREIGN KEY (`user_id`) REFERENCES `auth_user` (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -635,11 +638,11 @@ CREATE TABLE `digidemo_proposal_sector` (
   `proposal_id` int(11) NOT NULL,
   `sector_id` int(11) NOT NULL,
   PRIMARY KEY (`id`),
-  UNIQUE KEY `digidemo_proposal_sector_proposal_id_7b9ae77beabec166_uniq` (`proposal_id`,`sector_id`),
+  UNIQUE KEY `proposal_id` (`proposal_id`,`sector_id`),
   KEY `digidemo_proposal_sector_ad574d3c` (`proposal_id`),
   KEY `digidemo_proposal_sector_663ed8c9` (`sector_id`),
-  CONSTRAINT `sector_id_refs_id_31da56d1fd009a13` FOREIGN KEY (`sector_id`) REFERENCES `digidemo_sector` (`id`),
-  CONSTRAINT `proposal_id_refs_id_2d8bcd7a7cb11807` FOREIGN KEY (`proposal_id`) REFERENCES `digidemo_proposal` (`id`)
+  CONSTRAINT `proposal_id_refs_id_f31a0883` FOREIGN KEY (`proposal_id`) REFERENCES `digidemo_proposal` (`id`),
+  CONSTRAINT `sector_id_refs_id_85342870` FOREIGN KEY (`sector_id`) REFERENCES `digidemo_sector` (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -668,11 +671,11 @@ CREATE TABLE `digidemo_proposalvote` (
   `last_modified` datetime NOT NULL,
   `target_id` int(11) NOT NULL,
   PRIMARY KEY (`id`),
-  UNIQUE KEY `digidemo_proposalvote_user_id_740d737b332c4512_uniq` (`user_id`,`target_id`),
+  UNIQUE KEY `user_id` (`user_id`,`target_id`),
   KEY `digidemo_proposalvote_6340c63c` (`user_id`),
   KEY `digidemo_proposalvote_70bfdfd1` (`target_id`),
-  CONSTRAINT `target_id_refs_id_27ae3b2558f67c41` FOREIGN KEY (`target_id`) REFERENCES `digidemo_proposal` (`id`),
-  CONSTRAINT `user_id_refs_id_3c8985d2f39d0a40` FOREIGN KEY (`user_id`) REFERENCES `auth_user` (`id`)
+  CONSTRAINT `target_id_refs_id_2722b1c2` FOREIGN KEY (`target_id`) REFERENCES `digidemo_proposal` (`id`),
+  CONSTRAINT `user_id_refs_id_baf64dae` FOREIGN KEY (`user_id`) REFERENCES `auth_user` (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -698,15 +701,15 @@ CREATE TABLE `digidemo_reply` (
   `discussion_id` int(11) NOT NULL,
   `body` longtext NOT NULL,
   `user_id` int(11) NOT NULL,
-  `score` smallint(6) NOT NULL DEFAULT '0',
-  `is_open` tinyint(1) NOT NULL DEFAULT '0',
+  `score` smallint(6) NOT NULL,
+  `is_open` tinyint(1) NOT NULL,
   `creation_date` datetime NOT NULL,
   `last_modified` datetime NOT NULL,
   PRIMARY KEY (`id`),
   KEY `digidemo_reply_acd02281` (`discussion_id`),
   KEY `digidemo_reply_6340c63c` (`user_id`),
-  CONSTRAINT `user_id_refs_id_583cea9e83d27fcd` FOREIGN KEY (`user_id`) REFERENCES `auth_user` (`id`),
-  CONSTRAINT `discussion_id_refs_id_1bb70e74f8bc38d0` FOREIGN KEY (`discussion_id`) REFERENCES `digidemo_discussion` (`id`)
+  CONSTRAINT `user_id_refs_id_9950cae7` FOREIGN KEY (`user_id`) REFERENCES `auth_user` (`id`),
+  CONSTRAINT `discussion_id_refs_id_0f0a157b` FOREIGN KEY (`discussion_id`) REFERENCES `digidemo_discussion` (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=28 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -735,11 +738,11 @@ CREATE TABLE `digidemo_replyvote` (
   `last_modified` datetime NOT NULL,
   `target_id` int(11) NOT NULL,
   PRIMARY KEY (`id`),
-  UNIQUE KEY `digidemo_replyvote_user_id_78c651572506a215_uniq` (`user_id`,`target_id`),
+  UNIQUE KEY `user_id` (`user_id`,`target_id`),
   KEY `digidemo_replyvote_6340c63c` (`user_id`),
   KEY `digidemo_replyvote_70bfdfd1` (`target_id`),
-  CONSTRAINT `target_id_refs_id_59991718e5c37e71` FOREIGN KEY (`target_id`) REFERENCES `digidemo_reply` (`id`),
-  CONSTRAINT `user_id_refs_id_7f2a7d91561319b1` FOREIGN KEY (`user_id`) REFERENCES `auth_user` (`id`)
+  CONSTRAINT `user_id_refs_id_d659ef00` FOREIGN KEY (`user_id`) REFERENCES `auth_user` (`id`),
+  CONSTRAINT `target_id_refs_id_9f87ff39` FOREIGN KEY (`target_id`) REFERENCES `digidemo_reply` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -789,16 +792,16 @@ DROP TABLE IF EXISTS `digidemo_userprofile`;
 CREATE TABLE `digidemo_userprofile` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `user_id` int(11) NOT NULL,
-  `email_validated` tinyint(1) NOT NULL DEFAULT '0',
+  `email_validated` tinyint(1) NOT NULL,
   `avatar_img` varchar(100) NOT NULL,
-  `rep` int(11) NOT NULL DEFAULT '0',
+  `rep` int(11) NOT NULL,
   `street` varchar(128) NOT NULL,
   `zip_code` varchar(10) NOT NULL,
   `country` varchar(64) NOT NULL,
   `province` varchar(32) NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `user_id` (`user_id`),
-  CONSTRAINT `user_id_refs_id_2eed54179b5eb105` FOREIGN KEY (`user_id`) REFERENCES `auth_user` (`id`)
+  CONSTRAINT `user_id_refs_id_7d86ea27` FOREIGN KEY (`user_id`) REFERENCES `auth_user` (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -896,32 +899,6 @@ LOCK TABLES `django_session` WRITE;
 /*!40000 ALTER TABLE `django_session` DISABLE KEYS */;
 /*!40000 ALTER TABLE `django_session` ENABLE KEYS */;
 UNLOCK TABLES;
-
---
--- Table structure for table `south_migrationhistory`
---
-
-DROP TABLE IF EXISTS `south_migrationhistory`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `south_migrationhistory` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `app_name` varchar(255) NOT NULL,
-  `migration` varchar(255) NOT NULL,
-  `applied` datetime NOT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `south_migrationhistory`
---
-
-LOCK TABLES `south_migrationhistory` WRITE;
-/*!40000 ALTER TABLE `south_migrationhistory` DISABLE KEYS */;
-REPLACE INTO `south_migrationhistory` (`id`, `app_name`, `migration`, `applied`) VALUES (1,'digidemo','0001_initial','2014-07-09 05:37:31');
-/*!40000 ALTER TABLE `south_migrationhistory` ENABLE KEYS */;
-UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
@@ -932,4 +909,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2014-07-09  1:38:11
+-- Dump completed on 2014-07-09  2:01:15

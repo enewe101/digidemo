@@ -115,21 +115,13 @@ class Reply(models.Model):
 		return self.user.username
 
 
-
-
-class Capability(models.Model):
-	name = models.CharField(max_length=64)
-	description = models.CharField(max_length=512)
-	sector = models.ForeignKey(Sector)
-
-
 class Factor(models.Model):
 	proposal = models.ForeignKey(Proposal)
 	description = models.CharField(max_length=256)
-	capability = models.ForeignKey(Capability)
 	valence = models.SmallIntegerField(choices=FACTOR_CHOICES)
 	creation_date = models.DateTimeField(auto_now_add=True)
 	last_modified = models.DateTimeField(auto_now=True)
+	sector = models.ForeignKey(Sector, null=True)
 
 
 class Person(models.Model):
