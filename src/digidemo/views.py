@@ -23,9 +23,9 @@ def get_django_vars_JSON(additional_vars):
 	return json.dumps(get_django_vars(additional_vars))
 
 
-def discuss(request, proposal_name):
+def discuss(request, proposal_id):
 
-	this_proposal = Proposal.objects.get(name=proposal_name)
+	this_proposal = Proposal.objects.get(pk=proposal_id)
 
 	# ** Hardcoded the logged in user to be enewe101 **
 	logged_in_user = User.objects.get(pk=1)
@@ -68,9 +68,9 @@ def discuss(request, proposal_name):
 		}
 	)
 
-def edit(request, proposal_name):
+def edit(request, proposal_id):
 
-	this_proposal = Proposal.objects.get(name=proposal_name)
+	this_proposal = Proposal.objects.get(pk=proposal_id)
 
 	# ** Hardcoded the logged in user to be enewe101 **
 	logged_in_user = User.objects.get(pk=1)
@@ -92,9 +92,9 @@ def edit(request, proposal_name):
 
 
 
-def overview(request, proposal_name):
+def overview(request, proposal_id):
 
-	this_proposal = Proposal.objects.get(name=proposal_name)
+	this_proposal = Proposal.objects.get(pk=proposal_id)
 
 	# ** Hardcoded the logged in user to be enewe101 **
 	logged_in_user = User.objects.get(pk=1)

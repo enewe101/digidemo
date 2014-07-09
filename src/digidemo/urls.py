@@ -11,8 +11,8 @@ urlpatterns = patterns('',
 	url(r'^mainPage/$',mainPage),
 	url(r'^mainPage/sort=(?P<sort_type>\w+)/$',mainPage,name='mainPage'),
 
-        #Testing login
-     #   url(r'^Login/$',Login),
+	#Testing login
+	#   url(r'^Login/$',Login),
                        
 	# Registration
 	url(r'^userRegistration/$', userRegistration),
@@ -21,10 +21,10 @@ urlpatterns = patterns('',
 	url(r'^$', test, name='test'),
 
 	# proposal-specific urls
-	url(r'^overview/(?P<proposal_name>\w+)/$', overview, name='overview'),
-	url(r'^proposal/(?P<proposal_name>\w+)/$', overview, name='proposal'),
-	url(r'^discuss/(?P<proposal_name>\w+)/$', discuss, name='discuss'),
-        url(r'^edit/(?P<proposal_name>\w+)/$', edit, name='edit'),
+	url(r'^overview/(?P<proposal_id>\w+)/.*$', overview, name='overview'),
+	url(r'^proposal/(?P<proposal_id>\w+)/.*$', overview, name='proposal'),
+	url(r'^discuss/(?P<proposal_id>\w+)/.*$', discuss, name='discuss'),
+	url(r'^edit/(?P<proposal_id>\w+)/.*$', edit, name='edit'),
 
 	# ajax urls
 	url(r'^ajaxJson/(?P<view>\w+)/$', handle_ajax_json, 

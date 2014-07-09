@@ -1,7 +1,7 @@
 from django.db import models
 from digidemo.choices import *
 from django.contrib.auth.models import User
-
+import re
 
 NAME_LENGTH = 48
 URL_LENGTH = 256
@@ -68,7 +68,6 @@ class UserProfile(models.Model):
 
 
 class Proposal(models.Model):
-	name = models.CharField(max_length=256)
 	title = models.CharField(max_length=256)
 	text = models.TextField()
 	is_published = models.BooleanField(default=False)
@@ -82,6 +81,9 @@ class Proposal(models.Model):
 
 	def __unicode__(self):
 		return self.title
+
+	def get_slug(self):
+		return re.compile(r'\s+').sub('-', self.title)
 
 	class Meta:
 		get_latest_by = 'creation_date'
