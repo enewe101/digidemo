@@ -17,50 +17,21 @@
 
 
 {% block body %}
+{{ block.super }}
 {% include "digidemo/_w_login_user.html" %}
-{% include "digidemo/_i_create_proposal.html" %}
-	<div id="header">
-
-		<div class="outer_center">
-			<div class="inner_center">
-
-				<div id="colophon">
-				</div>
-
-				<!-- logged in user hardcoded temporarily -->
-				<div id="user">
-
-				</div>
-
-			</div>
-		</div>
-
-	</div>
 
 	<!-- content in the middle (vertical middle) of the page -->
 	<div id="middle">
-
-		<!-- start the left column of the central page layout -->
-		<div id="left_col">
-			{% include "digidemo/_i_main_nav_bar.html" %}
-		</div>
-		<!-- end the left column of the middle page layout -->
 
 		<!-- centering device for the middle of the page layout -->
 		<div class="outer_center">
 			<div class="inner_center">
 
-			<!-- 
-				this is to prevent overlap with the left col when the 
-				view is collapsed 
-			-->
-			<div id="left_col_spacer"></div>
+
+			{% include "digidemo/_i_proposal_tabs.html" %}
 
 			<!-- start the (horizontal) center column of middle page layout -->
-			<div id="center_col">
-
-				{% include "digidemo/_i_proposal_tabs.html" %}
-
+			<div id="main_col">
 
 				<!-- start of overview area -->
 				<div id="overview">
@@ -72,9 +43,10 @@
 			</div>
 			<!-- end of central column in middle page layout -->
 
-
 			<!-- start of right column in middle page layout -->
 			<div id="right_col">
+
+				{% include "digidemo/_i_create_proposal.html" %}
 
 				<!-- start of proposal sectors -->
 				<div class="tags">
@@ -120,6 +92,7 @@
 			</div>
 			<!-- end of right column in middle page layout -->
 
+			<div class="clear"></div>
 			</div>
 		</div>
 		<!-- end of centering device for the middle of the page layout -->

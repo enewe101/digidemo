@@ -5,11 +5,11 @@ Template: jquery
 
 a,
 .title {
-	color: #B24926;
+	color: rgb(170, 0, 212);
 }
 
 #content a:hover {
-	color: #333;
+	color: rgb(170, 0, 212);
 }
 
 #banner-secondary p.intro {

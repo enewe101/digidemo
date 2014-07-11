@@ -1,4 +1,5 @@
 #middle {
+	margin-top: 30px;
 	clear: both;
 }
 
@@ -13,7 +14,7 @@
 .inner_center {
 	text-align: left;
 	margin: auto;
-	width: 1124px;
+	width: 1024px;
 }
 
 #user {
@@ -29,9 +30,9 @@
 	height: 20px;
 }
 
-#center_col {
+#main_col {
 	float:left;
-	width: 778px;
+	width: 800px;
 }
 
 .proposal_main {
@@ -108,12 +109,12 @@ hr {
 
 #right_col {
 	float: left;
-	width: 200px;
+	width: 204px;
+	padding-left: 20px;
 	height: 20px;
 }
 
 div.tags {
-	border-left: solid 1px rgb(170, 0, 212);
 	padding: 4px;
 	margin-bottom: 20px;
 	/*background: rgb(242, 215, 248);*/
@@ -150,30 +151,14 @@ div.tag {
 	color: white;
 }
 
-div#navbar {
-	padding: 10px;
-	border-right: solid 1px rgb(170, 0, 212);
-	border-top: solid 1px rgb(170, 0, 212);
+#tab_bottom {
 	border-bottom: solid 1px rgb(170, 0, 212);
-}
-
-div#navbar ul {
-	list-style-type: none;
-	text-align: right;
-	margin: 0;
-	padding: 0;
-}
-
-li.navitem {
-}
-
-.nav_horizontal_bar {
-	margin: 10px 0 10px 0;
+	height: 24px;
 }
 
 .tabs {
-	margin: 0 0 10px 100px;
-	height: 30px;
+	margin: 0 0 20px 0;
+	height: 24px;
 	font-family: ubuntu;
 }
 
@@ -181,15 +166,12 @@ li.navitem {
 	float: left;
 }
 
-.tab, .tab_thin_space, .tab_thick_space {
-	border-bottom: solid 1px rgb(170, 0, 212);
-}
-
 .tab, .tab_active {
 	padding: 0px 4px 0 4px;
 	border-left: solid 1px rgb(170, 0, 212);
 	border-top: solid 1px rgb(170, 0, 212);
 	border-right: solid 1px rgb(170, 0, 212);
+	background: white;
 }
 
 .tab {
@@ -209,7 +191,7 @@ li.navitem {
 
 .tab_thick_space {
 	height: 24px;
-	width: 14px;
+	width: 100px;
 }
 
 .factor_list_heading {

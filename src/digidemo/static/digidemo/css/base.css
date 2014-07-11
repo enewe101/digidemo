@@ -92,13 +92,35 @@ body {
 }
 
 #header {
-	height: 40px;
 	clear: both;
+	border-bottom: solid 1px rgb(210,210,210);
+	padding-top: 10px;
+	background: rgb(245,245,245);
 }
 
 #colophon {
 	float: left;
-	width: 40px;
+	width: 100px;
 	height: 40px;
+}
+
+div#navbar ul {
+	display: block;
+	list-style-type: none;
+	margin: 0;
+	padding: 0;
+}
+
+li.navitem {
+	display: block;
+	background: rgb(80,80,80);
+	color: white;
+	padding: 2px 4px 0 4px;
+	margin-right: 4px;
+	float: left;
+}
+
+.nav_horizontal_bar {
+	margin: 10px 0 10px 0;
 }
 
