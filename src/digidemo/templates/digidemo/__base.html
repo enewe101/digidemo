@@ -7,19 +7,43 @@
 		</title>
 
 		{% block css %}
+
 			<link rel="stylesheet" type="text/css" 
 				href="{% static "digidemo/css/base.css" %}" />
 			<link rel="stylesheet" type="text/css" 
 				href="{% static "digidemo/css/alacarte.css" %}" />
 			<link rel="stylesheet" type="text/css" 
 				href="{% static "digidemo/css/login.css" %}" />
+			<link rel="stylesheet" type="text/css" 
+				href="{% static "digidemo/css/jquery-ui.css" %}" />
+			<link rel="stylesheet" type="text/css" 
+				href="{% static "digidemo/css/style.css" %}" />
+			<link rel="stylesheet" type="text/css" 
+				href="{% static "digidemo/css/jquery.tagit.css" %}" />
+			<link rel="stylesheet" type="text/css" 
+				href="{% static "digidemo/css/tagit.ui-zendesk.css" %}" />
+
+			
+
 		{% endblock css %}
 
 		{% block js %}
+
 			<script type="text/javascript"
 				src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
+
 			<script type="text/javascript" 
 				src="{% static "digidemo/js/lib.js" %}"></script>
+
+			<script type="text/javascript" 
+				src="{% static "digidemo/js/jquery-1.10.2.js" %}"></script>
+
+			<script type="text/javascript" 
+				src="{% static "digidemo/js/jquery-ui.js" %}"></script>
+
+			<script type="text/javascript" 
+				src="{% static "digidemo/js/tag-it.js" %}"></script>
+
 		{% endblock js %}
 
 		{% block media %}{% endblock media %}
