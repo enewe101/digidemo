@@ -262,7 +262,7 @@ def mainPage(request,sort_type='most_recent'):
 
         popular_posts =  Proposal.objects.order_by('-score')[:6]
 
-        featured_post = Proposal.objects.get(name='Quebec');
+        featured_post = Proposal.objects.get(title='Quebec');
         
         users = UserProfile.objects.all();
 
