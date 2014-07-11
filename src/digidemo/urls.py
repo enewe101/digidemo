@@ -1,10 +1,20 @@
 from django.conf.urls import patterns, include, url
+from django.conf import settings
 
 from django.contrib import admin
 from views import *
 from ajax import *
 
 admin.autodiscover()
+
+
+
+if settings.TESTING_MODE:
+    # enable this handler only for testing, 
+    # so that if DEBUG=False and we're not testing,
+    # the default handler is used
+    handler500 = 'digidemo.views.show_server_error'
+
 
 urlpatterns = patterns('',
 	# front page urls
@@ -23,7 +33,7 @@ urlpatterns = patterns('',
 	# proposal-specific urls
 	url(r'^overview/(?P<proposal_id>\w+)/.*$', overview, name='overview'),
 	url(r'^proposal/(?P<proposal_id>\w+)/.*$', overview, name='proposal'),
-	url(r'^discuss/(?P<proposal_id>\w+)/.*$', discuss, name='discuss'),
+	url(r'^discuss/(?P<proposal_id>\w+)/.*$', discuss, name='discussion'),
 	url(r'^edit/(?P<proposal_id>\w+)/.*$', edit, name='edit'),
 
 	# ajax urls

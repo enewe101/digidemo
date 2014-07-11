@@ -8,6 +8,10 @@ from digidemo import utils
 from settings import DEBUG
 import json
 from django.shortcuts import redirect
+import sys
+from django import http
+from django.views.debug import ExceptionReporter
+
 
 def get_django_vars(additional_vars={}):
 	django_vars = {
@@ -17,6 +21,20 @@ def get_django_vars(additional_vars={}):
 	django_vars.update(additional_vars)
 
 	return django_vars
+
+
+def show_server_error(request):
+    """
+    500 error handler to show Django default 500 template
+    with nice error information and traceback.
+    Useful in testing, if you can't set DEBUG=True.
+
+    Templates: `500.html`
+    Context: sys.exc_info() results
+     """
+    exc_type, exc_value, exc_traceback = sys.exc_info()
+    error = ExceptionReporter(request, exc_type, exc_value, exc_traceback)
+    return http.HttpResponseServerError(error.get_traceback_html())
 
 
 def get_django_vars_JSON(additional_vars):

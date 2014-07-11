@@ -2,14 +2,14 @@
 <div id="_w_tab_1" class="tabs">
 	<div class="tab_thick_space"></div>
 
-	<a href="{% url "overview" proposal.id %}{{ proposal.get_slug }}">
+	<a href="{{ proposal.get_overview_url }}">
 	<div class="_w_tab_1 {% if tab == "overview" %}tab_active{% else %}tab{% endif %}">
 			Overview
 	</div>
 	<div class="tab_thin_space"></div>
 	</a>
 
-	<a href="{% url "proposal" proposal.id %}{{ proposal.get_slug }}">
+	<a href="{{ proposal.get_proposal_url }}">
 	<div class="_w_tab_1 {% if tab == "proposal" %}tab_active{% else %}tab{% endif %}">
 			Proposal
 	</div>
@@ -17,18 +17,17 @@
 
 	<div class="tab_thin_space"></div>
 
-	<a href="{% url "discuss" proposal.id %}{{ proposal.get_slug }}">
+	<a href="{{ proposal.get_discussion_url }}">
 	<div class="_w_tab_1 {% if tab == "discuss" %}tab_active{% else %}tab{% endif %}">
 			Discuss
 	</div></a>
 
 	<div class="tab_thin_space"></div>
-	<a href="{% url "edit" proposal.id %}{{ proposal.get_slug }}">
+	<a href="{{ proposal.get_edit_url }}">
 	<div class="_w_tab_1 {% if tab == "edit" %}tab_active{% else %}tab{% endif %}">
 			Edit
 	</div></a>
 	
-
 	<div class="tab_thin_space"></div>
 	<div class="_w_tab_1 {% if tab == "save" %}tab_active{% else %}tab{% endif %}">
 		<span class='disabled'>

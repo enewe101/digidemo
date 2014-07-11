@@ -2,6 +2,8 @@ from django.db import models
 from digidemo.choices import *
 from django.contrib.auth.models import User
 from django.utils import timezone 
+from django.core.urlresolvers import reverse
+from django.template.defaultfilters import slugify
 import re
 
 NAME_LENGTH = 48
@@ -92,14 +94,28 @@ class Proposal(TimeStamped):
 	user = models.ForeignKey(User)
 	score = models.SmallIntegerField(default=0)
 	sector = models.ManyToManyField(Sector, related_name='proposals')
-	proposal_image = models.ImageField(upload_to='proposal_avatars',default='/digidemo/proposal-images/');
+	proposal_image = models.ImageField(
+		upload_to='proposal_avatars',default='/digidemo/proposal-images/');
 	tags = models.ManyToManyField(Tag, related_name='proposals', null=True)
 
 	def __unicode__(self):
 		return self.title
 
-	def get_slug(self):
-		return re.compile(r'\s+').sub('-', self.title)
+	def get_url(self, view_name):
+		url_stub = reverse(view_name, kwargs={'proposal_id': self.pk})
+		return url_stub + slugify(self.title)
+
+	def get_overview_url(self):
+		return self.get_url('overview')
+
+	def get_discussion_url(self):
+		return self.get_url('discussion')
+
+	def get_edit_url(self):
+		return self.get_url('edit')
+
+	def get_proposal_url(self):
+		return self.get_url('proposal')
 
 	class Meta:
 		get_latest_by = 'creation_date'
@@ -182,7 +198,6 @@ class Letter(TimeStamped):
 			get_choice(VALENCE_CHOICES, self.valence))
 
 
-
 class Comment(TimeStamped):
 	user = models.ForeignKey(User)
 	letter = models.ForeignKey(Letter)
@@ -191,8 +206,6 @@ class Comment(TimeStamped):
 
 	def __unicode__(self):
 		return self.author.username
-
-
 
 
 class Vote(TimeStamped):

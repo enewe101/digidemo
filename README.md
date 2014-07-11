@@ -11,7 +11,7 @@
 4. Install Django
 	- requires Pillow 
 
-5. Install South
+5. Install Selenium (package for python)
 
 Note: you should test all of those installations and convince yourself that,
 at least separately, each is working.  Refer to the software's specific
