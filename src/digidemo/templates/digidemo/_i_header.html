@@ -1,0 +1,24 @@
+{% load staticfiles %}
+<div id="header">
+
+	<div class="outer_center">
+		<div class="inner_center full_idth">
+			<div class="outer_center">
+				<div id="logo_links" class="inner_center">
+					<img id="colophon" 
+					src="{% static "digidemo/images/colophon.png"%}" />
+
+					{% include "digidemo/_i_main_nav_bar.html" %}
+
+					<!-- logged in user hardcoded temporarily -->
+					<div id="user"></div> &nbsp;
+					<div class="clear"></div>
+				</div>
+			</div>
+
+			<div class="clear"></div>
+		</div>
+	</div>
+
+	<div class="clear"></div>
+</div>

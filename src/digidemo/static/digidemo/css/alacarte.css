@@ -26,3 +26,32 @@
 	clear: both;
 }
 
+.vert4 {
+	height: 4px;
+}
+.vert10 {
+	height: 10px;
+}
+.vert14 {
+	height: 14px;
+}
+.vert20 {
+	height: 20px;
+}
+.vert24 {
+	height: 24px;
+}
+.vert36 {
+	height: 36px;
+}
+.vert48 {
+	height: 48px;
+}
+.vert64 {
+	height: 64px;
+}
+
+.full_width {
+	width: 1024px;
+}
+

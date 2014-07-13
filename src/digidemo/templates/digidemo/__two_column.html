@@ -25,8 +25,18 @@
 
 		<!-- centering device for the middle of the page layout -->
 		<div class="outer_center">
-			<div class="inner_center">
+			<div class="inner_center full_width">
 
+			<div id="headline">
+				<!-- start of propasal score and icons -->
+				<div class="proposal_status_bar">
+					{% include "digidemo/_w_vote_form.html" with form=proposal_vote_form include_id="proposal_vote" %}
+				</div>
+				<!-- end of proposal score and icons -->
+
+				<h1 class="proposal_title">{{ proposal.title }}</h1>
+
+			</div>
 
 			{% include "digidemo/_i_proposal_tabs.html" %}
 

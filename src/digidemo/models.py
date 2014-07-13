@@ -93,6 +93,7 @@ class Proposal(TimeStamped):
 	is_published = models.BooleanField(default=False)
 	user = models.ForeignKey(User)
 	score = models.SmallIntegerField(default=0)
+	# delete sector
 	sector = models.ManyToManyField(Sector, related_name='proposals')
 	proposal_image = models.ImageField(
 		upload_to='proposal_avatars',default='/digidemo/proposal-images/');
@@ -119,6 +120,14 @@ class Proposal(TimeStamped):
 
 	class Meta:
 		get_latest_by = 'creation_date'
+
+
+class ProposalVersion(TimeStamped):
+	proposal = models.ForeignKey(Proposal)
+	title = models.CharField(max_length=256)
+	summary = models.TextField()
+	text = models.TextField(null=True)
+	user = models.ForeignKey(User)
 
 
 class Discussion(TimeStamped):

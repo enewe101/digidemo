@@ -1,5 +1,4 @@
 #middle {
-	margin-top: 30px;
 	clear: both;
 }
 
@@ -44,10 +43,13 @@
 	font-family: computerModern;
 }
 
+#headline {
+}
+
 h1.proposal_title {
-	padding: 0px;
-	margin: 0px;
 	font-size: 24px;
+	margin: 0;
+	padding: 30px 0 16px 0;
 }
 
 #proposal_summary p {
@@ -147,7 +149,6 @@ div.tag {
 }
 
 .environment_sector_tag {
-	background: green;
 	color: white;
 }
 
@@ -177,11 +178,12 @@ div.tag {
 .tab {
 	margin-top: 3px;
 	height: 20px;
+	font-size: 14px;
 }
 
 .tab_active {
-	padding-top: 4px;
-	height: 20px;
+	padding-top: 2px;
+	height: 22px;
 }
 
 .tab_thin_space {

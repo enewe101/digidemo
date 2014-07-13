@@ -58,23 +58,9 @@
 	</head>
 	<body>
 		{% block body %}
-			<div id="header">
-
-				<div class="outer_center">
-					<div class="inner_center">
-
-						<div id="colophon"></div>
-						{% include "digidemo/_i_main_nav_bar.html" %}
-
-						<!-- logged in user hardcoded temporarily -->
-						<div id="user"></div>
-
-						<div class="clear"></div>
-					</div>
-				</div>
-
-			</div>
+			{% include "digidemo/_i_header.html" %}
 		{% endblock body %}
+		<div class="clear"></div>
 	</body>
 </html>
 

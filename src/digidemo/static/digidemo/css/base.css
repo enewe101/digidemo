@@ -80,6 +80,42 @@
 	src: url(../fonts/ubuntu/Ubuntu-BI.ttf);
 }   
 
+a:link {
+	color: rgb(170, 0, 212);
+	text-decoration: none;
+}
+
+a:visited {
+	color: rgb(170, 0, 212);
+	text-decoration: none;
+}
+
+a:hover {
+	color: rgb(170, 0, 212);
+	text-decoration: none;
+}
+
+a:active {
+	color: rgb(170, 0, 212);
+	text-decoration: none;
+}
+
+#main_tabs a:link {
+	color: rgb(80,80,80);
+}
+
+#main_tabs a:visited {
+	color: rgb(80,80,80);
+}
+
+#main_tabs a:hover {
+	color: rgb(80,80,80);
+}
+
+#main_tabs a:active {
+	color: rgb(80,80,80);
+}
+
 .note_icon {
 	margin: 20px 10px 10px 0;
 	float:left;
@@ -92,35 +128,46 @@ body {
 }
 
 #header {
-	clear: both;
-	border-bottom: solid 1px rgb(210,210,210);
-	padding-top: 10px;
-	background: rgb(245,245,245);
+	padding: 20px;
 }
 
 #colophon {
 	float: left;
-	width: 100px;
-	height: 40px;
+	margin: 0 20px;
 }
 
-div#navbar ul {
+#logo_links {
+	width: 650px;
+}
+
+div#navbar {
 	display: block;
 	list-style-type: none;
-	margin: 0;
 	padding: 0;
+	margin: 24px;
+	float: left;
 }
 
-li.navitem {
+a.navitem_active {
+	display: block;
+	background: white;
+	color: rgb(170, 0, 212);
+	border: solid 1px rgb(170, 0, 212);
+	padding: 6px 8px;
+	margin: 4px;
+	float: left;
+}
+
+a.navitem {
 	display: block;
 	background: rgb(80,80,80);
+	border: solid 1px rgb(80,80,80);
 	color: white;
-	padding: 2px 4px 0 4px;
-	margin-right: 4px;
+	padding: 6px 8px;
+	margin: 4px;
 	float: left;
 }
 
 .nav_horizontal_bar {
-	margin: 10px 0 10px 0;
 }
 

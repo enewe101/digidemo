@@ -2,6 +2,9 @@
 
 <div id="{{ include_id }}_target" class="votes_widget" >
 	<form id="{{ include_id }}">
+
+		{% csrf_token %}
+
 		{% for field in form %}
 		{{ field }}
 		{% endfor %}

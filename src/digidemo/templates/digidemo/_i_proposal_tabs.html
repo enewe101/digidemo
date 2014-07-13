@@ -1,39 +1,32 @@
 <!-- start tabs at the top of the proposal -->
-<div id="_w_tab_1" class="tabs">
-	<div class="tab_thick_space"></div>
+<div id="main_tabs" class="tabs">
 
-	<a href="{{ proposal.get_overview_url }}">
-	<div class="_w_tab_1 {% if tab == "overview" %}tab_active{% else %}tab{% endif %}">
+	<a href="{{ proposal.get_overview_url }}"
+	class="{% if tab == "overview" %}tab_active{% else %}tab{% endif %}">
 			Overview
-	</div>
-	<div class="tab_thin_space"></div>
 	</a>
 
-	<a href="{{ proposal.get_proposal_url }}">
-	<div class="_w_tab_1 {% if tab == "proposal" %}tab_active{% else %}tab{% endif %}">
+	<div class="tab_thin_space"></div>
+
+	<a href="{{ proposal.get_proposal_url }}"
+	class="{% if tab == "proposal" %}tab_active{% else %}tab{% endif %}">
 			Proposal
-	</div>
 	</a>
 
 	<div class="tab_thin_space"></div>
 
-	<a href="{{ proposal.get_discussion_url }}">
-	<div class="_w_tab_1 {% if tab == "discuss" %}tab_active{% else %}tab{% endif %}">
+	<a href="{{ proposal.get_discussion_url }}"
+	class="{% if tab == "discuss" %}tab_active{% else %}tab{% endif %}">
 			Discuss
-	</div></a>
+	</a>
 
 	<div class="tab_thin_space"></div>
-	<a href="{{ proposal.get_edit_url }}">
-	<div class="_w_tab_1 {% if tab == "edit" %}tab_active{% else %}tab{% endif %}">
+
+	<a href="{{ proposal.get_edit_url }}"
+	class="{% if tab == "edit" %}tab_active{% else %}tab{% endif %}">
 			Edit
-	</div></a>
+	</a>
 	
-	<div class="tab_thin_space"></div>
-	<div class="_w_tab_1 {% if tab == "save" %}tab_active{% else %}tab{% endif %}">
-		<span class='disabled'>
-			Save
-		</span>
-	</div>
 	<div id="tab_bottom"></div>
 </div>
 <!-- end tabs at the top of the proposal -->

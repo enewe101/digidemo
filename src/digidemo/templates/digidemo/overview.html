@@ -6,16 +6,12 @@
 <!-- start the proposal -->
 <div id="proposal">
 
-	<!-- start of propasal score and icons -->
-	<div class="proposal_status_bar">
-	{% include "digidemo/_w_vote_form.html" with form=proposal_vote_form include_id="proposal_vote" %}
-	</div>
-	<!-- end of proposal score and icons -->
+	<!-- spacer for horizontal alignment of proposal body -->
+	<div class="proposal_status_bar vert20"></div>
 
 	<!-- start of proposal main area -->
 	<div class="proposal_main">
 
-		<h1 class="proposal_title">{{ proposal.title }}</h1>
 		<div id="proposal_summary">
 			{{ proposal.summary|markdown }}
 		</div>	
