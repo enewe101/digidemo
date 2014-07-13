@@ -1,0 +1,33 @@
+<!-- start tabs at the top of the proposal -->
+<div id="tabs_{{include_id}}" class="tabs">
+
+	{% for tab in tabs %}
+		<a href="{{ tab.url }}"
+		class="{% if tab.active %}tab_active{% else %}tab{% endif %}">
+			{{ tab.name }}
+		</a>
+
+		<div class="tab_thin_space"></div>
+
+	{% endfor %}
+	
+	<div id="tab_bottom"></div>
+</div>
+
+
+<script type="text/javascript">
+
+// arm the tab links so that when the user clicks a tab, it immediately
+// 'pops-up' (gets the .tab_active class applied)
+(function(){
+ 	var tabs_id = "tabs_{{include_id}}";
+	var all_tabs_selector = '#' + tabs_id + ' a';
+
+	$(all_tabs_selector).click(function(){
+		$(all_tabs_selector).attr('class', 'tab');
+		$(this).attr('class', 'tab_active');
+	});
+}());
+
+</script>
+<!-- end tabs at the top of the proposal -->

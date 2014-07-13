@@ -13,6 +13,24 @@ from django import http
 from django.views.debug import ExceptionReporter
 
 
+def get_proposal_tabs(proposal, active_tab):
+
+	# This is the basic tabs definition for the proposal views
+	proposal_tabs = [
+		{'name': 'overview','url': proposal.get_overview_url()},
+		{'name': 'proposal','url': proposal.get_proposal_url()},
+		{'name': 'discuss','url': proposal.get_discussion_url()},
+		{'name': 'edit','url': proposal.get_edit_url()}
+	]
+
+	# mark the active tab as active
+	active_index = [t['name'] for t in proposal_tabs].index(active_tab)
+	proposal_tabs[active_index]['active'] = True
+
+	return proposal_tabs
+	
+
+
 def get_django_vars(additional_vars={}):
 	django_vars = {
 		'DEBUG': DEBUG
@@ -81,7 +99,7 @@ def discuss(request, proposal_id):
 				logged_in_user, exclude=['password'])}),
 			'proposal': this_proposal,
 			'logged_in_user': logged_in_user,
-			'tab': 'discuss',
+			'tabs': get_proposal_tabs(this_proposal, 'discuss'),
 			'discussion_sections': discussion_sections
 		}
 	)
@@ -103,7 +121,7 @@ def edit(request, proposal_id):
 				logged_in_user, exclude=['password'])}),
 			'proposal': this_proposal,
 			'logged_in_user': logged_in_user,
-			'tab': 'edit',
+			'tabs': get_proposal_tabs(this_proposal, 'edit')
 		}
 	)
 
@@ -113,6 +131,8 @@ def edit(request, proposal_id):
 def overview(request, proposal_id):
 
 	this_proposal = Proposal.objects.get(pk=proposal_id)
+
+
 
 	# ** Hardcoded the logged in user to be enewe101 **
 	logged_in_user = User.objects.get(pk=1)
@@ -197,7 +217,7 @@ def overview(request, proposal_id):
 			'logged_in_user': logged_in_user,
 			'proposal_vote_form': proposal_vote_form,
 			'media': media,
-			'tab': 'overview',
+			'tabs': get_proposal_tabs(this_proposal, 'overview')
 		}
 	)
 
