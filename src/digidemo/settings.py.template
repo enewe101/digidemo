@@ -86,6 +86,8 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 STATICFILES_DIRS = (BASE_DIR + '/digidemo/static',)
+
+FIXTURE_DIRS = os.path.join(PROJECT_DIR, 'data/fixtures')
 STATIC_ROOT = PROJECT_DIR + '/static'
 
 MEDIA_URL = '/media/'
