@@ -94,16 +94,32 @@ def bound_form(endpoint):
 
 
 def auto_add_input_class(form_class_name, form_instance):
+	'''
+	Add an html class to the widget html for all the widgets listed in a 
+	form's Meta.widgets dictionary.
+
+	The html class is made from the form's class and the widget's field name
+	e.g. If a CommentForm has a widget for the field `body`, the widget
+	html would look like:
+		<textarea class="CommentForm_body" ...
+
+	'''
+
 	for field in form_instance.Meta.fields:
 
-		# first get the existing classes if any
-		attrs = form_instance.Meta.widgets[field].attrs
+		# for each field, get the widget
+		try:
+			attrs = form_instance.Meta.widgets[field].attrs
+		except KeyError:
+			continue
+
+		# for each widget, get the html class attributed to it (if any)
 		if 'class' in attrs:
 			css_classes = attrs['class'] + ' '
 		else:
 			css_classes = ''
 
-		# now add auto-generated classes
+		# add an auto-generated class to the widget html's class
 		css_classes += form_class_name + '_' + field
 		attrs['class'] = css_classes
 
