@@ -47,9 +47,10 @@
 }
 
 h1.proposal_title {
-	font-size: 24px;
+	font-size: 36px;
+	font-family: computerModern;
 	margin: 0;
-	padding: 30px 0 16px 0;
+	padding: 18px 0 16px 0;
 }
 
 #proposal_summary p {
@@ -500,3 +501,17 @@ a.send_letter:active {
 	float: right;
 	margin: 10px;
 }
+
+
+.ProposalVersionForm_summary, .ProposalVersionForm_text {
+	width: 720px;
+}
+
+.ProposalVersionForm_summary {
+	height: 200px;
+}
+
+.ProposalVersionForm_text {
+	height: 400px;
+}
+

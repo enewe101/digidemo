@@ -2,9 +2,10 @@
 {% load staticfiles %}
 {% block proposal_content %}
 
+	<div align="right"> Last Modified {{proposal.last_modified}} </div>
+
 	{% include "digidemo/_w_simple_form.html" with form=edit_form %}
 
-	<div align="right"> Last Modified {{proposal.last_modified}} </div>
 
 	<!-- proposal title -->
 	<h2> Proposal Title </h2>

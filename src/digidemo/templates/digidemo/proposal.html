@@ -1,0 +1,6 @@
+{% extends "digidemo/overview.html" %}
+{% load apptags %}
+
+{% block proposal_text %}
+	{{ proposal.get_latest.text|markdown }}
+{% endblock proposal_text %}

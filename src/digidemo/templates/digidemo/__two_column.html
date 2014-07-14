@@ -34,7 +34,9 @@
 				</div>
 				<!-- end of proposal score and icons -->
 
-				<h1 class="proposal_title">{{ proposal.title }}</h1>
+				<h1 class="proposal_title">
+					{{ proposal.get_latest.title }}
+				</h1>
 
 			</div>
 

@@ -1,6 +1,9 @@
 <form class="{{ form.form_class}}" 
 	id="{{ form.form_class }}_{{ include_id }}" 
-	action="{{ form.endpoint }}" />
+	action="{{ form.endpoint }}" 
+	method="post" />
+
+	{{ form.errors.as_json }}
 
 	{% csrf_token %}
 
@@ -20,5 +23,6 @@
 	{% endfor %}
 
 	<input id="{{ form.form_class}}_{{ include_id }}_submit" 
-	class="submit_letter" type="button" value="send" />
+		class="submit" type="submit" value="submit" />
+
 </form>

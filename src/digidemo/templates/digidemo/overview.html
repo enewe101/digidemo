@@ -12,10 +12,15 @@
 	<!-- start of proposal main area -->
 	<div class="proposal_main">
 
+		<!-- start proposal summary -->
 		<div id="proposal_summary">
 			{{ proposal.get_latest.summary|markdown }}
 		</div>	
+		<!-- end proposal summary -->
+
+		<!-- start proposal factors -->
 		<div id="proposal_factors">
+
 			<div class="clear"></div>
 			<div class="factor_left_column">
 				<div class="factor_list_heading">
@@ -35,6 +40,7 @@
 				</ul>
 				{% endif %}
 			</div>
+
 			<div class="factor_right_column">
 				<div class="factor_list_heading">
 					Foreseen hazards:
@@ -54,8 +60,12 @@
 				{% endif %}
 			</div>
 			<div class="clear"></div>
-		</div>
 
+		</div>
+		<!-- end proposal factors -->
+
+		{% block proposal_text %}
+		{% endblock proposal_text %}
 
 	</div>
 	<!-- end of proposal main area -->

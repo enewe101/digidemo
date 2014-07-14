@@ -32,9 +32,11 @@ urlpatterns = patterns('',
 
 	# proposal-specific urls
 	url(r'^overview/(?P<proposal_id>\w+)/.*$', overview, name='overview'),
-	url(r'^proposal/(?P<proposal_id>\w+)/.*$', overview, name='proposal'),
+	url(r'^proposal/(?P<proposal_id>\w+)/.*$', proposal, name='proposal'),
 	url(r'^discuss/(?P<proposal_id>\w+)/.*$', discuss, name='discussion'),
 	url(r'^edit/(?P<proposal_id>\w+)/.*$', edit, name='edit'),
+	url(r'^update-propsal/(?P<proposal_id>\w+)/.*$', 
+		update_proposal, name='update_proposal'),
 
 	# ajax urls
 	url(r'^ajaxJson/(?P<view>\w+)/$', handle_ajax_json, 

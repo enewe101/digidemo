@@ -129,6 +129,9 @@ body {
 
 #header {
 	padding: 20px;
+	border-bottom: solid 1px rgb(200,200,200);
+	background: rgb(230,230,230);
+	margin-bottom: 40px;
 }
 
 #colophon {
@@ -136,15 +139,11 @@ body {
 	margin: 0 20px;
 }
 
-#logo_links {
-	width: 650px;
-}
-
 div#navbar {
 	display: block;
 	list-style-type: none;
 	padding: 0;
-	margin: 24px;
+	margin: 32px 0 0 130px;
 	float: left;
 }
 

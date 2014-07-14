@@ -1,13 +1,12 @@
 from django.core.urlresolvers import reverse
 from django.core import serializers
-from django.shortcuts import render, get_object_or_404
+from django.shortcuts import render, get_object_or_404, redirect
 from django.http import HttpResponse, HttpResponseRedirect
 from digidemo.models import *
 from digidemo.forms import *
 from digidemo import utils
 from settings import DEBUG
 import json
-from django.shortcuts import redirect
 import sys
 from django import http
 from django.views.debug import ExceptionReporter
@@ -59,6 +58,80 @@ def get_django_vars_JSON(additional_vars):
 	return json.dumps(get_django_vars(additional_vars))
 
 
+
+def overview(request, proposal_id):
+
+	proposal = Proposal.objects.get(pk=proposal_id)
+	context = make_proposal_context(proposal)
+	context['tabs'] = get_proposal_tabs(proposal, 'overview')
+
+	return render(
+		request,
+		'digidemo/overview.html', 
+		context
+	)
+
+
+def update_proposal(request, proposal_id):
+	proposal_version_form = ProposalVersionForm(request.POST)
+	if proposal_version_form.is_valid():
+		proposal_version_form.save()
+
+	return proposal(request, proposal_id)
+
+
+def proposal(request, proposal_id):
+	proposal = Proposal.objects.get(pk=proposal_id)
+	context = make_proposal_context(proposal)
+	context['tabs'] = get_proposal_tabs(proposal, 'proposal')
+
+	return render(
+		request,
+		'digidemo/proposal.html',
+		context
+	)
+
+
+def edit(request, proposal_id):
+
+	proposal = Proposal.objects.get(pk=proposal_id)
+
+	# ** Hardcoded the logged in user to be enewe101 **
+	logged_in_user = User.objects.get(pk=1)
+
+	if request.POST:
+
+		edit_form = ProposalVersionForm(request.POST)
+
+		if edit_form.is_valid():
+			edit_form.save()
+			return redirect(proposal.get_url('proposal'))
+
+		else:
+			raise ValueError("didn't validate")
+
+
+	else:
+		edit_form = ProposalVersionForm.init_from_object(
+			proposal.get_latest(),
+			endpoint=proposal.get_url('edit')
+		)
+
+	return render(
+		request,
+		'digidemo/edit.html', 
+		{
+			'django_vars_js': get_django_vars_JSON(
+				{'user': utils.obj_to_dict(
+				logged_in_user, exclude=['password'])}),
+			'proposal': proposal,
+			'edit_form': edit_form,
+			'logged_in_user': logged_in_user,
+			'tabs': get_proposal_tabs(proposal, 'edit')
+		}
+	)
+
+
 def discuss(request, proposal_id):
 
 	proposal = Proposal.objects.get(pk=proposal_id)
@@ -104,37 +177,8 @@ def discuss(request, proposal_id):
 		}
 	)
 
+def make_proposal_context(proposal):
 
-def edit(request, proposal_id):
-
-	proposal = Proposal.objects.get(pk=proposal_id)
-
-	# ** Hardcoded the logged in user to be enewe101 **
-	logged_in_user = User.objects.get(pk=1)
-
-	edit_form = ProposalVersionForm.init_from_object(
-		proposal.get_latest(),
-		endpoint=reverse('proposal', kwargs={'proposal_id': proposal.pk}),
-	)
-
-	return render(
-		request,
-		'digidemo/edit.html', 
-		{
-			'django_vars_js': get_django_vars_JSON(
-				{'user': utils.obj_to_dict(
-				logged_in_user, exclude=['password'])}),
-			'proposal': proposal,
-			'edit_form': edit_form,
-			'logged_in_user': logged_in_user,
-			'tabs': get_proposal_tabs(proposal, 'edit')
-		}
-	)
-
-
-def overview(request, proposal_id):
-
-	proposal = Proposal.objects.get(pk=proposal_id)
 
 	# ** Hardcoded the logged in user to be enewe101 **
 	logged_in_user = User.objects.get(pk=1)
@@ -206,10 +250,7 @@ def overview(request, proposal_id):
 		'user': logged_in_user,
 	})
 
-	return render(
-		request,
-		'digidemo/overview.html', 
-		{
+	context = {
 			'django_vars_js': get_django_vars_JSON(
 				{'user': utils.obj_to_dict(
 				logged_in_user, exclude=['password'])}),
@@ -221,7 +262,9 @@ def overview(request, proposal_id):
 			'media': media,
 			'tabs': get_proposal_tabs(proposal, 'overview')
 		}
-	)
+
+	return context
+
 
 
 

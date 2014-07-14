@@ -1,3 +1,4 @@
+import logging
 from django.http import HttpResponse, HttpResponseRedirect
 from django.template import Context
 from django.template.loader import get_template
@@ -7,9 +8,14 @@ from django.forms import ModelForm
 from django import forms
 from digidemo.choices import *
 from digidemo.models import *
+from digidemo.settings import PROJECT_DIR
+import os
+
+log_fname = os.path.join(PROJECT_DIR, 'media/~log.txt')
+logging.basicConfig(filename=log_fname, level=logging.DEBUG)
 
 
-def bound_form(endpoint):
+def bound_form(endpoint=None, class_name=None):
 	'''
 	A class decorator for turning SomeFormClass into an ajax-ready form.  
 
@@ -45,33 +51,29 @@ def bound_form(endpoint):
 		class NewClass(cls):
 			def __init__(self, *args, **kwargs):
 
-				# allow specifying the endpoint in the constructor
-				# the default is defined by the `endpoint` argument to the 
-				# decorator
+				# allow specifying the endpoint for the form.  This is the
+				# form action ( <form action=... ), or ajax endpoint (ajax.py)
 				self.endpoint = kwargs.pop('endpoint', endpoint)
 
-				# if none is supplied, theres no default, so an endpoint
-				# *must be provided
-				if self.endpoint is None:
-					raise ValueError("You must provide a function name "
-						"(string) to the keyword argument `endpoint` since "
-						"this form has no default endpoint")
-
-				if not isinstance(self.endpoint, basestring):
-					raise ValueError("`endpoint` must be a string "
-						"representing the name of an ajax endpoint.")
-
-				# The form gets a class name, this is used in the <form> 
-				# tag when rendering
+				# The form gets a class name ( <form class=... )
+				default_class_name = class_name or cls.__name__
 				self.form_class = kwargs.pop('form_class', cls.__name__)
 
-				# The form's fields automatically get classes two, based on
+				# The form's fields automatically get classes too, based on
 				# the forms class and the fields name
-				auto_add_input_class(cls.__name__, self)
+				auto_add_input_class(self.form_class, self)
 
 				# now call the usual form constructor
 				super(NewClass, self).__init__(*args, **kwargs)
 
+
+			def get_endpoint(self):
+				# if none is supplied, theres no default, so an endpoint
+				# *must be provided
+				if self.endpoint is None:
+					raise ValueError("No endpoint is bound to this form")
+
+				return self.endpoint
 
 			@classmethod
 			def init_from_object(cls, obj, *args, **kwargs):
@@ -104,7 +106,7 @@ def auto_add_input_class(form_class_name, form_instance):
 		<textarea class="CommentForm_body" ...
 
 	'''
-
+	logging.debug(form_class_name)
 	for field in form_instance.Meta.fields:
 
 		# for each field, get the widget
@@ -120,8 +122,9 @@ def auto_add_input_class(form_class_name, form_instance):
 			css_classes = ''
 
 		# add an auto-generated class to the widget html's class
-		css_classes += form_class_name + '_' + field
-		attrs['class'] = css_classes
+		if form_class_name not in css_classes:
+			css_classes += form_class_name + '_' + field
+			attrs['class'] = css_classes
 
 
 @bound_form('reply')
@@ -166,7 +169,7 @@ class LetterForm(ModelForm):
 		}
 
 
-@bound_form(None)
+@bound_form()
 class ProposalVersionForm(ModelForm):
 	class Meta:
 		model = ProposalVersion
@@ -177,11 +180,10 @@ class ProposalVersionForm(ModelForm):
 			'proposal': forms.HiddenInput(),
 			'user': forms.HiddenInput(),
 			'title': forms.TextInput(),
-			'summary': forms.Textarea(
-				attrs={'class':'proposal_summary_input'}),
-			'text': forms.Textarea(
-				attrs={'class':'proposal_text_input'}),
+			'summary': forms.Textarea(),
+			'text': forms.Textarea(),
 		}
+
 
 class ResendLetterForm(LetterForm):
 
