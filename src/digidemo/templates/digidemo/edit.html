@@ -1,26 +1,57 @@
 {% extends "digidemo/__two_column.html" %}
 {% load staticfiles %}
 {% block proposal_content %}
-	<input type="hidden" id="proposalName" value="{{proposal.name}}">
+
+	{% include "digidemo/_w_simple_form.html" with form=edit_form %}
+
 	<div align="right"> Last Modified {{proposal.last_modified}} </div>
-	<h2> Proposal Tile </h2>
-	<textarea id="proposalTitle" rows="2" cols="70"> {{proposal.title}} </textarea>
+
+	<!-- proposal title -->
+	<h2> Proposal Title </h2>
+	<textarea id="proposalTitle" rows="2" cols="70"> 
+		{{proposal.get_latest.title}} 
+	</textarea>
 	
+	<!-- TODO: add proposal summary -->
+
+	<!-- proposal text -->
 	<h2> Proposal Text </h2>
 	<div class="take_note">
-	<textarea id="proposalText" rows="25" cols="70"> {{proposal.text}} </textarea>
+		<textarea id="proposalText" rows="25" cols="70">
+			{{proposal.get_latest.text}} 
+		</textarea>
 	</div>
 	
 	<h2> Proposal Factors </h2>
+
+	<!-- begin the editable list of bad factors -->
 	<div class="factor_left_column">
-	<textarea id="goodFactors" rows="10" cols="35">{% for factor in proposal.factor_set.all %}{% if factor.valence > 0 %}<br>{{ factor.description }}
-{% endif %}{% endfor %}</textarea>
+		<textarea id="goodFactors" rows="10" cols="35">
+			{% for factor in proposal.factor_set.all %}
+				{% if factor.valence > 0 %}
+					<br>{{ factor.description }}
+				{% endif %}
+			{% endfor %}
+		</textarea>
 	</div>
+	<!-- end the editable list of bad factors -->
+
+	<!-- begin the editable list of good factors -->
 	<div class="factor_list_heading">
-	<textarea id="badFactors" rows="10" cols="35">{% for factor in proposal.factor_set.all %}{% if factor.valence < 0 %}<br>{{ factor.description }}
-{% endif %}{% endfor %}</textarea>
+		<textarea id="badFactors" rows="10" cols="35">
+			{% for factor in proposal.factor_set.all %}
+				{% if factor.valence < 0 %}
+					<br>{{ factor.description }}
+				{% endif %}
+			{% endfor %}
+		</textarea>
 	</div>
-<div align="right">{% include "digidemo/_w_post_edit.html" %} </div>
+	<!-- end the editable list of good factors -->
+
+	<div align="right">
+		{% include "digidemo/_w_post_edit.html" %} 
+	</div>
+
 {% endblock proposal_content %}
 
 	

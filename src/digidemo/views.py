@@ -61,13 +61,13 @@ def get_django_vars_JSON(additional_vars):
 
 def discuss(request, proposal_id):
 
-	this_proposal = Proposal.objects.get(pk=proposal_id)
+	proposal = Proposal.objects.get(pk=proposal_id)
 
 	# ** Hardcoded the logged in user to be enewe101 **
 	logged_in_user = User.objects.get(pk=1)
 	
 	discussion_sections = []
-	for discussion in this_proposal.discussion_set.all():
+	for discussion in proposal.discussion_set.all():
 
 		# make a voting form for each discussion
 		discussion_vote = utils.get_or_none(
@@ -97,20 +97,25 @@ def discuss(request, proposal_id):
 			'django_vars_js': get_django_vars_JSON(
 				{'user': utils.obj_to_dict(
 				logged_in_user, exclude=['password'])}),
-			'proposal': this_proposal,
+			'proposal': proposal,
 			'logged_in_user': logged_in_user,
-			'tabs': get_proposal_tabs(this_proposal, 'discuss'),
+			'tabs': get_proposal_tabs(proposal, 'discuss'),
 			'discussion_sections': discussion_sections
 		}
 	)
 
+
 def edit(request, proposal_id):
 
-	this_proposal = Proposal.objects.get(pk=proposal_id)
+	proposal = Proposal.objects.get(pk=proposal_id)
 
 	# ** Hardcoded the logged in user to be enewe101 **
 	logged_in_user = User.objects.get(pk=1)
-	
+
+	edit_form = ProposalVersionForm.init_from_object(
+		proposal.get_latest(),
+		endpoint=reverse('proposal', kwargs={'proposal_id': proposal.pk}),
+	)
 
 	return render(
 		request,
@@ -119,41 +124,38 @@ def edit(request, proposal_id):
 			'django_vars_js': get_django_vars_JSON(
 				{'user': utils.obj_to_dict(
 				logged_in_user, exclude=['password'])}),
-			'proposal': this_proposal,
+			'proposal': proposal,
+			'edit_form': edit_form,
 			'logged_in_user': logged_in_user,
-			'tabs': get_proposal_tabs(this_proposal, 'edit')
+			'tabs': get_proposal_tabs(proposal, 'edit')
 		}
 	)
 
 
-
-
 def overview(request, proposal_id):
 
-	this_proposal = Proposal.objects.get(pk=proposal_id)
-
-
+	proposal = Proposal.objects.get(pk=proposal_id)
 
 	# ** Hardcoded the logged in user to be enewe101 **
 	logged_in_user = User.objects.get(pk=1)
 	
 	proposal_vote = utils.get_or_none(
-		ProposalVote, user=logged_in_user, target=this_proposal)
+		ProposalVote, user=logged_in_user, target=proposal)
 
 	if proposal_vote:
 		proposal_vote_form = ProposalVoteForm(
 			instance=proposal_vote,
-			cur_score=this_proposal.score)
+			cur_score=proposal.score)
 
 	else:
 		proposal_vote_form = ProposalVoteForm(
-			initial={'user':logged_in_user.pk, 'target':this_proposal.pk},
-			cur_score=this_proposal.score)
+			initial={'user':logged_in_user.pk, 'target':proposal.pk},
+			cur_score=proposal.score)
 
 	# Get all of the letters which are associated with this proposal
 	# and which are 'original letters'
 	letter_sections = []
-	letters = Letter.objects.filter(parent_letter=None, proposal=this_proposal)
+	letters = Letter.objects.filter(parent_letter=None, proposal=proposal)
 	for letter_num, letter in enumerate(letters):
 
 		# make a voting form for each letter
@@ -174,7 +176,7 @@ def overview(request, proposal_id):
 		resend_form = ResendLetterForm(
 			initial={
 				'parent_letter': letter,
-				'proposal': this_proposal,
+				'proposal': proposal,
 				'body': letter.body,
 				'recipients': letter.body,
 				'user': logged_in_user,
@@ -200,7 +202,7 @@ def overview(request, proposal_id):
 	media += LetterVoteForm().media
 
 	add_letter_form = LetterForm(initial={
-		'proposal': this_proposal,
+		'proposal': proposal,
 		'user': logged_in_user,
 	})
 
@@ -211,13 +213,13 @@ def overview(request, proposal_id):
 			'django_vars_js': get_django_vars_JSON(
 				{'user': utils.obj_to_dict(
 				logged_in_user, exclude=['password'])}),
-			'proposal': this_proposal,
+			'proposal': proposal,
 			'letter_form': add_letter_form,
 			'letter_sections': letter_sections,
 			'logged_in_user': logged_in_user,
 			'proposal_vote_form': proposal_vote_form,
 			'media': media,
-			'tabs': get_proposal_tabs(this_proposal, 'overview')
+			'tabs': get_proposal_tabs(proposal, 'overview')
 		}
 	)
 

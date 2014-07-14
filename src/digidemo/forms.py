@@ -1,3 +1,6 @@
+from django.http import HttpResponse, HttpResponseRedirect
+from django.template import Context
+from django.template.loader import get_template
 from django.utils.translation import ugettext as _
 from django.db import models
 from django.forms import ModelForm 
@@ -6,7 +9,7 @@ from digidemo.choices import *
 from digidemo.models import *
 
 
-def ajax_form(endpoint):
+def bound_form(endpoint):
 	'''
 	A class decorator for turning SomeFormClass into an ajax-ready form.  
 
@@ -42,8 +45,13 @@ def ajax_form(endpoint):
 		class NewClass(cls):
 			def __init__(self, *args, **kwargs):
 
+				# allow specifying the endpoint in the constructor
+				# the default is defined by the `endpoint` argument to the 
+				# decorator
 				self.endpoint = kwargs.pop('endpoint', endpoint)
 
+				# if none is supplied, theres no default, so an endpoint
+				# *must be provided
 				if self.endpoint is None:
 					raise ValueError("You must provide a function name "
 						"(string) to the keyword argument `endpoint` since "
@@ -53,15 +61,54 @@ def ajax_form(endpoint):
 					raise ValueError("`endpoint` must be a string "
 						"representing the name of an ajax endpoint.")
 
+				# The form gets a class name, this is used in the <form> 
+				# tag when rendering
 				self.form_class = kwargs.pop('form_class', cls.__name__)
+
+				# The form's fields automatically get classes two, based on
+				# the forms class and the fields name
+				auto_add_input_class(cls.__name__, self)
+
+				# now call the usual form constructor
 				super(NewClass, self).__init__(*args, **kwargs)
+
+
+			@classmethod
+			def init_from_object(cls, obj, *args, **kwargs):
+				if obj is None:
+					return cls(*args, **kwargs)
+
+				initial = {}
+				for field in cls.Meta.fields:
+					try:
+						field_val = getattr(obj, field)
+						initial[field] = field_val
+					except AttributeError:
+						pass
+
+				return cls(initial=initial, *args, **kwargs)
+
 
 		return NewClass
 	return class_decorator
 
 
+def auto_add_input_class(form_class_name, form_instance):
+	for field in form_instance.Meta.fields:
 
-@ajax_form('reply')
+		# first get the existing classes if any
+		attrs = form_instance.Meta.widgets[field].attrs
+		if 'class' in attrs:
+			css_classes = attrs['class'] + ' '
+		else:
+			css_classes = ''
+
+		# now add auto-generated classes
+		css_classes += form_class_name + '_' + field
+		attrs['class'] = css_classes
+
+
+@bound_form('reply')
 class ReplyForm(ModelForm):
 	class Meta:
 		model = Reply
@@ -74,7 +121,7 @@ class ReplyForm(ModelForm):
 	
 
 
-@ajax_form('comment')
+@bound_form('comment')
 class LetterCommentForm(ModelForm):
 	class Meta:
 		model = Comment
@@ -87,7 +134,7 @@ class LetterCommentForm(ModelForm):
 	
 
 
-@ajax_form('send_letter')
+@bound_form('send_letter')
 class LetterForm(ModelForm):
 	class Meta:
 		model = Letter
@@ -102,6 +149,23 @@ class LetterForm(ModelForm):
 			'body': forms.Textarea(attrs={'class':'letter_body_textarea'})
 		}
 
+
+@bound_form(None)
+class ProposalVersionForm(ModelForm):
+	class Meta:
+		model = ProposalVersion
+		fields = [
+			'proposal', 'title', 'summary', 'text', 'user'
+		]
+		widgets = {
+			'proposal': forms.HiddenInput(),
+			'user': forms.HiddenInput(),
+			'title': forms.TextInput(),
+			'summary': forms.Textarea(
+				attrs={'class':'proposal_summary_input'}),
+			'text': forms.Textarea(
+				attrs={'class':'proposal_text_input'}),
+		}
 
 class ResendLetterForm(LetterForm):
 
@@ -142,19 +206,19 @@ class VoteForm(ModelForm):
 		}
 
 
-@ajax_form('vote_proposal')
+@bound_form('vote_proposal')
 class ProposalVoteForm(VoteForm):
 	class Meta(VoteForm.Meta):
 		model = ProposalVote
 
 
-@ajax_form('vote_letter')
+@bound_form('vote_letter')
 class LetterVoteForm(VoteForm):
 	class Meta(VoteForm.Meta):
 		model = LetterVote
 
 
-@ajax_form('vote_discussion')
+@bound_form('vote_discussion')
 class DiscussionVoteForm(VoteForm):
 	class Meta(VoteForm.Meta):
 		model = DiscussionVote

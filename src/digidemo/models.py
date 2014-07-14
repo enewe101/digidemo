@@ -99,6 +99,9 @@ class Proposal(TimeStamped):
 		upload_to='proposal_avatars',default='/digidemo/proposal-images/');
 	tags = models.ManyToManyField(Tag, related_name='proposals', null=True)
 
+	def get_latest(self):
+		return ProposalVersion.get_latest(self)
+
 	def __unicode__(self):
 		return self.title
 
@@ -129,6 +132,14 @@ class ProposalVersion(TimeStamped):
 	text = models.TextField(null=True)
 	user = models.ForeignKey(User)
 
+	@classmethod
+	def get_latest(cls, proposal):
+		pvs = cls.objects.filter(proposal=proposal).order_by('-creation_date')
+		if len(pvs) == 0:
+			raise self.DoesNotExist('There are no proposal versions for that'
+				'proposal')
+
+		return pvs[0]
 
 class Discussion(TimeStamped):
 	proposal = models.ForeignKey(Proposal)

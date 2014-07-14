@@ -1,21 +1,22 @@
 {% block ajax_form_form %}
-<form class="{{ form.form_class}}" 
-	id="{{ form.form_class }}_{{ include_id }}" />
+	<form class="{{ form.form_class}}" 
+		id="{{ form.form_class }}_{{ include_id }}" />
 
-	{% csrf_token %}
+		{% csrf_token %}
 
-	{% for hidden in form.hidden_fields %}
-		{{ hidden }}
-	{% endfor %}
+		{% for hidden in form.hidden_fields %}
+			{{ hidden }}
+		{% endfor %}
 
-	{% for field in form.visible_fields %}
-	<div class="form_line">
-		{{ field }}
-	</div>
-	{% endfor %}
+		{% for field in form.visible_fields %}
+		<div class="form_line">
+			{{ field }}
+		</div>
+		{% endfor %}
 
-	<input id="{{ form.form_class}}_{{ include_id }}_submit" class="submit_letter" type="button" value="send" />
-</form>
+		<input id="{{ form.form_class}}_{{ include_id }}_submit" 
+		class="submit_letter" type="button" value="send" />
+	</form>
 {% endblock ajax_form_form %}
 
 {% block ajax_form_script %}

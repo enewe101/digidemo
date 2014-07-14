@@ -13,7 +13,7 @@
 	<div class="proposal_main">
 
 		<div id="proposal_summary">
-			{{ proposal.summary|markdown }}
+			{{ proposal.get_latest.summary|markdown }}
 		</div>	
 		<div id="proposal_factors">
 			<div class="clear"></div>
