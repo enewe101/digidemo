@@ -4,7 +4,7 @@ from django.template import Context
 from django.template.loader import get_template
 from django.utils.translation import ugettext as _
 from django.db import models
-from django.forms import ModelForm 
+from django.forms import Form, ModelForm 
 from django import forms
 from digidemo.choices import *
 from digidemo.models import *
@@ -57,14 +57,18 @@ def bound_form(endpoint=None, class_name=None):
 
 				# The form gets a class name ( <form class=... )
 				default_class_name = class_name or cls.__name__
-				self.form_class = kwargs.pop('form_class', cls.__name__)
+				self.form_class = kwargs.pop('form_class', default_class_name)
+
+				# Customize the forms auto_id 
+				auto_id = kwargs.pop('auto_id', default_class_name + '_%s')
 
 				# The form's fields automatically get classes too, based on
 				# the forms class and the fields name
 				auto_add_input_class(self.form_class, self)
 
 				# now call the usual form constructor
-				super(NewClass, self).__init__(*args, **kwargs)
+				super(NewClass, self).__init__(
+					*args, auto_id=auto_id, **kwargs)
 
 
 			def get_endpoint(self):
@@ -74,6 +78,7 @@ def bound_form(endpoint=None, class_name=None):
 					raise ValueError("No endpoint is bound to this form")
 
 				return self.endpoint
+
 
 			@classmethod
 			def init_from_object(cls, obj, *args, **kwargs):

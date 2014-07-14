@@ -30,6 +30,9 @@ class Sector(TimeStamped):
 	short_name = models.CharField(max_length=3)
 	name = models.CharField(max_length=64)
 
+	def __unicode__(self):
+		return short_name
+
 
 class UserProfile(TimeStamped):
 	user = models.OneToOneField(User, related_name='profile')
@@ -170,6 +173,17 @@ class Factor(TimeStamped):
 	description = models.CharField(max_length=256)
 	valence = models.SmallIntegerField(choices=FACTOR_CHOICES)
 	sector = models.ForeignKey(Sector, null=True)
+
+	def __unicode__(self):
+		return '%s %d' % (str(self.sector), self.valence)
+
+
+class FactorVersion(TimeStamped):
+	factor = models.ForeignKey(Factor)
+	description = models.CharField(max_length=256)
+
+	def __unicode__(self):
+		return self.description[:14]
 
 
 class Person(TimeStamped):

@@ -94,7 +94,7 @@ CREATE TABLE `auth_permission` (
   UNIQUE KEY `content_type_id` (`content_type_id`,`codename`),
   KEY `auth_permission_37ef4eb4` (`content_type_id`),
   CONSTRAINT `content_type_id_refs_id_d043b34a` FOREIGN KEY (`content_type_id`) REFERENCES `django_content_type` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=73 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=76 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -103,7 +103,7 @@ CREATE TABLE `auth_permission` (
 
 LOCK TABLES `auth_permission` WRITE;
 /*!40000 ALTER TABLE `auth_permission` DISABLE KEYS */;
-REPLACE INTO `auth_permission` (`id`, `name`, `content_type_id`, `codename`) VALUES (1,'Can add log entry',1,'add_logentry'),(2,'Can change log entry',1,'change_logentry'),(3,'Can delete log entry',1,'delete_logentry'),(4,'Can add permission',2,'add_permission'),(5,'Can change permission',2,'change_permission'),(6,'Can delete permission',2,'delete_permission'),(7,'Can add group',3,'add_group'),(8,'Can change group',3,'change_group'),(9,'Can delete group',3,'delete_group'),(10,'Can add user',4,'add_user'),(11,'Can change user',4,'change_user'),(12,'Can delete user',4,'delete_user'),(13,'Can add content type',5,'add_contenttype'),(14,'Can change content type',5,'change_contenttype'),(15,'Can delete content type',5,'delete_contenttype'),(16,'Can add session',6,'add_session'),(17,'Can change session',6,'change_session'),(18,'Can delete session',6,'delete_session'),(19,'Can add sector',7,'add_sector'),(20,'Can change sector',7,'change_sector'),(21,'Can delete sector',7,'delete_sector'),(22,'Can add user profile',8,'add_userprofile'),(23,'Can change user profile',8,'change_userprofile'),(24,'Can delete user profile',8,'delete_userprofile'),(25,'Can add tag',9,'add_tag'),(26,'Can change tag',9,'change_tag'),(27,'Can delete tag',9,'delete_tag'),(28,'Can add proposal',10,'add_proposal'),(29,'Can change proposal',10,'change_proposal'),(30,'Can delete proposal',10,'delete_proposal'),(31,'Can add proposal version',11,'add_proposalversion'),(32,'Can change proposal version',11,'change_proposalversion'),(33,'Can delete proposal version',11,'delete_proposalversion'),(34,'Can add discussion',12,'add_discussion'),(35,'Can change discussion',12,'change_discussion'),(36,'Can delete discussion',12,'delete_discussion'),(37,'Can add reply',13,'add_reply'),(38,'Can change reply',13,'change_reply'),(39,'Can delete reply',13,'delete_reply'),(40,'Can add factor',14,'add_factor'),(41,'Can change factor',14,'change_factor'),(42,'Can delete factor',14,'delete_factor'),(43,'Can add person',15,'add_person'),(44,'Can change person',15,'change_person'),(45,'Can delete person',15,'delete_person'),(46,'Can add organization',16,'add_organization'),(47,'Can change organization',16,'change_organization'),(48,'Can delete organization',16,'delete_organization'),(49,'Can add position',17,'add_position'),(50,'Can change position',17,'change_position'),(51,'Can delete position',17,'delete_position'),(52,'Can add letter',18,'add_letter'),(53,'Can change letter',18,'change_letter'),(54,'Can delete letter',18,'delete_letter'),(55,'Can add comment',19,'add_comment'),(56,'Can change comment',19,'change_comment'),(57,'Can delete comment',19,'delete_comment'),(58,'Can add discussion vote',20,'add_discussionvote'),(59,'Can change discussion vote',20,'change_discussionvote'),(60,'Can delete discussion vote',20,'delete_discussionvote'),(61,'Can add proposal vote',21,'add_proposalvote'),(62,'Can change proposal vote',21,'change_proposalvote'),(63,'Can delete proposal vote',21,'delete_proposalvote'),(64,'Can add letter vote',22,'add_lettervote'),(65,'Can change letter vote',22,'change_lettervote'),(66,'Can delete letter vote',22,'delete_lettervote'),(67,'Can add reply vote',23,'add_replyvote'),(68,'Can change reply vote',23,'change_replyvote'),(69,'Can delete reply vote',23,'delete_replyvote'),(70,'Can add comment vote',24,'add_commentvote'),(71,'Can change comment vote',24,'change_commentvote'),(72,'Can delete comment vote',24,'delete_commentvote');
+REPLACE INTO `auth_permission` (`id`, `name`, `content_type_id`, `codename`) VALUES (1,'Can add log entry',1,'add_logentry'),(2,'Can change log entry',1,'change_logentry'),(3,'Can delete log entry',1,'delete_logentry'),(4,'Can add permission',2,'add_permission'),(5,'Can change permission',2,'change_permission'),(6,'Can delete permission',2,'delete_permission'),(7,'Can add group',3,'add_group'),(8,'Can change group',3,'change_group'),(9,'Can delete group',3,'delete_group'),(10,'Can add user',4,'add_user'),(11,'Can change user',4,'change_user'),(12,'Can delete user',4,'delete_user'),(13,'Can add content type',5,'add_contenttype'),(14,'Can change content type',5,'change_contenttype'),(15,'Can delete content type',5,'delete_contenttype'),(16,'Can add session',6,'add_session'),(17,'Can change session',6,'change_session'),(18,'Can delete session',6,'delete_session'),(19,'Can add sector',7,'add_sector'),(20,'Can change sector',7,'change_sector'),(21,'Can delete sector',7,'delete_sector'),(22,'Can add user profile',8,'add_userprofile'),(23,'Can change user profile',8,'change_userprofile'),(24,'Can delete user profile',8,'delete_userprofile'),(25,'Can add tag',9,'add_tag'),(26,'Can change tag',9,'change_tag'),(27,'Can delete tag',9,'delete_tag'),(28,'Can add proposal',10,'add_proposal'),(29,'Can change proposal',10,'change_proposal'),(30,'Can delete proposal',10,'delete_proposal'),(31,'Can add proposal version',11,'add_proposalversion'),(32,'Can change proposal version',11,'change_proposalversion'),(33,'Can delete proposal version',11,'delete_proposalversion'),(34,'Can add discussion',12,'add_discussion'),(35,'Can change discussion',12,'change_discussion'),(36,'Can delete discussion',12,'delete_discussion'),(37,'Can add reply',13,'add_reply'),(38,'Can change reply',13,'change_reply'),(39,'Can delete reply',13,'delete_reply'),(40,'Can add factor',14,'add_factor'),(41,'Can change factor',14,'change_factor'),(42,'Can delete factor',14,'delete_factor'),(43,'Can add factor version',15,'add_factorversion'),(44,'Can change factor version',15,'change_factorversion'),(45,'Can delete factor version',15,'delete_factorversion'),(46,'Can add person',16,'add_person'),(47,'Can change person',16,'change_person'),(48,'Can delete person',16,'delete_person'),(49,'Can add organization',17,'add_organization'),(50,'Can change organization',17,'change_organization'),(51,'Can delete organization',17,'delete_organization'),(52,'Can add position',18,'add_position'),(53,'Can change position',18,'change_position'),(54,'Can delete position',18,'delete_position'),(55,'Can add letter',19,'add_letter'),(56,'Can change letter',19,'change_letter'),(57,'Can delete letter',19,'delete_letter'),(58,'Can add comment',20,'add_comment'),(59,'Can change comment',20,'change_comment'),(60,'Can delete comment',20,'delete_comment'),(61,'Can add discussion vote',21,'add_discussionvote'),(62,'Can change discussion vote',21,'change_discussionvote'),(63,'Can delete discussion vote',21,'delete_discussionvote'),(64,'Can add proposal vote',22,'add_proposalvote'),(65,'Can change proposal vote',22,'change_proposalvote'),(66,'Can delete proposal vote',22,'delete_proposalvote'),(67,'Can add letter vote',23,'add_lettervote'),(68,'Can change letter vote',23,'change_lettervote'),(69,'Can delete letter vote',23,'delete_lettervote'),(70,'Can add reply vote',24,'add_replyvote'),(71,'Can change reply vote',24,'change_replyvote'),(72,'Can delete reply vote',24,'delete_replyvote'),(73,'Can add comment vote',25,'add_commentvote'),(74,'Can change comment vote',25,'change_commentvote'),(75,'Can delete comment vote',25,'delete_commentvote');
 /*!40000 ALTER TABLE `auth_permission` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -217,8 +217,8 @@ CREATE TABLE `digidemo_comment` (
   PRIMARY KEY (`id`),
   KEY `digidemo_comment_6340c63c` (`user_id`),
   KEY `digidemo_comment_45f341a0` (`letter_id`),
-  CONSTRAINT `user_id_refs_id_b202d78c` FOREIGN KEY (`user_id`) REFERENCES `auth_user` (`id`),
-  CONSTRAINT `letter_id_refs_id_549c5f06` FOREIGN KEY (`letter_id`) REFERENCES `digidemo_letter` (`id`)
+  CONSTRAINT `letter_id_refs_id_549c5f06` FOREIGN KEY (`letter_id`) REFERENCES `digidemo_letter` (`id`),
+  CONSTRAINT `user_id_refs_id_b202d78c` FOREIGN KEY (`user_id`) REFERENCES `auth_user` (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=14 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -250,8 +250,8 @@ CREATE TABLE `digidemo_commentvote` (
   UNIQUE KEY `user_id` (`user_id`,`target_id`),
   KEY `digidemo_commentvote_6340c63c` (`user_id`),
   KEY `digidemo_commentvote_70bfdfd1` (`target_id`),
-  CONSTRAINT `user_id_refs_id_5b5404b8` FOREIGN KEY (`user_id`) REFERENCES `auth_user` (`id`),
-  CONSTRAINT `target_id_refs_id_29c7728e` FOREIGN KEY (`target_id`) REFERENCES `digidemo_comment` (`id`)
+  CONSTRAINT `target_id_refs_id_29c7728e` FOREIGN KEY (`target_id`) REFERENCES `digidemo_comment` (`id`),
+  CONSTRAINT `user_id_refs_id_5b5404b8` FOREIGN KEY (`user_id`) REFERENCES `auth_user` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -366,6 +366,34 @@ REPLACE INTO `digidemo_factor` (`id`, `creation_date`, `last_modified`, `proposa
 UNLOCK TABLES;
 
 --
+-- Table structure for table `digidemo_factorversion`
+--
+
+DROP TABLE IF EXISTS `digidemo_factorversion`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `digidemo_factorversion` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `creation_date` datetime NOT NULL,
+  `last_modified` datetime NOT NULL,
+  `factor_id` int(11) NOT NULL,
+  `description` varchar(256) NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `digidemo_factorversion_ebe94448` (`factor_id`),
+  CONSTRAINT `factor_id_refs_id_475a336f` FOREIGN KEY (`factor_id`) REFERENCES `digidemo_factor` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `digidemo_factorversion`
+--
+
+LOCK TABLES `digidemo_factorversion` WRITE;
+/*!40000 ALTER TABLE `digidemo_factorversion` DISABLE KEYS */;
+/*!40000 ALTER TABLE `digidemo_factorversion` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `digidemo_letter`
 --
 
@@ -450,8 +478,8 @@ CREATE TABLE `digidemo_lettervote` (
   UNIQUE KEY `user_id` (`user_id`,`target_id`),
   KEY `digidemo_lettervote_6340c63c` (`user_id`),
   KEY `digidemo_lettervote_70bfdfd1` (`target_id`),
-  CONSTRAINT `user_id_refs_id_955f482c` FOREIGN KEY (`user_id`) REFERENCES `auth_user` (`id`),
-  CONSTRAINT `target_id_refs_id_2b6488e6` FOREIGN KEY (`target_id`) REFERENCES `digidemo_letter` (`id`)
+  CONSTRAINT `target_id_refs_id_2b6488e6` FOREIGN KEY (`target_id`) REFERENCES `digidemo_letter` (`id`),
+  CONSTRAINT `user_id_refs_id_955f482c` FOREIGN KEY (`user_id`) REFERENCES `auth_user` (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -546,8 +574,8 @@ CREATE TABLE `digidemo_position` (
   PRIMARY KEY (`id`),
   KEY `digidemo_position_16f39487` (`person_id`),
   KEY `digidemo_position_de772da3` (`organization_id`),
-  CONSTRAINT `person_id_refs_id_791b385c` FOREIGN KEY (`person_id`) REFERENCES `digidemo_person` (`id`),
-  CONSTRAINT `organization_id_refs_id_e8072702` FOREIGN KEY (`organization_id`) REFERENCES `digidemo_organization` (`id`)
+  CONSTRAINT `organization_id_refs_id_e8072702` FOREIGN KEY (`organization_id`) REFERENCES `digidemo_organization` (`id`),
+  CONSTRAINT `person_id_refs_id_791b385c` FOREIGN KEY (`person_id`) REFERENCES `digidemo_person` (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -773,8 +801,8 @@ CREATE TABLE `digidemo_replyvote` (
   UNIQUE KEY `user_id` (`user_id`,`target_id`),
   KEY `digidemo_replyvote_6340c63c` (`user_id`),
   KEY `digidemo_replyvote_70bfdfd1` (`target_id`),
-  CONSTRAINT `user_id_refs_id_d659ef00` FOREIGN KEY (`user_id`) REFERENCES `auth_user` (`id`),
-  CONSTRAINT `target_id_refs_id_9f87ff39` FOREIGN KEY (`target_id`) REFERENCES `digidemo_reply` (`id`)
+  CONSTRAINT `target_id_refs_id_9f87ff39` FOREIGN KEY (`target_id`) REFERENCES `digidemo_reply` (`id`),
+  CONSTRAINT `user_id_refs_id_d659ef00` FOREIGN KEY (`user_id`) REFERENCES `auth_user` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -921,7 +949,7 @@ CREATE TABLE `django_content_type` (
   `model` varchar(100) NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `app_label` (`app_label`,`model`)
-) ENGINE=InnoDB AUTO_INCREMENT=25 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=26 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -930,7 +958,7 @@ CREATE TABLE `django_content_type` (
 
 LOCK TABLES `django_content_type` WRITE;
 /*!40000 ALTER TABLE `django_content_type` DISABLE KEYS */;
-REPLACE INTO `django_content_type` (`id`, `name`, `app_label`, `model`) VALUES (1,'log entry','admin','logentry'),(2,'permission','auth','permission'),(3,'group','auth','group'),(4,'user','auth','user'),(5,'content type','contenttypes','contenttype'),(6,'session','sessions','session'),(7,'sector','digidemo','sector'),(8,'user profile','digidemo','userprofile'),(9,'tag','digidemo','tag'),(10,'proposal','digidemo','proposal'),(11,'proposal version','digidemo','proposalversion'),(12,'discussion','digidemo','discussion'),(13,'reply','digidemo','reply'),(14,'factor','digidemo','factor'),(15,'person','digidemo','person'),(16,'organization','digidemo','organization'),(17,'position','digidemo','position'),(18,'letter','digidemo','letter'),(19,'comment','digidemo','comment'),(20,'discussion vote','digidemo','discussionvote'),(21,'proposal vote','digidemo','proposalvote'),(22,'letter vote','digidemo','lettervote'),(23,'reply vote','digidemo','replyvote'),(24,'comment vote','digidemo','commentvote');
+REPLACE INTO `django_content_type` (`id`, `name`, `app_label`, `model`) VALUES (1,'log entry','admin','logentry'),(2,'permission','auth','permission'),(3,'group','auth','group'),(4,'user','auth','user'),(5,'content type','contenttypes','contenttype'),(6,'session','sessions','session'),(7,'sector','digidemo','sector'),(8,'user profile','digidemo','userprofile'),(9,'tag','digidemo','tag'),(10,'proposal','digidemo','proposal'),(11,'proposal version','digidemo','proposalversion'),(12,'discussion','digidemo','discussion'),(13,'reply','digidemo','reply'),(14,'factor','digidemo','factor'),(15,'factor version','digidemo','factorversion'),(16,'person','digidemo','person'),(17,'organization','digidemo','organization'),(18,'position','digidemo','position'),(19,'letter','digidemo','letter'),(20,'comment','digidemo','comment'),(21,'discussion vote','digidemo','discussionvote'),(22,'proposal vote','digidemo','proposalvote'),(23,'letter vote','digidemo','lettervote'),(24,'reply vote','digidemo','replyvote'),(25,'comment vote','digidemo','commentvote');
 /*!40000 ALTER TABLE `django_content_type` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -968,4 +996,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2014-07-13 18:43:21
+-- Dump completed on 2014-07-14 13:01:45
