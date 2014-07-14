@@ -3,6 +3,7 @@ from django.core import serializers
 from django.shortcuts import render, get_object_or_404, redirect
 from django.http import HttpResponse, HttpResponseRedirect
 from digidemo.models import *
+from django.forms.formsets import formset_factory
 from digidemo.forms import *
 from digidemo import utils
 from settings import DEBUG
@@ -112,10 +113,21 @@ def edit(request, proposal_id):
 
 
 	else:
-		edit_form = ProposalVersionForm.init_from_object(
+		proposal_version_form = ProposalVersionForm.init_from_object(
 			proposal.get_latest(),
 			endpoint=proposal.get_url('edit')
 		)
+		factor_versions = proposal.factor_set.all()
+		factor_version_initials = [
+			{
+				'factor': f.pk,
+				'description': f.get_latest().description
+			}
+			for f in factor_versions
+		]
+		FactorVersionFormSet = formset_factory(FactorVersionForm, extra=0)
+		factor_version_formset = FactorVersionFormSet(
+			initial=factor_version_initials)
 
 	return render(
 		request,
@@ -125,7 +137,8 @@ def edit(request, proposal_id):
 				{'user': utils.obj_to_dict(
 				logged_in_user, exclude=['password'])}),
 			'proposal': proposal,
-			'edit_form': edit_form,
+			'proposal_version_form': proposal_version_form,
+			'factor_version_formset': factor_version_formset,
 			'logged_in_user': logged_in_user,
 			'tabs': get_proposal_tabs(proposal, 'edit')
 		}

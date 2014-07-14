@@ -1,28 +1,14 @@
-<form class="{{ form.form_class}}" 
-	id="{{ form.form_class }}_{{ include_id }}" 
-	action="{{ form.endpoint }}" 
-	method="post" />
+{% for hidden in form.hidden_fields %}
+	{{ hidden }}
+{% endfor %}
 
-	{{ form.errors.as_json }}
-
-	{% csrf_token %}
-
-	{% for hidden in form.hidden_fields %}
-		{{ hidden }}
-	{% endfor %}
-
-	{% for field in form.visible_fields %}
-	<div class="form_line">
-		<div class="field_label_wrapper">
-			{{ field.label_tag }}
-		</div>
-		<div class="field_wrapper">
-			{{ field }}
-		</div>
+{% for field in form.visible_fields %}
+<div class="form_line">
+	<div class="field_label_wrapper">
+		{{ field.label_tag }}
 	</div>
-	{% endfor %}
-
-	<input id="{{ form.form_class}}_{{ include_id }}_submit" 
-		class="submit" type="submit" value="submit" />
-
-</form>
+	<div class="field_wrapper">
+		{{ field }}
+	</div>
+</div>
+{% endfor %}

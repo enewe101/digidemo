@@ -190,6 +190,28 @@ class ProposalVersionForm(ModelForm):
 		}
 
 
+@bound_form()
+class FactorForm(ModelForm):
+	class Meta:
+		model = Factor
+		fields = ['proposal', 'valence', 'sector']
+		widgets = {
+			'proposal': forms.HiddenInput(),
+			'valence': forms.Select(),
+			'sector': forms.Select()
+		}
+
+@bound_form()
+class FactorVersionForm(ModelForm):
+	class Meta:
+		model = FactorVersion
+		fields = ['factor', 'description']
+		widgets = {
+			'factor': forms.HiddenInput(),
+			'description': forms.Textarea()
+		}
+
+
 class ResendLetterForm(LetterForm):
 
 	def clean(self):

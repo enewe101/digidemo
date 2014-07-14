@@ -31,7 +31,7 @@ class Sector(TimeStamped):
 	name = models.CharField(max_length=64)
 
 	def __unicode__(self):
-		return short_name
+		return self.short_name
 
 
 class UserProfile(TimeStamped):
@@ -177,6 +177,9 @@ class Factor(TimeStamped):
 	def __unicode__(self):
 		return '%s %d' % (str(self.sector), self.valence)
 
+	def get_latest(self):
+		return FactorVersion.get_latest(self)
+
 
 class FactorVersion(TimeStamped):
 	factor = models.ForeignKey(Factor)
@@ -185,6 +188,17 @@ class FactorVersion(TimeStamped):
 	def __unicode__(self):
 		return self.description[:14]
 
+	@classmethod
+	def get_latest(cls, factor):
+
+		factor_versions = cls.objects.filter(
+			factor=factor).order_by('-creation_date')
+
+		if len(factor_versions) == 0:
+			raise self.DoesNotExist('There are no proposal versions for that'
+				'proposal')
+
+		return factor_versions[0]
 
 class Person(TimeStamped):
 	fname = models.CharField(max_length=NAME_LENGTH)

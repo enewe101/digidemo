@@ -4,7 +4,23 @@
 
 	<div align="right"> Last Modified {{proposal.last_modified}} </div>
 
-	{% include "digidemo/_w_simple_form.html" with form=edit_form %}
+	<form class="{{ form.form_class}}" 
+		id="{{ form.form_class }}_{{ include_id }}" 
+		action="{{ form.endpoint }}" 
+		method="post" />
+
+		{% csrf_token %}
+
+		{% include "digidemo/_w_simple_form.html" with form=proposal_version_form %}
+
+		{% for factor_form in factor_version_formset %}
+			{% include "digidemo/_w_simple_form.html" with form=factor_form %}
+		{% endfor %}
+
+		<input id="{{ form.form_class}}_{{ include_id }}_submit" 
+			class="submit" type="submit" value="submit" />
+
+	</form>
 
 
 	<!-- proposal title -->
