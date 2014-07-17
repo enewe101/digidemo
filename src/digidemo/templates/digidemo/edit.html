@@ -11,10 +11,21 @@
 
 		{% csrf_token %}
 
-		{% include "digidemo/_w_simple_form.html" with form=proposal_version_form %}
+		<!-- include the proposal version edit form -->
+		{% include "digidemo/_w_simple_form.html" with form=edit_proposal_form.proposal_version %}
 
-		{% for factor_form in factor_version_formset %}
-			{% include "digidemo/_w_simple_form.html" with form=factor_form %}
+		<!-- include the factor formset managers -->
+		{% include "digidemo/_w_simple_form.html" with form=edit_proposal_form.factor_form_managers.pos %}
+		{% include "digidemo/_w_simple_form.html" with form=edit_proposal_form.factor_form_managers.neg %}
+
+		<!-- include the positive factor forms -->
+		{% for f in edit_proposal_form.factor_formsets.pos %}
+			{% include "digidemo/_w_simple_form.html" with form=f %}
+		{% endfor %}
+
+		<!-- include the negative factor forms -->
+		{% for f in edit_proposal_form.factor_formsets.neg %}
+			{% include "digidemo/_w_simple_form.html" with form=f %}
 		{% endfor %}
 
 		<input id="{{ form.form_class}}_{{ include_id }}_submit" 

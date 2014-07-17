@@ -170,20 +170,22 @@ class Reply(TimeStamped):
 
 class Factor(TimeStamped):
 	proposal = models.ForeignKey(Proposal)
-	description = models.CharField(max_length=256)
-	valence = models.SmallIntegerField(choices=FACTOR_CHOICES)
-	sector = models.ForeignKey(Sector, null=True)
 
 	def __unicode__(self):
-		return '%s %d' % (str(self.sector), self.valence)
+		latest = self.get_latest()
+		return '%s %d' % (str(latest.sector), latest.valence)
 
 	def get_latest(self):
 		return FactorVersion.get_latest(self)
 
 
 class FactorVersion(TimeStamped):
-	factor = models.ForeignKey(Factor)
+	factor = models.ForeignKey(Factor, related_name='version')
+	proposal_version = models.ForeignKey(ProposalVersion)
 	description = models.CharField(max_length=256)
+	valence = models.SmallIntegerField(choices=FACTOR_CHOICES)
+	sector = models.ForeignKey(Sector)
+	deleted = models.BooleanField()
 
 	def __unicode__(self):
 		return self.description[:14]

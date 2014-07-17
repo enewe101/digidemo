@@ -59,7 +59,6 @@ def get_django_vars_JSON(additional_vars):
 	return json.dumps(get_django_vars(additional_vars))
 
 
-
 def overview(request, proposal_id):
 
 	proposal = Proposal.objects.get(pk=proposal_id)
@@ -102,32 +101,26 @@ def edit(request, proposal_id):
 
 	if request.POST:
 
-		edit_form = ProposalVersionForm(request.POST)
+		edit_proposal_form = EditProposalForm.from_data(request.POST)
 
-		if edit_form.is_valid():
-			edit_form.save()
-			return redirect(proposal.get_url('proposal'))
+		if edit_proposal_form.is_valid():
+			print 'yay, is_valid!'
+			edit_proposal_form.save()
+			#return redirect(proposal.get_url('proposal'))
 
 		else:
-			raise ValueError("didn't validate")
+			print 'didn\'t validate'
 
 
 	else:
-		proposal_version_form = ProposalVersionForm.init_from_object(
-			proposal.get_latest(),
-			endpoint=proposal.get_url('edit')
-		)
-		factor_versions = proposal.factor_set.all()
-		factor_version_initials = [
-			{
-				'factor': f.pk,
-				'description': f.get_latest().description
-			}
-			for f in factor_versions
-		]
-		FactorVersionFormSet = formset_factory(FactorVersionForm, extra=0)
-		factor_version_formset = FactorVersionFormSet(
-			initial=factor_version_initials)
+		# each factor
+		#	- edit of  factor version
+		# 	- delete factor (add a column `is_deleted`)
+		# 	- add a factor version (js, capability to add many)
+
+
+		edit_proposal_form = EditProposalForm(proposal)
+
 
 	return render(
 		request,
@@ -137,8 +130,7 @@ def edit(request, proposal_id):
 				{'user': utils.obj_to_dict(
 				logged_in_user, exclude=['password'])}),
 			'proposal': proposal,
-			'proposal_version_form': proposal_version_form,
-			'factor_version_formset': factor_version_formset,
+			'edit_proposal_form': edit_proposal_form,
 			'logged_in_user': logged_in_user,
 			'tabs': get_proposal_tabs(proposal, 'edit')
 		}

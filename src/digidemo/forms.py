@@ -6,6 +6,8 @@ from django.utils.translation import ugettext as _
 from django.db import models
 from django.forms import Form, ModelForm 
 from django import forms
+from django.forms.formsets import formset_factory
+from django.forms.models import modelformset_factory
 from digidemo.choices import *
 from digidemo.models import *
 from digidemo.settings import PROJECT_DIR
@@ -194,22 +196,285 @@ class ProposalVersionForm(ModelForm):
 class FactorForm(ModelForm):
 	class Meta:
 		model = Factor
-		fields = ['proposal', 'valence', 'sector']
+		fields = ['proposal']
 		widgets = {
-			'proposal': forms.HiddenInput(),
-			'valence': forms.Select(),
-			'sector': forms.Select()
+			'proposal': forms.HiddenInput()
 		}
 
 @bound_form()
 class FactorVersionForm(ModelForm):
 	class Meta:
 		model = FactorVersion
-		fields = ['factor', 'description']
+		fields = [
+			'factor', 'proposal_version', 'valence', 'deleted', 'sector', 'description'
+		]
 		widgets = {
 			'factor': forms.HiddenInput(),
+			'proposal_version': forms.HiddenInput(),
+			'valence': forms.HiddenInput(),
+			'deleted': forms.CheckboxInput(),
+			'sector': forms.Select(),
 			'description': forms.Textarea()
 		}
+
+
+class EditProposalForm(object):
+
+	'''
+	this is an aggregator for a set of forms that together enable editing
+	of a proposal: its versions, its factors, and factor versions.  Note that
+	it only aggregates Forms, it does not itself subclass Form
+	'''
+
+	def __init__(self, proposal):
+
+		if proposal is None:
+			return
+
+		# get a form to edit the proposal, i.e. create a proposal version
+		self.proposal_version = ProposalVersionForm.init_from_object(
+			proposal.get_latest(),
+			endpoint=proposal.get_url('edit')
+		)
+
+		#   ** we'll be making formsets factor adding/editing/deleting **
+
+		# Get the factors associated to the proposal as two lists
+		(pos_factor_versions, neg_factor_versions,
+			pos_factors, neg_factors) = self._get_and_split_factors(proposal)
+
+		# make initial data arguments to prepopulate the factor forms 
+		# based on the existing factors
+		factor_version_inits = {
+			'pos': self._get_init_from_objects(pos_factor_versions),
+			'neg': self._get_init_from_objects(neg_factor_versions)
+		}
+
+		# get the formsets for factors
+		self.factor_formsets = {
+			'pos': self._get_formsets_from_init(
+				'pos', 
+				factor_version_inits['pos'],
+				pos_factors
+			),
+			'neg': self._get_formsets_from_init(
+				'neg', 
+				factor_version_inits['neg'],
+				neg_factors
+			)
+		}
+
+		# get the formset managers
+		self.factor_form_managers = {
+			'pos' : self.factor_formsets['pos'].management_form,
+			'neg' : self.factor_formsets['neg'].management_form
+		}
+
+		# This is an unbound (but prepopulated) form
+		self.is_bound = False
+
+
+	@classmethod
+	def from_data(cls, data):
+		'''
+		this is an alternative constructor for making a bound EditProposalForm
+		from submitted data
+		'''
+
+		instance = cls(None)
+		instance._init_from_data(data)
+		return instance
+
+
+	def _init_from_data(self, data):
+
+		# make the formset for the proposal version based on POSTed data
+		self.proposal_version = ProposalVersionForm(data)
+
+		# get the formsets for factors
+		self.factor_formsets = {
+			'pos': self._get_formsets_from_data('pos', data),
+			'neg': self._get_formsets_from_data('neg', data)
+		}
+
+		# get the formset managers
+		self.factor_form_managers = {
+			'pos' : self.factor_formsets['pos'].management_form,
+			'neg' : self.factor_formsets['neg'].management_form
+		}
+
+		# this is a bound form!
+		self.is_bound = True
+
+
+	def _get_and_split_factors(self, proposal):
+
+		proposal_version = proposal.get_latest()
+
+		pos_factors = (
+			Factor.objects
+			.filter(version__proposal_version=proposal_version)
+			.filter(version__valence__gt=0)
+			.order_by('version__pk')
+		)
+		neg_factors = (
+			Factor.objects
+			.filter(version__proposal_version=proposal_version)
+			.filter(version__valence__lt=0)
+			.order_by('version__pk')
+		)
+
+		pos_factor_versions = (
+			FactorVersion.objects
+			.filter(proposal_version=proposal_version)
+			.filter(valence__gt=0)
+			.order_by('pk')
+		)
+		neg_factor_versions = (
+			FactorVersion.objects
+			.filter(proposal_version=proposal_version)
+			.filter(valence__lt=0)
+			.order_by('pk')
+		)
+
+
+		return (pos_factor_versions, neg_factor_versions, 
+			pos_factors, neg_factors)
+
+
+	def is_valid(self):
+
+		return True
+
+		if not self.is_bound:
+			return True 
+
+		# validate the proposal version
+		is_valid = self.proposal_version.is_valid()
+
+		# validate the positive factors formset
+		pos_formset_pairs = self.edit_factor['pos']['formset']
+		is_valid = is_valid and self.validate_farmset_pair(pos_formset_pairs)
+
+		# validate the negative factors formset
+		neg_formset_pairs = self.edit_factor['neg']['formset']
+		is_valid = is_valid and self.validate_farmset_pair(neg_formset_pairs)
+
+		return is_valid
+
+
+	def validate_formset_pair(formset_pair):
+
+		# valid till proven invalid
+		is_valid = True
+
+		for f_pair in formset_pair:
+			is_valid = (
+				is_valid 
+				and f_pair['delete'].is_valid() 
+				and f_pair['version'].is_valid()
+			)
+
+		return is_valid
+
+
+	def save(self):
+		# self.proposal_version.save()
+		print 'save positive factors'
+		self._save_factors(self.factor_formsets['pos'])
+		print 'save negative factors'
+		self._save_factors(self.factor_formsets['neg'])
+
+	
+	def _save_factors(self, factor_formsets):
+
+		pass
+#		for f_pair in factor_pairs:
+#
+#			# if the delete checkbox is ticked, delete this
+#			if f_pair['delete'].cleaned_data['DELETE']:
+#				f_pair['delete'].save()
+#				continue
+#
+#			print 'delete: ' + str(f_pair['delete'].is_valid())
+#			try:
+#				print f_pair['delete'].cleaned_data
+#			except AttributeError:
+#				pass
+#
+#			print 'version: ' + str(f_pair['version'].is_valid())
+#			try:
+#				print f_pair['version'].cleaned_data
+#			except AttributeError:
+#				pass
+
+
+	def _get_formsets_from_data(self, prefix, data):
+
+		# make the formset classes
+		FactorVersionFormSet = formset_factory(FactorVersionForm)
+
+		# Make the formsets
+		factor_version_formset = FactorVersionFormSet(
+			prefix=prefix, data=data)
+
+		return factor_version_formset
+
+
+	def _get_factor_form_pairs(self, delete, version):
+
+		pairs = zip(version, delete)
+
+		formset_pairs = [{'version':f[0], 'delete':f[1]} for f in pairs]
+		return formset_pairs
+
+
+	def _get_management_forms(self, factor_formsets):
+
+		factor_form_managers = {
+			'pos' : {
+				'version': factor_formsets['pos']['version'].management_form,
+				'delete': factor_formsets['pos']['delete'].management_form
+			},
+			'neg' : {
+				'version': factor_formsets['neg']['version'].management_form,
+				'delete': factor_formsets['neg']['delete'].management_form
+			}
+		}
+	
+		return factor_form_managers
+
+
+	def _get_formsets_from_init(
+		self, prefix, factor_version_inits, factors):
+
+		# Here is the formset for editing factor versions
+		FactorVersionFormSet = formset_factory(FactorVersionForm, extra=1)
+		factor_version_formset = FactorVersionFormSet(
+			initial=factor_version_inits, prefix=prefix
+		)
+
+		return factor_version_formset
+
+
+	def _get_init_from_objects(self, factor_versions):
+
+		factor_version_inits = []
+
+		for fv in factor_versions:
+			factor = fv.factor
+
+			factor_version_inits.append({
+				'factor':factor.pk, 
+				'proposal_version': None,
+				'description':fv.description,
+				'valence': fv.valence,
+				'sector': fv.sector
+			})
+
+		
+		return factor_version_inits
+
 
 
 class ResendLetterForm(LetterForm):
