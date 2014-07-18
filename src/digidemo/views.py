@@ -104,23 +104,11 @@ def edit(request, proposal_id):
 		edit_proposal_form = EditProposalForm.from_data(request.POST)
 
 		if edit_proposal_form.is_valid():
-			print 'yay, is_valid!'
 			edit_proposal_form.save()
-			#return redirect(proposal.get_url('proposal'))
-
-		else:
-			print 'didn\'t validate'
-
+			return redirect(proposal.get_url('proposal'))
 
 	else:
-		# each factor
-		#	- edit of  factor version
-		# 	- delete factor (add a column `is_deleted`)
-		# 	- add a factor version (js, capability to add many)
-
-
 		edit_proposal_form = EditProposalForm(proposal)
-
 
 	return render(
 		request,
@@ -182,8 +170,24 @@ def discuss(request, proposal_id):
 		}
 	)
 
+
 def make_proposal_context(proposal):
 
+	proposal_version = proposal.get_latest()
+	pos_factors = (
+		FactorVersion.objects
+		.filter(proposal_version=proposal_version,
+			valence__gt=0,
+			deleted=False)
+		.order_by('pk')
+	)
+	neg_factors = (
+		FactorVersion.objects
+		.filter(proposal_version=proposal_version,
+			valence__lt=0,
+			deleted=False)
+		.order_by('pk')
+	)
 
 	# ** Hardcoded the logged in user to be enewe101 **
 	logged_in_user = User.objects.get(pk=1)
@@ -260,6 +264,8 @@ def make_proposal_context(proposal):
 				{'user': utils.obj_to_dict(
 				logged_in_user, exclude=['password'])}),
 			'proposal': proposal,
+			'pos_factors': pos_factors,
+			'neg_factors': neg_factors,
 			'letter_form': add_letter_form,
 			'letter_sections': letter_sections,
 			'logged_in_user': logged_in_user,

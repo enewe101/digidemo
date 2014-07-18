@@ -26,16 +26,14 @@
 				<div class="factor_list_heading">
 					Foreseen benefits:
 				</div>
-				{% if proposal.factor_set.all|length = 0 %}
+				{% if pos_factors|length = 0 %}
 				<div class="centered italic grey">none</div>
 				{% else %}
 				<ul class="factor_list">
-					{% for factor in proposal.factor_set.all %}
-					{% if factor.valence > 0 %}
+					{% for factor in pos_factors %}
 					<li class="factor_element">
 					{{ factor.description|markdown }}
 					</li>
-					{% endif %}
 					{% endfor %}
 				</ul>
 				{% endif %}
@@ -45,16 +43,14 @@
 				<div class="factor_list_heading">
 					Foreseen hazards:
 				</div>
-				{% if proposal.factor_set.all|length = 0 %}
+				{% if neg_factors|length = 0 %}
 				<div class="centered italic grey">none</div>
 				{% else %}
 				<ul class="factor_list">
-					{% for factor in proposal.factor_set.all %}
-					{% if factor.valence < 0 %}
+					{% for factor in neg_factors %}
 					<li class="factor_element">
 					{{ factor.description|markdown }}
 					</li>
-					{% endif %}
 					{% endfor %}
 				</ul>
 				{% endif %}

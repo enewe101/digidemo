@@ -1,4 +1,7 @@
+{{ form.non_field_errors }}
+
 {% for hidden in form.hidden_fields %}
+	{{ hidden.errors }}
 	{{ hidden }}
 {% endfor %}
 
@@ -6,6 +9,7 @@
 <div class="form_line">
 	<div class="field_label_wrapper">
 		{{ field.label_tag }}
+		{{ field.errors }}
 	</div>
 	<div class="field_wrapper">
 		{{ field }}

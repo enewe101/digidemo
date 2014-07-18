@@ -201,8 +201,25 @@ class FactorForm(ModelForm):
 			'proposal': forms.HiddenInput()
 		}
 
-@bound_form()
 class FactorVersionForm(ModelForm):
+
+	def clean(self):
+		'''
+		make sure that the description field has some non-whitespace 
+		characters (but only if deleted isn't checked)
+		'''
+		cleaned_data = ModelForm.clean(self)
+		deleted = cleaned_data.get('deleted')
+		description = cleaned_data.get('description')
+		factor = cleaned_data.get('factor')
+
+		# description might be blank...
+		if not description.strip() and not deleted:
+			raise forms.ValidationError('A Description is required.')
+
+		return cleaned_data
+
+
 	class Meta:
 		model = FactorVersion
 		fields = [
@@ -313,27 +330,34 @@ class EditProposalForm(object):
 
 		pos_factors = (
 			Factor.objects
-			.filter(version__proposal_version=self.proposal_version)
-			.filter(version__valence__gt=0)
+			.filter(
+				version__proposal_version=self.proposal_version,
+				version__valence__gt=0,
+				version__deleted=False)
 			.order_by('version__pk')
 		)
 		neg_factors = (
 			Factor.objects
-			.filter(version__proposal_version=self.proposal_version)
-			.filter(version__valence__lt=0)
+			.filter(
+				version__proposal_version=self.proposal_version,
+				version__valence__lt=0,
+				version__deleted=False)
 			.order_by('version__pk')
 		)
 
 		pos_factor_versions = (
 			FactorVersion.objects
-			.filter(proposal_version=self.proposal_version)
-			.filter(valence__gt=0)
+			.filter(
+				proposal_version=self.proposal_version,
+				valence__gt=0,
+				deleted=False)
 			.order_by('pk')
 		)
 		neg_factor_versions = (
 			FactorVersion.objects
-			.filter(proposal_version=self.proposal_version)
-			.filter(valence__lt=0)
+			.filter(proposal_version=self.proposal_version,
+				valence__lt=0,
+				deleted=False)
 			.order_by('pk')
 		)
 
@@ -370,29 +394,22 @@ class EditProposalForm(object):
 		for form in formset:
 
 			# FactorVersions without factor ids are new 
-			if form['factor'].value() == '':
+			if not form['factor'].value():
 
-				# if it has a description validate it, otherwise ignore
-				if form['description'].value() != '':
+				# if it has a description and deleted isn't checked, validate
+				if form['description'].value() and not form['deleted'].value():
 					is_valid = form.is_valid() and is_valid
-					print 'checking factor add form: ', is_valid
-					print form.errors
 					
 			# forms for creating a version of an existing factor have factor id
 			else:
 				is_valid = form.is_valid() and is_valid
-				print 'checking factor edit form: ', is_valid
 
 		return is_valid
 
 
 	def save(self):
 		new_proposal_version = self.proposal_version_form.save()
-
-		print 'save positive factors'
 		self._save_factors(self.factor_formsets['pos'], new_proposal_version)
-
-		print 'save negative factors'
 		self._save_factors(self.factor_formsets['neg'], new_proposal_version)
 
 	
@@ -421,7 +438,6 @@ class EditProposalForm(object):
 				# make a new factor version point it to the 
 				# same factor version, but a new proposal version
 				new_factor_version = form.save(commit=False)
-				print 'factor version factor: ', new_factor_version.factor
 				new_factor_version.proposal_version = proposal_version
 				new_factor_version.save()
 
