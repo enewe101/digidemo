@@ -180,8 +180,10 @@ class Factor(TimeStamped):
 
 
 class FactorVersion(TimeStamped):
-	factor = models.ForeignKey(Factor, related_name='version')
-	proposal_version = models.ForeignKey(ProposalVersion)
+	factor = models.ForeignKey(
+		Factor, related_name='version', blank=True, null=True)
+	proposal_version = models.ForeignKey(
+		ProposalVersion, blank=True, null=True)
 	description = models.CharField(max_length=256)
 	valence = models.SmallIntegerField(choices=FACTOR_CHOICES)
 	sector = models.ForeignKey(Sector)
@@ -201,6 +203,7 @@ class FactorVersion(TimeStamped):
 				'proposal')
 
 		return factor_versions[0]
+
 
 class Person(TimeStamped):
 	fname = models.CharField(max_length=NAME_LENGTH)

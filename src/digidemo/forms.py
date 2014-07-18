@@ -232,8 +232,10 @@ class EditProposalForm(object):
 			return
 
 		# get a form to edit the proposal, i.e. create a proposal version
-		self.proposal_version = ProposalVersionForm.init_from_object(
-			proposal.get_latest(),
+		self.proposal = proposal
+		self.proposal_version = proposal.get_latest()
+		self.proposal_version_form = ProposalVersionForm.init_from_object(
+			self.proposal_version,
 			endpoint=proposal.get_url('edit')
 		)
 
@@ -241,13 +243,13 @@ class EditProposalForm(object):
 
 		# Get the factors associated to the proposal as two lists
 		(pos_factor_versions, neg_factor_versions,
-			pos_factors, neg_factors) = self._get_and_split_factors(proposal)
+			pos_factors, neg_factors) = self._get_and_split_factors()
 
 		# make initial data arguments to prepopulate the factor forms 
 		# based on the existing factors
 		factor_version_inits = {
-			'pos': self._get_init_from_objects(pos_factor_versions),
-			'neg': self._get_init_from_objects(neg_factor_versions)
+			'pos': self._get_init_from_objects(pos_factor_versions, 1),
+			'neg': self._get_init_from_objects(neg_factor_versions, -1)
 		}
 
 		# get the formsets for factors
@@ -289,7 +291,7 @@ class EditProposalForm(object):
 	def _init_from_data(self, data):
 
 		# make the formset for the proposal version based on POSTed data
-		self.proposal_version = ProposalVersionForm(data)
+		self.proposal_version_form = ProposalVersionForm(data)
 
 		# get the formsets for factors
 		self.factor_formsets = {
@@ -307,32 +309,30 @@ class EditProposalForm(object):
 		self.is_bound = True
 
 
-	def _get_and_split_factors(self, proposal):
-
-		proposal_version = proposal.get_latest()
+	def _get_and_split_factors(self):
 
 		pos_factors = (
 			Factor.objects
-			.filter(version__proposal_version=proposal_version)
+			.filter(version__proposal_version=self.proposal_version)
 			.filter(version__valence__gt=0)
 			.order_by('version__pk')
 		)
 		neg_factors = (
 			Factor.objects
-			.filter(version__proposal_version=proposal_version)
+			.filter(version__proposal_version=self.proposal_version)
 			.filter(version__valence__lt=0)
 			.order_by('version__pk')
 		)
 
 		pos_factor_versions = (
 			FactorVersion.objects
-			.filter(proposal_version=proposal_version)
+			.filter(proposal_version=self.proposal_version)
 			.filter(valence__gt=0)
 			.order_by('pk')
 		)
 		neg_factor_versions = (
 			FactorVersion.objects
-			.filter(proposal_version=proposal_version)
+			.filter(proposal_version=self.proposal_version)
 			.filter(valence__lt=0)
 			.order_by('pk')
 		)
@@ -344,69 +344,87 @@ class EditProposalForm(object):
 
 	def is_valid(self):
 
-		return True
-
 		if not self.is_bound:
 			return True 
 
 		# validate the proposal version
-		is_valid = self.proposal_version.is_valid()
+		is_valid = self.proposal_version_form.is_valid()
+		self.proposal = self.proposal_version_form.cleaned_data['proposal']
 
 		# validate the positive factors formset
-		pos_formset_pairs = self.edit_factor['pos']['formset']
-		is_valid = is_valid and self.validate_farmset_pair(pos_formset_pairs)
+		is_valid = self._validate_factors(
+			self.factor_formsets['pos']) and is_valid
 
 		# validate the negative factors formset
-		neg_formset_pairs = self.edit_factor['neg']['formset']
-		is_valid = is_valid and self.validate_farmset_pair(neg_formset_pairs)
+		is_valid = self._validate_factors(
+			self.factor_formsets['neg']) and is_valid
 
 		return is_valid
 
 
-	def validate_formset_pair(formset_pair):
+	def _validate_factors(self, formset):
 
 		# valid till proven invalid
 		is_valid = True
 
-		for f_pair in formset_pair:
-			is_valid = (
-				is_valid 
-				and f_pair['delete'].is_valid() 
-				and f_pair['version'].is_valid()
-			)
+		for form in formset:
+
+			# FactorVersions without factor ids are new 
+			if form['factor'].value() == '':
+
+				# if it has a description validate it, otherwise ignore
+				if form['description'].value() != '':
+					is_valid = form.is_valid() and is_valid
+					print 'checking factor add form: ', is_valid
+					print form.errors
+					
+			# forms for creating a version of an existing factor have factor id
+			else:
+				is_valid = form.is_valid() and is_valid
+				print 'checking factor edit form: ', is_valid
 
 		return is_valid
 
 
 	def save(self):
-		# self.proposal_version.save()
+		new_proposal_version = self.proposal_version_form.save()
+
 		print 'save positive factors'
-		self._save_factors(self.factor_formsets['pos'])
+		self._save_factors(self.factor_formsets['pos'], new_proposal_version)
+
 		print 'save negative factors'
-		self._save_factors(self.factor_formsets['neg'])
+		self._save_factors(self.factor_formsets['neg'], new_proposal_version)
 
 	
-	def _save_factors(self, factor_formsets):
+	def _save_factors(self, factor_formsets, proposal_version):
+		for form in factor_formsets:
+			# if the form is an add-factor form
+			if form['factor'].value() == '':
 
-		pass
-#		for f_pair in factor_pairs:
-#
-#			# if the delete checkbox is ticked, delete this
-#			if f_pair['delete'].cleaned_data['DELETE']:
-#				f_pair['delete'].save()
-#				continue
-#
-#			print 'delete: ' + str(f_pair['delete'].is_valid())
-#			try:
-#				print f_pair['delete'].cleaned_data
-#			except AttributeError:
-#				pass
-#
-#			print 'version: ' + str(f_pair['version'].is_valid())
-#			try:
-#				print f_pair['version'].cleaned_data
-#			except AttributeError:
-#				pass
+				# and if the description isn't blank
+				if form['description'].value() != '':
+
+					# make a new factor entry (points to proposal) 
+					new_factor = Factor(propsal=self.proposal)
+
+					# and a new factorVersion entry (points to 
+					# factor and proposal_version
+					new_factor_version = form.save(commit=False)
+					new_factor_version.factor=new_factor
+					new_factor_version.proposal_version = proposal_version
+					new_factor_version.save()
+					
+
+			# otherwise its an edit-factor form
+			else:
+
+				# make a new factor version point it to the 
+				# same factor version, but a new proposal version
+				new_factor_version = form.save(commit=False)
+				print 'factor version factor: ', new_factor_version.factor
+				new_factor_version.proposal_version = proposal_version
+				new_factor_version.save()
+
 
 
 	def _get_formsets_from_data(self, prefix, data):
@@ -449,7 +467,7 @@ class EditProposalForm(object):
 		self, prefix, factor_version_inits, factors):
 
 		# Here is the formset for editing factor versions
-		FactorVersionFormSet = formset_factory(FactorVersionForm, extra=1)
+		FactorVersionFormSet = formset_factory(FactorVersionForm, extra=0)
 		factor_version_formset = FactorVersionFormSet(
 			initial=factor_version_inits, prefix=prefix
 		)
@@ -457,7 +475,7 @@ class EditProposalForm(object):
 		return factor_version_formset
 
 
-	def _get_init_from_objects(self, factor_versions):
+	def _get_init_from_objects(self, factor_versions, valence):
 
 		factor_version_inits = []
 
@@ -466,12 +484,15 @@ class EditProposalForm(object):
 
 			factor_version_inits.append({
 				'factor':factor.pk, 
-				'proposal_version': None,
 				'description':fv.description,
 				'valence': fv.valence,
 				'sector': fv.sector
 			})
 
+		# add one extra form
+		factor_version_inits.append({
+			'valence': valence
+		})
 		
 		return factor_version_inits
 

@@ -12,7 +12,7 @@
 		{% csrf_token %}
 
 		<!-- include the proposal version edit form -->
-		{% include "digidemo/_w_simple_form.html" with form=edit_proposal_form.proposal_version %}
+		{% include "digidemo/_w_simple_form.html" with form=edit_proposal_form.proposal_version_form %}
 
 		<!-- include the factor formset managers -->
 		{% include "digidemo/_w_simple_form.html" with form=edit_proposal_form.factor_form_managers.pos %}
