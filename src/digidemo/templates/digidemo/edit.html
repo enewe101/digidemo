@@ -4,29 +4,73 @@
 
 	<div align="right"> Last Modified {{proposal.last_modified}} </div>
 
-	<form class="{{ form.form_class}}" 
-		id="{{ form.form_class }}_{{ include_id }}" 
-		action="{{ form.endpoint }}" 
+	<form class="{{ edit_proposal_form.form_class}}" 
+		id="{{ edit_proposal_form.form_class }}_{{ include_id }}" 
+		action="{{ edit_proposal_form.endpoint }}" 
 		method="post" />
 
 		{% csrf_token %}
 
 		<!-- include the proposal version edit form -->
-		{% include "digidemo/_w_simple_form.html" with form=edit_proposal_form.proposal_version_form %}
+		<div class="form_line">
+			<div>
+				{{ edit_proposal_form.proposal_version_form.title.label_tag }}
+			</div>
+			<div>
+				{{ edit_proposal_form.proposal_version_form.title }}
+			</div>
+		</div>
+		<div class="form_line">
+			<div>
+			{{ edit_proposal_form.proposal_version_form.summary.label_tag }}
+			</div>
+			<div>
+				{{ edit_proposal_form.proposal_version_form.summary }}
+			</div>
+		</div>
 
 		<!-- include the factor formset managers -->
 		{% include "digidemo/_w_simple_form.html" with form=edit_proposal_form.factor_form_managers.pos %}
 		{% include "digidemo/_w_simple_form.html" with form=edit_proposal_form.factor_form_managers.neg %}
 
-		<!-- include the positive factor forms -->
-		{% for f in edit_proposal_form.factor_formsets.pos %}
-			{% include "digidemo/_w_simple_form.html" with form=f %}
-		{% endfor %}
+		<!-- start of proposal factors formsets -->
+		<div id="proposal_factor_forms">
+			<div class="factor_form_left_column">
 
-		<!-- include the negative factor forms -->
-		{% for f in edit_proposal_form.factor_formsets.neg %}
-			{% include "digidemo/_w_simple_form.html" with form=f %}
-		{% endfor %}
+				<div class="factor_list_heading">
+					Foreseen benefits:
+				</div>
+
+				<!-- include the positive factor forms -->
+				{% for f in edit_proposal_form.factor_formsets.pos %}
+					{% include "digidemo/_w_factor_form.html" with form=f include_id=forloop.counter0 valence="pos" %}
+				{% endfor %}
+
+			</div>
+			<div class="factor_form_right_column">
+
+				<div class="factor_list_heading">
+					Foreseen hazards:
+				</div>
+
+				<!-- include the negative factor forms -->
+				{% for f in edit_proposal_form.factor_formsets.neg %}
+					{% include "digidemo/_w_factor_form.html" with form=f include_id=forloop.counter0 valence="neg" %}
+				{% endfor %}
+
+			</div>
+			<div class="clear"></div>
+		</div>
+		<!-- end of proposal factor formsets -->
+
+		<div class="form_line">
+			<div>
+				{{ edit_proposal_form.proposal_version_form.text.label_tag }}
+			</div>
+			<div>
+				{{ edit_proposal_form.proposal_version_form.text }}
+			</div>
+		</div>
 
 		<input id="{{ form.form_class}}_{{ include_id }}_submit" 
 			class="submit" type="submit" value="submit" />

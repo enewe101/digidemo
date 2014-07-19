@@ -248,13 +248,19 @@ class EditProposalForm(object):
 		if proposal is None:
 			return
 
-		# get a form to edit the proposal, i.e. create a proposal version
+		# get ahold of the proposal and its latest version
 		self.proposal = proposal
 		self.proposal_version = proposal.get_latest()
+
+		# get a form to edit the proposal, i.e. create a proposal version
 		self.proposal_version_form = ProposalVersionForm.init_from_object(
 			self.proposal_version,
 			endpoint=proposal.get_url('edit')
 		)
+
+		# Set some form-wide attributes
+		self.endpoint = proposal.get_url('edit')
+		self.form_class = self.__class__.__name__
 
 		#   ** we'll be making formsets factor adding/editing/deleting **
 

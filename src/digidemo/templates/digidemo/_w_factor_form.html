@@ -1,0 +1,60 @@
+<!-- 
+	include_id should be a number that is equal to the formset number 
+	for example, by using forloop.counter0 when iterating through the 
+	formset 
+-->
+
+<div id="factor_form_{{ valence }}_{{ include_id }}" class="factor_form">
+
+	{{ form.non_field_errors }}
+	{{ form.errors }}
+
+	<div class="factor_selectors">
+		<div class="float_left">
+			{{ form.sector.label_tag }} &nbsp; {{ form.sector }}
+		</div>
+		<div class="float_right">
+			{{ form.deleted.label_tag }} &nbsp; {{ form.deleted }}
+		</div>
+		<div class="clear"></div>
+	</div>
+
+	<div class="factor_description">
+		<div>
+			{{ form.description.label_tag }}
+		</div>
+		<div>
+			{{ form.description }}
+		</div>
+	</div>
+</div>
+
+<script type="text/javascript">
+
+(function(){
+
+ 	// build the prefix used to generate the form control id's
+ 	var prefix = "id_{{valence}}-{{ include_id }}-";
+
+	// use the prefix to get the form controls
+	var delete_checkbox = $('#' + prefix + "deleted");
+	var sector = $('#' + prefix + "sector");
+	var description = $('#' + prefix + "description");
+
+	function toggle() {
+		if (this.checked) {
+			sector.attr('disabled', true);
+			description.attr('disabled', true);
+
+		} else {
+			sector.attr('disabled', false);
+			description.attr('disabled', false);
+
+		}
+	}
+
+	delete_checkbox.click(toggle);
+
+}());
+
+</script>

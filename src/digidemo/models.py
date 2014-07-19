@@ -187,7 +187,7 @@ class FactorVersion(TimeStamped):
 	description = models.CharField(max_length=256, blank=True)
 	valence = models.SmallIntegerField(choices=FACTOR_CHOICES)
 	sector = models.ForeignKey(Sector)
-	deleted = models.BooleanField()
+	deleted = models.BooleanField('delete')
 
 	def __unicode__(self):
 		return self.description[:14]

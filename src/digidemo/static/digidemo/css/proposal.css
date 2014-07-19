@@ -71,13 +71,13 @@ h1.proposal_title {
 }
 
 .factor_left_column {
-	width: 260px;
+	width: 310px;
 	margin-left: 0px;
 	float: left;
 }
 
 .factor_right_column {
-	width: 260px;
+	width: 310px;
 	margin-left: 30px;
 	float: left;
 }
@@ -502,7 +502,9 @@ a.send_letter:active {
 	margin: 10px;
 }
 
-
+.ProposalVersionForm_title {
+	width: 400px;
+}
 .ProposalVersionForm_summary, .ProposalVersionForm_text {
 	width: 720px;
 }
@@ -515,3 +517,31 @@ a.send_letter:active {
 	height: 400px;
 }
 
+.factor_form_left_column {
+	width: 335px;
+	margin-left: 0px;
+	float: left;
+}
+
+.factor_form_right_column {
+	width: 335px;
+	margin-left: 30px;
+	float: left;
+}
+
+#proposal_factor_forms {
+	margin: 50px 0;
+}
+
+#proposal_factor_forms textarea {
+	width: 333px;
+	height: 100px;
+}
+
+.factor_form {
+	margin-top: 30px;
+}
+
+.factor_selectors {
+	margin-bottom: 10px
+}

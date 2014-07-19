@@ -18,6 +18,10 @@
 	color: rgb(200,200,200);
 }
 
+.float_right {
+	float: right;
+}
+
 .float_left {
 	float: left;
 }
