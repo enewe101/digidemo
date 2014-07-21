@@ -662,3 +662,40 @@ function CommentWidget(form, endpoint, submit_button) {
 	form_widget.hook('after', hooks.after);
 }
 
+
+function AddFactorVersionWidget(add_link, form_wrapper, 
+	num_forms_input, valence) {
+
+	var events = ['success', 'error'];
+	var hooks = make_page_hooks(this, events);
+	hooks.error = alert_ajax_error;
+	
+	this.click_callback = $.proxy(function(){
+
+		var num_forms = parseInt(num_forms_input.val());
+
+		// a callback to put the new form when received
+		var success = $.proxy(function (data, textStatus, jqXHR) {
+
+			// call the success hook
+			hooks.success(data.html, num_forms + 1);
+
+			// insert the new form and increment the total number of forms
+			form_wrapper.append(data.html);
+			num_forms_input.val(num_forms + 1);
+		}, this);
+
+		ajax(
+			'get_factor_form',
+			{ 
+				'valence': valence,
+				'include_id': num_forms
+			},
+			{ 'success': success }
+		);
+	},this);
+
+	add_link.click(this.click_callback);
+
+}
+

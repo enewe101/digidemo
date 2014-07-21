@@ -59,34 +59,20 @@
 				</a>
 				<script type="text/javascript">
 
-					// get the div in which new factor forms should go
-					var form_wrapper = $('#pos_factors_wrapper');
-					var add_factor_link = $('#add_pos_factor_form');
+					// Make the add-positive-factors widget
+					var add_factor_widget = AddFactorVersionWidget(
+						$('#add_pos_factor_form'),
+						$('#pos_factors_wrapper'),
+						$('#id_pos-TOTAL_FORMS'),
+						'pos'
+					);
 
-					// get the current total number of pos-forms
-					var tot_pos_forms_input = $('#id_pos-TOTAL_FORMS');
-
-
-					// arm add factor link to get / insert new factor form
-					add_factor_link.click(function(){
-
-						var tot_pos_forms = parseInt(tot_pos_forms_input.val());
-						// a callback to put the new form when received
-						function success(data, textStatus, jqXHR) {
-							form_wrapper.append(data.html);
-							tot_pos_forms_input.val(tot_pos_forms + 1);
-						}
-
-						ajax(
-							'get_factor_form',
-							{ 
-								'valence': 'pos',
-								'include_id': tot_pos_forms
-							},
-							{ 'success': success }
-						);
-					});
-
+					// register it
+					register_widget(
+						'add_factor_pos', 
+						add_factor_widget,
+						'add_factor'
+					);
 				</script>
 
 			</div>
@@ -97,10 +83,34 @@
 				</div>
 
 				<!-- include the negative factor forms -->
-				{% for f in edit_proposal_form.factor_formsets.neg %}
-					{% include "digidemo/_w_factor_form.html" with form=f include_id=forloop.counter0 valence="neg" %}
-				{% endfor %}
+				<div id="neg_factors_wrapper">
+					{% for f in edit_proposal_form.factor_formsets.neg %}
+						{% include "digidemo/_w_factor_form.html" with form=f include_id=forloop.counter0 valence="neg" %}
+					{% endfor %}
+				</div>
 
+				<!-- this allows adding new forms to the formset -->
+				<a id="add_neg_factor_form" class="pointer">
+					add another factor
+				</a>
+				<script type="text/javascript">
+
+					// Make the add-negative-factors widget
+					var add_factor_widget = AddFactorVersionWidget(
+						$('#add_neg_factor_form'),
+						$('#neg_factors_wrapper'),
+						$('#id_neg-TOTAL_FORMS'),
+						'neg'
+					);
+
+					// register it
+					register_widget(
+						'add_factor_neg', 
+						add_factor_widget,
+						'add_factor'
+					);
+
+				</script>
 			</div>
 			<div class="clear"></div>
 		</div>
