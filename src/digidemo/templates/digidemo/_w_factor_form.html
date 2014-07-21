@@ -4,11 +4,17 @@
 	formset 
 -->
 
-<div id="factor_form_{{ valence }}_{{ include_id }}" class="factor_form">
+<div id="factor_form_{{ valence }}_{{ include_id }}" class="factor_form_{{ valence }}">
 
 	{{ form.non_field_errors }}
 	{{ form.errors }}
 
+	<!-- place the hidden fields -->
+	{{ form.factor }}
+	{{ form.proposal_version }}
+	{{ form.valence }}
+
+	<!-- place the visible fields -->
 	<div class="factor_selectors">
 		<div class="float_left">
 			{{ form.sector.label_tag }} &nbsp; {{ form.sector }}

@@ -94,10 +94,25 @@ def proposal(request, proposal_id):
 
 def edit(request, proposal_id):
 
-	proposal = Proposal.objects.get(pk=proposal_id)
 
 	# ** Hardcoded the logged in user to be enewe101 **
 	logged_in_user = User.objects.get(pk=1)
+
+	proposal = Proposal.objects.get(pk=proposal_id)
+
+	proposal_vote = utils.get_or_none(
+		ProposalVote, user=logged_in_user, target=proposal)
+
+	if proposal_vote:
+		proposal_vote_form = ProposalVoteForm(
+			instance=proposal_vote,
+			cur_score=proposal.score)
+
+	else:
+		proposal_vote_form = ProposalVoteForm(
+			initial={'user':logged_in_user.pk, 'target':proposal.pk},
+			cur_score=proposal.score)
+
 
 	if request.POST:
 
@@ -118,6 +133,7 @@ def edit(request, proposal_id):
 				{'user': utils.obj_to_dict(
 				logged_in_user, exclude=['password'])}),
 			'proposal': proposal,
+			'proposal_vote_form': proposal_vote_form,
 			'edit_proposal_form': edit_proposal_form,
 			'logged_in_user': logged_in_user,
 			'tabs': get_proposal_tabs(proposal, 'edit')

@@ -11,6 +11,10 @@
 
 		{% csrf_token %}
 
+		{% for hidden in edit_proposal_form.proposal_version_form.hidden_fields %}
+			{{ hidden }}
+		{% endfor %}
+
 		<!-- include the proposal version edit form -->
 		<div class="form_line">
 			<div>
@@ -35,16 +39,55 @@
 
 		<!-- start of proposal factors formsets -->
 		<div id="proposal_factor_forms">
-			<div class="factor_form_left_column">
+			<div id="factor_form_left_column" class="factor_form_left_column">
 
 				<div class="factor_list_heading">
 					Foreseen benefits:
 				</div>
 
 				<!-- include the positive factor forms -->
-				{% for f in edit_proposal_form.factor_formsets.pos %}
-					{% include "digidemo/_w_factor_form.html" with form=f include_id=forloop.counter0 valence="pos" %}
-				{% endfor %}
+				<div id="pos_factors_wrapper">
+					{% for f in edit_proposal_form.factor_formsets.pos %}
+						{% include "digidemo/_w_factor_form.html" with form=f include_id=forloop.counter0 valence="pos" %}
+					{% endfor %}
+				</div>
+
+
+				<!-- this allows adding new forms to the formset -->
+				<a id="add_pos_factor_form" class="pointer">
+					add another factor
+				</a>
+				<script type="text/javascript">
+
+					// get the div in which new factor forms should go
+					var form_wrapper = $('#pos_factors_wrapper');
+					var add_factor_link = $('#add_pos_factor_form');
+
+					// get the current total number of pos-forms
+					var tot_pos_forms_input = $('#id_pos-TOTAL_FORMS');
+
+
+					// arm add factor link to get / insert new factor form
+					add_factor_link.click(function(){
+
+						var tot_pos_forms = parseInt(tot_pos_forms_input.val());
+						// a callback to put the new form when received
+						function success(data, textStatus, jqXHR) {
+							form_wrapper.append(data.html);
+							tot_pos_forms_input.val(tot_pos_forms + 1);
+						}
+
+						ajax(
+							'get_factor_form',
+							{ 
+								'valence': 'pos',
+								'include_id': tot_pos_forms
+							},
+							{ 'success': success }
+						);
+					});
+
+				</script>
 
 			</div>
 			<div class="factor_form_right_column">
@@ -61,6 +104,24 @@
 			</div>
 			<div class="clear"></div>
 		</div>
+		<script type="text/javascript">
+			// this makes sure that if the page is reloaded, the correct
+			// total number of factor forms is reflected in the TOTAL_FORMS
+			// values stored in the management forms.
+			//
+			// The reason this is necessary is because when new forms are added
+			// the TOTAL_FORMS values are updated, however, when the page is 
+			// refreshed, those dynamically added forms are removed, wheras
+			// browsers tend to restore the value of form inputs (even hidden
+			// ones, to what they were before the refresh.
+
+			var num_pos_factor_forms = $('.factor_form_pos').length;
+			var num_neg_factor_forms = $('.factor_form_neg').length;
+			var tot_pos_forms_input = $('#id_pos-TOTAL_FORMS');
+			var tot_neg_forms_input = $('#id_neg-TOTAL_FORMS');
+			tot_pos_forms_input.val(num_pos_factor_forms);
+			tot_neg_forms_input.val(num_neg_factor_forms);
+		</script>
 		<!-- end of proposal factor formsets -->
 
 		<div class="form_line">
@@ -76,53 +137,6 @@
 			class="submit" type="submit" value="submit" />
 
 	</form>
-
-
-	<!-- proposal title -->
-	<h2> Proposal Title </h2>
-	<textarea id="proposalTitle" rows="2" cols="70"> 
-		{{proposal.get_latest.title}} 
-	</textarea>
-	
-	<!-- TODO: add proposal summary -->
-
-	<!-- proposal text -->
-	<h2> Proposal Text </h2>
-	<div class="take_note">
-		<textarea id="proposalText" rows="25" cols="70">
-			{{proposal.get_latest.text}} 
-		</textarea>
-	</div>
-	
-	<h2> Proposal Factors </h2>
-
-	<!-- begin the editable list of bad factors -->
-	<div class="factor_left_column">
-		<textarea id="goodFactors" rows="10" cols="35">
-			{% for factor in proposal.factor_set.all %}
-				{% if factor.valence > 0 %}
-					<br>{{ factor.description }}
-				{% endif %}
-			{% endfor %}
-		</textarea>
-	</div>
-	<!-- end the editable list of bad factors -->
-
-	<!-- begin the editable list of good factors -->
-	<div class="factor_list_heading">
-		<textarea id="badFactors" rows="10" cols="35">
-			{% for factor in proposal.factor_set.all %}
-				{% if factor.valence < 0 %}
-					<br>{{ factor.description }}
-				{% endif %}
-			{% endfor %}
-		</textarea>
-	</div>
-	<!-- end the editable list of good factors -->
-
-	<div align="right">
-		{% include "digidemo/_w_post_edit.html" %} 
-	</div>
 
 {% endblock proposal_content %}
 

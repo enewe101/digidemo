@@ -514,7 +514,7 @@ a.send_letter:active {
 }
 
 .ProposalVersionForm_text {
-	height: 400px;
+	height: 600px;
 }
 
 .factor_form_left_column {
@@ -538,7 +538,7 @@ a.send_letter:active {
 	height: 100px;
 }
 
-.factor_form {
+.factor_form_pos, .factor_form_neg {
 	margin-top: 30px;
 }
 

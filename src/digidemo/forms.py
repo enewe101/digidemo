@@ -203,21 +203,42 @@ class FactorForm(ModelForm):
 
 class FactorVersionForm(ModelForm):
 
-	def clean(self):
-		'''
-		make sure that the description field has some non-whitespace 
-		characters (but only if deleted isn't checked)
-		'''
-		cleaned_data = ModelForm.clean(self)
-		deleted = cleaned_data.get('deleted')
-		description = cleaned_data.get('description')
-		factor = cleaned_data.get('factor')
-
-		# description might be blank...
-		if not description.strip() and not deleted:
-			raise forms.ValidationError('A Description is required.')
-
-		return cleaned_data
+#	def clean(self):
+#		'''
+#		make sure that the description field has some non-whitespace 
+#		characters (but only if deleted isn't checked)
+#		'''
+#
+#		factor = self['factor'].value()
+#		proposal_version = self['proposal_version'].value()
+#		description = self['description'].value()
+#		valence = self['valence'].value()
+#		sector = self['sector'].value()
+#		deleted = self['deleted'].value()
+#
+#		# If the form is marked for deletion, it's okay for the 
+#		# content fields to be blank
+#		if deleted:
+#			# but make sure that there is a factor and proposal_version
+#			if factor is None or proposal_version is None:
+#				raise forms.ValidationError(
+#					'Deleted factor versions must be bound to a have a '\
+#					'factor and proposal version')
+#
+#		else:
+#			if description.strip() == '':
+#				raise forms.ValidationError('A description is required')
+#
+#			if valence == '':
+#				raise forms.ValidationError('Error: missing valence.')
+#
+#			if sector == '':
+#				print 'RAISE'
+#				raise forms.ValidationError('Sector is required.')
+#
+#
+#		#cleaned_data = ModelForm.clean(self)
+#		return {} #cleaned_data
 
 
 	class Meta:
@@ -399,16 +420,22 @@ class EditProposalForm(object):
 
 		for form in formset:
 
-			# FactorVersions without factor ids are new 
-			if not form['factor'].value():
+			# Don't validate forms marked as deleted.  This is dealt with
+			# outside of the FactorVersionForm functionality
+			if form['deleted'].value():
+				continue
 
-				# if it has a description and deleted isn't checked, validate
-				if form['description'].value() and not form['deleted'].value():
-					is_valid = form.is_valid() and is_valid
+			# Also don't validate "add-forms" (forms not corresponding to an
+			# existing factor, but rather for adding one) that are blank
+			# Note: "add-forms" are not bound to a `factor`.
+			is_add_form = not bool(form['factor'].value())
+			is_blank = not (form['description'].value()
+					and form['description'].value().strip())
+			if is_add_form and is_blank:
+				continue
 					
-			# forms for creating a version of an existing factor have factor id
-			else:
-				is_valid = form.is_valid() and is_valid
+			# otherwise, we need to validate
+			is_valid = form.is_valid() and is_valid
 
 		return is_valid
 
@@ -421,14 +448,19 @@ class EditProposalForm(object):
 	
 	def _save_factors(self, factor_formsets, proposal_version):
 		for form in factor_formsets:
+
 			# if the form is an add-factor form
 			if form['factor'].value() == '':
 
-				# and if the description isn't blank
-				if form['description'].value() != '':
+				# and if the description isn't blank, and its not marked delete
+				not_blank = (form['description'].value()
+						and form['description'].value().strip())
+				is_deleted = form['deleted'].value()
+				if not_blank and not is_deleted:
 
 					# make a new factor entry (points to proposal) 
-					new_factor = Factor(propsal=self.proposal)
+					new_factor = Factor(proposal=self.proposal)
+					new_factor.save()
 
 					# and a new factorVersion entry (points to 
 					# factor and proposal_version
@@ -437,15 +469,24 @@ class EditProposalForm(object):
 					new_factor_version.proposal_version = proposal_version
 					new_factor_version.save()
 					
-
 			# otherwise its an edit-factor form
 			else:
 
+				# if the factor is deleted, don't take values from the form.  
+				# Just duplicate the previous factor version and mark deleted
+				if form['deleted'].value():
+					factor = Factor.objects.get(pk=form['factor'].value())
+					factor_version = factor.get_latest()
+					factor_version.pk=None
+					factor_version.deleted=True
+					factor_version.save()
+
 				# make a new factor version point it to the 
-				# same factor version, but a new proposal version
-				new_factor_version = form.save(commit=False)
-				new_factor_version.proposal_version = proposal_version
-				new_factor_version.save()
+				# same factor, but to the proposal version
+				else:
+					new_factor_version = form.save(commit=False)
+					new_factor_version.proposal_version = proposal_version
+					new_factor_version.save()
 
 
 

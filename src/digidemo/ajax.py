@@ -209,6 +209,34 @@ def get_resender_avatar(request):
 	return {'success': True, 'html': reply_html}
 
 
+@ajax_endpoint
+def get_factor_form(request):
+
+	# unpack expected data
+	valence = request.POST['valence']
+	include_id = request.POST['include_id']
+
+	# make the factor form
+	prefix = valence + '-' + include_id 
+	valence_val = 1 if valence=='pos' else -1
+	factor_form = FactorVersionForm(
+		initial={'valence':valence_val},
+		prefix=prefix
+	)
+
+	# get the template and assemble the context, and render the html
+	template = get_template('digidemo/_w_factor_form.html')
+	context = Context({
+		'valence':valence,
+		'include_id':include_id,
+		'form':factor_form
+	})
+	reply_html = template.render(context)
+
+	# send back a json reply
+	return {'success':True, 'html': reply_html}
+
+
 
 @ajax_endpoint
 def reply(request):

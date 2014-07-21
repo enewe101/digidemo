@@ -184,7 +184,7 @@ class FactorVersion(TimeStamped):
 		Factor, related_name='version', blank=True, null=True)
 	proposal_version = models.ForeignKey(
 		ProposalVersion, blank=True, null=True)
-	description = models.CharField(max_length=256, blank=True)
+	description = models.CharField(max_length=256)
 	valence = models.SmallIntegerField(choices=FACTOR_CHOICES)
 	sector = models.ForeignKey(Sector)
 	deleted = models.BooleanField('delete')
