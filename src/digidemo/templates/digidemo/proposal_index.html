@@ -96,7 +96,7 @@
       <h2>Popular Posts</h2>
       <ul>
 	{% for post in popular_posts%}
-        <li><a href="/proposals/{{post.name}}">{{post.title}}</a></li>
+        <li><a href="{{post.get_proposal_url}}">{{post.title}}</a></li>
 	{% endfor %}
       </ul>
     </div>

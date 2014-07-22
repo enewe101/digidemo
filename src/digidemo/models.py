@@ -135,7 +135,7 @@ class Proposal(TimeStamped):
 
 
 class ProposalVersion(TimeStamped):
-	proposal = models.ForeignKey(Proposal)
+	proposal = models.ForeignKey(Proposal, blank=True, null=True)
 	title = models.CharField(max_length=256)
 	summary = models.TextField()
 	text = models.TextField()

@@ -1,22 +1,24 @@
 <!-- start the left navigation bar -->
 <div id="navbar">
-		<a class="navitem_active">
+	<a class="{% if active_navitem == "issues" %}navitem_active{% else %}navitem{% endif %}"
+		href="{% url "mainPage" %}">
 				Issues
 		</a>
 
-		<a class="navitem">
+		<a class="{% if active_navitem == "topics" %}navitem_active{% else %}navitem{% endif %}">
 			Topics
 		</a>
 
-		<a class="navitem">
+		<a class="{% if active_navitem == "questions" %}navitem_active{% else %}navitem{% endif %}">
 			Questions
 		</a>
 
-		<a class="navitem">
+		<a class="{% if active_navitem == "users" %}navitem_active{% else %}navitem{% endif %}">
 			Users
 		</a>
 
-		<a class="navitem">
+		<a class="{% if active_navitem == "create" %}navitem_active{% else %}navitem{% endif %}"
+			href="{% url "add_proposal" %}" >
 			+ create
 		</a>
 </div>

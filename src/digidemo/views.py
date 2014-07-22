@@ -72,14 +72,6 @@ def overview(request, proposal_id):
 	)
 
 
-def update_proposal(request, proposal_id):
-	proposal_version_form = ProposalVersionForm(request.POST)
-	if proposal_version_form.is_valid():
-		proposal_version_form.save()
-
-	return proposal(request, proposal_id)
-
-
 def proposal(request, proposal_id):
 	proposal = Proposal.objects.get(pk=proposal_id)
 	context = make_proposal_context(proposal)
@@ -92,8 +84,48 @@ def proposal(request, proposal_id):
 	)
 
 
-def edit(request, proposal_id):
+def add_proposal(request):
 
+
+	# ** Hardcoded the logged in user to be enewe101 **
+	logged_in_user = User.objects.get(pk=1)
+
+
+	if request.POST:
+
+		edit_proposal_form = EditProposalForm(
+			data=request.POST,
+			endpoint=reverse('add_proposal')
+		)
+
+		if edit_proposal_form.is_valid():
+			proposal = edit_proposal_form.save()
+			return redirect(proposal.get_url('proposal'))
+
+	else:
+		edit_proposal_form = EditProposalForm(
+			endpoint=reverse('add_proposal'),
+			initial={'user': logged_in_user}
+		)
+
+	return render(
+		request,
+		'digidemo/edit.html', 
+		{
+			'django_vars_js': get_django_vars_JSON(
+				{'user': utils.obj_to_dict(
+				logged_in_user, exclude=['password'])}),
+			'proposal': None,
+			'proposal_vote_form': None,
+			'edit_proposal_form': edit_proposal_form,
+			'logged_in_user': logged_in_user,
+			'tabs': None,
+			'active_navitem': 'create'
+		}
+	)
+
+
+def edit(request, proposal_id):
 
 	# ** Hardcoded the logged in user to be enewe101 **
 	logged_in_user = User.objects.get(pk=1)
@@ -116,14 +148,20 @@ def edit(request, proposal_id):
 
 	if request.POST:
 
-		edit_proposal_form = EditProposalForm.from_data(request.POST)
+		edit_proposal_form = EditProposalForm(
+			data=request.POST,
+			endpoint=proposal.get_url('edit')
+		)
 
 		if edit_proposal_form.is_valid():
 			edit_proposal_form.save()
 			return redirect(proposal.get_url('proposal'))
 
 	else:
-		edit_proposal_form = EditProposalForm(proposal)
+		edit_proposal_form = EditProposalForm(
+			proposal=proposal,
+			endpoint=proposal.get_url('edit')
+		)
 
 	return render(
 		request,
@@ -136,7 +174,8 @@ def edit(request, proposal_id):
 			'proposal_vote_form': proposal_vote_form,
 			'edit_proposal_form': edit_proposal_form,
 			'logged_in_user': logged_in_user,
-			'tabs': get_proposal_tabs(proposal, 'edit')
+			'tabs': get_proposal_tabs(proposal, 'edit'),
+			'active_navitem': 'issues'
 		}
 	)
 
@@ -182,7 +221,8 @@ def discuss(request, proposal_id):
 			'proposal': proposal,
 			'logged_in_user': logged_in_user,
 			'tabs': get_proposal_tabs(proposal, 'discuss'),
-			'discussion_sections': discussion_sections
+			'discussion_sections': discussion_sections,
+			'active_navitem': 'issues'
 		}
 	)
 
@@ -287,7 +327,8 @@ def make_proposal_context(proposal):
 			'logged_in_user': logged_in_user,
 			'proposal_vote_form': proposal_vote_form,
 			'media': media,
-			'tabs': get_proposal_tabs(proposal, 'overview')
+			'tabs': get_proposal_tabs(proposal, 'overview'),
+			'active_navitem': 'issues'
 		}
 
 	return context
@@ -354,7 +395,7 @@ def mainPage(request,sort_type='most_recent'):
 
         popular_posts =  Proposal.objects.order_by('-score')[:6]
 
-        featured_post = Proposal.objects.get(title='Quebec');
+        featured_post = Proposal.objects.get(pk=2);
         
         users = UserProfile.objects.all();
 

@@ -17,6 +17,26 @@ def get_or_none(model, **kwargs):
 		return None
 
 
+def extract_dict(obj, keys):
+	'''
+		Make a plain-dict copy of object, but only the values named in `keys`.
+	'''
+	return_dict = {}
+	for key in keys:
+
+		# try to get a value for key
+		try:
+			val = obj[key]
+		except KeyError:
+			raise KeyError(
+				'extract_dict: object has no attribute `%s`.' % key)
+
+		# add the value found for key
+		return_dict[key] = val
+
+	return return_dict
+
+
 def obj_to_dict(model_instance, exclude=[]):
 
 	# kludge to dict by serializing then json-parsing

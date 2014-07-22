@@ -18,7 +18,7 @@ if settings.TESTING_MODE:
 
 urlpatterns = patterns('',
 	# front page urls
-	url(r'^mainPage/$',mainPage),
+	url(r'^mainPage/$',mainPage, name='mainPage'),
 	url(r'^mainPage/sort=(?P<sort_type>\w+)/$',mainPage,name='mainPage'),
 
 	#Testing login
@@ -31,12 +31,11 @@ urlpatterns = patterns('',
 	url(r'^$', test, name='test'),
 
 	# proposal-specific urls
+	url(r'^add_proposal/$', add_proposal, name='add_proposal'),
 	url(r'^overview/(?P<proposal_id>\w+)/.*$', overview, name='overview'),
 	url(r'^proposal/(?P<proposal_id>\w+)/.*$', proposal, name='proposal'),
 	url(r'^discuss/(?P<proposal_id>\w+)/.*$', discuss, name='discussion'),
 	url(r'^edit/(?P<proposal_id>\w+)/.*$', edit, name='edit'),
-	url(r'^update-propsal/(?P<proposal_id>\w+)/.*$', 
-		update_proposal, name='update_proposal'),
 
 	# ajax urls
 	url(r'^ajaxJson/(?P<view>\w+)/$', handle_ajax_json, 
