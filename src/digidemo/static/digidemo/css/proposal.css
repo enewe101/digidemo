@@ -180,6 +180,7 @@ div.tag {
 	margin-top: 3px;
 	height: 20px;
 	font-size: 14px;
+	background: repeat-x 100% 100% url('../images/bot_shade.png');
 }
 
 .tab_active {
@@ -505,8 +506,8 @@ a.send_letter:active {
 .ProposalVersionForm_title {
 	width: 400px;
 }
-.ProposalVersionForm_summary, .ProposalVersionForm_text {
-	width: 720px;
+.ProposalVersionForm_summary, .ProposalVersionForm_text, .ProposalVersionForm_title {
+	width: 704px;
 }
 
 .ProposalVersionForm_summary {
@@ -545,3 +546,27 @@ a.send_letter:active {
 .factor_selectors {
 	margin-bottom: 10px
 }
+
+.EditProposalForm textarea, .EditProposalForm input {
+	background: rgb(250,250,250);
+	border: solid 1px rgb(80,80,80);
+	color: black;
+	padding: 8px;
+}
+
+.EditProposalForm .submit {
+	font-family: ubuntu;
+	font-size: 16px;
+}
+
+.EditProposalForm textarea {
+	font-family: computerModern;
+	font-size: 16px;
+}
+
+.ProposalVersionForm_title {
+	font-family: computerModern;
+	font-size: 24px;
+	font-weight: bold;
+}
+

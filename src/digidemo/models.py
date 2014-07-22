@@ -88,19 +88,25 @@ class UserProfile(TimeStamped):
 class Tag(TimeStamped):
 	name = models.CharField(max_length=48)
 
+	def __unicode__(self):
+		return self.name
 
 class Proposal(TimeStamped):
+	is_published = models.BooleanField(default=False)
+	score = models.SmallIntegerField(default=0)
 	title = models.CharField(max_length=256)
 	summary = models.TextField()
-	text = models.TextField(null=True)
-	is_published = models.BooleanField(default=False)
-	user = models.ForeignKey(User)
-	score = models.SmallIntegerField(default=0)
-	# delete sector
-	sector = models.ManyToManyField(Sector, related_name='proposals')
+	text = models.TextField()
+
+	# propogate to creation
+	original_user = models.ForeignKey(
+		User, related_name='initiated_proposals')
+	user = models.ForeignKey(
+		User, related_name='proposals_rectently_edited') 
 	proposal_image = models.ImageField(
 		upload_to='proposal_avatars',default='/digidemo/proposal-images/');
-	tags = models.ManyToManyField(Tag, related_name='proposals', null=True)
+	tags = models.ManyToManyField(
+		Tag, related_name='proposals', blank=True, null=True)
 
 	def get_latest(self):
 		return ProposalVersion.get_latest(self)
@@ -132,14 +138,16 @@ class ProposalVersion(TimeStamped):
 	proposal = models.ForeignKey(Proposal)
 	title = models.CharField(max_length=256)
 	summary = models.TextField()
-	text = models.TextField(null=True)
+	text = models.TextField()
 	user = models.ForeignKey(User)
+	tags = models.ManyToManyField(
+		Tag, related_name='proposal_versions',blank=True, null=True)
 
 	@classmethod
 	def get_latest(cls, proposal):
 		pvs = cls.objects.filter(proposal=proposal).order_by('-creation_date')
 		if len(pvs) == 0:
-			raise self.DoesNotExist('There are no proposal versions for that'
+			raise cls.DoesNotExist('There are no proposal versions for that'
 				'proposal')
 
 		return pvs[0]
@@ -170,6 +178,11 @@ class Reply(TimeStamped):
 
 class Factor(TimeStamped):
 	proposal = models.ForeignKey(Proposal)
+	description = models.CharField(max_length=256)
+	valence = models.SmallIntegerField(choices=FACTOR_CHOICES)
+	sector = models.ForeignKey(Sector)
+	deleted = models.BooleanField('delete')
+
 
 	def __unicode__(self):
 		latest = self.get_latest()
