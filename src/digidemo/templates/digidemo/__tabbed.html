@@ -1,0 +1,69 @@
+{% extends "digidemo/__base.html" %}
+{% load staticfiles %}
+
+{% block title %}
+	{{ block.super }}
+{% endblock title %}
+
+{% block css %}
+	{{ block.super }}
+{% endblock css %}
+
+{% block body %}
+{{ block.super }} <!-- this includes the header -->
+
+{% include "digidemo/_w_login_user.html" %}
+
+	<!-- content in the middle (vertical middle) of the page -->
+	<div id="middle">
+
+		<!-- centering device for the middle of the page layout -->
+		<div class="outer_center">
+			<div class="inner_center full_width">
+
+				<!-- start of headline -->
+				<div id="headline">
+					{% block headline %}
+						<!-- start of propasal score and icons -->
+						<div class="proposal_status_bar">
+							{% include "digidemo/_w_vote_form.html" with form=proposal_vote_form include_id="proposal_vote" %}
+						</div>
+						<!-- end of proposal score and icons -->
+
+						<h1 class="proposal_title">
+							{{ proposal.get_latest.title }}
+						</h1>
+					{% endblock headline %}
+
+				</div>
+				<!-- end of headline -->
+
+				<!-- tabs -->
+				{% include "digidemo/_w_tabs.html" with tabs=tabs %}
+
+				<!-- main page content goes here -->
+				{% block maincontent %}
+				{% endblock maincontent %}
+				<!-- end of main page content -->
+
+				<div class="clear"></div>
+			</div>
+		</div>
+		<!-- end of centering device for the middle of the page layout -->
+
+	</div>
+	<!-- end of the (vertical) middle of the page layout -->
+
+	<!-- start of page footer -->
+	<div id="footer">
+		<div class="outer_center">
+			<div class="inner_center">
+				{% block footer %}
+					footer
+				{% endblock footer %}
+			</div>
+		</div>
+	</div>
+	<!-- end of page footer -->
+
+{% endblock body %}

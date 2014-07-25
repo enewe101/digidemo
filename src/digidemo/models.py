@@ -9,7 +9,8 @@ import re
 NAME_LENGTH = 48
 URL_LENGTH = 256
 TITLE_LENGTH = 256
-
+DEFAULT_COMMENT_LENGTH = 512
+DEFAULT_TEXT_LENGTH = 65536
 
 class TimeStamped(models.Model):
 	creation_date = models.DateTimeField(editable=False)
@@ -21,6 +22,43 @@ class TimeStamped(models.Model):
 		
 		self.last_modified = timezone.now()
 		return super(TimeStamped, self).save(*args, **kwargs)
+
+	class Meta:
+		abstract = True
+
+
+class ScoredComment(TimeStamped):
+	user = models.ForeignKey(User)
+	score = models.SmallIntegerField(default=0)
+	text = models.CharField(max_length=DEFAULT_COMMENT_LENGTH)
+
+	def __unicode__(self):
+		return self.text[:20]
+
+	class Meta:
+		abstract = True
+
+
+class ScoredPost(TimeStamped):
+	user = models.ForeignKey(User)
+	score = models.SmallIntegerField(default=0)
+	title = models.CharField(max_length=TITLE_LENGTH)
+	text = models.TextField(max_length=DEFAULT_TEXT_LENGTH)
+
+	def __unicode__(self):
+		return self.title[:20]
+
+	class Meta:
+		abstract = True
+
+
+class ScoredReply(TimeStamped):
+	user = models.ForeignKey(User)
+	score = models.SmallIntegerField(default=0)
+	text = models.TextField(max_length=DEFAULT_TEXT_LENGTH)
+
+	def __unicode__(self):
+		return self.text[:20]
 
 	class Meta:
 		abstract = True
@@ -121,6 +159,9 @@ class Proposal(TimeStamped):
 	def get_overview_url(self):
 		return self.get_url('overview')
 
+	def get_questions_url(self):
+		return self.get_url('proposal_question_list')
+
 	def get_discussion_url(self):
 		return self.get_url('discussion')
 
@@ -152,6 +193,7 @@ class ProposalVersion(TimeStamped):
 
 		return pvs[0]
 
+
 class Discussion(TimeStamped):
 	proposal = models.ForeignKey(Proposal)
 	title = models.CharField(max_length=TITLE_LENGTH)
@@ -174,6 +216,22 @@ class Reply(TimeStamped):
 
 	def __unicode__(self):
 		return self.user.username
+
+
+class Question(ScoredPost):
+	proposal = models.ForeignKey(Proposal)
+
+
+class QuestionComment(ScoredComment):
+	question = models.ForeignKey(Question)
+	
+
+class Answer(ScoredReply):
+	question = models.ForeignKey(Question)
+
+
+class AnswerComment(ScoredComment):
+	answer = models.ForeignKey(Answer)
 
 
 class Factor(TimeStamped):

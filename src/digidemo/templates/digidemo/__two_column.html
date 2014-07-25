@@ -1,9 +1,11 @@
-{% extends "digidemo/__base.html" %}
+{% extends "digidemo/__tabbed.html" %}
 {% load staticfiles %}
+
 
 {% block title %}
 	{{ proposal.title }} | {{ block.super }}
 {% endblock title %}
+
 
 {% block css %}
 	{{ block.super }}
@@ -11,115 +13,45 @@
 		href="{% static "digidemo/css/proposal.css" %}" />
 {% endblock css %}
 
-{% block media %}
-	{{ media }}
-{% endblock media %}
+
+{% block headline %}
+	<!-- start of propasal score and icons -->
+	<div class="proposal_status_bar">
+		{% include "digidemo/_w_vote_form.html" with form=proposal_vote_form include_id="proposal_vote" %}
+	</div>
+	<!-- end of proposal score and icons -->
+
+	<h1 class="proposal_title">
+		{{ proposal.get_latest.title }}
+	</h1>
+{% endblock headline %}
 
 
-{% block body %}
-{{ block.super }}
-{% include "digidemo/_w_login_user.html" %}
+{% block maincontent %}
+	<!-- start the (horizontal) center column of middle page layout -->
+	<div id="main_col">
 
-	<!-- content in the middle (vertical middle) of the page -->
-	<div id="middle">
-
-		<!-- centering device for the middle of the page layout -->
-		<div class="outer_center">
-			<div class="inner_center full_width">
-
-			<div id="headline">
-				<!-- start of propasal score and icons -->
-				<div class="proposal_status_bar">
-					{% include "digidemo/_w_vote_form.html" with form=proposal_vote_form include_id="proposal_vote" %}
-				</div>
-				<!-- end of proposal score and icons -->
-
-				<h1 class="proposal_title">
-					{{ proposal.get_latest.title }}
-				</h1>
-
-			</div>
-
-			{% include "digidemo/_w_tabs.html" with tabs=tabs %}
-
-			<!-- start the (horizontal) center column of middle page layout -->
-			<div id="main_col">
-
-				<!-- start of overview area -->
-				<div id="overview">
-					{% block proposal_content %}
-					{% endblock proposal_content %}
-				</div>
-				<!-- end of overview area -->
-
-			</div>
-			<!-- end of central column in middle page layout -->
-
-			<!-- start of right column in middle page layout -->
-			<div id="right_col">
-
-				{% include "digidemo/_i_create_proposal.html" %}
-
-				<!-- start of proposal sectors -->
-				<div class="tags">
-					Sectors
-					<ul>
-						<li>
-							<div class="economy_sector_tag">
-								Economy
-							</div>
-						</li>
-						<li>
-							<div class="environment_sector_tag">
-								Environment
-							</div>
-						</li>
-					</ul>
-					<div class="clear"></div>
-				</div>
-				<!-- end of proposal sectors -->
-
-				<!-- start of tags -->
-				<div class="tags">
-					Tags
-					<ul>
-						<li>
-							<div class="tag">
-								Tar-sands
-							</div>
-						</li>
-						<li>
-							<div class="tag">
-								CO2
-							</div>
-							<div class="tag">
-								Fossil-fuel
-							</div>
-						</li>
-					</ul>
-					<div class="clear"></div>
-				</div>
-				<!-- end of tags -->
-
-			</div>
-			<!-- end of right column in middle page layout -->
-
-			<div class="clear"></div>
-			</div>
-		</div>
-		<!-- end of centering device for the middle of the page layout -->
+		{% block maincol %}
+			<!-- **** -->
+		{% endblock maincol %}
 
 	</div>
-	<!-- end of the (vertical) middle of the page layout -->
+	<!-- end of central column in middle page layout -->
 
-	<!-- start of page footer -->
-	<div id="footer">
-		<div class="outer_center">
-			<div class="inner_center">
-				footer
-			</div>
-		</div>
+	<!-- start of right column in middle page layout -->
+	<div id="right_col">
+
+		{% block rightcol %}
+			<!-- **** -->
+		{% endblock rightcol %}
+
 	</div>
-	<!-- end of page footer -->
+	<!-- end of right column in middle page layout -->
 
-{% endblock body %}
+{% endblock maincontent %}
+
+
+{% block footer %}
+	footer
+{% endblock footer %}
+
