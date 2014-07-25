@@ -1,0 +1,12 @@
+{% extends "digidemo/__two_column.html" %}
+{% load staticfiles %}
+{% load apptags %}
+{% block maincol %}
+
+	<h2>
+		{{ question.title|markdown }}
+	</h2>
+
+	{{ question.text|markdown }}
+
+{% endblock maincol %}
