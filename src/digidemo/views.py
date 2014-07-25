@@ -394,7 +394,7 @@ def mainPage(request,sort_type='most_recent'):
 
         popular_posts =  Proposal.objects.order_by('-score')[:6]
 
-        featured_post = Proposal.objects.get(pk=2);
+        featured_post = Proposal.objects.get(pk=1);
         
         users = UserProfile.objects.all();
 
@@ -449,4 +449,23 @@ def userRegistration(request):
                 { 'form' : registrationForm,}
                 )
 
+from django.shortcuts import render
+from forms import ProposalSearchForm
 
+def search(request):
+    """
+    Search > Root
+    """
+
+    # we retrieve the query to display it in the template
+    form =ProposalSearchForm(request.GET)
+
+    # we call the search method from the NotesSearchForm. Haystack do the work!
+    results = form.search()
+
+    print(results);
+        
+    return render(request, 'search/search.html', {
+      #  'search_query' : search_query,
+        'notes' : results,
+    })

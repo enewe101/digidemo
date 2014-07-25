@@ -9,11 +9,11 @@ admin.autodiscover()
 
 
 
-if settings.TESTING_MODE:
+#if settings.TESTING_MODE:
     # enable this handler only for testing, 
     # so that if DEBUG=False and we're not testing,
     # the default handler is used
-    handler500 = 'digidemo.views.show_server_error'
+#    handler500 = 'digidemo.views.show_server_error'
 
 
 urlpatterns = patterns('',
@@ -21,6 +21,9 @@ urlpatterns = patterns('',
 	url(r'^mainPage/$',mainPage, name='mainPage'),
 	url(r'^mainPage/sort=(?P<sort_type>\w+)/$',mainPage,name='mainPage'),
 
+        #Search results
+        url(r'^search/$',search,name='search'),
+        
 	#Testing login
 	#   url(r'^Login/$',Login),
                        

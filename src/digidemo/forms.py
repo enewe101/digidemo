@@ -14,8 +14,8 @@ from digidemo.settings import PROJECT_DIR
 from digidemo import utils
 import os
 
-log_fname = os.path.join(PROJECT_DIR, 'media/~log.txt')
-logging.basicConfig(filename=log_fname, level=logging.DEBUG)
+#log_fname = os.path.join(PROJECT_DIR, 'media/~log.txt')
+#logging.basicConfig(filename=log_fname, level=logging.DEBUG)
 
 
 def bound_form(endpoint=None, class_name=None):
@@ -700,3 +700,23 @@ class NameForm(forms.Form):
         country = forms.CharField(max_length = 20)
         province = forms.CharField(max_length = 30)
 
+
+from haystack.forms import SearchForm
+
+class ProposalSearchForm(SearchForm):
+
+    def no_query_found(self):
+        return self.searchqueryset.all()
+
+    def search(self):
+        # First, store the SearchQuerySet received from other processing. (the main work is run internally by Haystack here).
+        sqs = super(ProposalSearchForm, self).search()
+
+        # if something goes wrong
+        if not self.is_valid():
+            return self.no_query_found()
+
+        # you can then adjust the search results and ask for instance to order the results by title
+        
+
+        return sqs
