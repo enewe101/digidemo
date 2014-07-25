@@ -37,6 +37,8 @@ urlpatterns = patterns('',
 	url(r'^add_proposal/$', add_proposal, name='add_proposal'),
 	url(r'^overview/(?P<proposal_id>\w+)/.*$', overview, name='overview'),
 	url(r'^proposal/(?P<proposal_id>\w+)/.*$', proposal, name='proposal'),
+	url(r'^questions/(?P<proposal_id>\w+)/.*$', proposal_question_list, 
+		name='proposal_question_list'),
 	url(r'^discuss/(?P<proposal_id>\w+)/.*$', discuss, name='discussion'),
 	url(r'^edit/(?P<proposal_id>\w+)/.*$', edit, name='edit'),
 

@@ -1,113 +1,160 @@
 {% extends "digidemo/__two_column.html" %}
 {% load apptags %}
-{% block proposal_content %}
 
-
+{% block maincol %}
 <!-- start the proposal -->
-<div id="proposal">
+<div id="overview">
+	<div id="proposal">
 
-	<!-- spacer for horizontal alignment of proposal body -->
-	<div class="proposal_status_bar vert20"></div>
+		<!-- spacer for horizontal alignment of proposal body -->
+		<div class="proposal_status_bar vert20"></div>
 
-	<!-- start of proposal main area -->
-	<div class="proposal_main">
+		<!-- start of proposal main area -->
+		<div class="proposal_main">
 
-		<!-- start proposal summary -->
-		<div id="proposal_summary">
-			{{ proposal.get_latest.summary|markdown }}
-		</div>	
-		<!-- end proposal summary -->
+			<!-- start proposal summary -->
+			<div id="proposal_summary">
+				{{ proposal.get_latest.summary|markdown }}
+			</div>	
+			<!-- end proposal summary -->
 
-		<!-- start proposal factors -->
-		<div id="proposal_factors">
+			<!-- start proposal factors -->
+			<div id="proposal_factors">
 
-			<div class="clear"></div>
-			<div class="factor_left_column">
-				<div class="factor_list_heading">
-					Foreseen benefits:
+				<div class="clear"></div>
+				<div class="factor_left_column">
+					<div class="factor_list_heading">
+						Foreseen benefits:
+					</div>
+					{% if pos_factors|length = 0 %}
+					<div class="centered italic grey">none</div>
+					{% else %}
+					<ul class="factor_list">
+						{% for factor in pos_factors %}
+						<li class="factor_element">
+						{{ factor.description|markdown }}
+						</li>
+						{% endfor %}
+					</ul>
+					{% endif %}
 				</div>
-				{% if pos_factors|length = 0 %}
-				<div class="centered italic grey">none</div>
-				{% else %}
-				<ul class="factor_list">
-					{% for factor in pos_factors %}
-					<li class="factor_element">
-					{{ factor.description|markdown }}
-					</li>
-					{% endfor %}
-				</ul>
-				{% endif %}
-			</div>
 
-			<div class="factor_right_column">
-				<div class="factor_list_heading">
-					Foreseen hazards:
+				<div class="factor_right_column">
+					<div class="factor_list_heading">
+						Foreseen hazards:
+					</div>
+					{% if neg_factors|length = 0 %}
+					<div class="centered italic grey">none</div>
+					{% else %}
+					<ul class="factor_list">
+						{% for factor in neg_factors %}
+						<li class="factor_element">
+						{{ factor.description|markdown }}
+						</li>
+						{% endfor %}
+					</ul>
+					{% endif %}
 				</div>
-				{% if neg_factors|length = 0 %}
-				<div class="centered italic grey">none</div>
-				{% else %}
-				<ul class="factor_list">
-					{% for factor in neg_factors %}
-					<li class="factor_element">
-					{{ factor.description|markdown }}
-					</li>
-					{% endfor %}
-				</ul>
-				{% endif %}
+				<div class="clear"></div>
+
 			</div>
-			<div class="clear"></div>
+			<!-- end proposal factors -->
+
+			{% block proposal_text %}
+			{% endblock proposal_text %}
 
 		</div>
-		<!-- end proposal factors -->
-
-		{% block proposal_text %}
-		{% endblock proposal_text %}
+		<!-- end of proposal main area -->
 
 	</div>
-	<!-- end of proposal main area -->
+	<!-- end the proposal -->
 
-</div>
-<!-- end the proposal -->
-
-<div class="clear"></div>
-<div class="hr_flourish">
-	<div class="hr"></div> 
-	<div class="flourish"></div>
-</div>
-
-<!-- start the open letters area -->
-<h1>Open Letters</h1>
-<div id="letters">
-{% for letter_section in letter_sections %}
-	{% with letter=letter_section.letter %}
-	{% with i=forloop.counter|stringformat:"s" %}
-
-	{% if not forloop.first %}
-		<hr />
-	{% endif %}
-
-	{% include "digidemo/_i_letter.html" with include_id=forloop.counter %}
 	<div class="clear"></div>
-
-
-	{% endwith %}
-	{% endwith %}
-{% endfor %} <!-- loop over all letters for the proposal -->
-
 	<div class="hr_flourish">
 		<div class="hr"></div> 
 		<div class="flourish"></div>
 	</div>
 
-	<!-- start form for adding new letters -->
-	<h1>Your Letter</h1>
-	<div id="add_letter_div">
+	<!-- start the open letters area -->
+	<h1>Open Letters</h1>
+	<div id="letters">
+	{% for letter_section in letter_sections %}
+		{% with letter=letter_section.letter %}
+		{% with i=forloop.counter|stringformat:"s" %}
 
-		{% include "digidemo/_w_ajax_form.html" with form=letter_form include_id="add" %}
+		{% if not forloop.first %}
+			<hr />
+		{% endif %}
+
+		{% include "digidemo/_i_letter.html" with include_id=forloop.counter %}
+		<div class="clear"></div>
+
+
+		{% endwith %}
+		{% endwith %}
+	{% endfor %} <!-- loop over all letters for the proposal -->
+
+		<div class="hr_flourish">
+			<div class="hr"></div> 
+			<div class="flourish"></div>
+		</div>
+
+		<!-- start form for adding new letters -->
+		<h1>Your Letter</h1>
+		<div id="add_letter_div">
+
+			{% include "digidemo/_w_ajax_form.html" with form=letter_form include_id="add" %}
+
+		</div>
+		<!-- end form for adding new letters -->
 
 	</div>
-	<!-- end form for adding new letters -->
-
+	<!-- end of letters area -->
 </div>
-<!-- end of letters area -->
-{% endblock proposal_content %}
+{% endblock maincol %}
+
+{% block rightcol %}
+	{% include "digidemo/_i_create_proposal.html" %}
+
+	<!-- start of proposal sectors -->
+	<div class="tags">
+		Sectors
+		<ul>
+			<li>
+				<div class="economy_sector_tag">
+					Economy
+				</div>
+			</li>
+			<li>
+				<div class="environment_sector_tag">
+					Environment
+				</div>
+			</li>
+		</ul>
+		<div class="clear"></div>
+	</div>
+	<!-- end of proposal sectors -->
+
+	<!-- start of tags -->
+	<div class="tags">
+		Tags
+		<ul>
+			<li>
+				<div class="tag">
+					Tar-sands
+				</div>
+			</li>
+			<li>
+				<div class="tag">
+					CO2
+				</div>
+				<div class="tag">
+					Fossil-fuel
+				</div>
+			</li>
+		</ul>
+		<div class="clear"></div>
+	</div>
+	<!-- end of tags -->
+
+{% endblock rightcol %}

@@ -1,0 +1,33 @@
+{% extends "digidemo/__two_column.html" %}
+{% load staticfiles %}
+
+{% block maincol %}
+	<h1 class="proposal_title">Questions Re: {{ proposal.title }}</h1>
+	<div class="take_note">
+		<img src="{% static "digidemo/images/icon_info.png" %}" 
+			class="note_icon" />
+		<p>
+			Note: Post your questions about the issue here.  If you want to
+			contribute to the writing of the issue (it is a wiki after all!),
+			then you can post contstructive comments about the 
+			<span class="italic">content of the proposal</span> in the
+			discussion area.
+		</p>
+		<p>
+			Make sure to read the <a href="#">asking good questions</a> 
+			guideline before contributing :)
+		</p>
+	</div>
+
+	<div class="question_listing">
+
+		{% for question in questions %}
+			{{ question.score }}
+			{{ question.title }}
+			{{ question.text|truncatechars:256 }}
+			{{ question.user }}
+		{% endfor %}
+
+	</div>
+
+{% endblock maincol %}

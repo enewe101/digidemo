@@ -1,6 +1,6 @@
 {% extends "digidemo/__two_column.html" %}
 {% load staticfiles %}
-{% block proposal_content %}
+{% block maincol %}
 	<h1 class="proposal_title">Discussion Re: {{ proposal.title }}</h1>
 	<div class="take_note">
 		<img src="{% static "digidemo/images/icon_info.png" %}" 
@@ -31,4 +31,4 @@
 
 	</div>
 
-{% endblock proposal_content %}
+{% endblock maincol %}

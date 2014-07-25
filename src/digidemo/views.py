@@ -19,6 +19,7 @@ def get_proposal_tabs(proposal, active_tab):
 	proposal_tabs = [
 		{'name': 'overview','url': proposal.get_overview_url()},
 		{'name': 'proposal','url': proposal.get_proposal_url()},
+		{'name': 'questions','url': proposal.get_questions_url()},
 		{'name': 'discuss','url': proposal.get_discussion_url()},
 		{'name': 'edit','url': proposal.get_edit_url()}
 	]
@@ -224,6 +225,40 @@ def discuss(request, proposal_id):
 			'active_navitem': 'issues'
 		}
 	)
+
+
+def proposal_question_list(request, proposal_id):
+
+	proposal = Proposal.objects.get(pk=proposal_id)
+
+	# ** Hardcoded the logged in user to be enewe101 **
+	logged_in_user = User.objects.get(pk=1)
+
+	questions = Question.objects.filter(proposal=proposal)
+
+	return render(
+		request,
+		'digidemo/proposal_question_list.html',
+		{
+			'django_vars_js': get_django_vars_JSON(
+				{'user': utils.obj_to_dict(
+				logged_in_user, exclude=['password'])}),
+			'proposal': proposal,
+			'logged_in_user': logged_in_user,
+			'tabs': get_proposal_tabs(proposal, 'questions'),
+			'questions': questions,
+			'active_navitem': 'questions'
+		}
+	)
+
+
+
+
+
+
+
+
+
 
 
 def make_proposal_context(proposal):
