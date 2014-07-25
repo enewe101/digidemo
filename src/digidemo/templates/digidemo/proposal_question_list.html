@@ -23,7 +23,7 @@
 
 		{% for question in questions %}
 			{{ question.score }}
-			<a href="{{ question.get_url }}">{{ question.title }}</a>
+			{{ question.title }}
 			{{ question.text|truncatechars:256 }}
 			{{ question.user }}
 		{% endfor %}

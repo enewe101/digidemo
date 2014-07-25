@@ -35,6 +35,30 @@ def createUser():
 	return user
 
 
+#def createProposal():
+#	user = createUser()
+#	proposal = Proposal(
+#		title='Test Proposal Title',
+#		summary='''
+#This is a summary <script>do_evil()</script>
+#
+#A new paragraph
+#
+#- bullet
+#- bullet
+#			''',
+#		text ='''
+#This is the main text area &nbsp; 
+#
+#A new papagraph in the main text area
+#			''',
+#		is_published=True,
+#		score=0,
+#		user=user
+#	)
+#	proposal.save()
+#	return proposal
+
 
 class ProposalTest(TestCase):
 	'''
@@ -82,182 +106,7 @@ class SeleniumTest(LiveServerTestCase):
 
 
 
-
-class SeleniumFormTest(SeleniumTest):
-
-	FIELD_TYPES = ['SUBMIT', 'TEXTS', 'SELECTIONS']
-
-	def fill_form_correctly_and_verify(self):
-
-		# Fill and submit the form
-		self.fill_and_submit(self.FORM_DATA)
-
-		# verify that the proposal and related objects are found in the 
-		# database
-		self.check_valid()
-
-
-	def fill_and_submit(self, data):
-		self.fill_form(data)
-		self.submit_form()
-	
-
-	def fill_form(self, data):
-
-		# Accomodate the fact that the form elements may be dynamically
-		# loaded, but timeout if form elements not found within three seconds
-		wait = WebDriverWait(self.driver, 3)
-
-		# Apply the select choices
-		if 'SELECTIONS' in data:
-			for spec in data['SELECTIONS']:
-				element_id, datum = spec[0], spec[1]
-				elm = wait.until( lambda driver:
-					Select(driver.find_element('id', element_id)))
-				elm.select_by_visible_text(datum)
-
-		# Enter text in text-based inputs
-		if 'TEXTS' in data:
-			for spec in data['TEXTS']:
-				element_id, datum = spec[0], spec[1]
-				elm = wait.until(lambda driver: 
-					driver.find_element('id', element_id))
-				elm.send_keys(datum)
-
-
-	def clear_fields(self, data):
-
-		# Accomodate the fact that the form elements may be dynamically
-		# loaded, but timeout if form elements not found within three seconds
-		wait = WebDriverWait(self.driver, 3)
-
-		# Apply the select choices
-		if 'SELECTIONS' in data:
-			for spec in data['SELECTIONS']:
-				element_id = spec[0]
-				elm = wait.until( lambda driver:
-					Select(driver.find_element('id', element_id)))
-				elm.select_by_visible_text('-'*9)
-
-		# Enter text in text-based inputs
-		if 'TEXTS' in data:
-			for spec in data['TEXTS']:
-				element_id = spec[0]
-				elm = wait.until(lambda driver: 
-					driver.find_element('id', element_id))
-				elm.clear()
-
-
-	def submit_form(self):
-		# submit the form
-		self.driver.find_element('id', self.FORM_DATA['SUBMIT']).click()
-
-
-	def get_current_url(self):
-		return self.driver.current_url
-
-
-	def test_simple_add(self):
-		# This test simply does a vanilla form filling, submission, and check
-		self.driver.get(self.ADD_FORM_URL)
-		self.fill_form_correctly_and_verify()
-
-
-	def test_form_errors(self):
-		print '*** testing incomplete form submission ***'
-		self.driver.get(self.ADD_FORM_URL)
-		self.fill_form(self.FORM_DATA)
-
-		for field_type in self.FIELD_TYPES:
-			if field_type in self.FORM_DATA and field_type != 'SUBMIT':
-				for spec in self.FORM_DATA[field_type]:
-
-					# check whether the field is specified as required
-					required = False
-					try:
-						required = bool(spec[2] == 'require')
-					except IndexError:
-						pass
-
-					# if required, try ommitting it; ensure error.
-					if required:
-						self.clear_fields({field_type: [spec]})
-						self.submit_form()
-						self.check_invalid()
-
-						# replace the missing field
-						self.fill_form({field_type: [spec]})
-
-
-		# finally, confirm that the form submits correctly,
-		# with all the fields filled
-		self.submit_form()
-		self.check_valid()
-
-		
-
-
-class QuestionFormTest(SeleniumFormTest):
-	'''
-	Tests adding a question using the QuestionForm
-	'''
-
-	def setUp(self):
-
-		self.TITLE = 'Test Title'
-		self.TEXT = 'Test text.'
-		self.FORM_DATA = {
-			'TEXTS': [
-				('QuestionForm_title', self.TITLE, 'require'),
-				('QuestionForm_text', self.TEXT, 'require')
-			],
-			'SUBMIT': 'QuestionForm__submit'
-		}
-
-		self.PROPOSAL = Proposal.objects.get(pk=1)
-		self.ADD_FORM_URL = (self.live_server_url 
-			+ self.PROPOSAL.get_question_url())
-		self.USER = User.objects.get(username='superuser')
-
-
-	def check_valid(self):
-
-		# check whether the new question was created
-		question_set = self.PROPOSAL.question_set.filter(
-			title=self.TITLE)
-		self.assertEqual(question_set.count(), 1)
-
-		# verify the question has the right data
-		self.question = question_set[0]
-		self.assertEqual(self.question.text, self.TEXT)
-		self.assertEqual(self.question.user, self.USER)
-		self.assertEqual(self.question.proposal, self.PROPOSAL)
-
-		# check that we were redirected to the view-question page
-		self.assertEqual(
-			self.get_current_url(),
-			self.live_server_url + self.question.get_url()
-		)
-
-
-	def check_invalid(self):
-
-		# ensure the new question was not created
-		question_set = self.PROPOSAL.question_set.filter(
-			title=self.TITLE)
-		self.assertEqual(question_set.count(), 0)
-
-		# ensure we are faced with the form again (rather than redirected)
-		self.assertEqual(self.get_current_url(), self.ADD_FORM_URL)
-
-
-	def get_success_url(self):
-		return self.question.get_url()
-
-
-
-
-class ProposalFormTest(SeleniumFormTest):
+class ProposalFormTest(SeleniumTest):
 	'''
 	Tests adding and editing proposals (proposal versions), and their 
 	associated factors. 
@@ -268,6 +117,19 @@ class ProposalFormTest(SeleniumFormTest):
 		self.TITLE = 'Test Title'
 		self.SUMMARY = 'Test summary.'
 		self.TEXT = 'Test text.'
+
+		# Defines the choices (visible text in <select> form element) 
+		# sector of factors
+		S1 = u'ECO'
+		S2 = u'ENV'
+		S3 = u'HEA'
+		S4 = u'EDU'
+		S5 = u'IR'
+		S6 = u'SOC'
+		S7 = u'SEC'
+		S8 = u'DEM'
+		S9 = u'ECO'
+		S10 = u'ENV'
 
 		# The hardcoded logged in user's name.  Change this when logging in
 		# users is ready
@@ -288,38 +150,74 @@ class ProposalFormTest(SeleniumFormTest):
 
 		# Text to put in proposal version text inputs and textareas
 		self.PLAIN_ENTRIES = [
-			('ProposalVersionForm_title', self.TITLE, 'require'),
-			('ProposalVersionForm_summary', self.SUMMARY, 'require'),
-			('ProposalVersionForm_text', self.TEXT, 'require'),
+			('ProposalVersionForm_title', self.TITLE),
+			('ProposalVersionForm_summary', self.SUMMARY),
+			('ProposalVersionForm_text', self.TEXT),
 		]
 		self.FACTOR_ENTRIES = [(f[1],f[2]) for f in self.FACTOR_TEXTS]
-		self.TEXTS = self.PLAIN_ENTRIES + self.FACTOR_ENTRIES
+		self.ENTRIES = self.PLAIN_ENTRIES + self.FACTOR_ENTRIES
 
 		# Sector selections to use in factors
 		self.SELECTIONS = [ 
-			('id_pos-0-sector', u'ECO', 'require'),
-			('id_pos-1-sector', u'ENV'),
-			('id_pos-2-sector', u'HEA'),
-			('id_pos-3-sector', u'EDU'),
-			('id_pos-4-sector', u'IR' ),
-								      
-			('id_neg-0-sector', u'SOC'),
-			('id_neg-1-sector', u'SEC'),
-			('id_neg-2-sector', u'DEM'),
-			('id_neg-3-sector', u'ECO'),
-			('id_neg-4-sector', u'ENV'),
+			('id_pos-0-sector', S1),
+			('id_pos-1-sector', S2),
+			('id_pos-2-sector', S3),
+			('id_pos-3-sector', S4),
+			('id_pos-4-sector', S5),
+								
+			('id_neg-0-sector', S6),
+			('id_neg-1-sector', S7),
+			('id_neg-2-sector', S8),
+			('id_neg-3-sector', S9),
+			('id_neg-4-sector', S10),
 		]
 
-		self.FORM_DATA = {
-			'SUBMIT': '__submit',
+		self.DATA = {
 			'SELECTIONS': self.SELECTIONS,
-			'TEXTS': self.TEXTS
+			'ENTRIES': self.ENTRIES
 		}
 
 		self.ADD_FORM_URL = self.live_server_url + reverse('add_proposal')
 		self.EDIT_FORM_URL = (self.live_server_url 
 			+ Proposal.objects.get(title="Keystone XL Pipeline Extension")\
 				.get_edit_url())
+
+
+
+	def test_add_proposal(self):
+		# This test simply does a vanilla form filling, submission, and check
+		self.driver.get(self.ADD_FORM_URL)
+		self.fill_form_correctly_and_verify()
+
+
+	def test_add_with_errors(self):
+
+		# Here, we will intentionally leave some inputs blank
+
+		# go to the add-proposal form
+		self.driver.get(self.live_server_url + reverse('add_proposal'))
+
+
+		# First populate all the correct data
+		self.fill_form(self.DATA)
+
+		# Now clear a select field, submit, and ensure there's an error
+		removed = self.clear_field_submit_ensure_error('selections', 0)
+
+		# Replace that datum
+		self.fill_form(removed)
+
+		# for each form_data text-based input,
+		# verify that ommission is an error. 
+		for idx in range(len(self.PLAIN_ENTRIES)):
+			removed = self.clear_field_submit_ensure_error('entries', idx)
+
+			# replace the removed datum befor trying again!
+			self.fill_form(removed)
+
+		# Now try submitting everything correctly, but mark
+		self.fill_form(removed)
+
 
 
 	def test_edit_proposal(self):
@@ -383,8 +281,8 @@ class ProposalFormTest(SeleniumFormTest):
 
 
 	def clear_all_fields(self):
-		for field_kind in ['SELECTIONS', 'TEXTS']:
-			for idx in range(len(self.FORM_DATA[field_kind])):
+		for field_kind in ['SELECTIONS', 'ENTRIES']:
+			for idx in range(len(self.DATA[field_kind])):
 				self.clear_field(field_kind, idx)
 
 
@@ -393,12 +291,12 @@ class ProposalFormTest(SeleniumFormTest):
 		# Get the datum that will be cleared from the form.  
 		# Copy it into a form_data datastructure
 		if field_kind.upper() == 'SELECTIONS':
-			datum = self.FORM_DATA['SELECTIONS'][idx]
-			return_datum = {'SELECTIONS': [datum], 'TEXTS': []}
+			datum = self.DATA['SELECTIONS'][idx]
+			return_datum = {'SELECTIONS': [datum], 'ENTRIES': []}
 
-		elif field_kind.upper() == 'TEXTS':
-			datum = self.FORM_DATA['TEXTS'][idx]
-			return_datum = {'SELECTIONS':[], 'TEXTS': [datum]}
+		elif field_kind.upper() == 'ENTRIES':
+			datum = self.DATA['ENTRIES'][idx]
+			return_datum = {'SELECTIONS':[], 'ENTRIES': [datum]}
 
 		self.clear_field(field_kind, idx)
 		return return_datum
@@ -409,13 +307,13 @@ class ProposalFormTest(SeleniumFormTest):
 		# Clear the identified field.  How to do it depends on the field_kind
 		wait = WebDriverWait(self.driver, 3)
 		if field_kind.upper() == 'SELECTIONS':
-			id_to_clear = self.FORM_DATA['SELECTIONS'][idx][0]
+			id_to_clear = self.DATA['SELECTIONS'][idx][0]
 			elm = wait.until( lambda driver:
 				Select(driver.find_element('id', id_to_clear)))
 			elm.select_by_visible_text('---------')
 
-		elif field_kind.upper() == 'TEXTS':
-			id_to_clear = self.FORM_DATA['TEXTS'][idx][0]
+		elif field_kind.upper() == 'ENTRIES':
+			id_to_clear = self.DATA['ENTRIES'][idx][0]
 			self.driver.find_element('id', id_to_clear).clear()
 
 
@@ -423,23 +321,25 @@ class ProposalFormTest(SeleniumFormTest):
 		return_datum = self.clear_and_return_field(field_kind, idx)
 		self.submit_form()
 		# We should be faced with the form again (same url) because of errors
-		self.check_invalid()
+		self.verify_form_not_validated()
 		return return_datum
 		
 
 	def fill_form_correctly_and_verify(self):
-		self.fill_and_submit(self.FORM_DATA)
-		self.check_valid()
 
+		# Fill and submit the form
+		self.fill_and_submit(self.DATA)
 
-	def check_valid(self):
+		# verify that the proposal and related objects are found in the 
+		# database
 		self.check_db()
+
 		self.verify_form_validated()
 
 
-	def check_invalid(self):
-		self.assertTrue(
-			self.get_current_url() in [self.ADD_FORM_URL, self.EDIT_FORM_URL])
+	def verify_form_not_validated(self):
+		self.assertTrue(self.driver.current_url 
+			in [self.ADD_FORM_URL, self.EDIT_FORM_URL])
 
 
 	def verify_form_validated(self):
@@ -472,7 +372,21 @@ class ProposalFormTest(SeleniumFormTest):
 		self.click_add_factor_forms()
 		self.click_add_factor_forms()
 	
-		super(ProposalFormTest, self).fill_form(data)
+		# Apply the select choices
+		wait = WebDriverWait(self.driver, 3)
+		for element_id, choice in data['SELECTIONS']:
+			elm = wait.until( lambda driver:
+				Select(driver.find_element('id', element_id)))
+			elm.select_by_visible_text(choice)
+
+		# Enter text in textareas and text inputs
+		for element_id, entry_text in data['ENTRIES']:
+			self.driver.find_element('id', element_id).send_keys(entry_text)
+
+
+	def submit_form(self):
+		# submit the form
+		self.driver.find_element('id', '__submit').click()
 
 
 

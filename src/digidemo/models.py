@@ -29,7 +29,7 @@ class TimeStamped(models.Model):
 
 class ScoredComment(TimeStamped):
 	user = models.ForeignKey(User)
-	score = models.SmallIntegerField(default=0, editable=False)
+	score = models.SmallIntegerField(default=0)
 	text = models.CharField(max_length=DEFAULT_COMMENT_LENGTH)
 
 	def __unicode__(self):
@@ -41,7 +41,7 @@ class ScoredComment(TimeStamped):
 
 class ScoredPost(TimeStamped):
 	user = models.ForeignKey(User)
-	score = models.SmallIntegerField(default=0, editable=False)
+	score = models.SmallIntegerField(default=0)
 	title = models.CharField(max_length=TITLE_LENGTH)
 	text = models.TextField(max_length=DEFAULT_TEXT_LENGTH)
 
@@ -54,7 +54,7 @@ class ScoredPost(TimeStamped):
 
 class ScoredReply(TimeStamped):
 	user = models.ForeignKey(User)
-	score = models.SmallIntegerField(default=0, editable=False)
+	score = models.SmallIntegerField(default=0)
 	text = models.TextField(max_length=DEFAULT_TEXT_LENGTH)
 
 	def __unicode__(self):
@@ -159,10 +159,7 @@ class Proposal(TimeStamped):
 	def get_overview_url(self):
 		return self.get_url('overview')
 
-	def get_question_url(self):
-		return self.get_url('ask_question')
-
-	def get_question_list_url(self):
+	def get_questions_url(self):
 		return self.get_url('proposal_question_list')
 
 	def get_discussion_url(self):
@@ -223,10 +220,6 @@ class Reply(TimeStamped):
 
 class Question(ScoredPost):
 	proposal = models.ForeignKey(Proposal)
-
-	def get_url(self):
-		url = reverse('view_question', kwargs={'question_id':self.pk})
-		return url + slugify(self.title)
 
 
 class QuestionComment(ScoredComment):

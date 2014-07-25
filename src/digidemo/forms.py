@@ -135,19 +135,6 @@ def auto_add_input_class(form_class_name, form_instance):
 			attrs['class'] = css_classes
 
 
-@bound_form()
-class QuestionForm(ModelForm):
-	class Meta:
-		model = Question
-		fields = ['proposal', 'user', 'title', 'text']
-		widgets = {
-			'proposal': forms.HiddenInput(),
-			'user': forms.HiddenInput(),
-			'title': forms.TextInput(),
-			'text': forms.Textarea()
-		}
-
-
 @bound_form('reply')
 class ReplyForm(ModelForm):
 	class Meta:

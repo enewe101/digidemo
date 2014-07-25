@@ -506,17 +506,11 @@ a.send_letter:active {
 .ProposalVersionForm_title {
 	width: 400px;
 }
-
-.ProposalVersionForm_summary, 
-.ProposalVersionForm_text, 
-.ProposalVersionForm_title,
-.QuestionForm_title,
-.QuestionForm_text {
+.ProposalVersionForm_summary, .ProposalVersionForm_text, .ProposalVersionForm_title {
 	width: 704px;
 }
 
-.ProposalVersionForm_summary,
-.QuestionForm_text {
+.ProposalVersionForm_summary {
 	height: 200px;
 }
 
@@ -553,18 +547,14 @@ a.send_letter:active {
 	margin-bottom: 10px
 }
 
-.EditProposalForm textarea,
-.EditProposalForm input,
-.QuestionForm textarea,
-.QuestionForm input {
+.EditProposalForm textarea, .EditProposalForm input {
 	background: rgb(250,250,250);
 	border: solid 1px rgb(80,80,80);
 	color: black;
 	padding: 8px;
 }
 
-.EditProposalForm .submit,
-.QuestionForm .submit {
+.EditProposalForm .submit {
 	font-family: ubuntu;
 	font-size: 16px;
 }
@@ -574,22 +564,9 @@ a.send_letter:active {
 	font-size: 16px;
 }
 
-.QuestionForm textarea {
-	font-family: ubuntu;
-	font-size: 16px;
-}
-
-.ProposalVersionForm_title,
-.QuestionForm_title {
-	font-size: 24px;
-	font-weight: bold;
-}
-
 .ProposalVersionForm_title {
 	font-family: computerModern;
-}
-
-.QuestionForm_title {
-	font-family: ubuntu;
+	font-size: 24px;
+	font-weight: bold;
 }
 

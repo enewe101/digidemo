@@ -19,7 +19,7 @@ def get_proposal_tabs(proposal, active_tab):
 	proposal_tabs = [
 		{'name': 'overview','url': proposal.get_overview_url()},
 		{'name': 'proposal','url': proposal.get_proposal_url()},
-		{'name': 'questions','url': proposal.get_question_list_url()},
+		{'name': 'questions','url': proposal.get_questions_url()},
 		{'name': 'discuss','url': proposal.get_discussion_url()},
 		{'name': 'edit','url': proposal.get_edit_url()}
 	]
@@ -252,63 +252,8 @@ def proposal_question_list(request, proposal_id):
 	)
 
 
-def ask_question(request, proposal_id):
-
-	proposal = Proposal.objects.get(pk=proposal_id)
-
-	# ** Hardcoded the logged in user to be enewe101 **
-	logged_in_user = User.objects.get(pk=1)
-
-	if request.method == 'POST':
-		form = QuestionForm(request.POST, endpoint=proposal.get_question_url())
-		if form.is_valid():
-			question = form.save()
-			return redirect(question.get_url())
-	
-	else:
-		form = QuestionForm(
-			initial={'user':logged_in_user, 'proposal':proposal},
-			endpoint=proposal.get_question_url()
-		)
-
-	return render(
-		request,
-		'digidemo/ask_question.html',
-		{
-			'django_vars_js': get_django_vars_JSON(
-				{'user': utils.obj_to_dict(
-				logged_in_user, exclude=['password'])}),
-			'proposal': proposal,
-			'logged_in_user': logged_in_user,
-			'tabs': get_proposal_tabs(proposal, 'questions'),
-			'form': form,
-			'active_navitem': 'questions'
-		}
-	)
 
 
-def view_question(request, question_id):
-	question = Question.objects.get(pk=question_id)
-	proposal = question.proposal
-
-
-	# ** Hardcoded the logged in user to be enewe101 **
-	logged_in_user = User.objects.get(pk=1)
-
-	return render(
-		request,
-		'digidemo/view_question.html',
-		{
-			'django_vars_js': get_django_vars_JSON(
-				{'user': utils.obj_to_dict(
-				logged_in_user, exclude=['password'])}),
-			'question': question,
-			'proposal': proposal,
-			'logged_in_user': logged_in_user,
-			'tabs': get_proposal_tabs(proposal, 'questions'),
-			'active_navitem': 'questions'
-		}
-	)
 
 
 
