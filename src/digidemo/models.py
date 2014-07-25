@@ -212,7 +212,7 @@ class FactorVersion(TimeStamped):
 			factor=factor).order_by('-creation_date')
 
 		if len(factor_versions) == 0:
-			raise self.DoesNotExist('There are no proposal versions for that'
+			raise cls.DoesNotExist('There are no proposal versions for that'
 				'proposal')
 
 		return factor_versions[0]

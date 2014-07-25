@@ -204,44 +204,6 @@ class FactorForm(ModelForm):
 
 class FactorVersionForm(ModelForm):
 
-#	def clean(self):
-#		'''
-#		make sure that the description field has some non-whitespace 
-#		characters (but only if deleted isn't checked)
-#		'''
-#
-#		factor = self['factor'].value()
-#		proposal_version = self['proposal_version'].value()
-#		description = self['description'].value()
-#		valence = self['valence'].value()
-#		sector = self['sector'].value()
-#		deleted = self['deleted'].value()
-#
-#		# If the form is marked for deletion, it's okay for the 
-#		# content fields to be blank
-#		if deleted:
-#			# but make sure that there is a factor and proposal_version
-#			if factor is None or proposal_version is None:
-#				raise forms.ValidationError(
-#					'Deleted factor versions must be bound to a have a '\
-#					'factor and proposal version')
-#
-#		else:
-#			if description.strip() == '':
-#				raise forms.ValidationError('A description is required')
-#
-#			if valence == '':
-#				raise forms.ValidationError('Error: missing valence.')
-#
-#			if sector == '':
-#				print 'RAISE'
-#				raise forms.ValidationError('Sector is required.')
-#
-#
-#		#cleaned_data = ModelForm.clean(self)
-#		return {} #cleaned_data
-
-
 	class Meta:
 		model = FactorVersion
 		fields = [
@@ -445,19 +407,13 @@ class EditProposalForm(object):
 		# validate the proposal version
 		is_valid = self.proposal_version_form.is_valid()
 
-		print 'is proposal version valid: ', is_valid
-
 		# validate the positive factors formset
 		is_valid = self._validate_factors(
 			self.factor_formsets['pos']) and is_valid
 
-		print 'are pos factors: ', is_valid
-
 		# validate the negative factors formset
 		is_valid = self._validate_factors(
 			self.factor_formsets['neg']) and is_valid
-
-		print 'are neg factors: ', is_valid
 
 		return is_valid
 
@@ -514,7 +470,16 @@ class EditProposalForm(object):
 		# Otherwise, we are not making a new proposal, only saving a new
 		# proposal version
 		else:
+
+			# Update the values in the Proposal which mirror the 
+			# ProposalVersion
 			self.proposal = self.proposal_version_form.cleaned_data['proposal']
+			for field in ['title', 'summary', 'text', 'user']:
+				setattr(self.proposal, field,
+					self.proposal_version_form.cleaned_data[field])
+			self.proposal.save()
+
+			# and of course, save the ProposalVersion
 			new_proposal_version = self.proposal_version_form.save()
 
 		# Now save the factors
@@ -537,9 +502,6 @@ class EditProposalForm(object):
 				is_deleted = form['deleted'].value()
 				if not_blank and not is_deleted:
 
-					print form['description'].value()
-					print form['valence'].value()
-
 					# make a new factor entry (points to proposal) 
 					new_factor_data = utils.extract_dict(form.cleaned_data,
 						['description', 'valence', 'sector', 'deleted'])
@@ -557,21 +519,39 @@ class EditProposalForm(object):
 			# otherwise its an edit-factor form
 			else:
 
+				factor = Factor.objects.get(pk=form['factor'].value())
+
 				# if the factor is deleted, don't take values from the form.  
 				# Just duplicate the previous factor version and mark deleted
 				if form['deleted'].value():
-					factor = Factor.objects.get(pk=form['factor'].value())
+
+					# Make sure that the factor mirrors the latest 
+					# FactorVersion content
+					factor.deleted=True
+					factor.save()
+
 					factor_version = factor.get_latest()
-					factor_version.pk=None
+					factor_version.pk=None	# lets us save the same data as new
+											# entry
 					factor_version.deleted=True
 					factor_version.save()
 
 				# make a new factor version point it to the 
 				# same factor, but to the proposal version
 				else:
+
+					# make the new factor version
 					new_factor_version = form.save(commit=False)
 					new_factor_version.proposal_version = proposal_version
 					new_factor_version.save()
+
+					# update the factor to mirror factor_version content
+					fields = ['description', 'valence', 'sector', 'deleted']
+					for field in fields:
+						setattr(factor, field, 
+							getattr(new_factor_version, field))
+
+					factor.save()
 
 
 

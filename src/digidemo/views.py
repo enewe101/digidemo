@@ -86,7 +86,6 @@ def proposal(request, proposal_id):
 
 def add_proposal(request):
 
-
 	# ** Hardcoded the logged in user to be enewe101 **
 	logged_in_user = User.objects.get(pk=1)
 
@@ -154,7 +153,7 @@ def edit(request, proposal_id):
 		)
 
 		if edit_proposal_form.is_valid():
-			edit_proposal_form.save()
+			proposal = edit_proposal_form.save()
 			return redirect(proposal.get_url('proposal'))
 
 	else:
