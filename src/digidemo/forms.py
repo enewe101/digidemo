@@ -63,7 +63,7 @@ def bound_form(endpoint=None, class_name=None):
 				self.form_class = kwargs.pop('form_class', default_class_name)
 
 				# Customize the forms auto_id 
-				auto_id = kwargs.pop('auto_id', default_class_name + '_%s')
+				auto_id = kwargs.pop('auto_id', self.form_class + '_%s')
 
 				# The form's fields automatically get classes too, based on
 				# the forms class and the fields name
@@ -81,6 +81,24 @@ def bound_form(endpoint=None, class_name=None):
 					raise ValueError("No endpoint is bound to this form")
 
 				return self.endpoint
+
+
+			def json_errors(self):
+
+				# We're going to make a dict of all fields and there errors
+				# it will be exaustive (empty lists appear for fields without
+				# erorrs.  First, get an empty error dict with all fields:
+				all_fields = dict([(field.id_for_label, []) for field in self])
+
+				# Now we get the fields that actually have some errors
+				error_dict = {}
+				for field, error_list in self.errors.items():
+					field_id = self[field].id_for_label
+					error_dict[field_id] = list(error_list)
+
+				# mix them together before returning
+				all_fields.update(error_dict)
+				return all_fields
 
 
 			@classmethod
@@ -135,13 +153,26 @@ def auto_add_input_class(form_class_name, form_instance):
 			attrs['class'] = css_classes
 
 
+
+@bound_form('answer')
+class AnswerForm(ModelForm):
+	class Meta:
+		model = Answer
+		fields = ['target', 'user', 'text']
+		widgets = {
+			'target': forms.HiddenInput(),
+			'user': forms.HiddenInput(),
+			'text': forms.Textarea()
+		}
+
+
 @bound_form()
 class QuestionForm(ModelForm):
 	class Meta:
 		model = Question
-		fields = ['proposal', 'user', 'title', 'text']
+		fields = ['target', 'user', 'title', 'text']
 		widgets = {
-			'proposal': forms.HiddenInput(),
+			'target': forms.HiddenInput(),
 			'user': forms.HiddenInput(),
 			'title': forms.TextInput(),
 			'text': forms.Textarea()
@@ -695,6 +726,17 @@ class LetterVoteForm(VoteForm):
 	class Meta(VoteForm.Meta):
 		model = LetterVote
 
+
+@bound_form('vote_answer')
+class AnswerVoteForm(VoteForm):
+	class Meta(VoteForm.Meta):
+		model = AnswerVote
+
+
+@bound_form('vote_question')
+class QuestionVoteForm(VoteForm):
+	class Meta(VoteForm.Meta):
+		model = QuestionVote
 
 @bound_form('vote_discussion')
 class DiscussionVoteForm(VoteForm):

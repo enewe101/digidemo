@@ -468,7 +468,7 @@ a.send_letter:active {
 	margin: 20px 0;
 }
 
-.discussion {
+.discussion, .reply {
 	margin-bottom: 20px;
 }
 
@@ -488,7 +488,7 @@ a.send_letter:active {
 	float: right;
 }
 
-.discussion_main_area {
+.discussion_main_area, .reply_main_area {
 	width: 656px;
 	float: left;
 }
@@ -498,7 +498,7 @@ a.send_letter:active {
 	padding: 10px;
 }
 
-.discussion .discussion_user .sender {
+.discussion .discussion_user .sender, .reply_user .sender {
 	float: right;
 	margin: 10px;
 }
@@ -511,7 +511,8 @@ a.send_letter:active {
 .ProposalVersionForm_text, 
 .ProposalVersionForm_title,
 .QuestionForm_title,
-.QuestionForm_text {
+.QuestionForm_text,
+.AnswerForm_text {
 	width: 704px;
 }
 
@@ -556,7 +557,9 @@ a.send_letter:active {
 .EditProposalForm textarea,
 .EditProposalForm input,
 .QuestionForm textarea,
-.QuestionForm input {
+.QuestionForm input,
+.AnswerForm input,
+.AnswerForm textarea {
 	background: rgb(250,250,250);
 	border: solid 1px rgb(80,80,80);
 	color: black;
@@ -564,7 +567,8 @@ a.send_letter:active {
 }
 
 .EditProposalForm .submit,
-.QuestionForm .submit {
+.QuestionForm .submit,
+#AnswerForm__submit {
 	font-family: ubuntu;
 	font-size: 16px;
 }
@@ -574,7 +578,8 @@ a.send_letter:active {
 	font-size: 16px;
 }
 
-.QuestionForm textarea {
+.QuestionForm textarea,
+.AnswerForm textarea {
 	font-family: ubuntu;
 	font-size: 16px;
 }
@@ -593,3 +598,8 @@ a.send_letter:active {
 	font-family: ubuntu;
 }
 
+textarea.error,
+textarea.error {
+	border: solid 1px brown;
+	background: rgb(255,250,250);
+}

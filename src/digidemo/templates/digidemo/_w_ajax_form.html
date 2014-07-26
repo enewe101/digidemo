@@ -4,12 +4,16 @@
 
 		{% csrf_token %}
 
+		<div id="{{form.form_class}}_{{include_id}}_errors">
+		</div>
+
 		{% for hidden in form.hidden_fields %}
 			{{ hidden }}
 		{% endfor %}
 
 		{% for field in form.visible_fields %}
 		<div class="form_line">
+			<div id="{{field.id_for_label}}_errors"></div>
 			{{ field }}
 		</div>
 		{% endfor %}

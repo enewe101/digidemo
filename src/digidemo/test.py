@@ -1,5 +1,6 @@
 import time
 import copy
+import unittest
 from django.core.urlresolvers import reverse
 from django.test import TestCase, LiveServerTestCase
 from django.core.files import File
@@ -14,6 +15,29 @@ from selenium.webdriver.common.by import By
 import filecmp
 import os
 
+
+def pyWait(predicate, timeout, period):
+
+	start = time.time()
+	max_time = start + timeout
+
+	while time.time() < max_time:
+		if predicate():
+			return True
+		time.sleep(period)
+	
+	return False
+
+
+def setUpModule():
+	global DRIVER, WAIT
+	DRIVER = webdriver.Firefox()
+	WAIT = WebDriverWait(DRIVER, 3)	
+
+
+def tearDownModule():
+	global DRIVER
+	DRIVER.quit()
 
 def createUser():
 	# Create an auth_user
@@ -66,24 +90,43 @@ class ProposalTest(TestCase):
 
 
 
-class SeleniumTest(LiveServerTestCase):
+class QuestionRenderTest(LiveServerTestCase):
 	'''
-	Base class for selenium tests
+		tests that the test question in the database renders correctly
 	'''
+
+	def test_render(self):
+		question = Question.objects.get(pk=1)
+		DRIVER.get(self.live_server_url + question.get_url())
+
+		DRIVER.find_element_by_class_name('discussion_title')
+		DRIVER.find_element_by_id('q_upvote')
+		DRIVER.find_element_by_id('q_score')
+		DRIVER.find_element_by_id('q_downvote')
+
+		
+
+
+
+
+
+
+
+
+
+class SeleniumFormTest(LiveServerTestCase):
+
 	@classmethod
 	def setUpClass(cls):
-		cls.driver = webdriver.Firefox()
-		super(SeleniumTest, cls).setUpClass()
 
-	@classmethod
-	def tearDownClass(cls):
-		cls.driver.quit()
-		super(SeleniumTest, cls).tearDownClass()
+		# SeleniumFormTest is an abstract test class.  It shouldn't be run
+		# but classes that inherit from it should.
+		if cls == SeleniumFormTest:
+			raise unittest.SkipTest('abstract class')
 
+		else:
+			super(SeleniumFormTest, cls).setUpClass()
 
-
-
-class SeleniumFormTest(SeleniumTest):
 
 	FIELD_TYPES = ['SUBMIT', 'TEXTS', 'SELECTIONS']
 
@@ -106,13 +149,12 @@ class SeleniumFormTest(SeleniumTest):
 
 		# Accomodate the fact that the form elements may be dynamically
 		# loaded, but timeout if form elements not found within three seconds
-		wait = WebDriverWait(self.driver, 3)
 
 		# Apply the select choices
 		if 'SELECTIONS' in data:
 			for spec in data['SELECTIONS']:
 				element_id, datum = spec[0], spec[1]
-				elm = wait.until( lambda driver:
+				elm = WAIT.until( lambda driver:
 					Select(driver.find_element('id', element_id)))
 				elm.select_by_visible_text(datum)
 
@@ -120,7 +162,7 @@ class SeleniumFormTest(SeleniumTest):
 		if 'TEXTS' in data:
 			for spec in data['TEXTS']:
 				element_id, datum = spec[0], spec[1]
-				elm = wait.until(lambda driver: 
+				elm = WAIT.until(lambda driver: 
 					driver.find_element('id', element_id))
 				elm.send_keys(datum)
 
@@ -129,13 +171,12 @@ class SeleniumFormTest(SeleniumTest):
 
 		# Accomodate the fact that the form elements may be dynamically
 		# loaded, but timeout if form elements not found within three seconds
-		wait = WebDriverWait(self.driver, 3)
 
 		# Apply the select choices
 		if 'SELECTIONS' in data:
 			for spec in data['SELECTIONS']:
 				element_id = spec[0]
-				elm = wait.until( lambda driver:
+				elm = WAIT.until( lambda driver:
 					Select(driver.find_element('id', element_id)))
 				elm.select_by_visible_text('-'*9)
 
@@ -143,29 +184,28 @@ class SeleniumFormTest(SeleniumTest):
 		if 'TEXTS' in data:
 			for spec in data['TEXTS']:
 				element_id = spec[0]
-				elm = wait.until(lambda driver: 
+				elm = WAIT.until(lambda driver: 
 					driver.find_element('id', element_id))
 				elm.clear()
 
 
 	def submit_form(self):
 		# submit the form
-		self.driver.find_element('id', self.FORM_DATA['SUBMIT']).click()
+		DRIVER.find_element('id', self.FORM_DATA['SUBMIT']).click()
 
 
 	def get_current_url(self):
-		return self.driver.current_url
+		return DRIVER.current_url
 
 
 	def test_simple_add(self):
 		# This test simply does a vanilla form filling, submission, and check
-		self.driver.get(self.ADD_FORM_URL)
+		DRIVER.get(self.ADD_FORM_URL)
 		self.fill_form_correctly_and_verify()
 
 
 	def test_form_errors(self):
-		print '*** testing incomplete form submission ***'
-		self.driver.get(self.ADD_FORM_URL)
+		DRIVER.get(self.ADD_FORM_URL)
 		self.fill_form(self.FORM_DATA)
 
 		for field_type in self.FIELD_TYPES:
@@ -195,6 +235,67 @@ class SeleniumFormTest(SeleniumTest):
 		self.check_valid()
 
 		
+
+
+class AnswerFormTest(SeleniumFormTest):
+
+	def setUp(self):
+		self.TEXT = 'Test answer text'
+		self.FORM_DATA = {
+			'TEXTS': [('AnswerForm_text', self.TEXT, 'require')],
+			'SUBMIT': 'AnswerForm__submit' 
+		}
+
+		self.QUESTION = Question.objects.get(pk=1)
+		self.ADD_FORM_URL = self.live_server_url + self.QUESTION.get_url()
+		self.USER = User.objects.get(username='superuser')
+
+
+	@unittest.skip('skip')
+	def test_form_errors(self):
+		super(AnswerFormTest, self).test_form_errors()
+
+
+	def test_simple_add(self):
+		super(AnswerFormTest, self).test_simple_add()
+
+
+	def check_valid(self):
+
+		# We may have to wait, but soon the new answer is in the db
+		self.assertTrue(
+			pyWait(lambda: Answer.objects.count(), 3, 0.15))
+
+		answer = Answer.objects.get()
+		self.assertEqual(answer.text, self.TEXT)
+		self.assertEqual(answer.user, self.USER)
+		self.assertEqual(answer.target, self.QUESTION)
+		self.assertEqual(answer.score, 0)
+
+		# check that the new answer is on the page
+		reply_body = WAIT.until(
+			lambda driver: driver.find_elements_by_class_name('reply_body'))
+
+		# check for the voting elements.  When they are inserted, their id is
+		# built from some user data.
+		vote_id = (self.USER.username 
+			+ str(Answer.objects.filter(target=self.QUESTION).count()))
+
+		WAIT.until(
+			lambda driver: driver.find_element('id', vote_id + '_upvote'))
+		WAIT.until(
+			lambda driver: driver.find_element('id', vote_id + '_score'))
+		WAIT.until(
+			lambda driver: driver.find_element('id', vote_id + '_downvote'))
+
+		# check that the divider was introduced between the Q and A
+		hr_flourishes = WAIT.until(
+			lambda driver: driver.find_elements_by_class_name('flourish'))
+		self.assertEqual(len(hr_flourishes), 2)
+
+
+		# check that the entry box was hidden
+		# TODO
 
 
 class QuestionFormTest(SeleniumFormTest):
@@ -231,7 +332,7 @@ class QuestionFormTest(SeleniumFormTest):
 		self.question = question_set[0]
 		self.assertEqual(self.question.text, self.TEXT)
 		self.assertEqual(self.question.user, self.USER)
-		self.assertEqual(self.question.proposal, self.PROPOSAL)
+		self.assertEqual(self.question.target, self.PROPOSAL)
 
 		# check that we were redirected to the view-question page
 		self.assertEqual(
@@ -323,7 +424,7 @@ class ProposalFormTest(SeleniumFormTest):
 
 
 	def test_edit_proposal(self):
-		self.driver.get(self.EDIT_FORM_URL)
+		DRIVER.get(self.EDIT_FORM_URL)
 
 		# clear all the data.  Add extra factor forms first to prevent
 		# selenium from complaining about not finding the elemnt to clear
@@ -340,34 +441,33 @@ class ProposalFormTest(SeleniumFormTest):
 
 	def test_edit_delete_factor(self):
 
-		self.driver.get(self.EDIT_FORM_URL)
+		DRIVER.get(self.EDIT_FORM_URL)
 
 		# Test clicking delete after description or sector (or neither) has
 		# been cleared -- form should still validate
-		self.driver.find_element('id', 'id_neg-0-description').clear()
-		elm = Select(self.driver.find_element('id', 'id_pos-1-sector'))
+		DRIVER.find_element('id', 'id_neg-0-description').clear()
+		elm = Select(DRIVER.find_element('id', 'id_pos-1-sector'))
 		elm.select_by_visible_text('-'*9)
 
 		# If we have description filled, sector blank, its ok (ignored) if
 		# deleted is checked
 		self.click_add_factor_forms() # we need to add a form for this
-		wait = WebDriverWait(self.driver, 3)	# wait for form to arrive
-		elm = wait.until(lambda driver: 
+		elm = WAIT.until(lambda driver: 
 			driver.find_element('id', 'id_neg-2-description'))
 		elm.send_keys(self.SELECTIONS[6][1])
 
 		# Check deleted on all the above factors (and one other)
 		for id_stub in ['pos-0', 'neg-0', 'pos-1', 'neg-2']:
-			self.driver.find_element('id', 'id_%s-deleted' % id_stub).click()
+			DRIVER.find_element('id', 'id_%s-deleted' % id_stub).click()
 
 		# we can also have sector selected on an add-form, as long as 
 		# description is not selected too
-		elm = Select(self.driver.find_element('id', 'id_neg-1-sector'))
+		elm = Select(DRIVER.find_element('id', 'id_neg-1-sector'))
 		elm.select_by_visible_text('HEA')
 
 
 		# for convenience in verification, also change the title
-		title_elm = self.driver.find_element('id', 'ProposalVersionForm_title')
+		title_elm = DRIVER.find_element('id', 'ProposalVersionForm_title')
 		title_elm.clear()
 		title_elm.send_keys(self.TITLE)
 
@@ -406,17 +506,15 @@ class ProposalFormTest(SeleniumFormTest):
 
 	def clear_field(self, field_kind, idx):
 
-		# Clear the identified field.  How to do it depends on the field_kind
-		wait = WebDriverWait(self.driver, 3)
 		if field_kind.upper() == 'SELECTIONS':
 			id_to_clear = self.FORM_DATA['SELECTIONS'][idx][0]
-			elm = wait.until( lambda driver:
+			elm = WAIT.until( lambda driver:
 				Select(driver.find_element('id', id_to_clear)))
 			elm.select_by_visible_text('---------')
 
 		elif field_kind.upper() == 'TEXTS':
 			id_to_clear = self.FORM_DATA['TEXTS'][idx][0]
-			self.driver.find_element('id', id_to_clear).clear()
+			DRIVER.find_element('id', id_to_clear).clear()
 
 
 	def clear_field_submit_ensure_error(self, field_kind, idx):
@@ -444,7 +542,7 @@ class ProposalFormTest(SeleniumFormTest):
 
 	def verify_form_validated(self):
 		# We should be redirected to the proposal view page
-		self.assertEqual(self.driver.current_url, self.get_view_proposal_url())
+		self.assertEqual(DRIVER.current_url, self.get_view_proposal_url())
 
 
 	def get_view_proposal_url(self):
@@ -463,7 +561,7 @@ class ProposalFormTest(SeleniumFormTest):
 		# This implicitly tests that these links do reveal more factor forms
 		for val in ['pos', 'neg']:
 			element_id = 'add_%s_factor_form' % val
-			self.driver.find_element('id', element_id).click()
+			DRIVER.find_element('id', element_id).click()
 
 
 	def fill_form(self, data):
@@ -550,7 +648,7 @@ class ProposalFormTest(SeleniumFormTest):
 
 
 
-class EndToEndTests(SeleniumTest):
+class EndToEndTests(LiveServerTestCase):
 	'''
 	Tests that comprise of a full request and render cycles
 	'''
@@ -650,12 +748,12 @@ class EndToEndTests(SeleniumTest):
 		# abbreviate
 		vwt = vote_widget_test
 
-		self.driver.get(self.live_server_url + vwt['url'])
+		DRIVER.get(self.live_server_url + vwt['url'])
 
 		# get the vote elements
-		up_elm = self.driver.find_element('id', vwt['up_id'])
-		down_elm = self.driver.find_element('id', vwt['down_id'])
-		score_elm = self.driver.find_element('id', vwt['score_id'])
+		up_elm = DRIVER.find_element('id', vwt['up_id'])
+		down_elm = DRIVER.find_element('id', vwt['down_id'])
+		score_elm = DRIVER.find_element('id', vwt['score_id'])
 
 		# check that vote widget class names are correct
 		up_class = up_elm.get_attribute('class')
@@ -745,7 +843,7 @@ class EndToEndTests(SeleniumTest):
 		vwt = vote_widget_test
 
 		# make a driven browser instance, navigate to specified url
-		self.driver.get(self.live_server_url + vwt['url'])
+		DRIVER.get(self.live_server_url + vwt['url'])
 
 		# get the vote widget, and test its initial state
 		widget = self.get_and_test_vote_widget(vwt)

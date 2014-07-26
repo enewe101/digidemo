@@ -183,14 +183,17 @@ function FormWidget(form, endpoint, submit_button) {
 					'success': $.proxy(function(data, textStatus, jqXHR) {
 						if(data.success) {
 							hooks['success'](data, textStatus, jqXHR);
+							render_errors(data);
 						} else {
 							hooks['error'](data, textStatus);
+							render_errors(data);
 						}
 
 					}, this),
 
 					'error': $.proxy(function(data, textStatus, jqXHR) {
 						hooks['error'](data, textStatus, jqXHR);
+						render_errors(data);
 					}, this),
 
 					'after': $.proxy(function(data, textStatus, jqXHR) {
@@ -202,6 +205,54 @@ function FormWidget(form, endpoint, submit_button) {
 	);
 }
 
+
+function render_errors(data) {
+	// Since errors were returned, iterate over the fields, and mark
+	// those with errors using styling and errorr text
+	for(field_id in data.errors) {
+
+		// the special field "__all__" represents errors with the form
+		// in general.  There is a special div for this
+		if(field_id == '__all__') {
+			all_errs = $('#{{form.form_class}}_{{include_id}}_errors')
+			all_errs.text(data.errors[field_id].join('<br />'));
+		}
+
+		// All other errors are field-specific.  get the field
+		field = $('#'+field_id)
+
+		// Deal with all the errors
+		if(data.errors[field_id].length) {
+
+			// Check if the field is hidden.  If so, then it's our
+			// fault
+			if(field.attr('type') == 'hidden') {
+				alert("Oops... there has been a javascript error and "
+					+ "we don't have the codes to deal with it.  It "
+					+ "might go away if you refresh your browser.");
+				continue;
+
+			// otherwise its bad form data (user's fault). Mark errors.
+			} else {
+				$('#'+field_id).addClass('error')
+				$('#'+field_id+'_errors').text(
+					data.errors[field_id].join('<br />'))
+			}
+
+		// make sure that any OK fields get their errors cleared
+		} else {
+
+			// (but for hidden fields, there's nothing to do)
+			if(field.attr('type') == 'hidden') {
+				continue;
+			}
+
+			console.log(field_id);
+			$('#'+field_id+'_errors').text('');
+			$('#'+field_id).removeClass('error');
+		}
+	}
+}
 
 
 //////////////////////////////////////////////	

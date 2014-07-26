@@ -39,7 +39,7 @@ UNLOCK TABLES;
 
 LOCK TABLES `auth_permission` WRITE;
 /*!40000 ALTER TABLE `auth_permission` DISABLE KEYS */;
-REPLACE INTO `auth_permission` (`id`, `name`, `content_type_id`, `codename`) VALUES (1,'Can add log entry',1,'add_logentry'),(2,'Can change log entry',1,'change_logentry'),(3,'Can delete log entry',1,'delete_logentry'),(4,'Can add permission',2,'add_permission'),(5,'Can change permission',2,'change_permission'),(6,'Can delete permission',2,'delete_permission'),(7,'Can add group',3,'add_group'),(8,'Can change group',3,'change_group'),(9,'Can delete group',3,'delete_group'),(10,'Can add user',4,'add_user'),(11,'Can change user',4,'change_user'),(12,'Can delete user',4,'delete_user'),(13,'Can add content type',5,'add_contenttype'),(14,'Can change content type',5,'change_contenttype'),(15,'Can delete content type',5,'delete_contenttype'),(16,'Can add session',6,'add_session'),(17,'Can change session',6,'change_session'),(18,'Can delete session',6,'delete_session'),(19,'Can add sector',7,'add_sector'),(20,'Can change sector',7,'change_sector'),(21,'Can delete sector',7,'delete_sector'),(22,'Can add user profile',8,'add_userprofile'),(23,'Can change user profile',8,'change_userprofile'),(24,'Can delete user profile',8,'delete_userprofile'),(25,'Can add tag',9,'add_tag'),(26,'Can change tag',9,'change_tag'),(27,'Can delete tag',9,'delete_tag'),(28,'Can add proposal',10,'add_proposal'),(29,'Can change proposal',10,'change_proposal'),(30,'Can delete proposal',10,'delete_proposal'),(31,'Can add proposal version',11,'add_proposalversion'),(32,'Can change proposal version',11,'change_proposalversion'),(33,'Can delete proposal version',11,'delete_proposalversion'),(34,'Can add discussion',12,'add_discussion'),(35,'Can change discussion',12,'change_discussion'),(36,'Can delete discussion',12,'delete_discussion'),(37,'Can add reply',13,'add_reply'),(38,'Can change reply',13,'change_reply'),(39,'Can delete reply',13,'delete_reply'),(40,'Can add factor',14,'add_factor'),(41,'Can change factor',14,'change_factor'),(42,'Can delete factor',14,'delete_factor'),(43,'Can add factor version',15,'add_factorversion'),(44,'Can change factor version',15,'change_factorversion'),(45,'Can delete factor version',15,'delete_factorversion'),(46,'Can add person',16,'add_person'),(47,'Can change person',16,'change_person'),(48,'Can delete person',16,'delete_person'),(49,'Can add organization',17,'add_organization'),(50,'Can change organization',17,'change_organization'),(51,'Can delete organization',17,'delete_organization'),(52,'Can add position',18,'add_position'),(53,'Can change position',18,'change_position'),(54,'Can delete position',18,'delete_position'),(55,'Can add letter',19,'add_letter'),(56,'Can change letter',19,'change_letter'),(57,'Can delete letter',19,'delete_letter'),(58,'Can add comment',20,'add_comment'),(59,'Can change comment',20,'change_comment'),(60,'Can delete comment',20,'delete_comment'),(61,'Can add discussion vote',21,'add_discussionvote'),(62,'Can change discussion vote',21,'change_discussionvote'),(63,'Can delete discussion vote',21,'delete_discussionvote'),(64,'Can add proposal vote',22,'add_proposalvote'),(65,'Can change proposal vote',22,'change_proposalvote'),(66,'Can delete proposal vote',22,'delete_proposalvote'),(67,'Can add letter vote',23,'add_lettervote'),(68,'Can change letter vote',23,'change_lettervote'),(69,'Can delete letter vote',23,'delete_lettervote'),(70,'Can add reply vote',24,'add_replyvote'),(71,'Can change reply vote',24,'change_replyvote'),(72,'Can delete reply vote',24,'delete_replyvote'),(73,'Can add comment vote',25,'add_commentvote'),(74,'Can change comment vote',25,'change_commentvote'),(75,'Can delete comment vote',25,'delete_commentvote');
+REPLACE INTO `auth_permission` (`id`, `name`, `content_type_id`, `codename`) VALUES (1,'Can add log entry',1,'add_logentry'),(2,'Can change log entry',1,'change_logentry'),(3,'Can delete log entry',1,'delete_logentry'),(4,'Can add permission',2,'add_permission'),(5,'Can change permission',2,'change_permission'),(6,'Can delete permission',2,'delete_permission'),(7,'Can add group',3,'add_group'),(8,'Can change group',3,'change_group'),(9,'Can delete group',3,'delete_group'),(10,'Can add user',4,'add_user'),(11,'Can change user',4,'change_user'),(12,'Can delete user',4,'delete_user'),(13,'Can add content type',5,'add_contenttype'),(14,'Can change content type',5,'change_contenttype'),(15,'Can delete content type',5,'delete_contenttype'),(16,'Can add session',6,'add_session'),(17,'Can change session',6,'change_session'),(18,'Can delete session',6,'delete_session'),(19,'Can add sector',7,'add_sector'),(20,'Can change sector',7,'change_sector'),(21,'Can delete sector',7,'delete_sector'),(22,'Can add user profile',8,'add_userprofile'),(23,'Can change user profile',8,'change_userprofile'),(24,'Can delete user profile',8,'delete_userprofile'),(25,'Can add tag',9,'add_tag'),(26,'Can change tag',9,'change_tag'),(27,'Can delete tag',9,'delete_tag'),(28,'Can add proposal',10,'add_proposal'),(29,'Can change proposal',10,'change_proposal'),(30,'Can delete proposal',10,'delete_proposal'),(31,'Can add proposal version',11,'add_proposalversion'),(32,'Can change proposal version',11,'change_proposalversion'),(33,'Can delete proposal version',11,'delete_proposalversion'),(34,'Can add discussion',12,'add_discussion'),(35,'Can change discussion',12,'change_discussion'),(36,'Can delete discussion',12,'delete_discussion'),(37,'Can add reply',13,'add_reply'),(38,'Can change reply',13,'change_reply'),(39,'Can delete reply',13,'delete_reply'),(40,'Can add question',14,'add_question'),(41,'Can change question',14,'change_question'),(42,'Can delete question',14,'delete_question'),(43,'Can add question comment',15,'add_questioncomment'),(44,'Can change question comment',15,'change_questioncomment'),(45,'Can delete question comment',15,'delete_questioncomment'),(46,'Can add answer',16,'add_answer'),(47,'Can change answer',16,'change_answer'),(48,'Can delete answer',16,'delete_answer'),(49,'Can add answer comment',17,'add_answercomment'),(50,'Can change answer comment',17,'change_answercomment'),(51,'Can delete answer comment',17,'delete_answercomment'),(52,'Can add factor',18,'add_factor'),(53,'Can change factor',18,'change_factor'),(54,'Can delete factor',18,'delete_factor'),(55,'Can add factor version',19,'add_factorversion'),(56,'Can change factor version',19,'change_factorversion'),(57,'Can delete factor version',19,'delete_factorversion'),(58,'Can add person',20,'add_person'),(59,'Can change person',20,'change_person'),(60,'Can delete person',20,'delete_person'),(61,'Can add organization',21,'add_organization'),(62,'Can change organization',21,'change_organization'),(63,'Can delete organization',21,'delete_organization'),(64,'Can add position',22,'add_position'),(65,'Can change position',22,'change_position'),(66,'Can delete position',22,'delete_position'),(67,'Can add letter',23,'add_letter'),(68,'Can change letter',23,'change_letter'),(69,'Can delete letter',23,'delete_letter'),(70,'Can add comment',24,'add_comment'),(71,'Can change comment',24,'change_comment'),(72,'Can delete comment',24,'delete_comment'),(73,'Can add discussion vote',25,'add_discussionvote'),(74,'Can change discussion vote',25,'change_discussionvote'),(75,'Can delete discussion vote',25,'delete_discussionvote'),(76,'Can add proposal vote',26,'add_proposalvote'),(77,'Can change proposal vote',26,'change_proposalvote'),(78,'Can delete proposal vote',26,'delete_proposalvote'),(79,'Can add letter vote',27,'add_lettervote'),(80,'Can change letter vote',27,'change_lettervote'),(81,'Can delete letter vote',27,'delete_lettervote'),(82,'Can add reply vote',28,'add_replyvote'),(83,'Can change reply vote',28,'change_replyvote'),(84,'Can delete reply vote',28,'delete_replyvote'),(85,'Can add question vote',29,'add_questionvote'),(86,'Can change question vote',29,'change_questionvote'),(87,'Can delete question vote',29,'delete_questionvote'),(88,'Can add answer vote',30,'add_answervote'),(89,'Can change answer vote',30,'change_answervote'),(90,'Can delete answer vote',30,'delete_answervote'),(91,'Can add comment vote',31,'add_commentvote'),(92,'Can change comment vote',31,'change_commentvote'),(93,'Can delete comment vote',31,'delete_commentvote');
 /*!40000 ALTER TABLE `auth_permission` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -69,6 +69,33 @@ UNLOCK TABLES;
 LOCK TABLES `auth_user_user_permissions` WRITE;
 /*!40000 ALTER TABLE `auth_user_user_permissions` DISABLE KEYS */;
 /*!40000 ALTER TABLE `auth_user_user_permissions` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Dumping data for table `digidemo_answer`
+--
+
+LOCK TABLES `digidemo_answer` WRITE;
+/*!40000 ALTER TABLE `digidemo_answer` DISABLE KEYS */;
+/*!40000 ALTER TABLE `digidemo_answer` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Dumping data for table `digidemo_answercomment`
+--
+
+LOCK TABLES `digidemo_answercomment` WRITE;
+/*!40000 ALTER TABLE `digidemo_answercomment` DISABLE KEYS */;
+/*!40000 ALTER TABLE `digidemo_answercomment` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Dumping data for table `digidemo_answervote`
+--
+
+LOCK TABLES `digidemo_answervote` WRITE;
+/*!40000 ALTER TABLE `digidemo_answervote` DISABLE KEYS */;
+/*!40000 ALTER TABLE `digidemo_answervote` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -239,6 +266,34 @@ REPLACE INTO `digidemo_proposalvote` (`id`, `creation_date`, `last_modified`, `u
 UNLOCK TABLES;
 
 --
+-- Dumping data for table `digidemo_question`
+--
+
+LOCK TABLES `digidemo_question` WRITE;
+/*!40000 ALTER TABLE `digidemo_question` DISABLE KEYS */;
+REPLACE INTO `digidemo_question` (`id`, `creation_date`, `last_modified`, `user_id`, `score`, `title`, `text`, `target_id`) VALUES (1,'2014-07-25 21:25:57','2014-07-25 21:25:57',1,0,'How likely (or frequent) can we expect spills along the pipeline extension to be?','I would like to know how likely spills are, based on the rate of previous incidents. It will probably be important to take into account the kind of piping technology used, and the kind of service. For example, repurposed piping originally for the transport of natural gas is likely to be different from newly built piping. Or, (and I\'m not sure), there may be a difference due to the fact that this is crude derived from tarsands, rather than conventional crude.',1);
+/*!40000 ALTER TABLE `digidemo_question` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Dumping data for table `digidemo_questioncomment`
+--
+
+LOCK TABLES `digidemo_questioncomment` WRITE;
+/*!40000 ALTER TABLE `digidemo_questioncomment` DISABLE KEYS */;
+/*!40000 ALTER TABLE `digidemo_questioncomment` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Dumping data for table `digidemo_questionvote`
+--
+
+LOCK TABLES `digidemo_questionvote` WRITE;
+/*!40000 ALTER TABLE `digidemo_questionvote` DISABLE KEYS */;
+/*!40000 ALTER TABLE `digidemo_questionvote` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Dumping data for table `digidemo_reply`
 --
 
@@ -301,7 +356,7 @@ UNLOCK TABLES;
 
 LOCK TABLES `django_content_type` WRITE;
 /*!40000 ALTER TABLE `django_content_type` DISABLE KEYS */;
-REPLACE INTO `django_content_type` (`id`, `name`, `app_label`, `model`) VALUES (1,'log entry','admin','logentry'),(2,'permission','auth','permission'),(3,'group','auth','group'),(4,'user','auth','user'),(5,'content type','contenttypes','contenttype'),(6,'session','sessions','session'),(7,'sector','digidemo','sector'),(8,'user profile','digidemo','userprofile'),(9,'tag','digidemo','tag'),(10,'proposal','digidemo','proposal'),(11,'proposal version','digidemo','proposalversion'),(12,'discussion','digidemo','discussion'),(13,'reply','digidemo','reply'),(14,'factor','digidemo','factor'),(15,'factor version','digidemo','factorversion'),(16,'person','digidemo','person'),(17,'organization','digidemo','organization'),(18,'position','digidemo','position'),(19,'letter','digidemo','letter'),(20,'comment','digidemo','comment'),(21,'discussion vote','digidemo','discussionvote'),(22,'proposal vote','digidemo','proposalvote'),(23,'letter vote','digidemo','lettervote'),(24,'reply vote','digidemo','replyvote'),(25,'comment vote','digidemo','commentvote');
+REPLACE INTO `django_content_type` (`id`, `name`, `app_label`, `model`) VALUES (1,'log entry','admin','logentry'),(2,'permission','auth','permission'),(3,'group','auth','group'),(4,'user','auth','user'),(5,'content type','contenttypes','contenttype'),(6,'session','sessions','session'),(7,'sector','digidemo','sector'),(8,'user profile','digidemo','userprofile'),(9,'tag','digidemo','tag'),(10,'proposal','digidemo','proposal'),(11,'proposal version','digidemo','proposalversion'),(12,'discussion','digidemo','discussion'),(13,'reply','digidemo','reply'),(14,'question','digidemo','question'),(15,'question comment','digidemo','questioncomment'),(16,'answer','digidemo','answer'),(17,'answer comment','digidemo','answercomment'),(18,'factor','digidemo','factor'),(19,'factor version','digidemo','factorversion'),(20,'person','digidemo','person'),(21,'organization','digidemo','organization'),(22,'position','digidemo','position'),(23,'letter','digidemo','letter'),(24,'comment','digidemo','comment'),(25,'discussion vote','digidemo','discussionvote'),(26,'proposal vote','digidemo','proposalvote'),(27,'letter vote','digidemo','lettervote'),(28,'reply vote','digidemo','replyvote'),(29,'question vote','digidemo','questionvote'),(30,'answer vote','digidemo','answervote'),(31,'comment vote','digidemo','commentvote');
 /*!40000 ALTER TABLE `django_content_type` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -323,4 +378,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2014-07-24  2:11:35
+-- Dump completed on 2014-07-25 17:26:11

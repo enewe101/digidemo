@@ -8,6 +8,7 @@ from digidemo.models import *
 from digidemo.forms import *
 from digidemo.settings import DEBUG
 from digidemo.utils import get_or_none
+from digidemo.views import get_vote_form
 from django.utils import timezone
 from django.views.decorators.csrf import csrf_exempt
 from django.contrib.auth import authenticate
@@ -109,7 +110,7 @@ def vote(vote_spec, request):
 
 	return {
 		'success': False,
-		'msg': 'ajax.py: vote_discussion(): VoteForm was not valid'
+		'msg': 'ajax.py: vote(): VoteForm was not valid'
 	}
 
 
@@ -119,6 +120,30 @@ def vote(vote_spec, request):
 #  ajax endpoints	#
 #					#
 #####################
+
+@ajax_endpoint
+def vote_answer(request):
+	
+	vote_spec = {
+		'model' : AnswerVote,
+		'form': AnswerVoteForm,
+		'up_event': 'up_answer',
+		'dn_event': 'dn_answer',
+	}
+
+	return vote(vote_spec, request)
+
+@ajax_endpoint
+def vote_question(request):
+	
+	vote_spec = {
+		'model' : QuestionVote,
+		'form': QuestionVoteForm,
+		'up_event': 'up_question',
+		'dn_event': 'dn_question',
+	}
+
+	return vote(vote_spec, request)
 
 @ajax_endpoint
 def vote_discussion(request):
@@ -157,6 +182,53 @@ def vote_letter(request):
 	}
 
 	return vote(vote_spec, request)
+
+
+
+@ajax_endpoint
+def answer(request):
+
+	# ** Hardcoded the logged in user to be enewe101 **
+	logged_in_user = User.objects.get(pk=1)
+	 
+	answer_form = AnswerForm(request.POST)
+
+	if answer_form.is_valid():
+
+		# add the new (re)sent letter to the database
+		answer = answer_form.save()
+
+		vote_form = get_vote_form(
+			AnswerVote, AnswerVoteForm, logged_in_user, answer)
+
+		# make a unique id for the vote form based on the userstats
+		num_prior_answers = Answer.objects.filter(
+			user=logged_in_user, target=answer.target).count()
+
+
+		# render an html snippet, containing the avatar
+		template = get_template('digidemo/_i_reply.html')
+		context = Context({
+			'include_id': logged_in_user.username + str(num_prior_answers),
+			'reply': {
+				'content': answer,
+				'vote_form': vote_form,
+			},
+		})
+		reply_html = template.render(context)
+
+
+		return {
+			'success':True,
+			'html':reply_html, 
+			'errors': answer_form.json_errors()	# these will be empty
+		}
+
+	return {
+		'success':False,
+		'msg':'ajax.py: answer(): AnswerForm was not valid',
+		'errors': answer_form.json_errors()
+	}
 
 
 
