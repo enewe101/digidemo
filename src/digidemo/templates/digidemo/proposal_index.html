@@ -21,7 +21,6 @@
   <!-- BEGIN header -->
   <div id="header">
 
-
     <div class="break"></div>
     <h1><a>InnodeMag</a></h1>
     <div class="ad"><img src="{% static "digidemo/images/ad468x60.jpg" %}" alt="" /></div>
@@ -79,66 +78,8 @@
     </div>
     <!-- end post navigation -->
   </div>
-  <!-- END content -->
-  <!-- BEGIN sidebar -->
-  <div id="sidebar">
-    <!-- begin popular posts -->
-    <div class="box">
-      <h2>Popular Posts</h2>
-      <ul>
-	{% for post in popular_posts%}
-        <li><a href="{{post.get_proposal_url}}">{{post.title}}</a></li>
-	{% endfor %}
-      </ul>
-    </div>
-    <!-- end popular posts -->
-    <!-- begin featured video -->
-    <div class="box">
-      <h2>Featured Video</h2>
-      <div class="video" ><iframe height ="200" src="//www.youtube.com/embed/6GR-9-nB-YE" frameborder="0" allowfullscreen></iframe></div>
-    </div>
-    <!-- end featured video -->
-    <!-- BEGIN left -->
-    <div class="l sidebar">
 
-      <!-- begin categories -->
-      <div class="box">
-        <h2>Categories</h2>
-        <ul>
-          <li>Advertising</li>
-          <li>Fashion</li>
-          <li>Gadgets</li>
-          <li>Lifestyle</li>
-          <li>Networking</li>
-          <li>News</li>
-          <li>Sports</li>
-        </ul>
-      </div>
-      <!-- end categories -->
-    </div>
-    <!-- END left -->
-    <!-- BEGIN right -->
-    <div class="r sidebar">
-      <!-- begin archives -->
-      <div class="box">
-        <h2>Archives</h2>
-        <ul>
-          <li>2014</li>
-          <li>2013</li>
-          <li>2012</li>
-          <li>2011</li>
-        </ul>
-      </div>
-      <!-- end archives -->
-    </div>
-    <!-- END right -->
-  </div>
-  <!-- END sidebar -->
-  <!-- BEGIN footer -->
-  <div id="footer">
-    <p>Copyright &copy; June 2014 Edward Newell and Nishanth - Digidemo.com All Rights Reserved </p>
-  </div>
-  <!-- END footer -->
-</div>
+{% include "digidemo/_i_mainpage_sidebar.html" %}
+
 <!-- END wrapper -->
 {% endblock body %}

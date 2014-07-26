@@ -1,13 +1,72 @@
-<html>
-<head>
-<title> Search results </title>
-</head>
-<body>
-  {% for note in notes %}
-     <h1>{{ note.title }}</h1>
-     <p>
-         {{ note.summary }}
-     </p>
-     {% endfor %}
-</body>
-</html>
+
+
+{% extends "digidemo/__base.html" %}
+{% load staticfiles %}
+{% load apptags %}
+<!-- BEGIN wrapper -->
+		{% block css %}
+			{{ block.super }}
+			<link rel="stylesheet" type="text/css" 
+				href="{% static "digidemo/css/proposal_index_style.css" %}" />
+		{% endblock css %}
+		
+		{% block js %}
+			{{ block.super }}
+		<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+		{% endblock js %}
+
+
+{% block body %}
+{{ block.super }}
+{% include "digidemo/_w_login_user.html" %}
+<div id="wrapper">
+  <!-- BEGIN header -->
+  <div id="header">
+
+    <div class="break"></div>
+    <h1><a>InnodeMag</a></h1>
+    <div class="ad"><img src="{% static "digidemo/images/ad468x60.jpg" %}" alt="" /></div>
+
+  </div>
+  <!-- END header -->
+  <!-- BEGIN content -->
+  <div id="content">
+    <!-- begin featured -->
+
+    <!-- end featured -->
+
+
+    <!-- begin more articles -->
+    <div class="articles">
+
+      <h2 class="title">Search Results</h2>
+
+      <!-- begin post -->
+	{% for note in notes %}
+      <div class="post">
+        <div class="details">
+                </div>
+        <div class="thumb"><a href="/proposals/{{note.title}}"> <img src="{{note.proposal_image}}" alt="" /></a></div>
+        <h2><a href="/proposals/{{note.name}}"> {{note.title}}</a></h2>
+        <p> {{note.summary|getSummary}} </p>
+      </div>
+	{% endfor %}
+
+
+
+      <div class="break"></div>
+    </div>
+    <!-- end more articles -->
+    <!-- begin post navigation -->
+    <div class="postnav">
+      <ul>
+        <li><a href="">Next Page</a></li>
+      </ul>
+    </div>
+    <!-- end post navigation -->
+  </div>
+
+{% include "digidemo/_i_mainpage_sidebar.html" %}
+
+<!-- END wrapper -->
+{% endblock body %}
