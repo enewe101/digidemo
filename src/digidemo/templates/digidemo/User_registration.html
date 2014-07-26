@@ -1,75 +1,28 @@
+{% extends "digidemo/__base.html" %}
 {% load staticfiles %}
-<html>
-<head>
-<title>Digidemo</title>
-<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-<link rel="stylesheet" type="text/css" href="{% static "digidemo/css/proposal_index_style.css" %}" />
-<link rel="stylesheet" type="text/css" href="{% static "digidemo/css/login.css" %}" />
-<!--[if lte IE 6]><link rel="stylesheet" type="text/css" href="{% static "digidemo/css/ie.css" %}" /><![endif]-->
-<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
-<script>
-
-$(document).ready(function(){
-  $('#login-trigger').click(function(){
-    $(this).next('#login-content').slideToggle();
-    $(this).toggleClass('active');          
-    
-    if ($(this).hasClass('active')) $(this).find('span').html('&#x25B2;')
-      else $(this).find('span').html('&#x25BC;')
-    })
-});
-</script>
-
-</head>
-
-<body>
+{% load apptags %}
 <!-- BEGIN wrapper -->
-<nav>
-  <ul>
-    <li id="login">
-      <a id="login-trigger" href="#">
-        Log in <span>?</span>
-      </a>
-      <div id="login-content">
-        <form method = "POST" action = "Login">
-		{% csrf_token %}	
-          <fieldset id="inputs">
-               <input id="id_userName" maxlength="48" name="userName" type="text" placeholder="Enter your username" />    
-               <input id="id_password" name="password" type="password" palceholder="Enter password" /> 
-          </fieldset>
-          <fieldset id="actions">
-            <input type="button" id="submit" value="Log in">
-            <label><input type="checkbox" checked="checked"> Keep me signed in</label>
-          </fieldset>
-        </form>
-      </div>                     
-    </li>
-    <li id="signup">
-      <a href="">Sign up FREE</a>
-    </li>
-  </ul>
-</nav>
-</div>
+		{% block css %}
+			{{ block.super }}
+			<link rel="stylesheet" type="text/css" 
+				href="{% static "digidemo/css/proposal_index_style.css" %}" />
+		{% endblock css %}
+		
+		{% block js %}
+			{{ block.super }}
+		<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+		
+
+		{% endblock js %}
+
+
+{% block body %}
+{{ block.super }}
+{% include "digidemo/_w_login_user.html" %}
 
 <div id="wrapper">
   <!-- BEGIN header -->
-  <div id="header">
-    <ul class="pages">
-      <li><a href="index.html">Home</a></li>
-      <li><a href="about.html">About us</a></li>
-      <li><a href="page.html">Demo Page</a></li>
-
-    </ul>
-    <form action="http://www.free-css.com/">
-      <p>Search: </p>
-      <input type="text" name="s" id="s" value="" />
-      <button type="submit">Go</button>
-    </form>
-    <div class="break"></div>
-    <h1><a>InnodeMag</a></h1>
-    <div class="ad"><img src="{% static "digidemo/images/ad468x60.jpg" %}" alt="" /></div>
-    {% load apptags %}
-  </div>
+ 
   <!-- END header -->
   <!-- BEGIN content -->
 
@@ -79,9 +32,11 @@ $(document).ready(function(){
 	{% csrf_token %}		
 	{{ form.non_field_errors }}
   		{{ form.subject.errors }}
+		<span>
 		userName :
-		{{ form.userName }} 
+		{{ form.userName }} <div id="userNameValidation"> Please enter username </div>
 		<br> <br>
+		</span>
 		Password :
 		{{ form.password }} 
 		<br> <br>
@@ -94,7 +49,7 @@ $(document).ready(function(){
 		Last Name :
 		{{ form.lastName }} 
 		<br> <br>
-		Street :
+<!--		Street :
 		{{ form.street }} 
 		<br> <br>
 		PIN :
@@ -105,7 +60,7 @@ $(document).ready(function(){
 		<br> <br>
 		Province :
 		{{ form.province }} 
-		<br> <br>
+		<br> <br> -->
 		<input type="submit" value="Submit" />
 		</div>
 	</form>
@@ -113,67 +68,47 @@ $(document).ready(function(){
 
   </div>
 
-  <!-- END content -->
-  <!-- BEGIN sidebar -->
-  <div id="sidebar">
-    <!-- begin popular posts -->
-    <div class="box">
-      <h2>Popular Posts</h2>
-      <ul>
-	{% for post in popular_posts%}
-        <li><a href="/proposals/{{post.name}}">{{post.title}}</a></li>
-	{% endfor %}
-      </ul>
-    </div>
-    <!-- end popular posts -->
-    <!-- begin featured video -->
-    <div class="box">
-      <h2>Featured Video</h2>
-      <div class="video" ><iframe height ="200" src="//www.youtube.com/embed/6GR-9-nB-YE" frameborder="0" allowfullscreen></iframe></div>
-    </div>
-    <!-- end featured video -->
-    <!-- BEGIN left -->
-    <div class="l sidebar">
 
-      <!-- begin categories -->
-      <div class="box">
-        <h2>Categories</h2>
-        <ul>
-          <li>Advertising</li>
-          <li>Fashion</li>
-          <li>Gadgets</li>
-          <li>Lifestyle</li>
-          <li>Networking</li>
-          <li>News</li>
-          <li>Sports</li>
-        </ul>
-      </div>
-      <!-- end categories -->
-    </div>
-    <!-- END left -->
-    <!-- BEGIN right -->
-    <div class="r sidebar">
-      <!-- begin archives -->
-      <div class="box">
-        <h2>Archives</h2>
-        <ul>
-          <li>2014</li>
-          <li>2013</li>
-          <li>2012</li>
-          <li>2011</li>
-        </ul>
-      </div>
-      <!-- end archives -->
-    </div>
-    <!-- END right -->
-  </div>
-  <!-- END sidebar -->
-  <!-- BEGIN footer -->
-  <div id="footer">
-    <p>Copyright &copy; June 2014 Edward Newell and Nishanth - Digidemo.com All Rights Reserved </p>
-  </div>
-  <!-- END footer -->
-</div>
+
+{% include "digidemo/_i_mainpage_sidebar.html" %}
+
+
+		<script> 
+
+		var URL =" {% url "handle_ajax_json" 'checkValidUserName' %}" ;
+
+		$('#id_userName').keyup(function() {
+ 			var userNameEntered = document.getElementById('id_userName').value
+			if(userNameEntered.length < 6) {
+				$('#userNameValidation').text("username too short");
+				return;
+			}
+
+$('#userNameValidation').text("Processing");
+
+  	  $.ajax({
+   	   url:URL,
+	   type: 'GET',
+   	   async: false,
+           data: {
+               username: userNameEntered
+	   },
+	 success:function(data) {
+	data=data.replace(/(\r\n|\n|\r)/gm,"");
+	data=data.replace(/"/g, ""); 
+	if(data=="available") {
+		$('#userNameValidation').text("Username available");
+	} else {
+		$('#userNameValidation').text("Username Not available");
+	}
+	}
+	});
+});
+		
+
+
+	
+		</script>
+
 <!-- END wrapper -->
-</body>
-</html>
+{% endblock body %}

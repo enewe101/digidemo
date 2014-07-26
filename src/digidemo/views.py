@@ -446,6 +446,7 @@ def mainPage(request,sort_type='most_recent'):
 
 def userRegistration(request):
         if(request.method == 'POST'):
+                print "Got the form"
                 user = NameForm(request.POST)
                 
                 if user.is_valid():
@@ -462,10 +463,10 @@ def userRegistration(request):
                                                         last_name = lastNamePass)
                         print "absbsbbadsaasdasd"
                         userCreate.save();
-                        streetPass = user.cleaned_data['street']
-                        zipCodePass = user.cleaned_data['zipCode']
-                        countryPass =  user.cleaned_data['country']
-                        provincePass =  user.cleaned_data['province']
+                        streetPass = "";
+                        zipCodePass = "";
+                        countryPass =   "";
+                        provincePass =  "";
                         userProfile = UserProfile (user=userCreate,
                                                    email_validated = 0,
                                                    rep=0,

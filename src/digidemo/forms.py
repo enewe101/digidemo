@@ -695,10 +695,10 @@ class NameForm(forms.Form):
         email = forms.EmailField(label='Email')
         firstName =  forms.CharField(max_length = 16)
         lastName = forms.CharField(max_length = 32)
-        street = forms.CharField(max_length = 32)
-        zipCode = forms.CharField(max_length = 8)
-        country = forms.CharField(max_length = 20)
-        province = forms.CharField(max_length = 30)
+#        street = forms.CharField(max_length = 32)
+#        zipCode = forms.CharField(max_length = 8)
+#        country = forms.CharField(max_length = 20)
+#        province = forms.CharField(max_length = 30)
 
 
 from haystack.forms import SearchForm

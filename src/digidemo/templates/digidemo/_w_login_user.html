@@ -33,7 +33,7 @@
       </div>                     
     </li>
     <li id="signup">
-      <a href="">Sign up FREE</a>
+      <a href="{% url "userRegistration" %}">Sign up FREE</a>
     </li>
   </ul>
 </nav>
@@ -52,8 +52,9 @@ $(document).ready(function(){
 });
 
 $( "#submit" ).click(function( event ) {
+var URL = {% url "handle_ajax_login" %};
   	  $.ajax({
-   	   url:"http://127.0.0.1:8000/ajaxLogin",
+   	   url:URL,
 	   type: 'GET',
    	   async: false,
            data: {
@@ -72,8 +73,9 @@ $( "#submit" ).click(function( event ) {
 });
 
 $( "#logout" ).click(function( event ) {
+var URL = {% url "handle_ajax_logout" %};
   	  $.ajax({
-   	   url:"http://127.0.0.1:8000/ajaxLogout",
+   	   url:URL,
 	   type: 'GET',
    	   async: false,
            data: {

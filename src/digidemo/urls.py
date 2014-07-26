@@ -28,7 +28,7 @@ urlpatterns = patterns('',
 	#   url(r'^Login/$',Login),
                        
 	# Registration
-	url(r'^userRegistration/$', userRegistration),
+	url(r'^userRegistration/$', userRegistration,name='userRegistration'),
 
 	# test url
 	url(r'^$', test, name='test'),
