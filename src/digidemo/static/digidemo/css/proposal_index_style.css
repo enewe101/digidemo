@@ -68,33 +68,7 @@ img {
 			display: block;
 			padding: 10px 10px 11px;
 		}
-	#header form {
-		float: right;
-		width: 238px; height: 35px;
-		background: url(../images/search.gif) no-repeat 62px 8px;
-	}
-		#header form p {
-			float: left;
-			text-transform: uppercase;
-			font-size: 0.9em;
-			padding-top: 12px;
-		}
-		#header form input {
-			float: left;
-			border: 0;
-			font-family: Verdana;
-			font-size: 0.9em;
-			margin: 12px 1px 0 12px;
-			width: 150px;
-		}
-		#header form button {
-			float: left;
-			border: 0;
-			text-indent: -9999px;
-			width: 21px; height: 21px;
-			margin-top: 8px;
-			background-color: transparent;
-		}
+
 	#header h1 {
 		clear: both;
 		float: left;

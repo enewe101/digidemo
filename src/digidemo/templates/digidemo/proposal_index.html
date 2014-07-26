@@ -1,36 +1,27 @@
+{% extends "digidemo/__base.html" %}
 {% load staticfiles %}
 {% load apptags %}
-<html>
-<head>
-<title>Digidemo</title>
-<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-<link rel="stylesheet" type="text/css" href="{% static "digidemo/css/proposal_index_style.css" %}" />
-<link rel="stylesheet" type="text/css" href="{% static "digidemo/css/login.css" %}" />
-<!--[if lte IE 6]><link rel="stylesheet" type="text/css" href="{% static "digidemo/css/ie.css" %}" /><![endif]-->
-<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script
-
-</head>
-
-<body>
 <!-- BEGIN wrapper -->
+		{% block css %}
+			{{ block.super }}
+			<link rel="stylesheet" type="text/css" 
+				href="{% static "digidemo/css/proposal_index_style.css" %}" />
+		{% endblock css %}
+		
+		{% block js %}
+			{{ block.super }}
+		<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+		{% endblock js %}
 
+
+{% block body %}
+{{ block.super }}
 {% include "digidemo/_w_login_user.html" %}
-
-
 <div id="wrapper">
   <!-- BEGIN header -->
   <div id="header">
-    <ul class="pages">
-      <li><a href="index.html">Home</a></li>
-      <li><a href="about.html">About us</a></li>
-      <li><a href="page.html">Demo Page</a></li>
 
-    </ul>
-     <form type="get" action="/search/">  
-	<p>Search: </p>
-         <input type="text" name="q">
-         <button type="submit">Go</button>
-     </form>
+
     <div class="break"></div>
     <h1><a>InnodeMag</a></h1>
     <div class="ad"><img src="{% static "digidemo/images/ad468x60.jpg" %}" alt="" /></div>
@@ -150,5 +141,4 @@
   <!-- END footer -->
 </div>
 <!-- END wrapper -->
-</body>
-</html>
+{% endblock body %}

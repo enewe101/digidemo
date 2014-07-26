@@ -9,6 +9,11 @@
 	{{ block.super }}
 {% endblock css %}
 
+		{% block js %}
+			{{ block.super }}
+		<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+		{% endblock js %}
+
 {% block body %}
 {{ block.super }} <!-- this includes the header -->
 
