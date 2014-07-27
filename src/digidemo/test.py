@@ -16,7 +16,7 @@ import filecmp
 import os
 
 
-def pyWait(predicate, timeout, period):
+def pyWait(predicate, timeout=3, period=0.15):
 
 	start = time.time()
 	max_time = start + timeout
@@ -105,11 +105,6 @@ class QuestionRenderTest(LiveServerTestCase):
 		DRIVER.find_element_by_id('q_downvote')
 
 		
-
-
-
-
-
 class SeleniumFormTest(LiveServerTestCase):
 
 	@classmethod
@@ -232,7 +227,6 @@ class SeleniumFormTest(LiveServerTestCase):
 
 		
 
-
 class AnswerFormTest(SeleniumFormTest):
 
 	def setUp(self):
@@ -246,8 +240,8 @@ class AnswerFormTest(SeleniumFormTest):
 		self.ADD_FORM_URL = self.live_server_url + self.QUESTION.get_url()
 		self.USER = User.objects.get(username='superuser')
 
-
-	@unittest.skip('skip')
+		self.HIDE_ANSWER_DIV_ID = '_w_toggle_hidden_answer_form_content'
+		self.TOGGLE_SHOW_ANSWER_ID = '_w_toggle_hidden_answer_form_switch'
 	def test_form_errors(self):
 		super(AnswerFormTest, self).test_form_errors()
 
@@ -256,6 +250,19 @@ class AnswerFormTest(SeleniumFormTest):
 		super(AnswerFormTest, self).test_simple_add()
 
 
+	def check_invalid(self):
+
+		# We should see an error message
+		error_msg_elm = WAIT.until(lambda driver:
+			driver.find_element('id', 'AnswerForm_text_errors'))
+		self.assertTrue(error_msg_elm.text, 'This field is required.')
+
+		# The text area should get assigned a class of `error`
+		text_input = WAIT.until(lambda driver: 
+			driver.find_element('id', 'AnswerForm_text'))
+		self.assertIn('error', text_input.get_attribute('class'))
+
+		
 	def check_valid(self):
 
 		# We may have to wait, but soon the new answer is in the db
@@ -289,9 +296,25 @@ class AnswerFormTest(SeleniumFormTest):
 			lambda driver: driver.find_elements_by_class_name('flourish'))
 		self.assertEqual(len(hr_flourishes), 2)
 
-
 		# check that the entry box was hidden
-		# TODO
+		hide_answer_div = WAIT.until(lambda driver:
+			driver.find_element('id', self.HIDE_ANSWER_DIV_ID))
+
+		# Shortly after the form is submitted, the add answer form will be
+		# hidden
+		self.assertTrue(pyWait(lambda: not hide_answer_div.is_displayed()))
+
+		# The link to reveal the form again (to add another answer) is shown
+		show_answer_switch = DRIVER.find_element('id',
+			self.TOGGLE_SHOW_ANSWER_ID)
+		self.assertTrue(
+			pyWait(lambda: show_answer_switch.text == 'Add another answer'))
+
+		# clicking that link shows the answer
+		show_answer_switch.click()
+		self.assertTrue(pyWait(lambda: hide_answer_div.is_displayed()))
+
+
 
 
 class QuestionFormTest(SeleniumFormTest):

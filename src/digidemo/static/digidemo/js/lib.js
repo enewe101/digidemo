@@ -603,6 +603,21 @@ function make_page_hooks(obj, events) {
 }
 
 
+////////////////////
+//                //
+//	get Flourish  //
+//                //
+////////////////////
+
+function get_flourish() {
+
+	// Make HTML for a horizontal page division with a flourish
+	var flourish = $('<div class="hr_flourish"></div>');
+	flourish.append('<div class="hr"></div>');
+	flourish.append('<div class="flourish"></div>');
+
+	return flourish;
+}
 
 
 //////////////////////////
