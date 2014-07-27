@@ -122,18 +122,18 @@ class QuestionRenderTest(SeleniumTestCase):
 
 
 		
-class SeleniumFormTest(SeleniumTestCase):
+class SeleniumFormTestCase(SeleniumTestCase):
 
 	@classmethod
 	def setUpClass(cls):
 
-		# SeleniumFormTest is an abstract test class.  It shouldn't be run
+		# SeleniumFormTestCase is an abstract test class.  It shouldn't be run
 		# but classes that inherit from it should.
-		if cls == SeleniumFormTest:
+		if cls == SeleniumFormTestCase:
 			raise unittest.SkipTest('abstract class')
 
 		else:
-			super(SeleniumFormTest, cls).setUpClass()
+			super(SeleniumFormTestCase, cls).setUpClass()
 
 
 	FIELD_TYPES = ['SUBMIT', 'TEXTS', 'SELECTIONS']
@@ -244,7 +244,7 @@ class SeleniumFormTest(SeleniumTestCase):
 
 		
 
-class AnswerFormTest(SeleniumFormTest):
+class AnswerFormTest(SeleniumFormTestCase):
 
 	def setUp(self):
 		self.TEXT = 'Test answer text'
@@ -334,7 +334,7 @@ class AnswerFormTest(SeleniumFormTest):
 
 
 
-class QuestionFormTest(SeleniumFormTest):
+class QuestionFormTest(SeleniumFormTestCase):
 	'''
 	Tests adding a question using the QuestionForm
 	'''
@@ -394,7 +394,7 @@ class QuestionFormTest(SeleniumFormTest):
 
 
 
-class ProposalFormTest(SeleniumFormTest):
+class ProposalFormTest(SeleniumFormTestCase):
 	'''
 	Tests adding and editing proposals (proposal versions), and their 
 	associated factors. 
