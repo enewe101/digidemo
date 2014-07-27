@@ -110,10 +110,6 @@ class QuestionRenderTest(LiveServerTestCase):
 
 
 
-
-
-
-
 class SeleniumFormTest(LiveServerTestCase):
 
 	@classmethod
@@ -638,14 +634,6 @@ class ProposalFormTest(SeleniumFormTest):
 		self.assertItemsEqual(factor_properties, expected_factor_properties)
 		self.assertItemsEqual(
 			factor_version_properties, expected_factor_properties)
-
-
-
-
-
-			
-
-
 
 
 class EndToEndTests(LiveServerTestCase):
