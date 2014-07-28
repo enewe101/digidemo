@@ -94,27 +94,7 @@
 
 		<div class="clear"></div>
 
-		<!-- start of the letter comments area -->
-		<div id="letter_comments_{{ include_id }}" class="letter_comments">
-
-			{% for comment in letter.comment_set.all %}
-				{% include "digidemo/_i_letter_comment.html" %}
-			{% endfor %}
-
-		</div>
-		<!-- end of letter comments area -->
-
-		<div class="add_comment">
-			<a id="_w_toggle_hidden_comment_{{ include_id }}" class="pointer"> 
-				add comment
-			</a>
-			<div id="_w_toggle_hidden_content_comment_{{ include_id }}"
-				class="add_comment_toggle_content" >
-
-				{% include "digidemo/_w_letter_comment.html" with form=letter_section.comment_form include_id=include_id %}
-
-			</div>
-		</div>
+		{% include "digidemo/_i_comments.html" with include_id=include_id comments=letter.comment_set.all comment_form=letter_section.comment_form %}
 
 	</div> 
 	<!-- end of letter main content -->
@@ -123,6 +103,8 @@
 <!-- end of a letter -->
 
 <script type="text/javascript">
+
+	(function(){
 
 	//
 	// Create a resender list widget using elements on the page
@@ -157,17 +139,6 @@
 
 
 	//
-	// Create a toggler to show / hide the comment form
-	//
-	var toggle_div = $('#_w_toggle_hidden_comment_{{ include_id }}');
-	var content = $('#_w_toggle_hidden_content_comment_{{ include_id }}');
-	var toggler = new ToggleHidden(toggle_div, content);
-	register_widget('toggle_hidden_comment_{{ include_id }}', toggler,
-		 'toggle_hidden');
-
-
-
-	//
 	// Bind a callback to the resend_letter_form which adds a user's avatar
 	// to the list of resenders when they resend a letter
 	//
@@ -197,20 +168,6 @@
 		resend_letter_form.hook('success', callback);
 	})
 
+	}());
 
-
-	//
-	// Bind a callback to the comment form so a comment that when a user 
-	// submits a comment, the comment text gets inserted
-	//
-	$(document).ready(function() {
-		var toggler = widgets['toggle_hidden_comment_{{ include_id }}'].widget;
-		var comment_widget = widgets[
-			'LetterCommentForm_{{ include_id }}'].widget;
-		var show_comment = function(data) {
-			$('#letter_comments_{{ include_id }}').append(data.html);
-			toggler.toggle();
-		};
-		comment_widget.hook('success', show_comment);
-	});
 </script>

@@ -233,18 +233,6 @@ class Question(ScoredPost):
 		return url + slugify(self.title)
 
 
-class QuestionComment(ScoredComment):
-	question = models.ForeignKey(Question)
-	
-
-class Answer(ScoredReply):
-	target = models.ForeignKey(Question)
-
-
-class AnswerComment(ScoredComment):
-	answer = models.ForeignKey(Answer)
-
-
 class Factor(TimeStamped):
 	proposal = models.ForeignKey(Proposal)
 	description = models.CharField(max_length=256)
@@ -329,18 +317,25 @@ class Letter(TimeStamped):
 
 	def __unicode__(self):
 		return "%s-%s" %(
-			self.sender.username,
+			self.user.username,
 			get_choice(VALENCE_CHOICES, self.valence))
 
 
-class Comment(TimeStamped):
-	user = models.ForeignKey(User)
-	letter = models.ForeignKey(Letter)
-	body = models.CharField(max_length=512)
-	score = models.SmallIntegerField(default=0)
+# This should be renamed "LetterComment"
+class Comment(ScoredComment):
+	target = models.ForeignKey(Letter)
 
-	def __unicode__(self):
-		return self.author.username
+class QuestionComment(ScoredComment):
+	question = models.ForeignKey(Question)
+	
+
+class Answer(ScoredReply):
+	target = models.ForeignKey(Question)
+
+
+class AnswerComment(ScoredComment):
+	answer = models.ForeignKey(Answer)
+
 
 
 class Vote(TimeStamped):

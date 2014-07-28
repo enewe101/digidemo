@@ -376,7 +376,7 @@ def make_proposal_context(proposal):
 
 	# ** Hardcoded the logged in user to be enewe101 **
 	logged_in_user = User.objects.get(pk=1)
-	
+
 	proposal_vote_form = get_vote_form(
 		ProposalVote, ProposalVoteForm, logged_in_user, proposal)
 
@@ -386,6 +386,7 @@ def make_proposal_context(proposal):
 	letters = Letter.objects.filter(parent_letter=None, proposal=proposal)
 	for letter_num, letter in enumerate(letters):
 
+		# TODO: use the convenience method to make a voting widget
 		# make a voting form for each letter
 		letter_vote = utils.get_or_none(
 			LetterVote, user=logged_in_user, target=letter)
@@ -420,7 +421,9 @@ def make_proposal_context(proposal):
 		letter_sections.append({
 			'letter': letter,
 			'comment_form': LetterCommentForm(
-				initial={'user':logged_in_user.pk, 'letter':letter.pk}),
+				initial={'user':logged_in_user.pk, 'target':letter.pk},
+				id_prefix = letter_num
+				),
 			'vote_form': letter_vote_form,
 			'resenders': resenders,
 			'resend_form': resend_form

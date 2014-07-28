@@ -62,8 +62,14 @@ def bound_form(endpoint=None, class_name=None):
 				default_class_name = class_name or cls.__name__
 				self.form_class = kwargs.pop('form_class', default_class_name)
 
+				# An id-prefix can optionally be specified.  This changes the
+				# html id attribute form elements, but not the name attribute
+				self.id_prefix = kwargs.pop('id_prefix', '')
+
+				default_auto_id = self.form_class + str(self.id_prefix)
+
 				# Customize the forms auto_id 
-				auto_id = kwargs.pop('auto_id', self.form_class + '_%s')
+				auto_id = kwargs.pop('auto_id', default_auto_id + '_%s')
 
 				# The form's fields automatically get classes too, based on
 				# the forms class and the fields name
@@ -195,11 +201,11 @@ class ReplyForm(ModelForm):
 class LetterCommentForm(ModelForm):
 	class Meta:
 		model = Comment
-		fields = ['body', 'user', 'letter']
+		fields = ['text', 'user', 'target']
 		widgets = {
-			'body': forms.Textarea(attrs={'class':'letter_comment_input'}),
+			'text': forms.Textarea(attrs={'class':'letter_comment_input'}),
 			'user': forms.HiddenInput(), 
-			'letter': forms.HiddenInput(),
+			'target': forms.HiddenInput(),
 		}
 	
 

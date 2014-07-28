@@ -234,13 +234,14 @@ class SeleniumFormTestCase(SeleniumTestCase):
 
 
 class CommentTest(SeleniumFormTestCase):
+
 	def setUp(self):
 		self.COMMENT_TEXT = 'Test comment!'
-		self.COMMENT_TEXTAREA_ID = 'LetterCommentForm_body'
+		self.COMMENT_TEXTAREA_ID = 'LetterCommentForm0_text'
 		self.FORM_DATA = {
 			'TEXTS': [
 				(self.COMMENT_TEXTAREA_ID, self.COMMENT_TEXT, 'require')],
-			'SUBMIT': 'LetterCommentForm_1_submit'
+			'SUBMIT': 'LetterCommentForm_0_submit'
 		}
 
 		self.PROPOSAL = Proposal.objects.get(pk=1)
@@ -249,8 +250,8 @@ class CommentTest(SeleniumFormTestCase):
 
 		self.USER = User.objects.get(username='superuser')
 
-		self.SHOW_COMMENT_SWITCH_ID = '_w_toggle_hidden_comment_1'
-		self.COMMENT_LIST_WRAPPER_ID = 'letter_comments_1'
+		self.SHOW_COMMENT_SWITCH_ID = '_w_toggle_hidden_comment_0'
+		self.COMMENT_LIST_WRAPPER_ID = 'comments_0'
 
 
 	@unittest.skip('skip for now')
@@ -267,15 +268,13 @@ class CommentTest(SeleniumFormTestCase):
 		show_comment_switch.click()
 
 		self.fill_form_correctly_and_verify()
-
-
 	
 
 	def check_valid(self):
 
 		# Check that the comment was added to the database
 		matching_comments = Comment.objects.filter(
-			user=self.USER, body=self.COMMENT_TEXT)
+			user=self.USER, text=self.COMMENT_TEXT)
 		self.assertTrue(pyWait(lambda: matching_comments.count() == 1))
 
 		# Check that the comment was added to the page
@@ -294,7 +293,7 @@ class CommentTest(SeleniumFormTestCase):
 		comment_form = self.driver.find_element(
 			'id', self.COMMENT_TEXTAREA_ID)
 		self.assertFalse(comment_form.is_displayed())
-		self.assertEqual(comment_form.text, '')
+		self.assertEqual(comment_form.get_attribute('value'), '')
 
 
 	def check_invalid(self):
@@ -780,9 +779,9 @@ class EndToEndTests(SeleniumTestCase):
 		# specify the expected vote element class_names
 		vote_test_specs = {
 			'url': proposal_url,
-			'up_id': '1_upvote',
-			'down_id': '1_downvote',
-			'score_id': '1_score',
+			'up_id': '0_upvote',
+			'down_id': '0_downvote',
+			'score_id': '0_score',
 			'up_on': 'upvote_on',
 			'up_off': 'upvote_off',
 			'down_on': 'downvote_on',

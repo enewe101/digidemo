@@ -307,14 +307,18 @@ CREATE TABLE `digidemo_comment` (
   `creation_date` datetime NOT NULL,
   `last_modified` datetime NOT NULL,
   `user_id` int(11) NOT NULL,
-  `letter_id` int(11) NOT NULL,
-  `body` varchar(512) NOT NULL,
+  `target_id` int(11) NOT NULL,
+  `letter_id` int(11) DEFAULT NULL,
+  `body` varchar(512) DEFAULT NULL,
+  `text` varchar(512) NOT NULL,
   `score` smallint(6) NOT NULL,
   PRIMARY KEY (`id`),
   KEY `digidemo_comment_6340c63c` (`user_id`),
+  KEY `digidemo_comment_70bfdfd1` (`target_id`),
   KEY `digidemo_comment_45f341a0` (`letter_id`),
   CONSTRAINT `user_id_refs_id_b202d78c` FOREIGN KEY (`user_id`) REFERENCES `auth_user` (`id`),
-  CONSTRAINT `letter_id_refs_id_549c5f06` FOREIGN KEY (`letter_id`) REFERENCES `digidemo_letter` (`id`)
+  CONSTRAINT `letter_id_refs_id_549c5f06` FOREIGN KEY (`letter_id`) REFERENCES `digidemo_letter` (`id`),
+  CONSTRAINT `target_id_refs_id_549c5f06` FOREIGN KEY (`target_id`) REFERENCES `digidemo_letter` (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=15 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -324,7 +328,7 @@ CREATE TABLE `digidemo_comment` (
 
 LOCK TABLES `digidemo_comment` WRITE;
 /*!40000 ALTER TABLE `digidemo_comment` DISABLE KEYS */;
-REPLACE INTO `digidemo_comment` (`id`, `creation_date`, `last_modified`, `user_id`, `letter_id`, `body`, `score`) VALUES (1,'2014-07-13 17:00:32','2014-07-13 17:00:32',1,1,'@normaluser I agree with you but I think that you should consider offering some concrete evidence for what you are saying -- back up how the environmental losses will arise and why they are certain.  There\'s plenty of facts in the issue \nwiki to choose from.',1),(2,'2014-07-13 17:00:32','2014-07-13 17:00:32',1,1,'ll',0),(3,'2014-07-13 17:00:32','2014-07-13 17:00:32',1,1,'lll\r\n',0),(4,'2014-07-13 17:00:32','2014-07-13 17:00:32',1,1,'bic!',0),(5,'2014-07-13 17:00:32','2014-07-13 17:00:32',1,1,'super',0),(6,'2014-07-13 17:00:32','2014-07-13 17:00:32',1,14,'lame!',0),(7,'2014-07-13 17:00:32','2014-07-13 17:00:32',1,1,'kilp',0),(8,'2014-07-13 17:00:32','2014-07-13 17:00:32',1,1,'froze',0),(9,'2014-07-13 17:00:32','2014-07-13 17:00:32',1,1,'Blip',0),(10,'2014-07-13 17:00:32','2014-07-13 17:00:32',1,40,'Jimmi',0),(11,'2014-07-13 17:00:32','2014-07-13 17:00:32',1,1,'james',0),(12,'2014-07-13 17:00:32','2014-07-13 17:00:32',1,14,'blatant comment.',0),(13,'2014-07-13 17:00:32','2014-07-13 17:00:32',1,1,'pequifi',0),(14,'2014-07-15 01:51:53','2014-07-15 01:51:53',1,1,'hdkujehhie',0);
+REPLACE INTO `digidemo_comment` (`id`, `creation_date`, `last_modified`, `user_id`, `target_id`, `letter_id`, `body`, `text`, `score`) VALUES (1,'2014-07-13 17:00:32','2014-07-28 03:56:58',1,1,NULL,NULL,'@normaluser I agree with you but I think that you should consider offering some concrete evidence for what you are saying -- back up how the environmental losses will arise and why they are certain.  There\'s plenty of facts in the issue \nwiki to choose from.',1),(2,'2014-07-13 17:00:32','2014-07-28 03:56:58',1,1,NULL,NULL,'ll',0),(3,'2014-07-13 17:00:32','2014-07-28 03:56:58',1,1,NULL,NULL,'lll\r\n',0),(4,'2014-07-13 17:00:32','2014-07-28 03:56:58',1,1,NULL,NULL,'bic!',0),(5,'2014-07-13 17:00:32','2014-07-28 03:56:58',1,1,NULL,NULL,'super',0),(6,'2014-07-13 17:00:32','2014-07-28 03:56:58',1,14,NULL,NULL,'lame!',0),(7,'2014-07-13 17:00:32','2014-07-28 03:56:58',1,1,NULL,NULL,'kilp',0),(8,'2014-07-13 17:00:32','2014-07-28 03:56:58',1,1,NULL,NULL,'froze',0),(9,'2014-07-13 17:00:32','2014-07-28 03:56:58',1,1,NULL,NULL,'Blip',0),(10,'2014-07-13 17:00:32','2014-07-28 03:56:58',1,40,NULL,NULL,'Jimmi',0),(11,'2014-07-13 17:00:32','2014-07-28 03:56:58',1,1,NULL,NULL,'james',0),(12,'2014-07-13 17:00:32','2014-07-28 03:56:58',1,14,NULL,NULL,'blatant comment.',0),(13,'2014-07-13 17:00:32','2014-07-28 03:56:58',1,1,NULL,NULL,'pequifi',0),(14,'2014-07-15 01:51:53','2014-07-28 03:56:58',1,1,NULL,NULL,'hdkujehhie',0);
 /*!40000 ALTER TABLE `digidemo_comment` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -1202,4 +1206,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2014-07-25 17:26:10
+-- Dump completed on 2014-07-27 23:57:10

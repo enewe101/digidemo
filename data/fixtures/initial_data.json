@@ -795,168 +795,168 @@
         "pk": 1, 
         "model": "digidemo.comment", 
         "fields": {
-            "body": "@normaluser I agree with you but I think that you should consider offering some concrete evidence for what you are saying -- back up how the environmental losses will arise and why they are certain.  There's plenty of facts in the issue \nwiki to choose from.", 
-            "letter": 1, 
+            "target": 1, 
+            "text": "@normaluser I agree with you but I think that you should consider offering some concrete evidence for what you are saying -- back up how the environmental losses will arise and why they are certain.  There's plenty of facts in the issue \nwiki to choose from.", 
             "creation_date": "2014-07-13T17:00:32Z", 
-            "score": 1, 
+            "last_modified": "2014-07-28T03:56:58Z", 
             "user": 1, 
-            "last_modified": "2014-07-13T17:00:32Z"
+            "score": 1
         }
     }, 
     {
         "pk": 2, 
         "model": "digidemo.comment", 
         "fields": {
-            "body": "ll", 
-            "letter": 1, 
+            "target": 1, 
+            "text": "ll", 
             "creation_date": "2014-07-13T17:00:32Z", 
-            "score": 0, 
+            "last_modified": "2014-07-28T03:56:58Z", 
             "user": 1, 
-            "last_modified": "2014-07-13T17:00:32Z"
+            "score": 0
         }
     }, 
     {
         "pk": 3, 
         "model": "digidemo.comment", 
         "fields": {
-            "body": "lll\r\n", 
-            "letter": 1, 
+            "target": 1, 
+            "text": "lll\r\n", 
             "creation_date": "2014-07-13T17:00:32Z", 
-            "score": 0, 
+            "last_modified": "2014-07-28T03:56:58Z", 
             "user": 1, 
-            "last_modified": "2014-07-13T17:00:32Z"
+            "score": 0
         }
     }, 
     {
         "pk": 4, 
         "model": "digidemo.comment", 
         "fields": {
-            "body": "bic!", 
-            "letter": 1, 
+            "target": 1, 
+            "text": "bic!", 
             "creation_date": "2014-07-13T17:00:32Z", 
-            "score": 0, 
+            "last_modified": "2014-07-28T03:56:58Z", 
             "user": 1, 
-            "last_modified": "2014-07-13T17:00:32Z"
+            "score": 0
         }
     }, 
     {
         "pk": 5, 
         "model": "digidemo.comment", 
         "fields": {
-            "body": "super", 
-            "letter": 1, 
+            "target": 1, 
+            "text": "super", 
             "creation_date": "2014-07-13T17:00:32Z", 
-            "score": 0, 
+            "last_modified": "2014-07-28T03:56:58Z", 
             "user": 1, 
-            "last_modified": "2014-07-13T17:00:32Z"
+            "score": 0
         }
     }, 
     {
         "pk": 6, 
         "model": "digidemo.comment", 
         "fields": {
-            "body": "lame!", 
-            "letter": 14, 
+            "target": 14, 
+            "text": "lame!", 
             "creation_date": "2014-07-13T17:00:32Z", 
-            "score": 0, 
+            "last_modified": "2014-07-28T03:56:58Z", 
             "user": 1, 
-            "last_modified": "2014-07-13T17:00:32Z"
+            "score": 0
         }
     }, 
     {
         "pk": 7, 
         "model": "digidemo.comment", 
         "fields": {
-            "body": "kilp", 
-            "letter": 1, 
+            "target": 1, 
+            "text": "kilp", 
             "creation_date": "2014-07-13T17:00:32Z", 
-            "score": 0, 
+            "last_modified": "2014-07-28T03:56:58Z", 
             "user": 1, 
-            "last_modified": "2014-07-13T17:00:32Z"
+            "score": 0
         }
     }, 
     {
         "pk": 8, 
         "model": "digidemo.comment", 
         "fields": {
-            "body": "froze", 
-            "letter": 1, 
+            "target": 1, 
+            "text": "froze", 
             "creation_date": "2014-07-13T17:00:32Z", 
-            "score": 0, 
+            "last_modified": "2014-07-28T03:56:58Z", 
             "user": 1, 
-            "last_modified": "2014-07-13T17:00:32Z"
+            "score": 0
         }
     }, 
     {
         "pk": 9, 
         "model": "digidemo.comment", 
         "fields": {
-            "body": "Blip", 
-            "letter": 1, 
+            "target": 1, 
+            "text": "Blip", 
             "creation_date": "2014-07-13T17:00:32Z", 
-            "score": 0, 
+            "last_modified": "2014-07-28T03:56:58Z", 
             "user": 1, 
-            "last_modified": "2014-07-13T17:00:32Z"
+            "score": 0
         }
     }, 
     {
         "pk": 10, 
         "model": "digidemo.comment", 
         "fields": {
-            "body": "Jimmi", 
-            "letter": 40, 
+            "target": 40, 
+            "text": "Jimmi", 
             "creation_date": "2014-07-13T17:00:32Z", 
-            "score": 0, 
+            "last_modified": "2014-07-28T03:56:58Z", 
             "user": 1, 
-            "last_modified": "2014-07-13T17:00:32Z"
+            "score": 0
         }
     }, 
     {
         "pk": 11, 
         "model": "digidemo.comment", 
         "fields": {
-            "body": "james", 
-            "letter": 1, 
+            "target": 1, 
+            "text": "james", 
             "creation_date": "2014-07-13T17:00:32Z", 
-            "score": 0, 
+            "last_modified": "2014-07-28T03:56:58Z", 
             "user": 1, 
-            "last_modified": "2014-07-13T17:00:32Z"
+            "score": 0
         }
     }, 
     {
         "pk": 12, 
         "model": "digidemo.comment", 
         "fields": {
-            "body": "blatant comment.", 
-            "letter": 14, 
+            "target": 14, 
+            "text": "blatant comment.", 
             "creation_date": "2014-07-13T17:00:32Z", 
-            "score": 0, 
+            "last_modified": "2014-07-28T03:56:58Z", 
             "user": 1, 
-            "last_modified": "2014-07-13T17:00:32Z"
+            "score": 0
         }
     }, 
     {
         "pk": 13, 
         "model": "digidemo.comment", 
         "fields": {
-            "body": "pequifi", 
-            "letter": 1, 
+            "target": 1, 
+            "text": "pequifi", 
             "creation_date": "2014-07-13T17:00:32Z", 
-            "score": 0, 
+            "last_modified": "2014-07-28T03:56:58Z", 
             "user": 1, 
-            "last_modified": "2014-07-13T17:00:32Z"
+            "score": 0
         }
     }, 
     {
         "pk": 14, 
         "model": "digidemo.comment", 
         "fields": {
-            "body": "hdkujehhie", 
-            "letter": 1, 
+            "target": 1, 
+            "text": "hdkujehhie", 
             "creation_date": "2014-07-15T01:51:53Z", 
-            "score": 0, 
+            "last_modified": "2014-07-28T03:56:58Z", 
             "user": 1, 
-            "last_modified": "2014-07-15T01:51:53Z"
+            "score": 0
         }
     }, 
     {

@@ -335,7 +335,7 @@ def comment(request):
 	if comment_form.is_valid():
 		comment = comment_form.save()
 		
-		template = get_template('digidemo/_i_letter_comment.html')
+		template = get_template('digidemo/_i_comment.html')
 		context = Context({'comment': comment})
 		reply_html = template.render(context)
 		return {'success': True, 'html': reply_html}
@@ -344,6 +344,7 @@ def comment(request):
 		'success': False,
 		'msg':'ajax.py: comment(): comment form was not valid'
 	}
+
 
 @ajax_endpoint
 def editProposal(request):

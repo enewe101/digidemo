@@ -698,35 +698,35 @@ function ReplyWidget(form, endpoint, submit_button) {
 
 //////////////////////
 //  				//
-//  Comment widget	//
+//  Comment widget	//	Deprecated.  Just use FormWidget.
 //  				//
 //////////////////////
 
-function CommentWidget(form, endpoint, submit_button) {
-
-	var events = ['before', 'success', 'error', 'after'];
-	var hooks = make_page_hooks(this, events);
-	hooks.error = alert_ajax_error;
-
-	// the CommentWidget decorates a form widget
-	var form_widget = new FormWidget(form, endpoint, submit_button);
-
-	// get the comment text-area
-	var comment_input = $('textarea[name=body]', form);
-
-	// when the comment is successfully posted, clear the textarea,
-	// and call the success hook
-	var success = function(data, statusText, jqXHR) {
-		comment_input.val('');
-		hooks.success(data, statusText, jqXHR);
-	}
-
-	// forward hooks to the underlying form widget
-	form_widget.hook('success', success);
-	form_widget.hook('before', hooks.before);
-	form_widget.hook('error', hooks.error);
-	form_widget.hook('after', hooks.after);
-}
+//function CommentWidget(form, endpoint, submit_button) {
+//
+//	var events = ['before', 'success', 'error', 'after'];
+//	var hooks = make_page_hooks(this, events);
+//	hooks.error = alert_ajax_error;
+//
+//	// the CommentWidget decorates a form widget
+//	var form_widget = new FormWidget(form, endpoint, submit_button);
+//
+//	// get the comment text-area
+//	var comment_input = $('textarea[name=body]', form);
+//
+//	// when the comment is successfully posted, clear the textarea,
+//	// and call the success hook
+//	var success = function(data, statusText, jqXHR) {
+//		comment_input.val('');
+//		hooks.success(data, statusText, jqXHR);
+//	}
+//
+//	// forward hooks to the underlying form widget
+//	form_widget.hook('success', success);
+//	form_widget.hook('before', hooks.before);
+//	form_widget.hook('error', hooks.error);
+//	form_widget.hook('after', hooks.after);
+//}
 
 
 function AddFactorVersionWidget(add_link, form_wrapper, 
