@@ -29,16 +29,6 @@ def pyWait(predicate, timeout=3, period=0.15):
 	return False
 
 
-#def setUpModule():
-#	global DRIVER, WAIT
-#	DRIVER = webdriver.Firefox()
-#	WAIT = WebDriverWait(DRIVER, 3)	
-#
-#
-#def tearDownModule():
-#	global DRIVER
-#	DRIVER.quit()
-
 def createUser():
 	# Create an auth_user
 	user = User.objects.create_user(
@@ -58,30 +48,6 @@ def createUser():
 	user_profile.save()
 	return user
 
-
-#def createProposal():
-#	user = createUser()
-#	proposal = Proposal(
-#		title='Test Proposal Title',
-#		summary='''
-#This is a summary <script>do_evil()</script>
-#
-#A new paragraph
-#
-#- bullet
-#- bullet
-#			''',
-#		text ='''
-#This is the main text area &nbsp; 
-#
-#A new papagraph in the main text area
-#			''',
-#		is_published=True,
-#		score=0,
-#		user=user
-#	)
-#	proposal.save()
-#	return proposal
 
 
 class ProposalTest(TestCase):
@@ -430,19 +396,6 @@ class ProposalFormTest(SeleniumFormTestCase):
 		self.SUMMARY = 'Test summary.'
 		self.TEXT = 'Test text.'
 
-		# Defines the choices (visible text in <select> form element) 
-		# sector of factors
-		S1 = u'ECO'
-		S2 = u'ENV'
-		S3 = u'HEA'
-		S4 = u'EDU'
-		S5 = u'IR'
-		S6 = u'SOC'
-		S7 = u'SEC'
-		S8 = u'DEM'
-		S9 = u'ECO'
-		S10 = u'ENV'
-
 		# The hardcoded logged in user's name.  Change this when logging in
 		# users is ready
 		self.USERNAME = 'superuser'
@@ -462,74 +415,38 @@ class ProposalFormTest(SeleniumFormTestCase):
 
 		# Text to put in proposal version text inputs and textareas
 		self.PLAIN_ENTRIES = [
-			('ProposalVersionForm_title', self.TITLE),
-			('ProposalVersionForm_summary', self.SUMMARY),
-			('ProposalVersionForm_text', self.TEXT),
+			('ProposalVersionForm_title', self.TITLE, 'require'),
+			('ProposalVersionForm_summary', self.SUMMARY, 'require'),
+			('ProposalVersionForm_text', self.TEXT, 'require'),
 		]
 		self.FACTOR_ENTRIES = [(f[1],f[2]) for f in self.FACTOR_TEXTS]
-		self.ENTRIES = self.PLAIN_ENTRIES + self.FACTOR_ENTRIES
+		self.TEXTS = self.PLAIN_ENTRIES + self.FACTOR_ENTRIES
 
 		# Sector selections to use in factors
 		self.SELECTIONS = [ 
-			('id_pos-0-sector', S1),
-			('id_pos-1-sector', S2),
-			('id_pos-2-sector', S3),
-			('id_pos-3-sector', S4),
-			('id_pos-4-sector', S5),
-								
-			('id_neg-0-sector', S6),
-			('id_neg-1-sector', S7),
-			('id_neg-2-sector', S8),
-			('id_neg-3-sector', S9),
-			('id_neg-4-sector', S10),
+			('id_pos-0-sector', u'ECO', 'require'),
+			('id_pos-1-sector', u'ENV'),
+			('id_pos-2-sector', u'HEA'),
+			('id_pos-3-sector', u'EDU'),
+			('id_pos-4-sector', u'IR' ),
+								      
+			('id_neg-0-sector', u'SOC'),
+			('id_neg-1-sector', u'SEC'),
+			('id_neg-2-sector', u'DEM'),
+			('id_neg-3-sector', u'ECO'),
+			('id_neg-4-sector', u'ENV'),
 		]
 
-		self.DATA = {
+		self.FORM_DATA = {
+			'SUBMIT': '__submit',
 			'SELECTIONS': self.SELECTIONS,
-			'ENTRIES': self.ENTRIES
+			'TEXTS': self.TEXTS
 		}
 
 		self.ADD_FORM_URL = self.live_server_url + reverse('add_proposal')
 		self.EDIT_FORM_URL = (self.live_server_url 
 			+ Proposal.objects.get(title="Keystone XL Pipeline Extension")\
 				.get_edit_url())
-
-
-
-	def test_add_proposal(self):
-		# This test simply does a vanilla form filling, submission, and check
-		self.driver.get(self.ADD_FORM_URL)
-		self.fill_form_correctly_and_verify()
-
-
-	def test_add_with_errors(self):
-
-		# Here, we will intentionally leave some inputs blank
-
-		# go to the add-proposal form
-		self.driver.get(self.live_server_url + reverse('add_proposal'))
-
-
-		# First populate all the correct data
-		self.fill_form(self.DATA)
-
-		# Now clear a select field, submit, and ensure there's an error
-		removed = self.clear_field_submit_ensure_error('selections', 0)
-
-		# Replace that datum
-		self.fill_form(removed)
-
-		# for each form_data text-based input,
-		# verify that ommission is an error. 
-		for idx in range(len(self.PLAIN_ENTRIES)):
-			removed = self.clear_field_submit_ensure_error('entries', idx)
-
-			# replace the removed datum befor trying again!
-			self.fill_form(removed)
-
-		# Now try submitting everything correctly, but mark
-		self.fill_form(removed)
-
 
 
 	def test_edit_proposal(self):
@@ -592,8 +509,8 @@ class ProposalFormTest(SeleniumFormTestCase):
 
 
 	def clear_all_fields(self):
-		for field_kind in ['SELECTIONS', 'ENTRIES']:
-			for idx in range(len(self.DATA[field_kind])):
+		for field_kind in ['SELECTIONS', 'TEXTS']:
+			for idx in range(len(self.FORM_DATA[field_kind])):
 				self.clear_field(field_kind, idx)
 
 
@@ -602,12 +519,12 @@ class ProposalFormTest(SeleniumFormTestCase):
 		# Get the datum that will be cleared from the form.  
 		# Copy it into a form_data datastructure
 		if field_kind.upper() == 'SELECTIONS':
-			datum = self.DATA['SELECTIONS'][idx]
-			return_datum = {'SELECTIONS': [datum], 'ENTRIES': []}
+			datum = self.FORM_DATA['SELECTIONS'][idx]
+			return_datum = {'SELECTIONS': [datum], 'TEXTS': []}
 
-		elif field_kind.upper() == 'ENTRIES':
-			datum = self.DATA['ENTRIES'][idx]
-			return_datum = {'SELECTIONS':[], 'ENTRIES': [datum]}
+		elif field_kind.upper() == 'TEXTS':
+			datum = self.FORM_DATA['TEXTS'][idx]
+			return_datum = {'SELECTIONS':[], 'TEXTS': [datum]}
 
 		self.clear_field(field_kind, idx)
 		return return_datum
@@ -621,8 +538,8 @@ class ProposalFormTest(SeleniumFormTestCase):
 				Select(driver.find_element('id', id_to_clear)))
 			elm.select_by_visible_text('---------')
 
-		elif field_kind.upper() == 'ENTRIES':
-			id_to_clear = self.DATA['ENTRIES'][idx][0]
+		elif field_kind.upper() == 'TEXTS':
+			id_to_clear = self.FORM_DATA['TEXTS'][idx][0]
 			self.driver.find_element('id', id_to_clear).clear()
 
 
@@ -630,25 +547,23 @@ class ProposalFormTest(SeleniumFormTestCase):
 		return_datum = self.clear_and_return_field(field_kind, idx)
 		self.submit_form()
 		# We should be faced with the form again (same url) because of errors
-		self.verify_form_not_validated()
+		self.check_invalid()
 		return return_datum
 		
 
 	def fill_form_correctly_and_verify(self):
+		self.fill_and_submit(self.FORM_DATA)
+		self.check_valid()
 
-		# Fill and submit the form
-		self.fill_and_submit(self.DATA)
 
-		# verify that the proposal and related objects are found in the 
-		# database
+	def check_valid(self):
 		self.check_db()
-
 		self.verify_form_validated()
 
 
-	def verify_form_not_validated(self):
-		self.assertTrue(self.driver.current_url 
-			in [self.ADD_FORM_URL, self.EDIT_FORM_URL])
+	def check_invalid(self):
+		self.assertTrue(
+			self.get_current_url() in [self.ADD_FORM_URL, self.EDIT_FORM_URL])
 
 
 	def verify_form_validated(self):
@@ -681,21 +596,7 @@ class ProposalFormTest(SeleniumFormTestCase):
 		self.click_add_factor_forms()
 		self.click_add_factor_forms()
 	
-		# Apply the select choices
-		wait = WebDriverWait(self.driver, 3)
-		for element_id, choice in data['SELECTIONS']:
-			elm = wait.until( lambda driver:
-				Select(driver.find_element('id', element_id)))
-			elm.select_by_visible_text(choice)
-
-		# Enter text in textareas and text inputs
-		for element_id, entry_text in data['ENTRIES']:
-			self.driver.find_element('id', element_id).send_keys(entry_text)
-
-
-	def submit_form(self):
-		# submit the form
-		self.driver.find_element('id', '__submit').click()
+		super(ProposalFormTest, self).fill_form(data)
 
 
 

@@ -19,7 +19,7 @@ def get_proposal_tabs(proposal, active_tab):
 	proposal_tabs = [
 		{'name': 'overview','url': proposal.get_overview_url()},
 		{'name': 'proposal','url': proposal.get_proposal_url()},
-		{'name': 'questions','url': proposal.get_questions_url()},
+		{'name': 'questions','url': proposal.get_question_list_url()},
 		{'name': 'discuss','url': proposal.get_discussion_url()},
 		{'name': 'edit','url': proposal.get_edit_url()}
 	]
@@ -251,6 +251,9 @@ def proposal_question_list(request, proposal_id):
 		}
 	)
 
+
+def ask_question(request, proposal_id):
+
 	proposal = Proposal.objects.get(pk=proposal_id)
 
 	# ** Hardcoded the logged in user to be enewe101 **
@@ -346,6 +349,11 @@ def view_question(request, question_id):
 			'active_navitem': 'questions'
 		}
 	)
+
+
+
+
+
 
 
 def make_proposal_context(proposal):
