@@ -94,7 +94,6 @@ class SeleniumTestCase(LiveServerTestCase):
 		super(SeleniumTestCase, cls).tearDownClass()
 
 
-
 class QuestionRenderTest(SeleniumTestCase):
 	'''
 		tests that the test question in the database renders correctly
@@ -232,7 +231,75 @@ class SeleniumFormTestCase(SeleniumTestCase):
 		self.submit_form()
 		self.check_valid()
 
-		
+
+
+class CommentTest(SeleniumFormTestCase):
+	def setUp(self):
+		self.COMMENT_TEXT = 'Test comment!'
+		self.COMMENT_TEXTAREA_ID = 'LetterCommentForm_body'
+		self.FORM_DATA = {
+			'TEXTS': [
+				(self.COMMENT_TEXTAREA_ID, self.COMMENT_TEXT, 'require')],
+			'SUBMIT': 'LetterCommentForm_1_submit'
+		}
+
+		self.PROPOSAL = Proposal.objects.get(pk=1)
+		self.ADD_FORM_URL = (self.live_server_url 
+			+ self.PROPOSAL.get_overview_url())
+
+		self.USER = User.objects.get(username='superuser')
+
+		self.SHOW_COMMENT_SWITCH_ID = '_w_toggle_hidden_comment_1'
+		self.COMMENT_LIST_WRAPPER_ID = 'letter_comments_1'
+
+
+	@unittest.skip('skip for now')
+	def test_form_errors(self):
+		super(CommentTest, self).test_form_errors()
+
+	def test_simple_add(self):
+
+		self.driver.get(self.ADD_FORM_URL)
+
+		# Click the link to reveal the comment form
+		show_comment_switch = self.wait.until(lambda driver: 
+			driver.find_element('id', self.SHOW_COMMENT_SWITCH_ID))
+		show_comment_switch.click()
+
+		self.fill_form_correctly_and_verify()
+
+
+	
+
+	def check_valid(self):
+
+		# Check that the comment was added to the database
+		matching_comments = Comment.objects.filter(
+			user=self.USER, body=self.COMMENT_TEXT)
+		self.assertTrue(pyWait(lambda: matching_comments.count() == 1))
+
+		# Check that the comment was added to the page
+		comment_list = self.driver.find_element(
+			'id', self.COMMENT_LIST_WRAPPER_ID)
+		comments = comment_list.find_elements_by_class_name('letter_comment')
+		last_comment = comments[-1]
+		text = last_comment.find_element_by_class_name(
+			'letter_comment_body').text
+		author = last_comment.find_element_by_class_name(
+			'comment_author').text
+		self.assertEqual(text, self.COMMENT_TEXT)
+		self.assertEqual(author, '~ ' + self.USER.username)
+
+		# Check that comment form was hidden and cleared
+		comment_form = self.driver.find_element(
+			'id', self.COMMENT_TEXTAREA_ID)
+		self.assertFalse(comment_form.is_displayed())
+		self.assertEqual(comment_form.text, '')
+
+
+	def check_invalid(self):
+		pass
+
 
 class AnswerFormTest(SeleniumFormTestCase):
 
@@ -249,6 +316,7 @@ class AnswerFormTest(SeleniumFormTestCase):
 
 		self.HIDE_ANSWER_DIV_ID = '_w_toggle_hidden_answer_form_content'
 		self.TOGGLE_SHOW_ANSWER_ID = '_w_toggle_hidden_answer_form_switch'
+
 	def test_form_errors(self):
 		super(AnswerFormTest, self).test_form_errors()
 

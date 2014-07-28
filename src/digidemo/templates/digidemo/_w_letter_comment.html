@@ -9,17 +9,17 @@
 
 (function(){
 
-var comment_widget = new CommentWidget(
-	$('#{{ form.form_class}}_{{ include_id }}'),
-	'{{ form.endpoint }}',
-	$('#{{ form.form_class}}_{{ include_id }}_submit')
-);
+	var comment_widget = new CommentWidget(
+		$('#{{ form.form_class}}_{{ include_id }}'),
+		'{{ form.endpoint }}',
+		$('#{{ form.form_class}}_{{ include_id }}_submit')
+	);
 
-register_widget(
-	'{{ form.form_class }}_{{ include_id }}', 
-	comment_widget,
-	'{{ form.form_class }}'
-);
+	register_widget(
+		'{{ form.form_class }}_{{ include_id }}', 
+		comment_widget,
+		'{{ form.form_class }}'
+	);
 
 }());
 
