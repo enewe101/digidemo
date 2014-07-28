@@ -1,0 +1,8 @@
+
+{% extends "digidemo/__two_column.html" %}
+{% load staticfiles %}
+{% block maincol %}
+
+		{% include "digidemo/_w_simple_form_wrapped.html" with form=form %}
+
+{% endblock maincol %}
