@@ -1,5 +1,6 @@
 import time
 import copy
+import unittest
 from django.core.urlresolvers import reverse
 from django.test import TestCase, LiveServerTestCase
 from django.core.files import File
@@ -14,6 +15,29 @@ from selenium.webdriver.common.by import By
 import filecmp
 import os
 
+
+def pyWait(predicate, timeout=3, period=0.15):
+
+	start = time.time()
+	max_time = start + timeout
+
+	while time.time() < max_time:
+		if predicate():
+			return True
+		time.sleep(period)
+	
+	return False
+
+
+#def setUpModule():
+#	global DRIVER, WAIT
+#	DRIVER = webdriver.Firefox()
+#	WAIT = WebDriverWait(DRIVER, 3)	
+#
+#
+#def tearDownModule():
+#	global DRIVER
+#	DRIVER.quit()
 
 def createUser():
 	# Create an auth_user
@@ -90,23 +114,311 @@ class ProposalTest(TestCase):
 
 
 
-class SeleniumTest(LiveServerTestCase):
-	'''
-	Base class for selenium tests
-	'''
+class SeleniumTestCase(LiveServerTestCase):
+
 	@classmethod
 	def setUpClass(cls):
 		cls.driver = webdriver.Firefox()
-		super(SeleniumTest, cls).setUpClass()
+		cls.wait = WebDriverWait(cls.driver, 3)	
+		super(SeleniumTestCase, cls).setUpClass()
 
 	@classmethod
 	def tearDownClass(cls):
 		cls.driver.quit()
-		super(SeleniumTest, cls).tearDownClass()
+		super(SeleniumTestCase, cls).tearDownClass()
 
 
 
-class ProposalFormTest(SeleniumTest):
+class QuestionRenderTest(SeleniumTestCase):
+	'''
+		tests that the test question in the database renders correctly
+	'''
+
+	def test_render(self):
+		question = Question.objects.get(pk=1)
+		self.driver.get(self.live_server_url + question.get_url())
+
+		self.driver.find_element_by_class_name('discussion_title')
+		self.driver.find_element_by_id('q_upvote')
+		self.driver.find_element_by_id('q_score')
+		self.driver.find_element_by_id('q_downvote')
+
+
+
+		
+class SeleniumFormTestCase(SeleniumTestCase):
+
+	@classmethod
+	def setUpClass(cls):
+
+		# SeleniumFormTestCase is an abstract test class.  It shouldn't be run
+		# but classes that inherit from it should.
+		if cls == SeleniumFormTestCase:
+			raise unittest.SkipTest('abstract class')
+
+		else:
+			super(SeleniumFormTestCase, cls).setUpClass()
+
+
+	FIELD_TYPES = ['SUBMIT', 'TEXTS', 'SELECTIONS']
+
+	def fill_form_correctly_and_verify(self):
+
+		# Fill and submit the form
+		self.fill_and_submit(self.FORM_DATA)
+
+		# verify that the proposal and related objects are found in the 
+		# database
+		self.check_valid()
+
+
+	def fill_and_submit(self, data):
+		self.fill_form(data)
+		self.submit_form()
+	
+
+	def fill_form(self, data):
+
+		# Accomodate the fact that the form elements may be dynamically
+		# loaded, but timeout if form elements not found within three seconds
+
+		# Apply the select choices
+		if 'SELECTIONS' in data:
+			for spec in data['SELECTIONS']:
+				element_id, datum = spec[0], spec[1]
+				elm = self.wait.until( lambda driver:
+					Select(driver.find_element('id', element_id)))
+				elm.select_by_visible_text(datum)
+
+		# Enter text in text-based inputs
+		if 'TEXTS' in data:
+			for spec in data['TEXTS']:
+				element_id, datum = spec[0], spec[1]
+				elm = self.wait.until(lambda driver: 
+					driver.find_element('id', element_id))
+				elm.send_keys(datum)
+
+
+	def clear_fields(self, data):
+
+		# Accomodate the fact that the form elements may be dynamically
+		# loaded, but timeout if form elements not found within three seconds
+
+		# Apply the select choices
+		if 'SELECTIONS' in data:
+			for spec in data['SELECTIONS']:
+				element_id = spec[0]
+				elm = self.wait.until( lambda driver:
+					Select(driver.find_element('id', element_id)))
+				elm.select_by_visible_text('-'*9)
+
+		# Enter text in text-based inputs
+		if 'TEXTS' in data:
+			for spec in data['TEXTS']:
+				element_id = spec[0]
+				elm = self.wait.until(lambda driver: 
+					driver.find_element('id', element_id))
+				elm.clear()
+
+
+	def submit_form(self):
+		# submit the form
+		self.driver.find_element('id', self.FORM_DATA['SUBMIT']).click()
+
+
+	def get_current_url(self):
+		return self.driver.current_url
+
+
+	def test_simple_add(self):
+		# This test simply does a vanilla form filling, submission, and check
+		self.driver.get(self.ADD_FORM_URL)
+		self.fill_form_correctly_and_verify()
+
+
+	def test_form_errors(self):
+		self.driver.get(self.ADD_FORM_URL)
+		self.fill_form(self.FORM_DATA)
+
+		for field_type in self.FIELD_TYPES:
+			if field_type in self.FORM_DATA and field_type != 'SUBMIT':
+				for spec in self.FORM_DATA[field_type]:
+
+					# check whether the field is specified as required
+					required = False
+					try:
+						required = bool(spec[2] == 'require')
+					except IndexError:
+						pass
+
+					# if required, try ommitting it; ensure error.
+					if required:
+						self.clear_fields({field_type: [spec]})
+						self.submit_form()
+						self.check_invalid()
+
+						# replace the missing field
+						self.fill_form({field_type: [spec]})
+
+
+		# finally, confirm that the form submits correctly,
+		# with all the fields filled
+		self.submit_form()
+		self.check_valid()
+
+		
+
+class AnswerFormTest(SeleniumFormTestCase):
+
+	def setUp(self):
+		self.TEXT = 'Test answer text'
+		self.FORM_DATA = {
+			'TEXTS': [('AnswerForm_text', self.TEXT, 'require')],
+			'SUBMIT': 'AnswerForm__submit' 
+		}
+
+		self.QUESTION = Question.objects.get(pk=1)
+		self.ADD_FORM_URL = self.live_server_url + self.QUESTION.get_url()
+		self.USER = User.objects.get(username='superuser')
+
+		self.HIDE_ANSWER_DIV_ID = '_w_toggle_hidden_answer_form_content'
+		self.TOGGLE_SHOW_ANSWER_ID = '_w_toggle_hidden_answer_form_switch'
+	def test_form_errors(self):
+		super(AnswerFormTest, self).test_form_errors()
+
+
+	def test_simple_add(self):
+		super(AnswerFormTest, self).test_simple_add()
+
+
+	def check_invalid(self):
+
+		# We should see an error message
+		error_msg_elm = self.wait.until(lambda driver:
+			driver.find_element('id', 'AnswerForm_text_errors'))
+		self.assertTrue(error_msg_elm.text, 'This field is required.')
+
+		# The text area should get assigned a class of `error`
+		text_input = self.wait.until(lambda driver: 
+			driver.find_element('id', 'AnswerForm_text'))
+		self.assertIn('error', text_input.get_attribute('class'))
+
+		
+	def check_valid(self):
+
+		# We may have to wait, but soon the new answer is in the db
+		self.assertTrue(
+			pyWait(lambda: Answer.objects.count(), 3, 0.15))
+
+		answer = Answer.objects.get()
+		self.assertEqual(answer.text, self.TEXT)
+		self.assertEqual(answer.user, self.USER)
+		self.assertEqual(answer.target, self.QUESTION)
+		self.assertEqual(answer.score, 0)
+
+		# check that the new answer is on the page
+		reply_body = self.wait.until(
+			lambda driver: driver.find_elements_by_class_name('reply_body'))
+
+		# check for the voting elements.  When they are inserted, their id is
+		# built from some user data.
+		vote_id = (self.USER.username 
+			+ str(Answer.objects.filter(target=self.QUESTION).count()))
+
+		self.wait.until(
+			lambda driver: driver.find_element('id', vote_id + '_upvote'))
+		self.wait.until(
+			lambda driver: driver.find_element('id', vote_id + '_score'))
+		self.wait.until(
+			lambda driver: driver.find_element('id', vote_id + '_downvote'))
+
+		# check that the divider was introduced between the Q and A
+		hr_flourishes = self.wait.until(
+			lambda driver: driver.find_elements_by_class_name('flourish'))
+		self.assertEqual(len(hr_flourishes), 2)
+
+		# check that the entry box was hidden
+		hide_answer_div = self.wait.until(lambda driver:
+			driver.find_element('id', self.HIDE_ANSWER_DIV_ID))
+
+		# Shortly after the form is submitted, the add answer form will be
+		# hidden
+		self.assertTrue(pyWait(lambda: not hide_answer_div.is_displayed()))
+
+		# The link to reveal the form again (to add another answer) is shown
+		show_answer_switch = self.driver.find_element('id',
+			self.TOGGLE_SHOW_ANSWER_ID)
+		self.assertTrue(
+			pyWait(lambda: show_answer_switch.text == 'Add another answer'))
+
+		# clicking that link shows the answer
+		show_answer_switch.click()
+		self.assertTrue(pyWait(lambda: hide_answer_div.is_displayed()))
+
+
+
+
+class QuestionFormTest(SeleniumFormTestCase):
+	'''
+	Tests adding a question using the QuestionForm
+	'''
+
+	def setUp(self):
+
+		self.TITLE = 'Test Title'
+		self.TEXT = 'Test text.'
+		self.FORM_DATA = {
+			'TEXTS': [
+				('QuestionForm_title', self.TITLE, 'require'),
+				('QuestionForm_text', self.TEXT, 'require')
+			],
+			'SUBMIT': 'QuestionForm__submit'
+		}
+
+		self.PROPOSAL = Proposal.objects.get(pk=1)
+		self.ADD_FORM_URL = (self.live_server_url 
+			+ self.PROPOSAL.get_question_url())
+		self.USER = User.objects.get(username='superuser')
+
+
+	def check_valid(self):
+
+		# check whether the new question was created
+		question_set = self.PROPOSAL.question_set.filter(
+			title=self.TITLE)
+		self.assertEqual(question_set.count(), 1)
+
+		# verify the question has the right data
+		self.question = question_set[0]
+		self.assertEqual(self.question.text, self.TEXT)
+		self.assertEqual(self.question.user, self.USER)
+		self.assertEqual(self.question.target, self.PROPOSAL)
+
+		# check that we were redirected to the view-question page
+		self.assertEqual(
+			self.get_current_url(),
+			self.live_server_url + self.question.get_url()
+		)
+
+
+	def check_invalid(self):
+
+		# ensure the new question was not created
+		question_set = self.PROPOSAL.question_set.filter(
+			title=self.TITLE)
+		self.assertEqual(question_set.count(), 0)
+
+		# ensure we are faced with the form again (rather than redirected)
+		self.assertEqual(self.get_current_url(), self.ADD_FORM_URL)
+
+
+	def get_success_url(self):
+		return self.question.get_url()
+
+
+
+
+class ProposalFormTest(SeleniumFormTestCase):
 	'''
 	Tests adding and editing proposals (proposal versions), and their 
 	associated factors. 
@@ -249,8 +561,7 @@ class ProposalFormTest(SeleniumTest):
 		# If we have description filled, sector blank, its ok (ignored) if
 		# deleted is checked
 		self.click_add_factor_forms() # we need to add a form for this
-		wait = WebDriverWait(self.driver, 3)	# wait for form to arrive
-		elm = wait.until(lambda driver: 
+		elm = self.wait.until(lambda driver: 
 			driver.find_element('id', 'id_neg-2-description'))
 		elm.send_keys(self.SELECTIONS[6][1])
 
@@ -304,11 +615,9 @@ class ProposalFormTest(SeleniumTest):
 
 	def clear_field(self, field_kind, idx):
 
-		# Clear the identified field.  How to do it depends on the field_kind
-		wait = WebDriverWait(self.driver, 3)
 		if field_kind.upper() == 'SELECTIONS':
-			id_to_clear = self.DATA['SELECTIONS'][idx][0]
-			elm = wait.until( lambda driver:
+			id_to_clear = self.FORM_DATA['SELECTIONS'][idx][0]
+			elm = self.wait.until( lambda driver:
 				Select(driver.find_element('id', id_to_clear)))
 			elm.select_by_visible_text('---------')
 
@@ -456,15 +765,7 @@ class ProposalFormTest(SeleniumTest):
 			factor_version_properties, expected_factor_properties)
 
 
-
-
-
-			
-
-
-
-
-class EndToEndTests(SeleniumTest):
+class EndToEndTests(SeleniumTestCase):
 	'''
 	Tests that comprise of a full request and render cycles
 	'''

@@ -322,6 +322,19 @@
     }, 
     {
         "pk": 1, 
+        "model": "digidemo.question", 
+        "fields": {
+            "target": 1, 
+            "title": "How likely (or frequent) can we expect spills along the pipeline extension to be?", 
+            "text": "I would like to know how likely spills are, based on the rate of previous incidents. It will probably be important to take into account the kind of piping technology used, and the kind of service. For example, repurposed piping originally for the transport of natural gas is likely to be different from newly built piping. Or, (and I'm not sure), there may be a difference due to the fact that this is crude derived from tarsands, rather than conventional crude.", 
+            "creation_date": "2014-07-25T21:25:57Z", 
+            "score": 0, 
+            "user": 1, 
+            "last_modified": "2014-07-25T21:25:57Z"
+        }
+    }, 
+    {
+        "pk": 1, 
         "model": "digidemo.factor", 
         "fields": {
             "sector": 7, 

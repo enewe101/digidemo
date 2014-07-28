@@ -1,0 +1,109 @@
+{% extends "digidemo/__two_column.html" %}
+{% load staticfiles %}
+{% load apptags %}
+{% block maincol %}
+
+	{% include "digidemo/_i_post.html" with post=question include_id="q" %}
+
+	<div class="clear"></div>
+
+	{% if answers|length > 0 %}
+		{% include "digidemo/_i_hr_flourish.html" %}
+	{% endif %}
+
+	<div class="clear"></div>
+
+	<div id="answers">
+		{% for answer in answers %}
+			{% if not forloop.first %}
+				<hr>
+			{% endif %}
+
+			{% include "digidemo/_i_reply.html" with reply=answer include_id=forloop.counter %}
+		{% endfor %}
+	</div>
+
+	{% include "digidemo/_i_hr_flourish.html" %}
+
+	<!-- this element toggles the display of the answer form
+		it's only visible after the form has been submitted though 
+	-->
+	<a id="_w_toggle_hidden_answer_form_switch" class="pointer"></a>
+
+	<div id="_w_toggle_hidden_answer_form_content">
+		<h2>Your Answer</h2>
+		{% include "digidemo/_w_ajax_form.html" with form=answer_form %}
+	</div>
+
+	<script type="text/javascript">
+		(function(){
+
+		 	// Define some id's for binding the js to html
+		 	var TOGGLE_SWITCH_ID = '_w_toggle_hidden_answer_form_switch';
+			var ANSWER_DIV_ID = '_w_toggle_hidden_answer_form_content';
+			var TOGGLE_WIDGET_ID = 'toggle_hidden_answer_form'
+			var TOGGLE_WIDGET_CLASS = 'toggle_hidden';
+			var ANSWER_FORM_WIDGET_ID = '{{answer_form.form_class}}_';
+
+			// Next we define a few functions that will be used to hook up
+			// some behaviors once the document is ready...
+
+			// Creates a toggle-hidden widget, which can show/hide `content`
+		 	// when `toggle_div` is clicked
+			var hook_up_hidden_toggler = function() {
+				var toggle_div = $('#' + TOGGLE_SWITCH_ID);
+				var content = $('#' + ANSWER_DIV_ID);
+				var toggler = new ToggleHidden(toggle_div, content);
+				register_widget(
+					TOGGLE_WIDGET_ID, toggler, TOGGLE_WIDGET_CLASS);
+			}
+
+			// Adds a hook so that when an answer is submitted, the new answer 
+			// is put in the answer list, and the form is hidden
+			var hook_in_answer_form = function(){
+
+				// get the answer form
+				var answer_form = widgets[ANSWER_FORM_WIDGET_ID].widget;
+
+				// add a hook so that when the answer form submits 
+				// successfully, the new answer is displayed
+				answer_form.hook('success', function(data) {
+
+					answers_wrapper = $('#answers');
+
+					// if there's already some answers, put a divider to 
+					// separate this answer from the one above
+					if(answers_wrapper.children().length) {
+						answers_wrapper.append('<hr>');
+
+					// if there aren't any answers, put a bigger divider to
+					// separate this answer from the question above
+					} else {
+						answers_wrapper.append('<div class="clear"></div>');
+						answers_wrapper.append(get_flourish());
+					}
+
+					// now insert the new answer
+					answers_wrapper.append(data.html);
+
+					// and clear the text from the answer form
+					$('#AnswerForm_text').val('');
+
+					// Hide answer form (to hide it), and add some text to 
+					// the link that allows user to reveal the form again
+					widgets[TOGGLE_WIDGET_ID].widget.toggle();
+					$('#' + TOGGLE_SWITCH_ID).text('Add another answer');
+
+				});
+			};
+
+			// perform the hook-ups defined above, once the document is ready
+			$(document).ready(function() {
+				hook_up_hidden_toggler();
+				hook_in_answer_form();
+			});
+
+		}());
+	</script>
+
+{% endblock maincol %}

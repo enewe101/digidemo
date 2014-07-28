@@ -1,0 +1,31 @@
+<!-- start discussion div -->
+<div class="discussion">
+
+	<div class="proposal_status_bar">
+	{% include "digidemo/_w_vote_form.html" with form=post.vote_form include_id=include_id %}
+	</div>
+
+	<!-- start discussion main area -->
+	<div class="discussion_main_area">
+
+		<!-- start first post -->
+		<div class="first_post">
+
+			<h2 class="discussion_title">{{ post.content.title }}</h2>
+			<div class="discussion_user">
+				{% include "digidemo/_i_user_id.html" with user=post.content.user %}
+			</div>
+			<div class="discussion_body">{{ post.content.text }}</div>
+			<div class="clear"></div>
+
+			<div class="clear"></div>
+		</div>
+		<!-- end first post -->
+
+	</div>
+	<!-- end discussion main area -->
+	<div class="clear"></div>
+
+</div>
+<!-- end discussion -->
+

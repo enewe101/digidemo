@@ -132,19 +132,9 @@ def edit(request, proposal_id):
 
 	proposal = Proposal.objects.get(pk=proposal_id)
 
-	proposal_vote = utils.get_or_none(
-		ProposalVote, user=logged_in_user, target=proposal)
-
-	if proposal_vote:
-		proposal_vote_form = ProposalVoteForm(
-			instance=proposal_vote,
-			cur_score=proposal.score)
-
-	else:
-		proposal_vote_form = ProposalVoteForm(
-			initial={'user':logged_in_user.pk, 'target':proposal.pk},
-			cur_score=proposal.score)
-
+	# make a proposal vote form
+	proposal_vote_form = get_vote_form(
+		ProposalVote, ProposalVoteForm, logged_in_user, proposal)
 
 	if request.POST:
 
@@ -186,7 +176,11 @@ def discuss(request, proposal_id):
 
 	# ** Hardcoded the logged in user to be enewe101 **
 	logged_in_user = User.objects.get(pk=1)
-	
+
+	# make a proposal vote form
+	proposal_vote_form = get_vote_form(
+		ProposalVote, ProposalVoteForm, logged_in_user, proposal)
+
 	discussion_sections = []
 	for discussion in proposal.discussion_set.all():
 
@@ -219,6 +213,7 @@ def discuss(request, proposal_id):
 				{'user': utils.obj_to_dict(
 				logged_in_user, exclude=['password'])}),
 			'proposal': proposal,
+			'proposal_vote_form': proposal_vote_form,
 			'logged_in_user': logged_in_user,
 			'tabs': get_proposal_tabs(proposal, 'discuss'),
 			'discussion_sections': discussion_sections,
@@ -234,7 +229,11 @@ def proposal_question_list(request, proposal_id):
 	# ** Hardcoded the logged in user to be enewe101 **
 	logged_in_user = User.objects.get(pk=1)
 
-	questions = Question.objects.filter(proposal=proposal)
+	# make a proposal vote form
+	proposal_vote_form = get_vote_form(
+		ProposalVote, ProposalVoteForm, logged_in_user, proposal)
+
+	questions = Question.objects.filter(target=proposal)
 
 	return render(
 		request,
@@ -244,6 +243,7 @@ def proposal_question_list(request, proposal_id):
 				{'user': utils.obj_to_dict(
 				logged_in_user, exclude=['password'])}),
 			'proposal': proposal,
+			'proposal_vote_form': proposal_vote_form,
 			'logged_in_user': logged_in_user,
 			'tabs': get_proposal_tabs(proposal, 'questions'),
 			'questions': questions,
@@ -251,14 +251,101 @@ def proposal_question_list(request, proposal_id):
 		}
 	)
 
+	proposal = Proposal.objects.get(pk=proposal_id)
+
+	# ** Hardcoded the logged in user to be enewe101 **
+	logged_in_user = User.objects.get(pk=1)
+
+	# make a proposal vote form
+	proposal_vote_form = get_vote_form(
+		ProposalVote, ProposalVoteForm, logged_in_user, proposal)
 
 
+	if request.method == 'POST':
+		form = QuestionForm(request.POST, endpoint=proposal.get_question_url())
+		if form.is_valid():
+			question = form.save()
+			return redirect(question.get_url())
+	
+	else:
+		form = QuestionForm(
+			initial={'user':logged_in_user, 'target':proposal},
+			endpoint=proposal.get_question_url()
+		)
+
+	return render(
+		request,
+		'digidemo/ask_question.html',
+		{
+			'django_vars_js': get_django_vars_JSON(
+				{'user': utils.obj_to_dict(
+				logged_in_user, exclude=['password'])}),
+			'proposal': proposal,
+			'proposal_vote_form': proposal_vote_form,
+			'logged_in_user': logged_in_user,
+			'tabs': get_proposal_tabs(proposal, 'questions'),
+			'form': form,
+			'active_navitem': 'questions'
+		}
+	)
 
 
+def get_vote_form(VoteModel, VoteForm, user, target):
+	existing_vote = utils.get_or_none(VoteModel, user=user, target=target)
+
+	if existing_vote:
+		vote_form = VoteForm(instance=existing_vote, cur_score=target.score)
+	else:
+		vote_form = VoteForm(
+			initial={'user':user.pk, 'target':target.pk},
+			cur_score=target.score
+		)
+
+	return vote_form
 
 
+def view_question(request, question_id):
+	question = Question.objects.get(pk=question_id)
+	proposal = question.target
 
 
+	# ** Hardcoded the logged in user to be enewe101 **
+	logged_in_user = User.objects.get(pk=1)
+
+	# make a question vote form 
+	question_vote = get_vote_form(
+		QuestionVote, QuestionVoteForm, logged_in_user, question)
+
+	# make a proposal vote form
+	proposal_vote_form = get_vote_form(
+		ProposalVote, ProposalVoteForm, logged_in_user, proposal)
+
+	answers = []
+	for answer in Answer.objects.all():
+		vote_form = get_vote_form(
+			AnswerVote, AnswerVoteForm, logged_in_user, answer)
+		answers.append({'content':answer, 'vote_form':vote_form})
+
+	answer_form = AnswerForm(
+		initial={'user':logged_in_user, 'target':question})
+
+	return render(
+		request,
+		'digidemo/view_question.html',
+		{
+			'django_vars_js': get_django_vars_JSON(
+				{'user': utils.obj_to_dict(
+				logged_in_user, exclude=['password'])}),
+			'question': {'content':question, 'vote_form': question_vote},
+			'answers': answers,
+			'answer_form': answer_form,
+			'proposal': proposal,
+			'proposal_vote_form': proposal_vote_form,
+			'logged_in_user': logged_in_user,
+			'tabs': get_proposal_tabs(proposal, 'questions'),
+			'active_navitem': 'questions'
+		}
+	)
 
 
 def make_proposal_context(proposal):
@@ -282,18 +369,8 @@ def make_proposal_context(proposal):
 	# ** Hardcoded the logged in user to be enewe101 **
 	logged_in_user = User.objects.get(pk=1)
 	
-	proposal_vote = utils.get_or_none(
-		ProposalVote, user=logged_in_user, target=proposal)
-
-	if proposal_vote:
-		proposal_vote_form = ProposalVoteForm(
-			instance=proposal_vote,
-			cur_score=proposal.score)
-
-	else:
-		proposal_vote_form = ProposalVoteForm(
-			initial={'user':logged_in_user.pk, 'target':proposal.pk},
-			cur_score=proposal.score)
+	proposal_vote_form = get_vote_form(
+		ProposalVote, ProposalVoteForm, logged_in_user, proposal)
 
 	# Get all of the letters which are associated with this proposal
 	# and which are 'original letters'

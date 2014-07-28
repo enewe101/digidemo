@@ -93,6 +93,10 @@ class UserProfile(TimeStamped):
 		'dn_comment': -2,
 		'up_discussion': 10,
 		'dn_discussion': -2,
+		'up_question': 10,
+		'dn_question': -2,
+		'up_answer': 10,
+		'dn_answer': -2,
 	}
                 
 	def __unicode__(self):
@@ -219,7 +223,7 @@ class Reply(TimeStamped):
 
 
 class Question(ScoredPost):
-	proposal = models.ForeignKey(Proposal)
+	target = models.ForeignKey(Proposal)
 
 
 class QuestionComment(ScoredComment):
@@ -227,7 +231,7 @@ class QuestionComment(ScoredComment):
 	
 
 class Answer(ScoredReply):
-	question = models.ForeignKey(Question)
+	target = models.ForeignKey(Question)
 
 
 class AnswerComment(ScoredComment):
@@ -359,6 +363,18 @@ class LetterVote(Vote):
 
 class ReplyVote(Vote):
 	target = models.ForeignKey(Reply)
+
+	class Meta:
+		unique_together = ('user', 'target')
+
+class QuestionVote(Vote):
+	target = models.ForeignKey(Question)
+
+	class Meta:
+		unique_together = ('user', 'target')
+
+class AnswerVote(Vote):
+	target = models.ForeignKey(Answer)
 
 	class Meta:
 		unique_together = ('user', 'target')
