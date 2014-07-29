@@ -323,10 +323,10 @@ class Letter(TimeStamped):
 
 # This should be renamed "LetterComment"
 class Comment(ScoredComment):
-	target = models.ForeignKey(Letter)
+	target = models.ForeignKey(Letter, related_name='comment_set')
 
 class QuestionComment(ScoredComment):
-	question = models.ForeignKey(Question)
+	target = models.ForeignKey(Question, related_name='comment_set')
 	
 
 class Answer(ScoredReply):
@@ -334,7 +334,7 @@ class Answer(ScoredReply):
 
 
 class AnswerComment(ScoredComment):
-	answer = models.ForeignKey(Answer)
+	target = models.ForeignKey(Answer, related_name='comment_set')
 
 
 

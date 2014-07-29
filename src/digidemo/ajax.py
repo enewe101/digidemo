@@ -329,8 +329,21 @@ def reply(request):
 
 
 @ajax_endpoint
+def answer_comment(request):
+	return process_comment(request, AnswerCommentForm)
+
+@ajax_endpoint
+def question_comment(request):
+	return process_comment(request, QuestionCommentForm)
+
+@ajax_endpoint
 def comment(request):
-	comment_form = LetterCommentForm(request.POST)
+	return process_comment(request, LetterCommentForm)
+
+
+
+def process_comment(request, comment_form_class):
+	comment_form = comment_form_class(request.POST)
 	
 	if comment_form.is_valid():
 		comment = comment_form.save()

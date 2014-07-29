@@ -46,8 +46,8 @@
 
 		// Get the toggler and the comment widget
 		var toggler = widgets['toggle_hidden_comment_{{ include_id }}'].widget;
-		var comment_widget = widgets[
-			'LetterCommentForm_{{ include_id }}'].widget;
+		var comment_widget = widgets['{{ comment_form.form_class }}'
+	   		+ '_' + '{{ comment_form.id_prefix }}'].widget;
 
 		// Define a callback: shows the comment on the page and hides the form
 		var show_comment = function(data) {

@@ -319,15 +319,29 @@ def view_question(request, question_id):
 	question_vote = get_vote_form(
 		QuestionVote, QuestionVoteForm, logged_in_user, question)
 
+	# make a comment form for the question
+	question_comment_form = QuestionCommentForm(
+		initial={'user':logged_in_user, 'target': question},
+		id_prefix='qc'
+	)
+
 	# make a proposal vote form
 	proposal_vote_form = get_vote_form(
 		ProposalVote, ProposalVoteForm, logged_in_user, proposal)
 
 	answers = []
-	for answer in Answer.objects.all():
+	for answer_num, answer in enumerate(Answer.objects.all()):
 		vote_form = get_vote_form(
 			AnswerVote, AnswerVoteForm, logged_in_user, answer)
-		answers.append({'content':answer, 'vote_form':vote_form})
+		comment_form = AnswerCommentForm(
+			initial={'user':logged_in_user, 'target': answer},
+			id_prefix=answer_num
+		)
+		answers.append({
+			'content':answer,
+			'vote_form':vote_form,
+			'comment_form': comment_form
+		})
 
 	answer_form = AnswerForm(
 		initial={'user':logged_in_user, 'target':question})
@@ -339,7 +353,11 @@ def view_question(request, question_id):
 			'django_vars_js': get_django_vars_JSON(
 				{'user': utils.obj_to_dict(
 				logged_in_user, exclude=['password'])}),
-			'question': {'content':question, 'vote_form': question_vote},
+			'question': {
+				'content':question,
+				'vote_form': question_vote,
+				'comment_form': question_comment_form
+			},
 			'answers': answers,
 			'answer_form': answer_form,
 			'proposal': proposal,

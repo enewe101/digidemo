@@ -4,6 +4,7 @@
 {% block maincol %}
 
 	{% include "digidemo/_i_post.html" with post=question include_id="q" %}
+	{% include "digidemo/_i_comments.html" with include_id="qc" comments=question.content.comment_set.all comment_form=question.comment_form %}
 
 	<div class="clear"></div>
 
@@ -20,6 +21,7 @@
 			{% endif %}
 
 			{% include "digidemo/_i_reply.html" with reply=answer include_id=forloop.counter %}
+			{% include "digidemo/_i_comments.html" with include_id=forloop.counter0 comments=answer.content.comment_set.all comment_form=answer.comment_form %}
 		{% endfor %}
 	</div>
 

@@ -196,17 +196,31 @@ class ReplyForm(ModelForm):
 		}
 	
 
-
-@bound_form('comment')
-class LetterCommentForm(ModelForm):
+class CommentForm(ModelForm):
 	class Meta:
-		model = Comment
 		fields = ['text', 'user', 'target']
 		widgets = {
 			'text': forms.Textarea(attrs={'class':'letter_comment_input'}),
 			'user': forms.HiddenInput(), 
 			'target': forms.HiddenInput(),
 		}
+
+
+@bound_form('answer_comment')
+class AnswerCommentForm(CommentForm):
+	class Meta(CommentForm.Meta):
+		model = AnswerComment
+	
+@bound_form('question_comment')
+class QuestionCommentForm(CommentForm):
+	class Meta(CommentForm.Meta):
+		model = QuestionComment
+
+	
+@bound_form('comment')
+class LetterCommentForm(CommentForm):
+	class Meta(CommentForm.Meta):
+		model = Comment
 	
 
 
