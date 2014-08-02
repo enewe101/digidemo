@@ -1,5 +1,6 @@
 {% extends "digidemo/__two_column.html" %}
 {% load apptags %}
+{% load staticfiles %}
 
 {% block maincol %}
 <!-- start the proposal -->
@@ -110,7 +111,20 @@
 {% endblock maincol %}
 
 {% block rightcol %}
-	{% include "digidemo/_i_create_proposal.html" %}
+   	 <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+  	  <script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.10.2/jquery-ui.min.js"></script>
+	<script src="{% static "digidemo/js/jquery.switchButton.js" %}"></script>
+ <script>
+      $(function() {
+	       $('#basic.demo input').switchButton();
+});
+</script>
+
+     <div class="demo" id="basic">
+        <input type="checkbox" value="1" checked>
+      </div>
+
+ 
 
 	<!-- start of proposal sectors -->
 	<div class="tags">
