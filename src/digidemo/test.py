@@ -791,12 +791,12 @@ class EndToEndTests(SeleniumTestCase):
 		# test upvote element behavior, and check if it registers in db
 		new_score = self.upvote_test(vote_test_specs)
 		letter = Proposal.objects.get(pk=1).letter_set.all()[0]
-		self.assertTrue(letter.score == new_score)
+		self.assertTrue(pyWait(lambda: letter.score == new_score))
 		
 		# test downvote element behavior, and check if it registers in db
 		new_score = self.downvote_test(vote_test_specs)
 		letter = Proposal.objects.get(pk=1).letter_set.all()[0]
-		self.assertTrue(letter.score == new_score)
+		self.assertTrue(pyWait(lambda: letter.score == new_score))
 		
 
 	def test_proposal_voting_widget(self):
