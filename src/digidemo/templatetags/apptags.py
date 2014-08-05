@@ -22,7 +22,7 @@ def getSummary(proposal):
 
 @register.filter(name='getLoggedInUser')
 def getLoggedInUser(request):
-    print request.session.keys()
+    #print request.session.keys()
     if(request.session.has_key("user")):
         return(request.session['user'])
     return "false"
