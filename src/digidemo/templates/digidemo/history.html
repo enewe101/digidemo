@@ -1,0 +1,12 @@
+{% extends "digidemo/__two_column.html" %}
+{% load staticfiles %}
+{% load apptags %}
+{% block maincol %}
+
+	{% autoescape off %}
+		{{ diff_table }}
+	{% endautoescape %}
+
+{% endblock maincol %}
+
+	

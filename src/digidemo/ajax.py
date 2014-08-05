@@ -375,6 +375,7 @@ def editProposal(request):
         print "Here222"
 	return {'test':'success!'}
 
+
 @ajax_endpoint
 def checkValidUserName(request):
         username_pass = request.GET['username'];
@@ -388,6 +389,7 @@ def checkValidUserName(request):
                 return 'unavailable';
         else:
                 return 'available';
+
 
 def handle_ajax_login(request):
         username_pass = request.GET['username']

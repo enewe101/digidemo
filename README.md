@@ -13,6 +13,8 @@
 
 5. Install Selenium (package for python)
 
+6. Install difflib (package for python)
+
 Note: you should test all of those installations and convince yourself that,
 at least separately, each is working.  Refer to the software's specific
 documentation and user communities to get set up help!

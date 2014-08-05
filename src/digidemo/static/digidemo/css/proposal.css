@@ -600,3 +600,17 @@ textarea.error {
 	border: solid 1px brown;
 	background: rgb(255,250,250);
 }
+
+.diff_add {
+	background: lime;
+}
+.diff_chg{
+	background: orange;
+}
+.diff_sub {
+	background: red;
+}
+
+#search_bar {
+	display:block;
+}

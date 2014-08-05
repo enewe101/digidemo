@@ -45,6 +45,7 @@ urlpatterns = patterns('',
 		name='view_question'),
 	url(r'^discuss/(?P<proposal_id>\w+)/.*$', discuss, name='discussion'),
 	url(r'^edit/(?P<proposal_id>\w+)/.*$', edit, name='edit'),
+	url(r'^history/(?P<proposal_id>\w+)/.*$', history, name='history'),
 
 	# ajax urls
 	url(r'^ajaxJson/(?P<view>\w+)/$', handle_ajax_json, 

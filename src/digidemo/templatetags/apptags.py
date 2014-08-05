@@ -37,3 +37,8 @@ def markdown(text, autoescape=None):
 	
 	html = md.markdown(esc(text))
 	return mark_safe(html)
+
+
+@register.filter()
+def markdown_noescape(text):
+	return md.markdown(text)
