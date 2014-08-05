@@ -329,7 +329,7 @@ class AnswerFormTest(SeleniumFormTestCase):
 		# We should see an error message
 		error_msg_elm = self.wait.until(lambda driver:
 			driver.find_element('id', 'AnswerForm_text_errors'))
-		self.assertTrue(error_msg_elm.text, 'This field is required.')
+		self.assertEqual(error_msg_elm.text, 'This field is required.')
 
 		# The text area should get assigned a class of `error`
 		text_input = self.wait.until(lambda driver: 

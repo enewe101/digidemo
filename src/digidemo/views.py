@@ -671,45 +671,53 @@ def mainPage(request,sort_type='most_recent'):
         )
 
 def userRegistration(request):
-        if(request.method == 'POST'):
-                print "Got the form"
-                user = NameForm(request.POST)
-                
-                if user.is_valid():
-                        print "absbsbbadsaasdasd"
-                        passwordPass = user.cleaned_data['password']
-                        userNamePass = user.cleaned_data['userName']
-                        emailPass = user.cleaned_data['email']
-                        firstNamePass = user.cleaned_data['firstName']
-                        lastNamePass = user.cleaned_data['lastName']
-                        userCreate = User.objects.create_user(username=userNamePass,
-                                                        email= emailPass,
-                                                        password = passwordPass,
-                                                        first_name = firstNamePass,
-                                                        last_name = lastNamePass)
-                        print "absbsbbadsaasdasd"
-                        userCreate.save();
-                        streetPass = "";
-                        zipCodePass = "";
-                        countryPass =   "";
-                        provincePass =  "";
-                        userProfile = UserProfile (user=userCreate,
-                                                   email_validated = 0,
-                                                   rep=0,
-                                                   street = streetPass,
-                                                   country = countryPass,
-                                                   zip_code = zipCodePass,
-                                                   province = provincePass)
-                        userProfile.save();
-                return redirect('../mainPage')
+	if(request.method == 'POST'):
+		user = NameForm(request.POST)
+		
+		if user.is_valid():
 
-        registrationForm = NameForm();
-               
-        return render(
-                request,
-                'digidemo/User_registration.html',
-                { 'form' : registrationForm,}
-                )
+			passwordPass = user.cleaned_data['password']
+			userNamePass = user.cleaned_data['userName']
+			emailPass = user.cleaned_data['email']
+			firstNamePass = user.cleaned_data['firstName']
+			lastNamePass = user.cleaned_data['lastName']
+
+			userCreate = User.objects.create_user(
+				username=userNamePass,
+				email= emailPass,
+				password = passwordPass,
+				first_name = firstNamePass,
+				last_name = lastNamePass
+			)
+
+			userCreate.save();
+			streetPass = "";
+			zipCodePass = "";
+			countryPass =   "";
+			provincePass =  "";
+
+			userProfile = UserProfile(
+				user=userCreate,
+				email_validated = 0,
+				rep=0,
+				street = streetPass,
+				country = countryPass,
+				zip_code = zipCodePass,
+				province = provincePass
+			)
+
+			userProfile.save();
+
+		return redirect('../mainPage')
+	
+	registrationForm = NameForm();
+	       
+	return render(
+		request,
+		'digidemo/User_registration.html',
+		{ 'form' : registrationForm,}
+	)
+
 
 def search(request):
     """
@@ -722,8 +730,6 @@ def search(request):
     # we call the search method from the NotesSearchForm. Haystack do the work!
     results = form.search()
 
-    print(results);
-        
     return render(request, 'search/search.html', {
       #  'search_query' : search_query,
         'notes' : results,
