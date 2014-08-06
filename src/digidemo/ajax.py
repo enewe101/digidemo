@@ -205,14 +205,19 @@ def answer(request):
 		num_prior_answers = Answer.objects.filter(
 			user=logged_in_user, target=answer.target).count()
 
+		comment_form = AnswerCommentForm(
+			initial={'user':logged_in_user, 'target': answer},
+			id_prefix=num_prior_answers - 1
+		)
 
 		# render an html snippet, containing the avatar
-		template = get_template('digidemo/_i_reply.html')
+		template = get_template('digidemo/_i_reply_with_comments.html')
 		context = Context({
-			'include_id': logged_in_user.username + str(num_prior_answers),
+			'include_id': logged_in_user.username + str(num_prior_answers - 1),
 			'reply': {
 				'content': answer,
 				'vote_form': vote_form,
+				'comment_form': comment_form
 			},
 		})
 		reply_html = template.render(context)
@@ -355,7 +360,7 @@ def process_comment(request, comment_form_class):
 
 	return {
 		'success': False,
-		'msg':'ajax.py: comment(): comment form was not valid'
+		'msg':'ajax.py: comment(): comment form was not valid'+str(comment_form.errors)
 	}
 
 

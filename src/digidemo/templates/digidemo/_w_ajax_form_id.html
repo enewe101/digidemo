@@ -1,10 +1,10 @@
 {% block ajax_form_form %}
 	<form class="{{ form.form_class}}" 
-		id="{{ form.form_class }}_{{ form.id_prefix }}" />
+		id="{{ form.form_class }}_{{ form.id_prefix }}">
 
 		{% csrf_token %}
 
-		<div id="{{form.form_class}}_{{form.id_prefix}_errors">
+		<div id="{{form.form_class}}_{{form.id_prefix}}_errors">
 		</div>
 
 		{% for hidden in form.hidden_fields %}

@@ -117,38 +117,6 @@
     }, 
     {
         "pk": 1, 
-        "model": "digidemo.userprofile", 
-        "fields": {
-            "email_validated": true, 
-            "province": "Karnatka", 
-            "country": "India", 
-            "rep": 34, 
-            "creation_date": "2014-07-13T17:04:58Z", 
-            "street": "Somewhere", 
-            "user": 1, 
-            "last_modified": "2014-07-17T05:54:52Z", 
-            "avatar_img": "avatars/superuser.jpg", 
-            "zip_code": "560072"
-        }
-    }, 
-    {
-        "pk": 2, 
-        "model": "digidemo.userprofile", 
-        "fields": {
-            "email_validated": true, 
-            "province": "QC", 
-            "country": "CAN", 
-            "rep": 34, 
-            "creation_date": "2014-07-13T17:04:58Z", 
-            "street": "56 Long Ave.", 
-            "user": 2, 
-            "last_modified": "2014-07-15T01:52:09Z", 
-            "avatar_img": "avatars/regularuser.jpg", 
-            "zip_code": "51515"
-        }
-    }, 
-    {
-        "pk": 1, 
         "model": "digidemo.proposal", 
         "fields": {
             "tags": [], 
@@ -238,6 +206,40 @@
             "user": 1, 
             "proposal": 3, 
             "creation_date": "2014-07-22T14:53:28Z"
+        }
+    }, 
+    {
+        "pk": 1, 
+        "model": "digidemo.userprofile", 
+        "fields": {
+            "email_validated": true, 
+            "province": "Karnatka", 
+            "country": "India", 
+            "rep": 34, 
+            "creation_date": "2014-07-13T17:04:58Z", 
+            "followedProposals": [], 
+            "street": "Somewhere", 
+            "user": 1, 
+            "last_modified": "2014-07-17T05:54:52Z", 
+            "avatar_img": "avatars/superuser.jpg", 
+            "zip_code": "560072"
+        }
+    }, 
+    {
+        "pk": 2, 
+        "model": "digidemo.userprofile", 
+        "fields": {
+            "email_validated": true, 
+            "province": "QC", 
+            "country": "CAN", 
+            "rep": 34, 
+            "creation_date": "2014-07-13T17:04:58Z", 
+            "followedProposals": [], 
+            "street": "56 Long Ave.", 
+            "user": 2, 
+            "last_modified": "2014-07-15T01:52:09Z", 
+            "avatar_img": "avatars/regularuser.jpg", 
+            "zip_code": "51515"
         }
     }, 
     {
@@ -798,9 +800,9 @@
             "target": 1, 
             "text": "@normaluser I agree with you but I think that you should consider offering some concrete evidence for what you are saying -- back up how the environmental losses will arise and why they are certain.  There's plenty of facts in the issue \nwiki to choose from.", 
             "creation_date": "2014-07-13T17:00:32Z", 
-            "last_modified": "2014-07-28T03:56:58Z", 
+            "score": 1, 
             "user": 1, 
-            "score": 1
+            "last_modified": "2014-07-28T03:56:58Z"
         }
     }, 
     {
@@ -810,9 +812,9 @@
             "target": 1, 
             "text": "ll", 
             "creation_date": "2014-07-13T17:00:32Z", 
-            "last_modified": "2014-07-28T03:56:58Z", 
+            "score": 0, 
             "user": 1, 
-            "score": 0
+            "last_modified": "2014-07-28T03:56:58Z"
         }
     }, 
     {
@@ -822,9 +824,9 @@
             "target": 1, 
             "text": "lll\r\n", 
             "creation_date": "2014-07-13T17:00:32Z", 
-            "last_modified": "2014-07-28T03:56:58Z", 
+            "score": 0, 
             "user": 1, 
-            "score": 0
+            "last_modified": "2014-07-28T03:56:58Z"
         }
     }, 
     {
@@ -834,9 +836,9 @@
             "target": 1, 
             "text": "bic!", 
             "creation_date": "2014-07-13T17:00:32Z", 
-            "last_modified": "2014-07-28T03:56:58Z", 
+            "score": 0, 
             "user": 1, 
-            "score": 0
+            "last_modified": "2014-07-28T03:56:58Z"
         }
     }, 
     {
@@ -846,9 +848,9 @@
             "target": 1, 
             "text": "super", 
             "creation_date": "2014-07-13T17:00:32Z", 
-            "last_modified": "2014-07-28T03:56:58Z", 
+            "score": 0, 
             "user": 1, 
-            "score": 0
+            "last_modified": "2014-07-28T03:56:58Z"
         }
     }, 
     {
@@ -858,9 +860,9 @@
             "target": 14, 
             "text": "lame!", 
             "creation_date": "2014-07-13T17:00:32Z", 
-            "last_modified": "2014-07-28T03:56:58Z", 
+            "score": 0, 
             "user": 1, 
-            "score": 0
+            "last_modified": "2014-07-28T03:56:58Z"
         }
     }, 
     {
@@ -870,9 +872,9 @@
             "target": 1, 
             "text": "kilp", 
             "creation_date": "2014-07-13T17:00:32Z", 
-            "last_modified": "2014-07-28T03:56:58Z", 
+            "score": 0, 
             "user": 1, 
-            "score": 0
+            "last_modified": "2014-07-28T03:56:58Z"
         }
     }, 
     {
@@ -882,9 +884,9 @@
             "target": 1, 
             "text": "froze", 
             "creation_date": "2014-07-13T17:00:32Z", 
-            "last_modified": "2014-07-28T03:56:58Z", 
+            "score": 0, 
             "user": 1, 
-            "score": 0
+            "last_modified": "2014-07-28T03:56:58Z"
         }
     }, 
     {
@@ -894,9 +896,9 @@
             "target": 1, 
             "text": "Blip", 
             "creation_date": "2014-07-13T17:00:32Z", 
-            "last_modified": "2014-07-28T03:56:58Z", 
+            "score": 0, 
             "user": 1, 
-            "score": 0
+            "last_modified": "2014-07-28T03:56:58Z"
         }
     }, 
     {
@@ -906,9 +908,9 @@
             "target": 40, 
             "text": "Jimmi", 
             "creation_date": "2014-07-13T17:00:32Z", 
-            "last_modified": "2014-07-28T03:56:58Z", 
+            "score": 0, 
             "user": 1, 
-            "score": 0
+            "last_modified": "2014-07-28T03:56:58Z"
         }
     }, 
     {
@@ -918,9 +920,9 @@
             "target": 1, 
             "text": "james", 
             "creation_date": "2014-07-13T17:00:32Z", 
-            "last_modified": "2014-07-28T03:56:58Z", 
+            "score": 0, 
             "user": 1, 
-            "score": 0
+            "last_modified": "2014-07-28T03:56:58Z"
         }
     }, 
     {
@@ -930,9 +932,9 @@
             "target": 14, 
             "text": "blatant comment.", 
             "creation_date": "2014-07-13T17:00:32Z", 
-            "last_modified": "2014-07-28T03:56:58Z", 
+            "score": 0, 
             "user": 1, 
-            "score": 0
+            "last_modified": "2014-07-28T03:56:58Z"
         }
     }, 
     {
@@ -942,9 +944,9 @@
             "target": 1, 
             "text": "pequifi", 
             "creation_date": "2014-07-13T17:00:32Z", 
-            "last_modified": "2014-07-28T03:56:58Z", 
+            "score": 0, 
             "user": 1, 
-            "score": 0
+            "last_modified": "2014-07-28T03:56:58Z"
         }
     }, 
     {
@@ -954,9 +956,45 @@
             "target": 1, 
             "text": "hdkujehhie", 
             "creation_date": "2014-07-15T01:51:53Z", 
-            "last_modified": "2014-07-28T03:56:58Z", 
+            "score": 0, 
             "user": 1, 
-            "score": 0
+            "last_modified": "2014-07-28T03:56:58Z"
+        }
+    }, 
+    {
+        "pk": 1, 
+        "model": "digidemo.questioncomment", 
+        "fields": {
+            "target": 1, 
+            "text": "I think that once they upgrade the tar to crude it's the same as conventional crude.", 
+            "creation_date": "2014-08-06T05:08:51Z", 
+            "score": 0, 
+            "user": 1, 
+            "last_modified": "2014-08-06T05:08:51Z"
+        }
+    }, 
+    {
+        "pk": 1, 
+        "model": "digidemo.answer", 
+        "fields": {
+            "target": 1, 
+            "text": "\"Spills\", or *breaches* happen at a rate of 0.6 times per 1000km per decade.  Most breaches are minor (classified as class1, see below).  They vary greatly in severity which makes putting this figure into perspective somewhat difficult.  \r\n\r\nBreaches are  in terms of quantity of volume lost.  A class 1 breach is anything less than a cubic metre of crude.  These breaches are generally considered minor, when occurring away from developed areas, but might be important when occurring in sensitive areas.  Class breaches cover anything larger than class 1 but less than 40 cubic metres.  Class 2 breaches are severe, but standard techniques and equipment can be used to clean them up.  They are reportable to environmental authorities, who rule on followup actions.  Class 3 cover everything larger than class 1.  Class 3 are considered \"catastrophic\" and generally require specially engineered solutions to bring them under control. ", 
+            "creation_date": "2014-08-06T05:19:13Z", 
+            "score": 0, 
+            "user": 1, 
+            "last_modified": "2014-08-06T05:19:13Z"
+        }
+    }, 
+    {
+        "pk": 1, 
+        "model": "digidemo.answercomment", 
+        "fields": {
+            "target": 1, 
+            "text": "It would be interesting to see some stats on the relevant frequencies of the different classes of breaches.  Have you seen anything like that?", 
+            "creation_date": "2014-08-06T05:19:51Z", 
+            "score": 0, 
+            "user": 1, 
+            "last_modified": "2014-08-06T05:19:51Z"
         }
     }, 
     {

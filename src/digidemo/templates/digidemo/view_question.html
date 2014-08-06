@@ -20,8 +20,8 @@
 				<hr>
 			{% endif %}
 
-			{% include "digidemo/_i_reply.html" with reply=answer include_id=forloop.counter %}
-			{% include "digidemo/_i_comments.html" with include_id=forloop.counter0 comments=answer.content.comment_set.all comment_form=answer.comment_form %}
+			{% include "digidemo/_i_reply_with_comments.html" with reply=answer include_id=forloop.counter0 %}
+
 		{% endfor %}
 	</div>
 
@@ -50,8 +50,8 @@
 			// Next we define a few functions that will be used to hook up
 			// some behaviors once the document is ready...
 
-			// Creates a toggle-hidden widget, which can show/hide `content`
-		 	// when `toggle_div` is clicked
+			// This function creates a toggle-hidden widget, which can 
+			// show/hide `content` when `toggle_div` is clicked
 			var hook_up_hidden_toggler = function() {
 				var toggle_div = $('#' + TOGGLE_SWITCH_ID);
 				var content = $('#' + ANSWER_DIV_ID);

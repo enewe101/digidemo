@@ -300,6 +300,158 @@ class CommentTest(SeleniumFormTestCase):
 		pass
 
 
+
+class QuestionAnswerCommentTest(SeleniumTestCase):
+
+	def post_comment_submit_and_check(self, comment_text, tot_num_comments):
+
+		# put some text in the form and submit it
+		text = self.driver.find_element('id', self.spec['comment_input_id'])
+		text.send_keys(comment_text)
+		submit = self.driver.find_element('id', self.spec['submit_id'])
+		submit.click()
+
+		# wait until the comment is put onto the page.  How can we tell?
+		# We wait until the total number of comments found is tot_num_comments
+		comment_divs_wrapper = self.driver.find_element(
+			'id', self.spec['comments_div_id'])
+		self.wait.until(lambda driver: 
+			len(comment_divs_wrapper.find_elements_by_class_name(
+				'letter_comment')) == tot_num_comments)
+
+		# get the comment body and author
+		comment_divs = comment_divs_wrapper.find_elements_by_class_name(
+			'letter_comment')
+		comment_body = comment_divs[-1].find_element_by_class_name(
+			'letter_comment_body')
+		self.assertEqual(comment_body.text, comment_text)
+		comment_author = comment_divs[-1].find_element_by_class_name(
+			'comment_author')
+		self.assertEqual(comment_author.text, '~ ' + self.spec['username'])
+
+
+	def check_comment_visibility_toggle(self):
+
+		# get the comment input (which starts out hidden) and the link that
+		# reveals it when clicked.
+		hidden_div = self.driver.find_element(
+			'id', self.spec['hidden_comment_id'])
+		show_link = self.driver.find_element(
+			'id', self.spec['visibility_toggler'])
+
+		# initially the comment form is hidden
+		# clicking the add-comment link shows it.  At first it's empty
+		self.assertTrue(not hidden_div.is_displayed())
+		show_link.click()
+		self.assertTrue(hidden_div.is_displayed())
+		self.assertEqual(hidden_div.text, '')
+
+		# clicking again hides it again, and again shows it again
+		show_link.click()
+		self.assertTrue(not hidden_div.is_displayed())
+		show_link.click()
+		self.assertTrue(hidden_div.is_displayed())
+
+
+	def do_test_comment(self, num_initial_comments):
+
+		# make sure the comment starts hidden, and is revealed properly
+		self.check_comment_visibility_toggle()
+
+		# try adding a comment
+		self.post_comment_submit_and_check(
+			self.spec['text1'], num_initial_comments + 1)
+
+		# make sure that its hidden again, that the old submitted comment
+		# was cleared from the form, and that it still gets revealed properly
+		self.check_comment_visibility_toggle()
+
+		# make sure that submitting a second comment works
+		self.post_comment_submit_and_check(
+			self.spec['text2'], num_initial_comments + 2)
+
+
+	def test_question_comment(self):
+
+		question = Question.objects.get(pk=1)
+
+		# provide the comment test specification
+		self.spec = {
+			'username': User.objects.get(username='superuser').username,
+			'visibility_toggler': '_w_toggle_hidden_comment_qc',
+			'text1': 'First test comment text',
+			'text2': 'Second test comment text',
+			'hidden_comment_id': '_w_toggle_hidden_content_comment_qc',
+			'comment_input_id': 'QuestionCommentFormqc_text',
+			'submit_id': 'QuestionCommentForm_qc_submit',
+			'comments_div_id': 'comments_qc'
+		}
+ 
+		# now test it
+		self.driver.get(self.live_server_url + question.get_url())
+		self.do_test_comment(1)
+		
+
+	def test_answer_comment(self):
+
+		# We'll test adding a comment to an existing answer
+		question = Question.objects.get(pk=1)
+
+		# provide the comment test specification
+		self.spec = {
+			'username': User.objects.get(username='superuser').username,
+			'visibility_toggler': '_w_toggle_hidden_comment_0',
+			'text1': 'First test comment text',
+			'text2': 'Second test comment text',
+			'hidden_comment_id': '_w_toggle_hidden_content_comment_0',
+			'comment_input_id': 'AnswerCommentForm0_text',
+			'submit_id': 'AnswerCommentForm_0_submit',
+			'comments_div_id': 'comments_0'
+		}
+
+		# now test it
+		self.driver.get(self.live_server_url + question.get_url())
+		self.do_test_comment(1)
+
+
+	def test_new_answer_comment(self):
+
+		# Test making a new answer and adding a comment to the 
+		# new answer without refreshing the page.  First make an answer:
+		question = Question.objects.get(pk=1)
+		self.driver.get(self.live_server_url + question.get_url())
+		self.driver.find_element('id', 'AnswerForm_text').send_keys(
+				'Test answer.')
+		self.driver.find_element('id', 'AnswerForm__submit').click()
+
+		# wait for 'add comment' form for the new answer to show up
+		answers_wrapper = self.driver.find_element('id', 'answers')
+		self.wait.until(lambda driver: 
+			len(answers_wrapper.find_elements_by_class_name('add_comment'))
+			== 2
+		)
+
+		# get the new answer's add-comment form
+		new_answer_comment_div = answers_wrapper.find_elements_by_class_name(
+			'add_comment')[-1]
+
+		# provide the comment test specification
+		username = User.objects.get(username='superuser').username
+
+		self.spec = {
+			'username': username,
+			'visibility_toggler': '_w_toggle_hidden_comment_'+username+'1',
+			'text1': 'First test comment text',
+			'text2': 'Second test comment text',
+			'hidden_comment_id': 
+				'_w_toggle_hidden_content_comment_'+username+'1',
+			'comment_input_id': 'AnswerCommentForm1_text',
+			'submit_id': 'AnswerCommentForm_1_submit',
+			'comments_div_id': 'comments_'+username+'1'
+		}
+
+
+
 class AnswerFormTest(SeleniumFormTestCase):
 
 	def setUp(self):
@@ -341,9 +493,9 @@ class AnswerFormTest(SeleniumFormTestCase):
 
 		# We may have to wait, but soon the new answer is in the db
 		self.assertTrue(
-			pyWait(lambda: Answer.objects.count(), 3, 0.15))
+			pyWait(lambda: Answer.objects.count()==2, 3, 0.15))
 
-		answer = Answer.objects.get()
+		answer = Answer.objects.all().last()
 		self.assertEqual(answer.text, self.TEXT)
 		self.assertEqual(answer.user, self.USER)
 		self.assertEqual(answer.target, self.QUESTION)
@@ -356,7 +508,7 @@ class AnswerFormTest(SeleniumFormTestCase):
 		# check for the voting elements.  When they are inserted, their id is
 		# built from some user data.
 		vote_id = (self.USER.username 
-			+ str(Answer.objects.filter(target=self.QUESTION).count()))
+			+ str(Answer.objects.filter(target=self.QUESTION).count()-1))
 
 		self.wait.until(
 			lambda driver: driver.find_element('id', vote_id + '_upvote'))
@@ -384,7 +536,7 @@ class AnswerFormTest(SeleniumFormTestCase):
 		self.assertTrue(
 			pyWait(lambda: show_answer_switch.text == 'Add another answer'))
 
-		# clicking that link shows the answer
+		# clicking that link shows the answer form again
 		show_answer_switch.click()
 		self.assertTrue(pyWait(lambda: hide_answer_div.is_displayed()))
 

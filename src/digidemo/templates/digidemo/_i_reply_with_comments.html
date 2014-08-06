@@ -1,0 +1,2 @@
+{% include "digidemo/_i_reply.html" with reply=reply include_id=include_id %}
+{% include "digidemo/_i_comments.html" with include_id=include_id comments=reply.content.comment_set.all comment_form=reply.comment_form %}
