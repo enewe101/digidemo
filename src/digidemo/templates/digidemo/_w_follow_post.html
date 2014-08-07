@@ -1,0 +1,49 @@
+{% load apptags %}
+{% load staticfiles %}
+	
+
+
+<div id = "message"> ABC </div>
+     <div class="demo" id="basic">
+<form>
+<input type="radio" id="followPost" value="follow" onClick="handleClick(this)">Follow Post<br>
+<input type="radio" id="unfollowPost" value="unfollow" onClick="handleClick(this)">Unfollow Post
+</form>
+      </div>
+
+
+ <script>
+
+	$('#message').hide();
+
+
+	var ID =" {{ proposal.id }}";
+	var URL = "{% url "handle_ajax_json" "follow_post" %}";
+	
+	function handleClick(cb) {
+		
+			
+  	  $.ajax({
+   	   url:URL,
+	   type: 'POST',
+   	   async: true,
+           data: {
+		id : ID,
+               csrfmiddlewaretoken: '{{ csrf_token }}'
+                },  
+	   success:function(data) { 
+		data=data.replace(/(\r\n|\n|\r)/gm,"");
+		data=data.replace(/"/g, ""); 
+		data = data.replace(/[^a-zA-Z0-9]/g,'_');
+		if(data == "unlogged") {
+			$('#message').html("User Not logged in")
+			$('#message').show();
+			$('#message').delay(2000).fadeOut('slow');
+			document.getElementById('followPost').checked = false;
+			document.getElementById('unfollowPost').checked = false;
+			} 
+		} 
+});
+	}
+
+</script>
