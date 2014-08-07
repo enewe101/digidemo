@@ -1,4 +1,4 @@
--- MySQL dump 10.13  Distrib 5.5.25a, for osx10.6 (i386)
+﻿-- MySQL dump 10.13  Distrib 5.5.25a, for osx10.6 (i386)
 --
 -- Host: localhost    Database: digidemo
 -- ------------------------------------------------------
@@ -19,9 +19,7 @@
 -- Current Database: `digidemo`
 --
 
-/*!40000 DROP DATABASE IF EXISTS `digidemo`*/;
 
-CREATE DATABASE /*!32312 IF NOT EXISTS*/ `digidemo` /*!40100 DEFAULT CHARACTER SET utf8 */;
 
 USE `digidemo`;
 
@@ -1081,36 +1079,7 @@ UNLOCK TABLES;
 -- Table structure for table `digidemo_userprofile`
 --
 
-DROP TABLE IF EXISTS `digidemo_userprofile`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `digidemo_userprofile` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `creation_date` datetime NOT NULL,
-  `last_modified` datetime NOT NULL,
-  `user_id` int(11) NOT NULL,
-  `email_validated` tinyint(1) NOT NULL,
-  `avatar_img` varchar(100) NOT NULL,
-  `rep` int(11) NOT NULL,
-  `street` varchar(128) NOT NULL,
-  `zip_code` varchar(10) NOT NULL,
-  `country` varchar(64) NOT NULL,
-  `province` varchar(32) NOT NULL,
-  PRIMARY KEY (`id`),
-  UNIQUE KEY `user_id` (`user_id`),
-  CONSTRAINT `user_id_refs_id_7d86ea27` FOREIGN KEY (`user_id`) REFERENCES `auth_user` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
-/*!40101 SET character_set_client = @saved_cs_client */;
 
---
--- Dumping data for table `digidemo_userprofile`
---
-
-LOCK TABLES `digidemo_userprofile` WRITE;
-/*!40000 ALTER TABLE `digidemo_userprofile` DISABLE KEYS */;
-REPLACE INTO `digidemo_userprofile` (`id`, `creation_date`, `last_modified`, `user_id`, `email_validated`, `avatar_img`, `rep`, `street`, `zip_code`, `country`, `province`) VALUES (1,'2014-07-13 17:04:58','2014-07-17 05:54:52',1,1,'avatars/superuser.jpg',34,'Somewhere','560072','India','Karnatka'),(2,'2014-07-13 17:04:58','2014-07-15 01:52:09',2,1,'avatars/regularuser.jpg',34,'56 Long Ave.','51515','CAN','QC');
-/*!40000 ALTER TABLE `digidemo_userprofile` ENABLE KEYS */;
-UNLOCK TABLES;
 
 --
 -- Table structure for table `django_admin_log`

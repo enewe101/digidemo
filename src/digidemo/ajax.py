@@ -375,6 +375,27 @@ def editProposal(request):
         print "Here222"
 	return {'test':'success!'}
 
+
+@ajax_endpoint
+def follow_post(request):
+        print "yes"
+        if(request.session.has_key('user')):
+                proposalID = request.POST['id'];
+                proposal = Proposal.objects.get(pk=proposalID);
+                print proposal;
+                userName = request.session['user'];
+                print "yes yes"
+                userLoggedIn = User.objects.get(username = userName);
+                userProfile = UserProfile.objects.get(user = userLoggedIn);
+                userProfile.followedProposals.add(proposal);
+                print "yo"
+                userProfile.save();
+                print "yo"
+                return "logged"
+        else :
+                return "unlogged"
+
+        
 @ajax_endpoint
 def checkValidUserName(request):
         username_pass = request.GET['username'];
