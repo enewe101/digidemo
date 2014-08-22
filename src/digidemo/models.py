@@ -202,6 +202,9 @@ class UserProfile(TimeStamped):
 	def undo_rep(self, event_name):
 		self.rep -= self.get_rep_delta(event_name)
 
+	def get_user_url(self):
+                url_stub = reverse('userProfile', kwargs={'userName': self.user.username})
+                return url_stub;
 
 class Discussion(TimeStamped):
 	proposal = models.ForeignKey(Proposal)
