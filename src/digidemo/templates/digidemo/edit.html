@@ -1,11 +1,11 @@
 {% extends "digidemo/__two_column.html" %}
 {% load staticfiles %}
+
 {% block maincol %}
 
-	<div align="right"> Last Modified {{proposal.last_modified}} </div>
 
 	<form class="{{ edit_proposal_form.form_class}}" 
-		id="{{ edit_proposal_form.form_class }}_{{ include_id }}" 
+		id="{{ edit_proposal_form.form_class }}" 
 		action="{{ edit_proposal_form.endpoint }}" 
 		method="post" />
 
@@ -34,107 +34,6 @@
 			</div>
 		</div>
 
-		<!-- include the factor formset managers -->
-		{% include "digidemo/_w_simple_form.html" with form=edit_proposal_form.factor_form_managers.pos %}
-		{% include "digidemo/_w_simple_form.html" with form=edit_proposal_form.factor_form_managers.neg %}
-
-		<!-- start of proposal factors formsets -->
-		<div id="proposal_factor_forms">
-			<div id="factor_form_left_column" class="factor_form_left_column">
-
-				<div class="factor_list_heading">
-					Foreseen benefits:
-				</div>
-
-				<!-- include the positive factor forms -->
-				<div id="pos_factors_wrapper">
-					{% for f in edit_proposal_form.factor_formsets.pos %}
-						{% include "digidemo/_w_factor_form.html" with form=f include_id=forloop.counter0 valence="pos" %}
-					{% endfor %}
-				</div>
-
-
-				<!-- this allows adding new forms to the formset -->
-				<a id="add_pos_factor_form" class="pointer">
-					add another factor
-				</a>
-				<script type="text/javascript">
-
-					// Make the add-positive-factors widget
-					var add_factor_widget = AddFactorVersionWidget(
-						$('#add_pos_factor_form'),
-						$('#pos_factors_wrapper'),
-						$('#id_pos-TOTAL_FORMS'),
-						'pos'
-					);
-
-					// register it
-					register_widget(
-						'add_factor_pos', 
-						add_factor_widget,
-						'add_factor'
-					);
-				</script>
-
-			</div>
-			<div class="factor_form_right_column">
-
-				<div class="factor_list_heading">
-					Foreseen hazards:
-				</div>
-
-				<!-- include the negative factor forms -->
-				<div id="neg_factors_wrapper">
-					{% for f in edit_proposal_form.factor_formsets.neg %}
-						{% include "digidemo/_w_factor_form.html" with form=f include_id=forloop.counter0 valence="neg" %}
-					{% endfor %}
-				</div>
-
-				<!-- this allows adding new forms to the formset -->
-				<a id="add_neg_factor_form" class="pointer">
-					add another factor
-				</a>
-				<script type="text/javascript">
-
-					// Make the add-negative-factors widget
-					var add_factor_widget = AddFactorVersionWidget(
-						$('#add_neg_factor_form'),
-						$('#neg_factors_wrapper'),
-						$('#id_neg-TOTAL_FORMS'),
-						'neg'
-					);
-
-					// register it
-					register_widget(
-						'add_factor_neg', 
-						add_factor_widget,
-						'add_factor'
-					);
-
-				</script>
-			</div>
-			<div class="clear"></div>
-		</div>
-		<script type="text/javascript">
-			// this makes sure that if the page is reloaded, the correct
-			// total number of factor forms is reflected in the TOTAL_FORMS
-			// values stored in the management forms.
-			//
-			// The reason this is necessary is because when new forms are added
-			// the TOTAL_FORMS values are updated, however, when the page is 
-			// refreshed, those dynamically added forms are removed, wheras
-			// browsers tend to restore the value of form inputs (even hidden
-			// ones, to what they were before the refresh.
-
-			var num_pos_factor_forms = $('.factor_form_pos').length;
-			var num_neg_factor_forms = $('.factor_form_neg').length;
-			var tot_pos_forms_input = $('#id_pos-TOTAL_FORMS');
-			var tot_neg_forms_input = $('#id_neg-TOTAL_FORMS');
-			tot_pos_forms_input.val(num_pos_factor_forms);
-			tot_neg_forms_input.val(num_neg_factor_forms);
-		</script>
-		<!-- end of proposal factor formsets -->
-
 		<div class="form_line">
 			<div>
 				{{ edit_proposal_form.proposal_version_form.text.label_tag }}
@@ -144,11 +43,21 @@
 			</div>
 		</div>
 
-		<input id="{{ form.form_class}}_{{ include_id }}_submit" 
+		<input id="{{ edit_proposal_form.form_class }}_submit" 
 			class="submit" type="submit" value="submit" />
 
 	</form>
 
 {% endblock maincol %}
 
-	
+{% block rightcol %}	
+	<div class="info"> 
+		Last Modified {{proposal.last_modified}} 
+	</div>
+	<a class="go_button" href="{{proposal.get_open_discussions_url}}">
+		cancel
+	</a>
+	<a class="go_button" href="{{proposal.get_open_discussions_url}}">
+		preview
+	</a>
+{% endblock rightcol %}	

@@ -1,0 +1,68 @@
+#tab_bottom {
+	border-bottom: solid 1px rgb(170, 0, 212);
+	height: 24px;
+}
+
+.tabs {
+	margin: 0 0 20px 0;
+	height: 24px;
+	font-family: ubuntu;
+}
+
+.tab, .tab_active, .tab_thin_space, .tab_pre_space, .tab_thick_space {
+	float: left;
+}
+
+.tab, .tab_active {
+	padding: 0px 4px 0 4px;
+	border-left: solid 1px rgb(170, 0, 212);
+	border-top: solid 1px rgb(170, 0, 212);
+	border-right: solid 1px rgb(170, 0, 212);
+	background: white;
+}
+
+.tab {
+	margin-top: 3px;
+	height: 20px;
+	font-size: 14px;
+	background: repeat-x 100% 100% url('../images/bot_shade.png');
+}
+
+.tab_active {
+	padding-top: 2px;
+	height: 22px;
+	font-size: 16px;
+}
+
+.tab_thin_space {
+	height: 24px;
+	width: 4px;
+}
+
+.tab_pre_space {
+	height: 24px;
+	width: 10px;
+}
+
+
+.tab_thick_space {
+	height: 24px;
+	width: 100px;
+}
+
+.main_status_indicator {
+	width: 100px;
+	height: 100px;
+	float: left;
+	text-align: center;
+}
+
+#headline {
+}
+
+h1.headline_title {
+	font-size: 36px;
+	font-family: computerModern;
+	margin: 0;
+	padding: 18px 0 16px 0;
+}

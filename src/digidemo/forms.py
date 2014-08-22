@@ -51,7 +51,7 @@ def bound_form(endpoint=None, class_name=None):
 	'''
 
 	def class_decorator(cls):
-		class NewClass(cls):
+		class AugmentedForm(cls):
 			def __init__(self, *args, **kwargs):
 
 				# allow specifying the endpoint for the form.  This is the
@@ -66,7 +66,7 @@ def bound_form(endpoint=None, class_name=None):
 				# html id attribute form elements, but not the name attribute
 				self.id_prefix = kwargs.pop('id_prefix', '')
 
-				default_auto_id = self.form_class + str(self.id_prefix)
+				default_auto_id = self.form_class + '_' + str(self.id_prefix)
 
 				# Customize the forms auto_id 
 				auto_id = kwargs.pop('auto_id', default_auto_id + '_%s')
@@ -76,7 +76,7 @@ def bound_form(endpoint=None, class_name=None):
 				auto_add_input_class(self.form_class, self)
 
 				# now call the usual form constructor
-				super(NewClass, self).__init__(
+				super(AugmentedForm, self).__init__(
 					*args, auto_id=auto_id, **kwargs)
 
 
@@ -94,12 +94,13 @@ def bound_form(endpoint=None, class_name=None):
 				# We're going to make a dict of all fields and there errors
 				# it will be exaustive (empty lists appear for fields without
 				# erorrs.  First, get an empty error dict with all fields:
-				all_fields = dict([(field.id_for_label, []) for field in self])
+				all_fields = dict([(field.name, []) for field in self])
 
 				# Now we get the fields that actually have some errors
 				error_dict = {}
 				for field, error_list in self.errors.items():
-					field_id = self[field].id_for_label
+					field_id = field
+					# field_id = self[field].id_for_label
 					error_dict[field_id] = list(error_list)
 
 				# mix them together before returning
@@ -123,7 +124,7 @@ def bound_form(endpoint=None, class_name=None):
 				return cls(initial=initial, *args, **kwargs)
 
 
-		return NewClass
+		return AugmentedForm
 	return class_decorator
 
 
@@ -188,11 +189,11 @@ class QuestionForm(ModelForm):
 class ReplyForm(ModelForm):
 	class Meta:
 		model = Reply
-		fields = ['body', 'user', 'discussion']
+		fields = ['text', 'user', 'target']
 		widgets = {
-			'body': forms.Textarea(attrs={'class':'reply_input'}),
+			'text': forms.Textarea(attrs={'class':'reply_input'}),
 			'user': forms.HiddenInput(), 
-			'discussion': forms.HiddenInput(),
+			'target': forms.HiddenInput(),
 		}
 	
 
@@ -221,11 +222,24 @@ class QuestionCommentForm(CommentForm):
 class LetterCommentForm(CommentForm):
 	class Meta(CommentForm.Meta):
 		model = Comment
-	
 
+@bound_form('discussion_comment')
+class DiscussionCommentForm(CommentForm):
+	class Meta(CommentForm.Meta):
+		model= DiscussionComment
+
+@bound_form('reply_comment')
+class ReplyCommentForm(CommentForm):
+	class Meta(CommentForm.Meta):
+		model= ReplyComment
 
 @bound_form('send_letter')
 class LetterForm(ModelForm):
+
+	recipients = forms.ModelMultipleChoiceField(
+		queryset=Position.objects.all())
+		
+
 	class Meta:
 		model = Letter
 		fields = [
@@ -238,6 +252,36 @@ class LetterForm(ModelForm):
 			'user': forms.HiddenInput(),
 			'body': forms.Textarea(attrs={'class':'letter_body_textarea'})
 		}
+
+
+# Note: don't decorate -- inherits from LetterForm which was already decorated
+class ResendLetterForm(LetterForm):
+
+	recipients = forms.ModelMultipleChoiceField(
+		queryset=Position.objects.all())
+
+	def clean(self):
+
+		# Check that the resent letter has the same valence as the original
+		expected_valence = self.cleaned_data['parent_letter'].valence
+		if self.cleaned_data['valence'] != expected_valence:
+			raise forms.ValidationError(
+				_('Resent letter must have same valence as original letter'),
+				code='wrongValence'
+			)
+
+		return self.cleaned_data
+
+	class Meta(LetterForm.Meta):
+		widgets = {
+			'valence': forms.HiddenInput(),
+			'parent_letter': forms.HiddenInput(),
+			'proposal': forms.HiddenInput(),
+			'user': forms.HiddenInput(),
+			'sender': forms.HiddenInput(),
+			'body': forms.Textarea(attrs={'class':'letter_body_textarea'})
+		}
+	
 
 
 @bound_form()
@@ -256,38 +300,13 @@ class ProposalVersionForm(ModelForm):
 		}
 
 
-@bound_form()
-class FactorForm(ModelForm):
-	class Meta:
-		model = Factor
-		fields = ['proposal']
-		widgets = {
-			'proposal': forms.HiddenInput()
-		}
-
-class FactorVersionForm(ModelForm):
-
-	class Meta:
-		model = FactorVersion
-		fields = [
-			'factor', 'proposal_version', 'valence', 'deleted', 'sector', 'description'
-		]
-		widgets = {
-			'factor': forms.HiddenInput(),
-			'proposal_version': forms.HiddenInput(),
-			'valence': forms.HiddenInput(),
-			'deleted': forms.CheckboxInput(),
-			'sector': forms.Select(),
-			'description': forms.Textarea()
-		}
-
-
 class EditProposalForm(object):
 
 	'''
 	this is an aggregator for a set of forms that together enable editing
-	of a proposal: its versions, its factors, and factor versions.  Note that
-	it only aggregates Forms, it does not itself subclass Form
+	of a proposal (i.e. create a new proposal, or a new *version* of an
+	existing proposal).  Note that it only aggregates Forms, it does not 
+	itself subclass Form
 	'''
 
 	def __init__(self, proposal=None, data=None, *args, **kwargs):
@@ -304,10 +323,6 @@ class EditProposalForm(object):
 
 	def _init_blank(self, endpoint, initial=None, num_factors=3):
 
-		# get ahold of the proposal and its latest version
-		#self.proposal = proposal
-		#self.proposal_version = proposal.get_latest()
-
 		# set some form-wide attributes
 		self.form_class = self.__class__.__name__
 		self.endpoint = endpoint
@@ -315,35 +330,11 @@ class EditProposalForm(object):
 		# get a form to edit the proposal, i.e. create a proposal version
 		self.proposal_version_form = ProposalVersionForm(initial=initial)
 
-		#   ** we'll be making formsets for adding factors **
-
-		# make initial data arguments to prepopulate the factor forms 
-		# based on the existing factors
-		factor_version_inits = self._get_blank_factor_inits(num_factors)
-
-		# get the formsets for factors
-		self.factor_formsets = {
-			'pos': self._get_formsets_from_init(
-				'pos', 
-				factor_version_inits['pos']
-			),
-			'neg': self._get_formsets_from_init(
-				'neg', 
-				factor_version_inits['neg']
-			)
-		}
-
-		# get the formset managers
-		self.factor_form_managers = {
-			'pos' : self.factor_formsets['pos'].management_form,
-			'neg' : self.factor_formsets['neg'].management_form
-		}
-
 		# This is an unbound (but prepopulated) form
 		self.is_bound = False
 
 
-	def _init_with_proposal(self, proposal, endpoint, num_factors=1):
+	def _init_with_proposal(self, proposal, endpoint):
 
 		# get ahold of the proposal and its latest version
 		self.proposal = proposal
@@ -357,40 +348,6 @@ class EditProposalForm(object):
 		self.proposal_version_form = ProposalVersionForm.init_from_object(
 			self.proposal_version,
 		)
-
-
-		#   ** we'll be making formsets factor adding/editing/deleting **
-
-		# Get the factors associated to the proposal as two lists
-		(pos_factor_versions, neg_factor_versions,
-			pos_factors, neg_factors) = self._get_and_split_factors()
-
-		# make initial data arguments to prepopulate the factor forms 
-		# based on the existing factors
-		factor_version_inits = {
-			'pos': self._get_init_from_objects(
-				pos_factor_versions, 1, num_factors),
-			'neg': self._get_init_from_objects(
-				neg_factor_versions, -1, num_factors)
-		}
-
-		# get the formsets for factors
-		self.factor_formsets = {
-			'pos': self._get_formsets_from_init(
-				'pos', 
-				factor_version_inits['pos']
-			),
-			'neg': self._get_formsets_from_init(
-				'neg', 
-				factor_version_inits['neg']
-			)
-		}
-
-		# get the formset managers
-		self.factor_form_managers = {
-			'pos' : self.factor_formsets['pos'].management_form,
-			'neg' : self.factor_formsets['neg'].management_form
-		}
 
 		# This is an unbound (but prepopulated) form
 		self.is_bound = False
@@ -406,60 +363,8 @@ class EditProposalForm(object):
 		# make the formset for the proposal version based on POSTed data
 		self.proposal_version_form = ProposalVersionForm(data)
 
-		# get the formsets for factors
-		self.factor_formsets = {
-			'pos': self._get_formsets_from_data('pos', data),
-			'neg': self._get_formsets_from_data('neg', data)
-		}
-
-		# get the formset managers
-		self.factor_form_managers = {
-			'pos' : self.factor_formsets['pos'].management_form,
-			'neg' : self.factor_formsets['neg'].management_form
-		}
-
 		# this is a bound form!
 		self.is_bound = True
-
-
-	def _get_and_split_factors(self):
-
-		pos_factors = (
-			Factor.objects
-			.filter(
-				version__proposal_version=self.proposal_version,
-				version__valence__gt=0,
-				version__deleted=False)
-			.order_by('version__pk')
-		)
-		neg_factors = (
-			Factor.objects
-			.filter(
-				version__proposal_version=self.proposal_version,
-				version__valence__lt=0,
-				version__deleted=False)
-			.order_by('version__pk')
-		)
-
-		pos_factor_versions = (
-			FactorVersion.objects
-			.filter(
-				proposal_version=self.proposal_version,
-				valence__gt=0,
-				deleted=False)
-			.order_by('pk')
-		)
-		neg_factor_versions = (
-			FactorVersion.objects
-			.filter(proposal_version=self.proposal_version,
-				valence__lt=0,
-				deleted=False)
-			.order_by('pk')
-		)
-
-
-		return (pos_factor_versions, neg_factor_versions, 
-			pos_factors, neg_factors)
 
 
 	def is_valid(self):
@@ -468,45 +373,7 @@ class EditProposalForm(object):
 			return True 
 
 		# validate the proposal version
-		is_valid = self.proposal_version_form.is_valid()
-
-		# validate the positive factors formset
-		is_valid = self._validate_factors(
-			self.factor_formsets['pos']) and is_valid
-
-		# validate the negative factors formset
-		is_valid = self._validate_factors(
-			self.factor_formsets['neg']) and is_valid
-
-		return is_valid
-
-
-	def _validate_factors(self, formset):
-
-		# valid till proven invalid
-		is_valid = True
-
-		for form in formset:
-
-			# Don't validate forms marked as deleted.  Dealing with forms
-			# marked for delete is NOT delegated to the FactorVersionForm
-			if form['deleted'].value():
-				continue
-
-			# Also don't validate "add-forms" that are blank
-			# "add-forms" are factor forms for adding a new factor rather than
-			# editing an existing one.  They are recognizable because they
-			# have no value for `factor`
-			is_add_form = not bool(form['factor'].value())
-			is_blank = not (form['description'].value()
-					and form['description'].value().strip())
-			if is_add_form and is_blank:
-				continue
-					
-			# otherwise, we need to validate
-			is_valid = form.is_valid() and is_valid
-
-		return is_valid
+		return self.proposal_version_form.is_valid()
 
 
 	def save(self):
@@ -545,179 +412,15 @@ class EditProposalForm(object):
 			# and of course, save the ProposalVersion
 			new_proposal_version = self.proposal_version_form.save()
 
-		# Now save the factors
-		self._save_factors(self.factor_formsets['pos'], new_proposal_version)
-		self._save_factors(self.factor_formsets['neg'], new_proposal_version)
 
 		# Finally, return a reference to the proposal
 		return self.proposal
 
 	
-	def _save_factors(self, factor_formsets, proposal_version):
-		for form in factor_formsets:
-
-			# if the form is an add-factor form
-			if form['factor'].value() == '':
-
-				# and if the description isn't blank, and its not marked delete
-				not_blank = (form['description'].value()
-						and form['description'].value().strip())
-				is_deleted = form['deleted'].value()
-				if not_blank and not is_deleted:
-
-					# make a new factor entry (points to proposal) 
-					new_factor_data = utils.extract_dict(form.cleaned_data,
-						['description', 'valence', 'sector', 'deleted'])
-					new_factor = Factor(**new_factor_data)
-					new_factor.proposal = self.proposal
-					new_factor.save()
-
-					# and a new factorVersion entry (points to 
-					# factor and proposal_version
-					new_factor_version = form.save(commit=False)
-					new_factor_version.factor=new_factor
-					new_factor_version.proposal_version = proposal_version
-					new_factor_version.save()
-					
-			# otherwise its an edit-factor form
-			else:
-
-				factor = Factor.objects.get(pk=form['factor'].value())
-
-				# if the factor is deleted, don't take values from the form.  
-				# Just duplicate the previous factor version and mark deleted
-				if form['deleted'].value():
-
-					# Make sure that the factor mirrors the latest 
-					# FactorVersion content
-					factor.deleted=True
-					factor.save()
-
-					factor_version = factor.get_latest()
-					factor_version.pk=None	# lets us save the same data as new
-											# entry
-					factor_version.deleted=True
-					factor_version.save()
-
-				# make a new factor version point it to the 
-				# same factor, but to the proposal version
-				else:
-
-					# make the new factor version
-					new_factor_version = form.save(commit=False)
-					new_factor_version.proposal_version = proposal_version
-					new_factor_version.save()
-
-					# update the factor to mirror factor_version content
-					fields = ['description', 'valence', 'sector', 'deleted']
-					for field in fields:
-						setattr(factor, field, 
-							getattr(new_factor_version, field))
-
-					factor.save()
 
 
 
-	def _get_formsets_from_data(self, prefix, data):
 
-		# make the formset classes
-		FactorVersionFormSet = formset_factory(FactorVersionForm)
-
-		# Make the formsets
-		factor_version_formset = FactorVersionFormSet(
-			prefix=prefix, data=data)
-
-		return factor_version_formset
-
-
-	def _get_factor_form_pairs(self, delete, version):
-
-		pairs = zip(version, delete)
-
-		formset_pairs = [{'version':f[0], 'delete':f[1]} for f in pairs]
-		return formset_pairs
-
-
-	def _get_management_forms(self, factor_formsets):
-
-		factor_form_managers = {
-			'pos' : {
-				'version': factor_formsets['pos']['version'].management_form,
-				'delete': factor_formsets['pos']['delete'].management_form
-			},
-			'neg' : {
-				'version': factor_formsets['neg']['version'].management_form,
-				'delete': factor_formsets['neg']['delete'].management_form
-			}
-		}
-	
-		return factor_form_managers
-
-
-	def _get_formsets_from_init(self, prefix, factor_version_inits):
-
-		# Here is the formset for editing factor versions
-		FactorVersionFormSet = formset_factory(FactorVersionForm, extra=0)
-		factor_version_formset = FactorVersionFormSet(
-			initial=factor_version_inits, prefix=prefix
-		)
-
-		return factor_version_formset
-
-
-	def _get_blank_factor_inits(self, num_factors):
-		return {
-			'pos': [{'valence':1} for i in range(num_factors)],
-			'neg': [{'valence':-1} for i in range(num_factors)],
-		}
-
-
-	def _get_init_from_objects(self, factor_versions, valence, num_extra=1):
-
-		factor_version_inits = []
-
-		for fv in factor_versions:
-			factor = fv.factor
-
-			factor_version_inits.append({
-				'factor':factor.pk, 
-				'description':fv.description,
-				'valence': fv.valence,
-				'sector': fv.sector
-			})
-
-		# add `num_extra` number of extra forms
-		factor_version_inits.extend(
-			[{'valence': valence} for i in range(num_extra)]
-		)
-		
-		return factor_version_inits
-
-
-
-class ResendLetterForm(LetterForm):
-
-	def clean(self):
-
-		# Check that the resent letter has the same valence as the original
-		expected_valence = self.cleaned_data['parent_letter'].valence
-		if self.cleaned_data['valence'] != expected_valence:
-			raise forms.ValidationError(
-				_('Resent letter must have same valence as original letter'),
-				code='wrongValence'
-			)
-
-		return self.cleaned_data
-
-	class Meta(LetterForm.Meta):
-		widgets = {
-			'valence': forms.HiddenInput(),
-			'parent_letter': forms.HiddenInput(),
-			'proposal': forms.HiddenInput(),
-			'sender': forms.HiddenInput(),
-			'body': forms.Textarea(attrs={'class':'letter_body_textarea'})
-		}
-	
 
 
 class VoteForm(ModelForm):
@@ -761,6 +464,11 @@ class QuestionVoteForm(VoteForm):
 class DiscussionVoteForm(VoteForm):
 	class Meta(VoteForm.Meta):
 		model = DiscussionVote
+
+@bound_form('vote_reply')
+class ReplyVoteForm(VoteForm):
+	class Meta(VoteForm.Meta):
+		model = ReplyVote
 
 
 class NameForm(forms.Form):

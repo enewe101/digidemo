@@ -1,10 +1,9 @@
 {% load staticfiles %}
-<!-- the original sender of the letter -->
 <div class="sender">
 	<div class="sender_avatar_image">
 		<img class="avatar_image_medium"
 		src="{{ user.profile.avatar_img.url }}"
-		alt="{{ user.profile.username }}" />
+		alt="{{ user.username }}" />
 
 		<img class="avatar_mask_medium"
 		src="{% static "digidemo/images/avatar_mask.png" %}" />

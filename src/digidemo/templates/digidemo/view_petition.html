@@ -1,4 +1,27 @@
+{% extends "digidemo/__two_column.html" %}
 {% load staticfiles %}
+
+{% block css %}
+
+	{{block.super}} 
+	<link rel="stylesheet" type="text/css" 
+		href="{% static "digidemo/css/letter.css" %}" /> 
+	<link rel="stylesheet" type="text/css" 
+		href="{% static "digidemo/css/proposal.css" %}" /> 
+
+{% endblock css %}
+
+{% block title %}
+	{{ headline }} | {{ block.super }} 
+{% endblock title %}
+
+{% block  headline_title %}
+	<img src="{% static "digidemo/images/petition_icon.png" %}" />
+	<span class="content_type">PETITION:</span>
+	{{ letter_section.post.title }}
+{% endblock headline_title %}
+
+{% block maincol %}
 <!-- start of an open letter -->
 
 <div id="letter_{{ letter_section.id_prefix }}" class="letter">
@@ -20,11 +43,13 @@
 	<!-- start the content of the letter -->
 	<div class="letter_main">
 
-		<h2 class="post_title">
-			letter title
-		</h2>
 
 		<div class="physical_letter">
+
+			<h2 class="petition_title">
+				letter title
+			</h2>
+
 			<div class="recipients">
 				Attention:
 				{% for recipient in letter_section.post.recipients.all %}
@@ -49,31 +74,27 @@
 			<!-- start the list of senders -->
 			<div class="senders">
 
-				{% include "digidemo/_i_user_id.html" with user=letter_section.post.user %}
 				<!-- people that have resent the letter -->
-				<div class="resending">
+				<div class="resenders_single_row" 
+					id="{{ letter_section.id_prefix }}_resenders" >
+						{% for resender in letter_section.resenders %}
 
-					<!-- this div gets its id based on the letter resend form
-					id so that js can bind resinding event to loading the
-					letter's avatar here --> 
-					<div class="resenders_single_row" 
-						id="{{ letter_section.id_prefix }}_resenders" >
-							{% for resender in letter_section.resenders %}
-								{% include "digidemo/_i_resender_avatar.html" %}
-							{% endfor %}
-						<div class="clear"></div>
-					</div>
-
-					<div>
-						<span id="resend_letter_status_{{letter_section.id_prefix}}"></span>
-						<a id="_w_toggle_hidden_{{letter_section.id_prefix}}" 
-							class="send_letter pointer">
-							send a version of this letter
-						</a>
-					</div>
-
+							{% include "digidemo/_i_resender_avatar.html" %}
+						{% endfor %}
+					<div class="clear"></div>
 				</div>
 				<!-- end of re-senders  -->
+
+				<div class="float_right">
+					{% include "digidemo/_i_user_id.html" with user=letter_section.post.user %}
+				</div>
+
+				<div class="sign_petition">
+					<a><img 
+						src="{% static "digidemo/images/feather_sign.png" %}" 
+						/> sign the petition
+					</a>
+				</div>
 
 				<div class="clear"></div>
 
@@ -90,6 +111,9 @@
 			<div class="clear"></div>
 
 		</div>
+
+		<img class="cover_corner"
+			src="{% static "digidemo/images/corner.png" %}" />
 
 		{% include "digidemo/_i_comments.html" with comments_section=letter_section.comments_section %}
 
@@ -169,3 +193,4 @@
 	}());
 
 </script>
+{% endblock maincol %}

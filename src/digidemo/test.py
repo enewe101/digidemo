@@ -237,11 +237,11 @@ class CommentTest(SeleniumFormTestCase):
 
 	def setUp(self):
 		self.COMMENT_TEXT = 'Test comment!'
-		self.COMMENT_TEXTAREA_ID = 'LetterCommentForm0_text'
+		self.COMMENT_TEXTAREA_ID = 'LetterCommentForm_1_text'
 		self.FORM_DATA = {
 			'TEXTS': [
 				(self.COMMENT_TEXTAREA_ID, self.COMMENT_TEXT, 'require')],
-			'SUBMIT': 'LetterCommentForm_0_submit'
+			'SUBMIT': 'LetterCommentForm_1_submit'
 		}
 
 		self.PROPOSAL = Proposal.objects.get(pk=1)
@@ -250,8 +250,8 @@ class CommentTest(SeleniumFormTestCase):
 
 		self.USER = User.objects.get(username='superuser')
 
-		self.SHOW_COMMENT_SWITCH_ID = '_w_toggle_hidden_comment_0'
-		self.COMMENT_LIST_WRAPPER_ID = 'comments_0'
+		self.SHOW_COMMENT_SWITCH_ID = '_w_toggle_hidden_comment_1'
+		self.COMMENT_LIST_WRAPPER_ID = 'comments_1'
 
 
 	@unittest.skip('skip for now')
@@ -300,12 +300,165 @@ class CommentTest(SeleniumFormTestCase):
 		pass
 
 
+
+class QuestionAnswerCommentTest(SeleniumTestCase):
+
+	def post_comment_submit_and_check(self, comment_text, tot_num_comments):
+
+		# put some text in the form and submit it
+		text = self.driver.find_element('id', self.spec['comment_input_id'])
+		text.send_keys(comment_text)
+		submit = self.driver.find_element('id', self.spec['submit_id'])
+		submit.click()
+
+		# wait until the comment is put onto the page.  How can we tell?
+		# We wait until the total number of comments found is tot_num_comments
+		comment_divs_wrapper = self.driver.find_element(
+			'id', self.spec['comments_div_id'])
+		self.wait.until(lambda driver: 
+			len(comment_divs_wrapper.find_elements_by_class_name(
+				'letter_comment')) == tot_num_comments)
+
+		# get the comment body and author
+		comment_divs = comment_divs_wrapper.find_elements_by_class_name(
+			'letter_comment')
+		comment_body = comment_divs[-1].find_element_by_class_name(
+			'letter_comment_body')
+		self.assertEqual(comment_body.text, comment_text)
+		comment_author = comment_divs[-1].find_element_by_class_name(
+			'comment_author')
+		self.assertEqual(comment_author.text, '~ ' + self.spec['username'])
+
+
+	def check_comment_visibility_toggle(self):
+
+		# get the comment input (which starts out hidden) and the link that
+		# reveals it when clicked.
+		hidden_div = self.driver.find_element(
+			'id', self.spec['hidden_comment_id'])
+		show_link = self.driver.find_element(
+			'id', self.spec['visibility_toggler'])
+
+		# initially the comment form is hidden
+		# clicking the add-comment link shows it.  At first it's empty
+		self.assertTrue(not hidden_div.is_displayed())
+		show_link.click()
+		self.assertTrue(hidden_div.is_displayed())
+		self.assertEqual(hidden_div.text, '')
+
+		# clicking again hides it again, and again shows it again
+		show_link.click()
+		self.assertTrue(not hidden_div.is_displayed())
+		show_link.click()
+		self.assertTrue(hidden_div.is_displayed())
+
+
+	def do_test_comment(self, num_initial_comments):
+
+		# make sure the comment starts hidden, and is revealed properly
+		self.check_comment_visibility_toggle()
+
+		# try adding a comment
+		self.post_comment_submit_and_check(
+			self.spec['text1'], num_initial_comments + 1)
+
+		# make sure that its hidden again, that the old submitted comment
+		# was cleared from the form, and that it still gets revealed properly
+		self.check_comment_visibility_toggle()
+
+		# make sure that submitting a second comment works
+		self.post_comment_submit_and_check(
+			self.spec['text2'], num_initial_comments + 2)
+
+
+	def test_question_comment(self):
+
+		question = Question.objects.get(pk=1)
+
+		# provide the comment test specification
+		self.spec = {
+			'username': User.objects.get(username='superuser').username,
+			'visibility_toggler': '_w_toggle_hidden_comment_qc',
+			'text1': 'First test comment text',
+			'text2': 'Second test comment text',
+			'hidden_comment_id': '_w_toggle_hidden_content_comment_qc',
+			'comment_input_id': 'QuestionCommentFormqc_text',
+			'submit_id': 'QuestionCommentForm_qc_submit',
+			'comments_div_id': 'comments_qc'
+		}
+ 
+		# now test it
+		self.driver.get(self.live_server_url + question.get_url())
+		self.do_test_comment(1)
+		
+
+	def test_answer_comment(self):
+
+		# We'll test adding a comment to an existing answer
+		question = Question.objects.get(pk=1)
+
+		# provide the comment test specification
+		self.spec = {
+			'username': User.objects.get(username='superuser').username,
+			'visibility_toggler': '_w_toggle_hidden_comment_0',
+			'text1': 'First test comment text',
+			'text2': 'Second test comment text',
+			'hidden_comment_id': '_w_toggle_hidden_content_comment_0',
+			'comment_input_id': 'AnswerCommentForm0_text',
+			'submit_id': 'AnswerCommentForm_0_submit',
+			'comments_div_id': 'comments_0'
+		}
+
+		# now test it
+		self.driver.get(self.live_server_url + question.get_url())
+		self.do_test_comment(1)
+
+
+	def test_new_answer_comment(self):
+
+		# Test making a new answer and adding a comment to the 
+		# new answer without refreshing the page.  First make an answer:
+		question = Question.objects.get(pk=1)
+		self.driver.get(self.live_server_url + question.get_url())
+		self.driver.find_element('id', self.ANSWER_TEXT_ID).send_keys(
+				'Test answer.')
+		self.driver.find_element('id', 'AnswerForm__submit').click()
+
+		# wait for 'add comment' form for the new answer to show up
+		answers_wrapper = self.driver.find_element('id', 'answers')
+		self.wait.until(lambda driver: 
+			len(answers_wrapper.find_elements_by_class_name('add_comment'))
+			== 2
+		)
+
+		# get the new answer's add-comment form
+		new_answer_comment_div = answers_wrapper.find_elements_by_class_name(
+			'add_comment')[-1]
+
+		# provide the comment test specification
+		username = User.objects.get(username='superuser').username
+
+		self.spec = {
+			'username': username,
+			'visibility_toggler': '_w_toggle_hidden_comment_'+username+'1',
+			'text1': 'First test comment text',
+			'text2': 'Second test comment text',
+			'hidden_comment_id': 
+				'_w_toggle_hidden_content_comment_'+username+'1',
+			'comment_input_id': 'AnswerCommentForm1_text',
+			'submit_id': 'AnswerCommentForm_1_submit',
+			'comments_div_id': 'comments_'+username+'1'
+		}
+
+
+
 class AnswerFormTest(SeleniumFormTestCase):
 
 	def setUp(self):
 		self.TEXT = 'Test answer text'
+		self.ANSWER_TEXT_ID = 'AnswerForm__text'
 		self.FORM_DATA = {
-			'TEXTS': [('AnswerForm_text', self.TEXT, 'require')],
+			'TEXTS': [(self.ANSWER_TEXT_ID, self.TEXT, 'require')],
 			'SUBMIT': 'AnswerForm__submit' 
 		}
 
@@ -313,8 +466,8 @@ class AnswerFormTest(SeleniumFormTestCase):
 		self.ADD_FORM_URL = self.live_server_url + self.QUESTION.get_url()
 		self.USER = User.objects.get(username='superuser')
 
-		self.HIDE_ANSWER_DIV_ID = '_w_toggle_hidden_answer_form_content'
-		self.TOGGLE_SHOW_ANSWER_ID = '_w_toggle_hidden_answer_form_switch'
+		self.HIDE_ANSWER_DIV_ID = '_w_toggle_hidden_subpost_form_content'
+		self.TOGGLE_SHOW_ANSWER_ID = '_w_toggle_hidden_subpost_form_switch'
 
 	def test_form_errors(self):
 		super(AnswerFormTest, self).test_form_errors()
@@ -328,12 +481,12 @@ class AnswerFormTest(SeleniumFormTestCase):
 
 		# We should see an error message
 		error_msg_elm = self.wait.until(lambda driver:
-			driver.find_element('id', 'AnswerForm_text_errors'))
+			driver.find_element('id', 'AnswerForm__text_errors'))
 		self.assertEqual(error_msg_elm.text, 'This field is required.')
 
 		# The text area should get assigned a class of `error`
 		text_input = self.wait.until(lambda driver: 
-			driver.find_element('id', 'AnswerForm_text'))
+			driver.find_element('id', self.ANSWER_TEXT_ID))
 		self.assertIn('error', text_input.get_attribute('class'))
 
 		
@@ -341,9 +494,9 @@ class AnswerFormTest(SeleniumFormTestCase):
 
 		# We may have to wait, but soon the new answer is in the db
 		self.assertTrue(
-			pyWait(lambda: Answer.objects.count(), 3, 0.15))
+			pyWait(lambda: Answer.objects.count()==2, 3, 0.15))
 
-		answer = Answer.objects.get()
+		answer = Answer.objects.all().last()
 		self.assertEqual(answer.text, self.TEXT)
 		self.assertEqual(answer.user, self.USER)
 		self.assertEqual(answer.target, self.QUESTION)
@@ -355,8 +508,7 @@ class AnswerFormTest(SeleniumFormTestCase):
 
 		# check for the voting elements.  When they are inserted, their id is
 		# built from some user data.
-		vote_id = (self.USER.username 
-			+ str(Answer.objects.filter(target=self.QUESTION).count()))
+		vote_id = 'AnswerVoteForm_' + str(answer.pk)
 
 		self.wait.until(
 			lambda driver: driver.find_element('id', vote_id + '_upvote'))
@@ -384,7 +536,7 @@ class AnswerFormTest(SeleniumFormTestCase):
 		self.assertTrue(
 			pyWait(lambda: show_answer_switch.text == 'Add another answer'))
 
-		# clicking that link shows the answer
+		# clicking that link shows the answer form again
 		show_answer_switch.click()
 		self.assertTrue(pyWait(lambda: hide_answer_div.is_displayed()))
 
@@ -463,6 +615,8 @@ class ProposalFormTest(SeleniumFormTestCase):
 		self.SUMMARY = 'Test summary.'
 		self.TEXT = 'Test text.'
 
+
+		self.TITLE_INPUT_ID = 'ProposalVersionForm__title'
 		# The hardcoded logged in user's name.  Change this when logging in
 		# users is ready
 		self.USERNAME = 'superuser'
@@ -482,9 +636,9 @@ class ProposalFormTest(SeleniumFormTestCase):
 
 		# Text to put in proposal version text inputs and textareas
 		self.PLAIN_ENTRIES = [
-			('ProposalVersionForm_title', self.TITLE, 'require'),
-			('ProposalVersionForm_summary', self.SUMMARY, 'require'),
-			('ProposalVersionForm_text', self.TEXT, 'require'),
+			(self.TITLE_INPUT_ID, self.TITLE, 'require'),
+			('ProposalVersionForm__summary', self.SUMMARY, 'require'),
+			('ProposalVersionForm__text', self.TEXT, 'require'),
 		]
 		self.FACTOR_ENTRIES = [(f[1],f[2]) for f in self.FACTOR_TEXTS]
 		self.TEXTS = self.PLAIN_ENTRIES + self.FACTOR_ENTRIES
@@ -505,12 +659,13 @@ class ProposalFormTest(SeleniumFormTestCase):
 		]
 
 		self.FORM_DATA = {
-			'SUBMIT': '__submit',
+			'SUBMIT': 'EditProposalForm_submit',
 			'SELECTIONS': self.SELECTIONS,
 			'TEXTS': self.TEXTS
 		}
 
 		self.ADD_FORM_URL = self.live_server_url + reverse('add_proposal')
+		print self.ADD_FORM_URL
 		self.EDIT_FORM_URL = (self.live_server_url 
 			+ Proposal.objects.get(title="Keystone XL Pipeline Extension")\
 				.get_edit_url())
@@ -560,7 +715,7 @@ class ProposalFormTest(SeleniumFormTestCase):
 
 
 		# for convenience in verification, also change the title
-		title_elm = self.driver.find_element('id', 'ProposalVersionForm_title')
+		title_elm = self.driver.find_element('id', self.TITLE_INPUT_ID)
 		title_elm.clear()
 		title_elm.send_keys(self.TITLE)
 
@@ -733,100 +888,13 @@ class ProposalFormTest(SeleniumFormTestCase):
 			factor_version_properties, expected_factor_properties)
 
 
-class EndToEndTests(SeleniumTestCase):
+class VoteTests(SeleniumTestCase):
 	'''
-	Tests that comprise of a full request and render cycles
+	Tests vote widgets associated to posts
 	'''
 
 	def setUp(self):
 		self.proposal = Proposal.objects.get(pk=1)
-
-	def test_discussion_voting_widget(self):
-
-		# navigate to the proposal overview
-		proposal = Proposal.objects.get(pk=1)
-		discussion_url = proposal.get_discussion_url()
-
-		# specify the expected vote element class_names
-		vote_test_specs = {
-			'url': discussion_url,
-			'up_id': '1_upvote',
-			'down_id': '1_downvote',
-			'score_id': '1_score',
-			'up_on': 'upvote_on',
-			'up_off': 'upvote_off',
-			'down_on': 'downvote_on',
-			'down_off': 'downvote_off'
-		}
-
-		# test upvote element behavior, and check if it registers in db
-		new_score = self.upvote_test(vote_test_specs)
-		discussion = Proposal.objects.get(pk=1).discussion_set.all()[0]
-		self.assertTrue(discussion.score == new_score)
-		
-		# test downvote element behavior, and check if it registers in db
-		new_score = self.downvote_test(vote_test_specs)
-		discussion = Proposal.objects.get(pk=1).discussion_set.all()[0]
-		self.assertTrue(discussion.score == new_score)
-		
-
-	def test_letter_voting_widget(self):
-
-		# navigate to the proposal overview
-		proposal = Proposal.objects.get(pk=1)
-		proposal_url = proposal.get_overview_url()
-
-		# specify the expected vote element class_names
-		vote_test_specs = {
-			'url': proposal_url,
-			'up_id': '0_upvote',
-			'down_id': '0_downvote',
-			'score_id': '0_score',
-			'up_on': 'upvote_on',
-			'up_off': 'upvote_off',
-			'down_on': 'downvote_on',
-			'down_off': 'downvote_off'
-		}
-
-		# test upvote element behavior, and check if it registers in db
-		new_score = self.upvote_test(vote_test_specs)
-		letter = Proposal.objects.get(pk=1).letter_set.all()[0]
-		self.assertTrue(pyWait(lambda: letter.score == new_score))
-		
-		# test downvote element behavior, and check if it registers in db
-		new_score = self.downvote_test(vote_test_specs)
-		letter = Proposal.objects.get(pk=1).letter_set.all()[0]
-		self.assertTrue(pyWait(lambda: letter.score == new_score))
-		
-
-	def test_proposal_voting_widget(self):
-
-		# navigate to the proposal overview
-		proposal = Proposal.objects.get(pk=1)
-		proposal_url = proposal.get_overview_url()
-
-		# specify the expected vote element class_names
-		vote_test_specs = {
-			'url': proposal_url,
-			'up_id': 'proposal_vote_upvote',
-			'down_id': 'proposal_vote_downvote',
-			'score_id': 'proposal_vote_score',
-			'up_on': 'upvote_on',
-			'up_off': 'upvote_off',
-			'down_on': 'downvote_on',
-			'down_off': 'downvote_off'
-		}
-
-		# test upvote element behavior, and check if it registers in db
-		new_score = self.upvote_test(vote_test_specs)
-		proposal = Proposal.objects.get(pk=1)
-		self.assertTrue(proposal.score == new_score)
-		
-		# test downvote element behavior, and check if it registers in db
-		new_score = self.downvote_test(vote_test_specs)
-		proposal = Proposal.objects.get(pk=1)
-		self.assertTrue(proposal.score == new_score)
-		
 
 	def get_and_test_vote_widget(self, vote_widget_test):
 
@@ -956,6 +1024,66 @@ class EndToEndTests(SeleniumTestCase):
 		self.assertTrue(new_upvote_class == vwt['up_off'])
 
 		return new_score 
+
+
+	def vote_test(self, test_url, vote_form_prefix):
+
+		# specify the expected vote element class_names
+		vote_test_specs = {
+			'url': test_url,
+			'up_id': vote_form_prefix + 'upvote',
+			'down_id': vote_form_prefix + 'downvote',
+			'score_id': vote_form_prefix + 'score',
+			'up_on': 'upvote_on',
+			'up_off': 'upvote_off',
+			'down_on': 'downvote_on',
+			'down_off': 'downvote_off'
+		}
+
+		# test upvote element behavior, and check if it registers in db
+		new_score = self.upvote_test(vote_test_specs)
+		discussion = Proposal.objects.get(pk=1).discussion_set.all()[0]
+		self.assertTrue(discussion.score == new_score)
+		
+		# test downvote element behavior, and check if it registers in db
+		new_score = self.downvote_test(vote_test_specs)
+		discussion = Proposal.objects.get(pk=1).discussion_set.all()[0]
+		self.assertTrue(discussion.score == new_score)
+		
+
+	def test_discussion_voting_widget(self):
+		self.vote_test(
+			test_url = self.live_server_url + 'view-discussion/1/',
+			vote_form_prefix = 'DiscussionVoteForm_q_'
+		)
+
+
+	def test_letter_voting_widget(self):
+
+		# Letters are on proposal overviews.  Get url for a proposal overview
+		proposal = Proposal.objects.get(pk=1)
+		proposal_url = proposal.get_overview_url()
+
+		# Test the vote widgets associated to letters on the page
+		self.vote_test(
+			test_url = proposal_url,
+			vote_form_prefix = 'LetterVoteForm_1_'
+		)
+
+
+	def test_proposal_voting_widget(self):
+
+		# navigate to a proposal's overview page
+		proposal = Proposal.objects.get(pk=1)
+		proposal_url = proposal.get_overview_url()
+
+		# Test the vote widgets associated to letters on the page
+		self.vote_test(
+			test_url = proposal_url,
+			vote_form_prefix = 'ProposalVoteForm_p_'
+		)
+
+
 
 
 class UserProfileTest(TestCase):

@@ -1,0 +1,28 @@
+{% extends "digidemo/__base.html" %}
+{% load apptags %}
+{% load staticfiles %}
+
+	{% block body %}
+	{{block.super}}
+
+	<!-- Display basic information about everything--> 
+	Welcome : {{user.user.username}}
+	<br /> <br />
+	First Name : {{ user.user.first_name }}
+	<br /> <br />
+	Last Name : {{ user.user.last_name }}
+	<br /> <br />
+	Email : {{ user.user.email }}
+	<br /> <br />
+
+	<!-- Display the followed posts -->
+
+	The followed proposals of the user are : 
+	<br /> <br />
+	
+	{% for proposal in user.followedProposals.all %}
+	<a href = "{{proposal.get_proposal_url}}">	{{proposal.title}}  </a>
+	<br /> <br />
+	{% endfor %}		
+	
+	{% endblock body %}

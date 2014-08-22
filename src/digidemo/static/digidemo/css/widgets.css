@@ -1,0 +1,64 @@
+/* votes widget */
+
+.post_status_indicator, .subpost_status_indicator {
+	width: 100px;
+	height: 100px;
+	float: left;
+	text-align: center;
+}
+
+.votes_widget {
+	height: 100px;
+}
+
+.upvote_on {
+	background: center center no-repeat url('../images/upvote_on.png');
+	height: 20px;
+	cursor: pointer;
+}
+
+.upvote_off {
+	background: center center no-repeat url('../images/upvote.png');
+	height: 20px;
+	cursor: pointer;
+}
+
+.downvote_on {
+	background: center center no-repeat url('../images/downvote_on.png');
+	height: 20px;
+	cursor: pointer;
+}
+
+.downvote_off {
+	background: center center no-repeat url('../images/downvote.png');
+	height: 20px;
+	cursor: pointer;
+}
+
+
+.score {
+	font-family: computerModern;
+	font-size: 36px;
+	font-style: italic;
+	font-weight: bold;
+	line-height: 48px;
+	height: 48px;
+	margin-left: -6px;
+}
+
+/* Comments */
+.add_comment, .letter_comment {
+	border-top: 1px rgb(180,180,180) dotted;
+	padding: 10px;
+	font-size: 12px;
+}
+
+.letter_comment_input {
+	width: 100%;
+	height: 40px;
+}
+
+.add_comment_toggle_content {
+	display: none;
+}
+

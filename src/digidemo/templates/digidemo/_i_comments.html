@@ -1,7 +1,7 @@
 <!-- start of the comments area -->
-<div id="comments_{{ include_id }}" class="comments">
+<div id="comments_{{ comments_section.id_prefix }}" class="comments">
 
-	{% for comment in comments %}
+	{% for comment in comments_section.comments %}
 		{% include "digidemo/_i_comment.html" %}
 	{% endfor %}
 
@@ -9,13 +9,13 @@
 <!-- end of comments area -->
 
 <div class="add_comment">
-	<a id="_w_toggle_hidden_comment_{{ include_id }}" class="pointer"> 
+	<a id="_w_toggle_hidden_comment_{{ comments_section.id_prefix }}" class="pointer"> 
 		add comment
 	</a>
-	<div id="_w_toggle_hidden_content_comment_{{ include_id }}"
+	<div id="_w_toggle_hidden_content_comment_{{ comments_section.id_prefix }}"
 		class="add_comment_toggle_content" >
 
-		{% include "digidemo/_w_ajax_form_id.html" with form=comment_form %}
+		{% include "digidemo/_w_ajax_form.html" with form=comments_section.comment_form %}
 
 	</div>
 </div>
@@ -24,17 +24,17 @@
 
 (function(){
 
-	var COMMENT_FORM_ID_PREFIX = '{{ comment_form.form_class }}' + '{{ comment_form.id_prefix }}';
+	var COMMENT_FORM_ID_PREFIX = '{{ comments_section.comment_form.form_class }}_{{ comments_section.comment_form.id_prefix }}';
 	var COMMENT_TEXTAREA_ID = (
 		'#' + COMMENT_FORM_ID_PREFIX + '_text');
 
 	//
 	// Create a toggler to show / hide the comment form
 	//
-	var toggle_div = $('#_w_toggle_hidden_comment_{{ include_id }}');
-	var content = $('#_w_toggle_hidden_content_comment_{{ include_id }}');
+	var toggle_div = $('#_w_toggle_hidden_comment_{{ comments_section.id_prefix }}');
+	var content = $('#_w_toggle_hidden_content_comment_{{ comments_section.id_prefix }}');
 	var toggler = new ToggleHidden(toggle_div, content);
-	register_widget('toggle_hidden_comment_{{ include_id }}', toggler,
+	register_widget('toggle_hidden_comment_{{ comments_section.id_prefix }}', toggler,
 		 'toggle_hidden');
 
 
@@ -45,13 +45,13 @@
 	$(document).ready(function() {
 
 		// Get the toggler and the comment widget
-		var toggler = widgets['toggle_hidden_comment_{{ include_id }}'].widget;
-		var comment_widget = widgets['{{ comment_form.form_class }}'
-	   		+ '_' + '{{ comment_form.id_prefix }}'].widget;
+		var toggler = widgets['toggle_hidden_comment_{{ comments_section.id_prefix }}'].widget;
+		var comment_widget = widgets['{{ comments_section.comment_form.form_class }}'
+	   		+ '_' + '{{ comments_section.comment_form.id_prefix }}'].widget;
 
 		// Define a callback: shows the comment on the page and hides the form
 		var show_comment = function(data) {
-			$('#comments_{{ include_id }}').append(data.html);
+			$('#comments_{{ comments_section.id_prefix }}').append(data.html);
 			$(COMMENT_TEXTAREA_ID).val('');
 			toggler.toggle();
 		};

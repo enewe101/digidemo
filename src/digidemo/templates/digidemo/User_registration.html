@@ -10,7 +10,10 @@
 		
 		{% block js %}
 			{{ block.super }}
-		<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+
+		<!-- Let's stick to one version of jquery -->
+
+		<!-- script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script-->
 		
 
 		{% endblock js %}
@@ -18,7 +21,6 @@
 
 {% block body %}
 {{ block.super }}
-{% include "digidemo/_w_login_user.html" %}
 
 <div id="wrapper">
   <!-- BEGIN header -->
@@ -31,7 +33,6 @@
 	<form method="POST" tag="Create Logon" >
 	{% csrf_token %}		
 	{{ form.non_field_errors }}
-  		{{ form.subject.errors }}
 		<span>
 		userName :
 		{{ form.userName }} <div id="userNameValidation"> Please enter username </div>
@@ -50,16 +51,16 @@
 		{{ form.lastName }} 
 		<br> <br>
 <!--		Street :
-		{{ form.street }} 
+		{ { form.street }} 
 		<br> <br>
 		PIN :
-		{{ form.zipCode }} 
+		{ { form.zipCode }} 
 		<br> <br>
 		Country :
-		{{ form.country }} 
+		{ { form.country }} 
 		<br> <br>
 		Province :
-		{{ form.province }} 
+		{ { form.province }} 
 		<br> <br> -->
 		<input type="submit" value="Submit" />
 		</div>

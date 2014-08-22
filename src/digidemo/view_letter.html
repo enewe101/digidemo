@@ -2,28 +2,34 @@
 {% load apptags %}
 {% load staticfiles %}
 
+{% block css %}
+	{{block.super}} 
+	<link rel="stylesheet" type="text/css" 
+		href="{% static "digidemo/css/letter.css" %}" /> 
+	<link rel="stylesheet" type="text/css" 
+		href="{% static "digidemo/css/proposal.css" %}" /> 
+{% endblock css %}
+
 {% block title %}
-	{{ proposal.title }} | {{ block.super }} 
+	{{ headline }} | {{ block.super }} 
 {% endblock title %}
 
-{% block  headline_title %}
-	<img src="{% static "digidemo/images/compas_icon.png" %}" />
-	<span class="content_type">ISSUE:</span>
-	{{ proposal.get_latest.title }}
-{% endblock headline_title %}
-
 {% block maincol %}
+
 <!-- start the proposal -->
-<div id="overview">
+<h2 class="subtitle">
+	{{section_title}}
+</h2>
+
 
 	<!-- start the open letters area -->
-	<h1>Petitions</h1>
 	<div id="letters">
 	{% for letter_section in letter_sections %}
 
 		{% if not forloop.first %}
 			<hr />
 		{% endif %}
+
 
 		{% include "digidemo/_i_letter.html" with letter_section=letter_section %}
 		<div class="clear"></div>
@@ -39,20 +45,33 @@
 		<h1>Your Letter</h1>
 		<div id="add_letter_div">
 
-			{% include "digidemo/_w_ajax_form.html" with form=letter_form include_id="add" %}
+		{% include "digidemo/_w_ajax_form.html" with form=letter_form include_id="add" %}
 
 		</div>
 		<!-- end form for adding new letters -->
 
 	</div>
 	<!-- end of letters area -->
-</div>
 {% endblock maincol %}
 
 {% block rightcol %}
 
-	{% include "digidemo/_w_follow_post.html" %}
- 
+	<!-- Yo there's issues with this so I've commented it out for now -->
+
+	<!--script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+	<script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.10.2/jquery-ui.min.js"></script>
+	<script src="{% static "digidemo/js/jquery.switchButton.js" %}"></script>
+
+	<script>
+		$(function() {
+			$('#basic.demo input').switchButton();
+		}());
+	</script-->
+
+	<div class="demo" id="basic">
+		<input type="checkbox" value="1" />
+	</div>
+
 	<!-- start of proposal sectors -->
 	<div class="tags">
 		Sectors
@@ -95,3 +114,4 @@
 	<!-- end of tags -->
 
 {% endblock rightcol %}
+

@@ -117,38 +117,6 @@
     }, 
     {
         "pk": 1, 
-        "model": "digidemo.userprofile", 
-        "fields": {
-            "email_validated": true, 
-            "province": "Karnatka", 
-            "country": "India", 
-            "rep": 34, 
-            "creation_date": "2014-07-13T17:04:58Z", 
-            "street": "Somewhere", 
-            "user": 1, 
-            "last_modified": "2014-07-17T05:54:52Z", 
-            "avatar_img": "avatars/superuser.jpg", 
-            "zip_code": "560072"
-        }
-    }, 
-    {
-        "pk": 2, 
-        "model": "digidemo.userprofile", 
-        "fields": {
-            "email_validated": true, 
-            "province": "QC", 
-            "country": "CAN", 
-            "rep": 34, 
-            "creation_date": "2014-07-13T17:04:58Z", 
-            "street": "56 Long Ave.", 
-            "user": 2, 
-            "last_modified": "2014-07-15T01:52:09Z", 
-            "avatar_img": "avatars/regularuser.jpg", 
-            "zip_code": "51515"
-        }
-    }, 
-    {
-        "pk": 1, 
         "model": "digidemo.proposal", 
         "fields": {
             "tags": [], 
@@ -158,7 +126,7 @@
             "summary": "The Keystone XL Pipeline is a proposed extension to the existing Keystone Pipeline System, put forward by TransCanada, the corporation that owns the Keystone System. The pipeline would cross the Canada/US border, importing crude oil sourced from the Albertan oil sands, into the United States. The proposal is currently awaiting government approval. The pipeline would be newly constructed, and is similar to existing pipelines in North America.\r\n\r\nThe Keystone XL pipeline project is a contentious political issue, owing to probable environmental, economic, and social impacts. Environmentally, the pipeline might present a risk of contaminating groundwater and disturbing sensitive ecosystems, but it might also be a better alternative than ground transport by train or truck. Economically, the pipeline might produce jobs temporarily during its construction, and permanently in additional refinement activities in the US. It would also lead to a redistribution of crude supply, emphasizing export and raising the price of oil in the Midwestern US. Socially, the construction of the pipeline would disturb landowners currently in its path, and would disturb heritage sites of cultural significance.", 
             "score": 0, 
             "user": 1, 
-            "last_modified": "2014-07-24T05:47:35Z", 
+            "last_modified": "2014-08-20T04:27:30Z", 
             "creation_date": "2014-07-13T17:03:48Z", 
             "original_user": 1, 
             "is_published": true
@@ -241,326 +209,51 @@
         }
     }, 
     {
-        "pk": 1, 
-        "model": "digidemo.discussion", 
-        "fields": {
-            "body": "I think that we need more material covering the social factors of this proposal.  There is only a brief mention of the displacement of people.  It would be better to get some statistics together on how many people are likely to be displaced, and how this w I think that we need more material covering the social factors of this proposal.  There is only a brief mention of the displacement of people.  It would be better to get some statistics together on how many people are likely to be displaced, and how this w", 
-            "title": "Social Factors", 
-            "creation_date": "2014-07-13T17:01:56Z", 
-            "score": 1, 
-            "is_open": true, 
-            "user": 1, 
-            "last_modified": "2014-07-17T05:54:52Z", 
-            "proposal": 1
-        }
-    }, 
-    {
-        "pk": 2, 
-        "model": "digidemo.discussion", 
-        "fields": {
-            "body": "I think that we need more material covering the social factors of this proposal.  There is only a brief mention of the displacement of people.  It would be better to get some statistics together on how many people are likely to be displaced, and how this w I think that we need more material covering the social factors of this proposal.  There is only a brief mention of the displacement of people.  It would be better to get some statistics together on how many people are likely to be displaced, and how this w", 
-            "title": "Social Factors", 
-            "creation_date": "2014-07-13T17:01:56Z", 
-            "score": 1, 
-            "is_open": true, 
-            "user": 1, 
-            "last_modified": "2014-07-13T17:01:56Z", 
-            "proposal": 1
-        }
-    }, 
-    {
         "pk": 24, 
-        "model": "digidemo.reply", 
+        "model": "digidemo.proposalversion", 
         "fields": {
-            "body": "A comment.", 
-            "discussion": 2, 
-            "creation_date": "2014-07-13T17:04:31Z", 
-            "score": 0, 
-            "is_open": false, 
+            "tags": [], 
+            "text": "# Actors #\r\n - **TransCanada**: Corporation that owns the existing Keysone Pipeline System, and which has put forward the proposal to state and federal authorities for the Keystone XL extension.\r\n - **ConocoPhillips**: Corporation that was part-owner of the Keystone Pipeline System, bought out by TransCanada.\r\n - **Cardno Entrix**: Environmental Assessment Consultancy, contracted by TransCanada to produce an environmental assessment of the Keystone XL proposal.\r\n- **US Government**:\r\n        - **President Obama**: Can approve or reject the application for a Presidential Permit, legally needed to proceed with the construction project. \r\n         - **Environmental Protection Agency**: Oversees the environmental assessment of the project, and approves or rejects the application for an environmental permit, legally needed to proceed with the construction project.\r\n         - **US State Governments**: Each US state through which the proposed pipeline would pass can approve or reject the construction activities within its borders.\r\n     - **Canadian Government**:\r\n             - **National Energy Board of Canada** (NEB): Responsible for approving or rejecting the construction activities within Canada.\r\n         - WorleyParsons: Corporation acting as the general contractor for the pipeline construction.\r\n        \r\n        # Impacts #\r\n        ## Environmental Impacts ##\r\n        **Hazards relating to oil spills**. The originally proposed route traversed the Sand Hills region and the Ogallala aquifer.  The Sand Hills region is a sensitive wetland ecosystem in Nebraska.  The Ogallala aquifer is one of the largest reserves of fresh water in the world, spans eight states, provides drinking water for two million people, and supports a US$20 billion worth of agricultural activity.\r\n        \r\n        The path of the pipeline has been revised by TransCanada to avoid the Sand Hills region, and reduce the length\r\n        of piping running over the Ogallala aquifer.  The actual risks of a spill in the region of the aquifer are unclear, and the severity of impact is debated.  The pipeline, with a normal depth of 4 feet would be separated from the aquifer by a layer of fine clay, which might drastically reduce the actual effects on drinking water.  Thousands of miles of existing pipelines carrying crude oil and refined liquid hydrocarbons have crossed over the Ogallala Aquifer for years, so the severity of risk could be evaluated empirically.  The pipeline will be newly constructed, which should be considered when comparing to existing pipelines which do not benefit from technological advances or were converted from natural gas pipelines.\r\n        \r\n        **Greenhouse Gas Emissions**.  The Keystone XL pipeline would carry crude oil to refineries for conversion into fuels, among other products.  The activities of extracting, refining, and burning petroleum-derived fuels is a major contributor to CO2 accumulation in the atmosphere and climate change.  By providing access to US and global markets, the Keystone XL pipeline would facilitate further extraction in the oilsands of Alberta.  \r\n        If the Keystone XL pipeline is not built, crude from the Albertan tarsands might be refined and exported from\r\n        Canada, based on alternative Canadian pipeline  construction projects which would bring the crude to tidewater.  Additionally, ground transport of crude, by train and tanker, might be used instead, which adds to greenhouse gas emissions and poses its own safety hazards.\r\n        \r\n        ## Economic Impacts ##\r\n        **Employment**.  Construction of the pipeline would provide temporary employment for about 2 years.  Estimates of the amount of employment vary widely.  A report by Perryman Group, a financial analysis firm that was hired by TransCanada, estimates construction would employ 20,000 US workers and spend US$7 billion.  A study conducted by Cornell ILR Global Labor Institute estimated construction would employ 2500 to 4650 US workers.  The US State Department estimated 5000 to 6000 temporary construction jobs.  It's Supplemenntal Environmental Impact Statement estimated 3900 US workers directly employed and 42000 US workers indirectly employed by construction activities. \r\n        \r\n        **Risk of impact due to spills**.  The original route proposed for the Keystone XL pipeline passed over the Ogallala aquifer.  The aquifer supports about US$20 billion in agricultural activity.  If a spill contaminated the water, it could have serious economic impact.  The amended proposal has reduced the length of piping that crosses the aquifer.  The 2010 Enbridge oil spill along the Kalamazoo river in Michigan showed that spills can result in significant economic costs beyond environmental ones.\r\n        \r\n        # Social Impacts #\r\n        **Displacement of people**.  Land owners in the path of the pipeline would be displaced.  Landowners have already complained about threats by TransCanada to confiscate private land and some have faced lawsuits.  As of October 17, 2011 Transcanada had 34 eminent domain actions against landowners in Texas and 22 in South Dakota.\r\n        \r\n        **Damage to public goods (excluding the environment)**.  Various sacred sites, and prehistoric or historic archeological sites, and sites with traditional cultural value to Native Americans and other groups might be disturbed, removed or demolished.  TransCanada made a major donation to the University of Toronto to promote education and research in the health of the Aboriginal population.\r\n        \r\n        **Safety**.  Ground transport by tanker truck and rail is less safe.  As an example, the derailment of a train transporting crude oil at Lac-M\u00e9gantic in 2013 kiled 50 people.  Increased production in North Dakota has exceeded pipeline capacity since 2010, leading to increasing volumes of crude being shipped by truck or rail to refineries.  Alberta is expected to running up against a pipeline capacity limit around 2016.\r\n        \r\n        # In Perspective #\r\n         - The Alberta oil sands account for a quantity of GHG emissions equal to \r\n             - the coal-fired power plants in the State of Wisconsin \r\n             - 2.5% of total GHG emissions from the coal-fired power plants of the US\r\n             - 0.1% of global GHG emissions from all sources\r\n         - The Enbridge \"Alberta Clipper\" expansion has continued during late 2013, adding approximately the same cross-border capacity.\r\n         - The Keystone XL expansion is Phase 4 in the Keystone Pipeline system.\r\n             - it corresponds to between 1897 km, later revised to 1408 km of piping or 28% revised to 23% of the Keystone system by length.\r\n             - it will account for about 40% of the Keystone system's capacity if built.\r\n         - There are currently about 320,000 km of similar oil pipelines in the US.\r\n         - Alternative projects are being considered:\r\n                 - An all-Canadian pipeline north to the Arctic coast for shipping to markets in Europe and Asia\r\n                 - An all-Canadian pipeline (\"Energy East\") that would extend to Saint John, New Brunswick for export, while also supplying Montreal, Quebec City, and Saint John refineries.", 
+            "title": "Keystone XL Pipeline Extension", 
+            "summary": "The Keystone XL Pipeline is a proposed extension to the existing Keystone Pipeline System, put forward by TransCanada, the corporation that owns the Keystone System. The pipeline would cross the Canada/US border, importing crude oil sourced from the Albertan oil sands, into the United States. The proposal is currently awaiting government approval. The pipeline would be newly constructed, and is similar to existing pipelines in North America.\r\n\r\nThe Keystone XL pipeline project is a contentious political issue, owing to probable environmental, economic, and social impacts. Environmentally, the pipeline might present a risk of contaminating groundwater and disturbing sensitive ecosystems, but it might also be a better alternative than ground transport by train or truck. Economically, the pipeline might produce jobs temporarily during its construction, and permanently in additional refinement activities in the US. It would also lead to a redistribution of crude supply, emphasizing export and raising the price of oil in the Midwestern US. Socially, the construction of the pipeline would disturb landowners currently in its path, and would disturb heritage sites of cultural significance.", 
+            "last_modified": "2014-08-17T13:40:14Z", 
             "user": 1, 
-            "last_modified": "2014-07-13T17:04:31Z"
-        }
-    }, 
-    {
-        "pk": 25, 
-        "model": "digidemo.reply", 
-        "fields": {
-            "body": "Another comment.", 
-            "discussion": 2, 
-            "creation_date": "2014-07-13T17:04:31Z", 
-            "score": 0, 
-            "is_open": false, 
-            "user": 1, 
-            "last_modified": "2014-07-13T17:04:31Z"
-        }
-    }, 
-    {
-        "pk": 26, 
-        "model": "digidemo.reply", 
-        "fields": {
-            "body": "Comment on the first discussion.", 
-            "discussion": 1, 
-            "creation_date": "2014-07-13T17:04:31Z", 
-            "score": 0, 
-            "is_open": false, 
-            "user": 1, 
-            "last_modified": "2014-07-13T17:04:31Z"
-        }
-    }, 
-    {
-        "pk": 27, 
-        "model": "digidemo.reply", 
-        "fields": {
-            "body": "AONETHTNH", 
-            "discussion": 1, 
-            "creation_date": "2014-07-13T17:04:31Z", 
-            "score": 0, 
-            "is_open": false, 
-            "user": 1, 
-            "last_modified": "2014-07-13T17:04:31Z"
-        }
-    }, 
-    {
-        "pk": 1, 
-        "model": "digidemo.question", 
-        "fields": {
-            "target": 1, 
-            "title": "How likely (or frequent) can we expect spills along the pipeline extension to be?", 
-            "text": "I would like to know how likely spills are, based on the rate of previous incidents. It will probably be important to take into account the kind of piping technology used, and the kind of service. For example, repurposed piping originally for the transport of natural gas is likely to be different from newly built piping. Or, (and I'm not sure), there may be a difference due to the fact that this is crude derived from tarsands, rather than conventional crude.", 
-            "creation_date": "2014-07-25T21:25:57Z", 
-            "score": 0, 
-            "user": 1, 
-            "last_modified": "2014-07-25T21:25:57Z"
-        }
-    }, 
-    {
-        "pk": 1, 
-        "model": "digidemo.factor", 
-        "fields": {
-            "sector": 7, 
-            "description": "Transport of crude oil by pipeline is safer than by truck and train, which are the current alternatives", 
-            "deleted": false, 
-            "creation_date": "2014-07-13T17:02:11Z", 
-            "last_modified": "2014-07-22T05:12:38Z", 
             "proposal": 1, 
-            "valence": 1
+            "creation_date": "2014-08-17T13:40:14Z"
+        }
+    }, 
+    {
+        "pk": 1, 
+        "model": "digidemo.userprofile", 
+        "fields": {
+            "email_validated": true, 
+            "province": "Karnatka", 
+            "country": "India", 
+            "rep": 94, 
+            "creation_date": "2014-07-13T17:04:58Z", 
+            "followedProposals": [], 
+            "street": "Somewhere", 
+            "user": 1, 
+            "last_modified": "2014-08-21T17:12:08Z", 
+            "avatar_img": "avatars/superuser.jpg", 
+            "zip_code": "560072"
         }
     }, 
     {
         "pk": 2, 
-        "model": "digidemo.factor", 
+        "model": "digidemo.userprofile", 
         "fields": {
-            "sector": 2, 
-            "description": "The operation of pipelines for the transport of crude oil poses environmental risks due to the eventuality of leaks", 
-            "deleted": false, 
-            "creation_date": "2014-07-13T17:02:11Z", 
-            "last_modified": "2014-07-22T05:12:38Z", 
-            "proposal": 1, 
-            "valence": -1
-        }
-    }, 
-    {
-        "pk": 3, 
-        "model": "digidemo.factor", 
-        "fields": {
-            "sector": 7, 
-            "description": "Canada's readiness to make use of its natural resources will be increased", 
-            "deleted": false, 
-            "creation_date": "2014-07-13T17:02:11Z", 
-            "last_modified": "2014-07-22T05:12:38Z", 
-            "proposal": 1, 
-            "valence": 1
-        }
-    }, 
-    {
-        "pk": 4, 
-        "model": "digidemo.factor", 
-        "fields": {
-            "sector": 1, 
-            "description": "Facilitating the development of the tarsands will create additional wealth and income in Canada.", 
-            "deleted": false, 
-            "creation_date": "2014-07-13T17:02:11Z", 
-            "last_modified": "2014-07-22T05:12:38Z", 
-            "proposal": 1, 
-            "valence": 1
-        }
-    }, 
-    {
-        "pk": 7, 
-        "model": "digidemo.factor", 
-        "fields": {
-            "sector": 1, 
-            "description": "Test pos Eco factor.", 
-            "deleted": false, 
-            "creation_date": "2014-07-22T14:29:18Z", 
-            "last_modified": "2014-07-22T14:29:18Z", 
-            "proposal": 2, 
-            "valence": 1
-        }
-    }, 
-    {
-        "pk": 8, 
-        "model": "digidemo.factor", 
-        "fields": {
-            "sector": 2, 
-            "description": "Test neg Env factor.", 
-            "deleted": false, 
-            "creation_date": "2014-07-22T14:29:18Z", 
-            "last_modified": "2014-07-22T14:29:18Z", 
-            "proposal": 2, 
-            "valence": -1
-        }
-    }, 
-    {
-        "pk": 9, 
-        "model": "digidemo.factor", 
-        "fields": {
-            "sector": 1, 
-            "description": "test2", 
-            "deleted": false, 
-            "creation_date": "2014-07-22T14:53:28Z", 
-            "last_modified": "2014-07-22T14:53:28Z", 
-            "proposal": 3, 
-            "valence": 1
-        }
-    }, 
-    {
-        "pk": 10, 
-        "model": "digidemo.factor", 
-        "fields": {
-            "sector": 1, 
-            "description": "test2", 
-            "deleted": false, 
-            "creation_date": "2014-07-22T14:53:28Z", 
-            "last_modified": "2014-07-22T14:53:28Z", 
-            "proposal": 3, 
-            "valence": -1
-        }
-    }, 
-    {
-        "pk": 1, 
-        "model": "digidemo.factorversion", 
-        "fields": {
-            "sector": 7, 
-            "description": "Transport of crude oil by pipeline is safer than by truck and train, which are the current alternatives", 
-            "deleted": false, 
-            "factor": 1, 
-            "creation_date": "2014-07-14T18:34:25Z", 
-            "last_modified": "2014-07-17T20:56:41Z", 
-            "proposal_version": 1, 
-            "valence": 1
-        }
-    }, 
-    {
-        "pk": 2, 
-        "model": "digidemo.factorversion", 
-        "fields": {
-            "sector": 2, 
-            "description": "The operation of pipelines for the transport of crude oil poses environmental risks due to the eventuality of leaks", 
-            "deleted": false, 
-            "factor": 2, 
-            "creation_date": "2014-07-14T18:34:25Z", 
-            "last_modified": "2014-07-17T20:56:41Z", 
-            "proposal_version": 1, 
-            "valence": -1
-        }
-    }, 
-    {
-        "pk": 3, 
-        "model": "digidemo.factorversion", 
-        "fields": {
-            "sector": 7, 
-            "description": "Canada's readiness to make use of its natural resources will be increased", 
-            "deleted": false, 
-            "factor": 3, 
-            "creation_date": "2014-07-14T18:34:25Z", 
-            "last_modified": "2014-07-17T20:56:41Z", 
-            "proposal_version": 1, 
-            "valence": 1
-        }
-    }, 
-    {
-        "pk": 4, 
-        "model": "digidemo.factorversion", 
-        "fields": {
-            "sector": 1, 
-            "description": "Facilitating the development of the tarsands will create additional wealth and income in Canada.", 
-            "deleted": false, 
-            "factor": 4, 
-            "creation_date": "2014-07-14T18:34:25Z", 
-            "last_modified": "2014-07-17T20:56:41Z", 
-            "proposal_version": 1, 
-            "valence": 1
-        }
-    }, 
-    {
-        "pk": 7, 
-        "model": "digidemo.factorversion", 
-        "fields": {
-            "sector": 1, 
-            "description": "Facilitating the development of the tarsands will create additional wealth and income in Canada.", 
-            "deleted": true, 
-            "factor": 4, 
-            "creation_date": "2014-07-14T18:34:25Z", 
-            "last_modified": "2014-07-22T12:56:20Z", 
-            "proposal_version": 1, 
-            "valence": 1
-        }
-    }, 
-    {
-        "pk": 72, 
-        "model": "digidemo.factorversion", 
-        "fields": {
-            "sector": 1, 
-            "description": "Test pos Eco factor.", 
-            "deleted": false, 
-            "factor": 7, 
-            "creation_date": "2014-07-22T14:29:18Z", 
-            "last_modified": "2014-07-22T14:29:18Z", 
-            "proposal_version": 22, 
-            "valence": 1
-        }
-    }, 
-    {
-        "pk": 73, 
-        "model": "digidemo.factorversion", 
-        "fields": {
-            "sector": 2, 
-            "description": "Test neg Env factor.", 
-            "deleted": false, 
-            "factor": 8, 
-            "creation_date": "2014-07-22T14:29:18Z", 
-            "last_modified": "2014-07-22T14:29:18Z", 
-            "proposal_version": 22, 
-            "valence": -1
-        }
-    }, 
-    {
-        "pk": 74, 
-        "model": "digidemo.factorversion", 
-        "fields": {
-            "sector": 1, 
-            "description": "test2", 
-            "deleted": false, 
-            "factor": 9, 
-            "creation_date": "2014-07-22T14:53:28Z", 
-            "last_modified": "2014-07-22T14:53:28Z", 
-            "proposal_version": 23, 
-            "valence": 1
-        }
-    }, 
-    {
-        "pk": 75, 
-        "model": "digidemo.factorversion", 
-        "fields": {
-            "sector": 1, 
-            "description": "test2", 
-            "deleted": false, 
-            "factor": 10, 
-            "creation_date": "2014-07-22T14:53:28Z", 
-            "last_modified": "2014-07-22T14:53:28Z", 
-            "proposal_version": 23, 
-            "valence": -1
+            "email_validated": true, 
+            "province": "QC", 
+            "country": "CAN", 
+            "rep": 34, 
+            "creation_date": "2014-07-13T17:04:58Z", 
+            "followedProposals": [], 
+            "street": "56 Long Ave.", 
+            "user": 2, 
+            "last_modified": "2014-07-15T01:52:09Z", 
+            "avatar_img": "avatars/regularuser.jpg", 
+            "zip_code": "51515"
         }
     }, 
     {
@@ -612,11 +305,12 @@
             "recipients": [
                 1
             ], 
+            "title": "Petition Title", 
             "parent_letter": null, 
             "creation_date": "2014-07-13T17:02:17Z", 
             "score": 3, 
             "user": 2, 
-            "last_modified": "2014-07-15T01:06:09Z", 
+            "last_modified": "2014-08-22T04:19:34Z", 
             "proposal": 1, 
             "valence": -1
         }
@@ -629,11 +323,12 @@
             "recipients": [
                 1
             ], 
+            "title": "Petition Title", 
             "parent_letter": null, 
             "creation_date": "2014-07-13T17:02:17Z", 
             "score": 1, 
             "user": 2, 
-            "last_modified": "2014-07-15T01:52:09Z", 
+            "last_modified": "2014-08-22T04:19:34Z", 
             "proposal": 1, 
             "valence": 0
         }
@@ -646,11 +341,12 @@
             "recipients": [
                 1
             ], 
+            "title": "Petition Title", 
             "parent_letter": null, 
             "creation_date": "2014-07-13T17:02:17Z", 
             "score": 0, 
             "user": 2, 
-            "last_modified": "2014-07-13T17:02:17Z", 
+            "last_modified": "2014-08-22T04:19:34Z", 
             "proposal": 1, 
             "valence": 1
         }
@@ -663,11 +359,12 @@
             "recipients": [
                 1
             ], 
+            "title": "Petition Title", 
             "parent_letter": 14, 
             "creation_date": "2014-07-13T17:02:17Z", 
             "score": 0, 
             "user": 1, 
-            "last_modified": "2014-07-13T17:02:17Z", 
+            "last_modified": "2014-08-22T04:19:34Z", 
             "proposal": 1, 
             "valence": 0
         }
@@ -680,11 +377,12 @@
             "recipients": [
                 1
             ], 
+            "title": "Petition Title", 
             "parent_letter": 1, 
             "creation_date": "2014-07-13T17:02:17Z", 
             "score": 0, 
             "user": 1, 
-            "last_modified": "2014-07-13T17:02:17Z", 
+            "last_modified": "2014-08-22T04:19:34Z", 
             "proposal": 1, 
             "valence": -1
         }
@@ -697,11 +395,12 @@
             "recipients": [
                 1
             ], 
+            "title": "Petition Title", 
             "parent_letter": null, 
             "creation_date": "2014-07-13T17:02:17Z", 
             "score": 0, 
             "user": 1, 
-            "last_modified": "2014-07-13T17:02:17Z", 
+            "last_modified": "2014-08-22T04:19:34Z", 
             "proposal": 1, 
             "valence": 1
         }
@@ -714,11 +413,12 @@
             "recipients": [
                 1
             ], 
+            "title": "Petition Title", 
             "parent_letter": 1, 
             "creation_date": "2014-07-13T17:02:17Z", 
             "score": 0, 
             "user": 1, 
-            "last_modified": "2014-07-13T17:02:17Z", 
+            "last_modified": "2014-08-22T04:19:34Z", 
             "proposal": 1, 
             "valence": -1
         }
@@ -731,11 +431,12 @@
             "recipients": [
                 1
             ], 
+            "title": "Petition Title", 
             "parent_letter": 1, 
             "creation_date": "2014-07-13T17:02:17Z", 
             "score": 0, 
             "user": 1, 
-            "last_modified": "2014-07-13T17:02:17Z", 
+            "last_modified": "2014-08-22T04:19:34Z", 
             "proposal": 1, 
             "valence": -1
         }
@@ -748,11 +449,12 @@
             "recipients": [
                 1
             ], 
+            "title": "Petition Title", 
             "parent_letter": 1, 
             "creation_date": "2014-07-13T17:02:17Z", 
             "score": 0, 
             "user": 1, 
-            "last_modified": "2014-07-13T17:02:17Z", 
+            "last_modified": "2014-08-22T04:19:34Z", 
             "proposal": 1, 
             "valence": -1
         }
@@ -765,11 +467,12 @@
             "recipients": [
                 1
             ], 
+            "title": "Petition Title", 
             "parent_letter": 16, 
             "creation_date": "2014-07-13T17:02:17Z", 
             "score": 0, 
             "user": 1, 
-            "last_modified": "2014-07-13T17:02:17Z", 
+            "last_modified": "2014-08-22T04:19:34Z", 
             "proposal": 1, 
             "valence": 1
         }
@@ -782,13 +485,525 @@
             "recipients": [
                 1
             ], 
+            "title": "Petition Title", 
             "parent_letter": 1, 
             "creation_date": "2014-07-13T17:02:17Z", 
             "score": 0, 
             "user": 1, 
-            "last_modified": "2014-07-13T17:02:17Z", 
+            "last_modified": "2014-08-22T04:19:34Z", 
             "proposal": 1, 
             "valence": -1
+        }
+    }, 
+    {
+        "pk": 1, 
+        "model": "digidemo.discussion", 
+        "fields": {
+            "target": 1, 
+            "title": "Social Factors", 
+            "text": "I think that we need more material covering the social factors of this proposal.  There is only a brief mention of the displacement of people.  It would be better to get some statistics together on how many people are likely to be displaced, and how this w I think that we need more material covering the social factors of this proposal.  There is only a brief mention of the displacement of people.  It would be better to get some statistics together on how many people are likely to be displaced, and how this w", 
+            "creation_date": "2014-07-13T17:01:56Z", 
+            "score": 2, 
+            "is_open": true, 
+            "user": 1, 
+            "last_modified": "2014-08-21T16:41:22Z"
+        }
+    }, 
+    {
+        "pk": 2, 
+        "model": "digidemo.discussion", 
+        "fields": {
+            "target": 1, 
+            "title": "Social Factors", 
+            "text": "I think that we need more material covering the social factors of this proposal.  There is only a brief mention of the displacement of people.  It would be better to get some statistics together on how many people are likely to be displaced, and how this w I think that we need more material covering the social factors of this proposal.  There is only a brief mention of the displacement of people.  It would be better to get some statistics together on how many people are likely to be displaced, and how this w", 
+            "creation_date": "2014-07-13T17:01:56Z", 
+            "score": 1, 
+            "is_open": true, 
+            "user": 1, 
+            "last_modified": "2014-08-10T00:32:38Z"
+        }
+    }, 
+    {
+        "pk": 24, 
+        "model": "digidemo.reply", 
+        "fields": {
+            "target": 2, 
+            "text": "A comment.", 
+            "creation_date": "2014-07-13T17:04:31Z", 
+            "score": 0, 
+            "is_open": false, 
+            "user": 1, 
+            "last_modified": "2014-08-10T02:09:25Z"
+        }
+    }, 
+    {
+        "pk": 25, 
+        "model": "digidemo.reply", 
+        "fields": {
+            "target": 2, 
+            "text": "Another comment.", 
+            "creation_date": "2014-07-13T17:04:31Z", 
+            "score": 0, 
+            "is_open": false, 
+            "user": 1, 
+            "last_modified": "2014-08-10T02:09:25Z"
+        }
+    }, 
+    {
+        "pk": 26, 
+        "model": "digidemo.reply", 
+        "fields": {
+            "target": 1, 
+            "text": "Comment on the first discussion.", 
+            "creation_date": "2014-07-13T17:04:31Z", 
+            "score": 0, 
+            "is_open": false, 
+            "user": 1, 
+            "last_modified": "2014-08-10T02:09:25Z"
+        }
+    }, 
+    {
+        "pk": 27, 
+        "model": "digidemo.reply", 
+        "fields": {
+            "target": 1, 
+            "text": "AONETHTNH", 
+            "creation_date": "2014-07-13T17:04:31Z", 
+            "score": 0, 
+            "is_open": false, 
+            "user": 1, 
+            "last_modified": "2014-08-10T02:09:25Z"
+        }
+    }, 
+    {
+        "pk": 28, 
+        "model": "digidemo.reply", 
+        "fields": {
+            "target": 1, 
+            "text": "new", 
+            "creation_date": "2014-08-10T02:53:52Z", 
+            "score": 0, 
+            "is_open": false, 
+            "user": 1, 
+            "last_modified": "2014-08-10T02:53:52Z"
+        }
+    }, 
+    {
+        "pk": 29, 
+        "model": "digidemo.reply", 
+        "fields": {
+            "target": 1, 
+            "text": "new", 
+            "creation_date": "2014-08-10T02:58:35Z", 
+            "score": 0, 
+            "is_open": false, 
+            "user": 1, 
+            "last_modified": "2014-08-10T02:58:35Z"
+        }
+    }, 
+    {
+        "pk": 30, 
+        "model": "digidemo.reply", 
+        "fields": {
+            "target": 1, 
+            "text": "new", 
+            "creation_date": "2014-08-10T02:58:56Z", 
+            "score": 0, 
+            "is_open": false, 
+            "user": 1, 
+            "last_modified": "2014-08-10T02:58:56Z"
+        }
+    }, 
+    {
+        "pk": 31, 
+        "model": "digidemo.reply", 
+        "fields": {
+            "target": 1, 
+            "text": "YO", 
+            "creation_date": "2014-08-10T06:22:00Z", 
+            "score": 0, 
+            "is_open": false, 
+            "user": 1, 
+            "last_modified": "2014-08-10T06:22:00Z"
+        }
+    }, 
+    {
+        "pk": 32, 
+        "model": "digidemo.reply", 
+        "fields": {
+            "target": 1, 
+            "text": "Yo", 
+            "creation_date": "2014-08-10T06:28:05Z", 
+            "score": 0, 
+            "is_open": false, 
+            "user": 1, 
+            "last_modified": "2014-08-10T06:28:05Z"
+        }
+    }, 
+    {
+        "pk": 33, 
+        "model": "digidemo.reply", 
+        "fields": {
+            "target": 1, 
+            "text": "Bo", 
+            "creation_date": "2014-08-10T06:32:05Z", 
+            "score": 0, 
+            "is_open": false, 
+            "user": 1, 
+            "last_modified": "2014-08-10T06:32:05Z"
+        }
+    }, 
+    {
+        "pk": 34, 
+        "model": "digidemo.reply", 
+        "fields": {
+            "target": 1, 
+            "text": "Boya", 
+            "creation_date": "2014-08-10T06:33:54Z", 
+            "score": 0, 
+            "is_open": false, 
+            "user": 1, 
+            "last_modified": "2014-08-10T06:33:54Z"
+        }
+    }, 
+    {
+        "pk": 35, 
+        "model": "digidemo.reply", 
+        "fields": {
+            "target": 1, 
+            "text": "Boya", 
+            "creation_date": "2014-08-10T06:40:58Z", 
+            "score": 0, 
+            "is_open": false, 
+            "user": 1, 
+            "last_modified": "2014-08-10T06:40:58Z"
+        }
+    }, 
+    {
+        "pk": 36, 
+        "model": "digidemo.reply", 
+        "fields": {
+            "target": 1, 
+            "text": "Boopa", 
+            "creation_date": "2014-08-10T06:41:16Z", 
+            "score": 0, 
+            "is_open": false, 
+            "user": 1, 
+            "last_modified": "2014-08-10T06:41:16Z"
+        }
+    }, 
+    {
+        "pk": 37, 
+        "model": "digidemo.reply", 
+        "fields": {
+            "target": 1, 
+            "text": "Bipa", 
+            "creation_date": "2014-08-10T06:43:10Z", 
+            "score": 0, 
+            "is_open": false, 
+            "user": 1, 
+            "last_modified": "2014-08-10T06:43:10Z"
+        }
+    }, 
+    {
+        "pk": 1, 
+        "model": "digidemo.question", 
+        "fields": {
+            "target": 1, 
+            "title": "How likely (or frequent) can we expect spills along the pipeline extension to be?", 
+            "text": "I would like to know how likely spills are, based on the rate of previous incidents. It will probably be important to take into account the kind of piping technology used, and the kind of service. For example, repurposed piping originally for the transport of natural gas is likely to be different from newly built piping. Or, (and I'm not sure), there may be a difference due to the fact that this is crude derived from tarsands, rather than conventional crude.", 
+            "creation_date": "2014-07-25T21:25:57Z", 
+            "score": 1, 
+            "user": 1, 
+            "last_modified": "2014-08-17T19:38:07Z"
+        }
+    }, 
+    {
+        "pk": 1, 
+        "model": "digidemo.answer", 
+        "fields": {
+            "target": 1, 
+            "text": "\"Spills\", or *breaches* happen at a rate of 0.6 times per 1000km per decade.  Most breaches are minor (classified as class1, see below).  They vary greatly in severity which makes putting this figure into perspective somewhat difficult.  \r\n\r\nBreaches are  in terms of quantity of volume lost.  A class 1 breach is anything less than a cubic metre of crude.  These breaches are generally considered minor, when occurring away from developed areas, but might be important when occurring in sensitive areas.  Class breaches cover anything larger than class 1 but less than 40 cubic metres.  Class 2 breaches are severe, but standard techniques and equipment can be used to clean them up.  They are reportable to environmental authorities, who rule on followup actions.  Class 3 cover everything larger than class 1.  Class 3 are considered \"catastrophic\" and generally require specially engineered solutions to bring them under control. ", 
+            "creation_date": "2014-08-06T05:19:13Z", 
+            "score": 1, 
+            "user": 1, 
+            "last_modified": "2014-08-10T06:21:18Z"
+        }
+    }, 
+    {
+        "pk": 2, 
+        "model": "digidemo.answer", 
+        "fields": {
+            "target": 1, 
+            "text": "eoau", 
+            "creation_date": "2014-08-10T03:41:07Z", 
+            "score": 1, 
+            "user": 1, 
+            "last_modified": "2014-08-20T21:23:35Z"
+        }
+    }, 
+    {
+        "pk": 3, 
+        "model": "digidemo.answer", 
+        "fields": {
+            "target": 1, 
+            "text": "answer", 
+            "creation_date": "2014-08-10T03:42:49Z", 
+            "score": 0, 
+            "user": 1, 
+            "last_modified": "2014-08-10T03:42:49Z"
+        }
+    }, 
+    {
+        "pk": 4, 
+        "model": "digidemo.answer", 
+        "fields": {
+            "target": 1, 
+            "text": "Test", 
+            "creation_date": "2014-08-10T04:39:32Z", 
+            "score": 1, 
+            "user": 1, 
+            "last_modified": "2014-08-21T17:12:08Z"
+        }
+    }, 
+    {
+        "pk": 5, 
+        "model": "digidemo.answer", 
+        "fields": {
+            "target": 1, 
+            "text": "Test", 
+            "creation_date": "2014-08-10T04:40:47Z", 
+            "score": 1, 
+            "user": 1, 
+            "last_modified": "2014-08-20T21:23:40Z"
+        }
+    }, 
+    {
+        "pk": 6, 
+        "model": "digidemo.answer", 
+        "fields": {
+            "target": 1, 
+            "text": "Test", 
+            "creation_date": "2014-08-10T04:43:18Z", 
+            "score": 0, 
+            "user": 1, 
+            "last_modified": "2014-08-10T04:43:18Z"
+        }
+    }, 
+    {
+        "pk": 7, 
+        "model": "digidemo.answer", 
+        "fields": {
+            "target": 1, 
+            "text": "Tesnt", 
+            "creation_date": "2014-08-10T04:45:55Z", 
+            "score": 0, 
+            "user": 1, 
+            "last_modified": "2014-08-10T04:45:55Z"
+        }
+    }, 
+    {
+        "pk": 8, 
+        "model": "digidemo.answer", 
+        "fields": {
+            "target": 1, 
+            "text": "Tesnt", 
+            "creation_date": "2014-08-10T04:47:57Z", 
+            "score": 0, 
+            "user": 1, 
+            "last_modified": "2014-08-10T04:47:57Z"
+        }
+    }, 
+    {
+        "pk": 9, 
+        "model": "digidemo.answer", 
+        "fields": {
+            "target": 1, 
+            "text": "aoeu", 
+            "creation_date": "2014-08-10T04:49:05Z", 
+            "score": 0, 
+            "user": 1, 
+            "last_modified": "2014-08-10T04:49:05Z"
+        }
+    }, 
+    {
+        "pk": 10, 
+        "model": "digidemo.answer", 
+        "fields": {
+            "target": 1, 
+            "text": "aeou", 
+            "creation_date": "2014-08-10T04:50:02Z", 
+            "score": 0, 
+            "user": 1, 
+            "last_modified": "2014-08-10T04:50:02Z"
+        }
+    }, 
+    {
+        "pk": 11, 
+        "model": "digidemo.answer", 
+        "fields": {
+            "target": 1, 
+            "text": "boo", 
+            "creation_date": "2014-08-10T04:51:14Z", 
+            "score": 0, 
+            "user": 1, 
+            "last_modified": "2014-08-10T04:51:14Z"
+        }
+    }, 
+    {
+        "pk": 12, 
+        "model": "digidemo.answer", 
+        "fields": {
+            "target": 1, 
+            "text": "boo", 
+            "creation_date": "2014-08-10T04:51:56Z", 
+            "score": 0, 
+            "user": 1, 
+            "last_modified": "2014-08-10T04:51:56Z"
+        }
+    }, 
+    {
+        "pk": 13, 
+        "model": "digidemo.answer", 
+        "fields": {
+            "target": 1, 
+            "text": "oeueou", 
+            "creation_date": "2014-08-10T04:52:52Z", 
+            "score": 0, 
+            "user": 1, 
+            "last_modified": "2014-08-10T04:52:52Z"
+        }
+    }, 
+    {
+        "pk": 14, 
+        "model": "digidemo.answer", 
+        "fields": {
+            "target": 1, 
+            "text": "Hey", 
+            "creation_date": "2014-08-10T04:54:56Z", 
+            "score": 0, 
+            "user": 1, 
+            "last_modified": "2014-08-10T04:54:56Z"
+        }
+    }, 
+    {
+        "pk": 15, 
+        "model": "digidemo.answer", 
+        "fields": {
+            "target": 1, 
+            "text": "heyke", 
+            "creation_date": "2014-08-10T05:01:07Z", 
+            "score": 0, 
+            "user": 1, 
+            "last_modified": "2014-08-10T05:01:07Z"
+        }
+    }, 
+    {
+        "pk": 16, 
+        "model": "digidemo.answer", 
+        "fields": {
+            "target": 1, 
+            "text": "ye", 
+            "creation_date": "2014-08-10T05:04:50Z", 
+            "score": 0, 
+            "user": 1, 
+            "last_modified": "2014-08-10T05:04:50Z"
+        }
+    }, 
+    {
+        "pk": 17, 
+        "model": "digidemo.answer", 
+        "fields": {
+            "target": 1, 
+            "text": "aoeu", 
+            "creation_date": "2014-08-10T05:06:21Z", 
+            "score": 0, 
+            "user": 1, 
+            "last_modified": "2014-08-10T05:06:21Z"
+        }
+    }, 
+    {
+        "pk": 18, 
+        "model": "digidemo.answer", 
+        "fields": {
+            "target": 1, 
+            "text": "YO", 
+            "creation_date": "2014-08-10T05:08:09Z", 
+            "score": 0, 
+            "user": 1, 
+            "last_modified": "2014-08-10T05:08:09Z"
+        }
+    }, 
+    {
+        "pk": 19, 
+        "model": "digidemo.answer", 
+        "fields": {
+            "target": 1, 
+            "text": "Zero", 
+            "creation_date": "2014-08-10T05:13:15Z", 
+            "score": 0, 
+            "user": 1, 
+            "last_modified": "2014-08-10T05:13:15Z"
+        }
+    }, 
+    {
+        "pk": 20, 
+        "model": "digidemo.answer", 
+        "fields": {
+            "target": 1, 
+            "text": "A", 
+            "creation_date": "2014-08-10T05:15:46Z", 
+            "score": 0, 
+            "user": 1, 
+            "last_modified": "2014-08-10T05:15:46Z"
+        }
+    }, 
+    {
+        "pk": 21, 
+        "model": "digidemo.answer", 
+        "fields": {
+            "target": 1, 
+            "text": "A", 
+            "creation_date": "2014-08-10T05:16:05Z", 
+            "score": 0, 
+            "user": 1, 
+            "last_modified": "2014-08-10T05:16:05Z"
+        }
+    }, 
+    {
+        "pk": 22, 
+        "model": "digidemo.answer", 
+        "fields": {
+            "target": 1, 
+            "text": "Boo", 
+            "creation_date": "2014-08-10T06:18:45Z", 
+            "score": 0, 
+            "user": 1, 
+            "last_modified": "2014-08-10T06:18:45Z"
+        }
+    }, 
+    {
+        "pk": 23, 
+        "model": "digidemo.answer", 
+        "fields": {
+            "target": 1, 
+            "text": "hayke", 
+            "creation_date": "2014-08-10T08:50:35Z", 
+            "score": 0, 
+            "user": 1, 
+            "last_modified": "2014-08-10T08:50:35Z"
+        }
+    }, 
+    {
+        "pk": 24, 
+        "model": "digidemo.answer", 
+        "fields": {
+            "target": 1, 
+            "text": "aeou", 
+            "creation_date": "2014-08-17T13:31:48Z", 
+            "score": 0, 
+            "user": 1, 
+            "last_modified": "2014-08-17T13:31:48Z"
         }
     }, 
     {
@@ -798,9 +1013,9 @@
             "target": 1, 
             "text": "@normaluser I agree with you but I think that you should consider offering some concrete evidence for what you are saying -- back up how the environmental losses will arise and why they are certain.  There's plenty of facts in the issue \nwiki to choose from.", 
             "creation_date": "2014-07-13T17:00:32Z", 
-            "last_modified": "2014-07-28T03:56:58Z", 
+            "score": 1, 
             "user": 1, 
-            "score": 1
+            "last_modified": "2014-07-28T03:56:58Z"
         }
     }, 
     {
@@ -810,9 +1025,9 @@
             "target": 1, 
             "text": "ll", 
             "creation_date": "2014-07-13T17:00:32Z", 
-            "last_modified": "2014-07-28T03:56:58Z", 
+            "score": 0, 
             "user": 1, 
-            "score": 0
+            "last_modified": "2014-07-28T03:56:58Z"
         }
     }, 
     {
@@ -822,9 +1037,9 @@
             "target": 1, 
             "text": "lll\r\n", 
             "creation_date": "2014-07-13T17:00:32Z", 
-            "last_modified": "2014-07-28T03:56:58Z", 
+            "score": 0, 
             "user": 1, 
-            "score": 0
+            "last_modified": "2014-07-28T03:56:58Z"
         }
     }, 
     {
@@ -834,9 +1049,9 @@
             "target": 1, 
             "text": "bic!", 
             "creation_date": "2014-07-13T17:00:32Z", 
-            "last_modified": "2014-07-28T03:56:58Z", 
+            "score": 0, 
             "user": 1, 
-            "score": 0
+            "last_modified": "2014-07-28T03:56:58Z"
         }
     }, 
     {
@@ -846,9 +1061,9 @@
             "target": 1, 
             "text": "super", 
             "creation_date": "2014-07-13T17:00:32Z", 
-            "last_modified": "2014-07-28T03:56:58Z", 
+            "score": 0, 
             "user": 1, 
-            "score": 0
+            "last_modified": "2014-07-28T03:56:58Z"
         }
     }, 
     {
@@ -858,9 +1073,9 @@
             "target": 14, 
             "text": "lame!", 
             "creation_date": "2014-07-13T17:00:32Z", 
-            "last_modified": "2014-07-28T03:56:58Z", 
+            "score": 0, 
             "user": 1, 
-            "score": 0
+            "last_modified": "2014-07-28T03:56:58Z"
         }
     }, 
     {
@@ -870,9 +1085,9 @@
             "target": 1, 
             "text": "kilp", 
             "creation_date": "2014-07-13T17:00:32Z", 
-            "last_modified": "2014-07-28T03:56:58Z", 
+            "score": 0, 
             "user": 1, 
-            "score": 0
+            "last_modified": "2014-07-28T03:56:58Z"
         }
     }, 
     {
@@ -882,9 +1097,9 @@
             "target": 1, 
             "text": "froze", 
             "creation_date": "2014-07-13T17:00:32Z", 
-            "last_modified": "2014-07-28T03:56:58Z", 
+            "score": 0, 
             "user": 1, 
-            "score": 0
+            "last_modified": "2014-07-28T03:56:58Z"
         }
     }, 
     {
@@ -894,9 +1109,9 @@
             "target": 1, 
             "text": "Blip", 
             "creation_date": "2014-07-13T17:00:32Z", 
-            "last_modified": "2014-07-28T03:56:58Z", 
+            "score": 0, 
             "user": 1, 
-            "score": 0
+            "last_modified": "2014-07-28T03:56:58Z"
         }
     }, 
     {
@@ -906,9 +1121,9 @@
             "target": 40, 
             "text": "Jimmi", 
             "creation_date": "2014-07-13T17:00:32Z", 
-            "last_modified": "2014-07-28T03:56:58Z", 
+            "score": 0, 
             "user": 1, 
-            "score": 0
+            "last_modified": "2014-07-28T03:56:58Z"
         }
     }, 
     {
@@ -918,9 +1133,9 @@
             "target": 1, 
             "text": "james", 
             "creation_date": "2014-07-13T17:00:32Z", 
-            "last_modified": "2014-07-28T03:56:58Z", 
+            "score": 0, 
             "user": 1, 
-            "score": 0
+            "last_modified": "2014-07-28T03:56:58Z"
         }
     }, 
     {
@@ -930,9 +1145,9 @@
             "target": 14, 
             "text": "blatant comment.", 
             "creation_date": "2014-07-13T17:00:32Z", 
-            "last_modified": "2014-07-28T03:56:58Z", 
+            "score": 0, 
             "user": 1, 
-            "score": 0
+            "last_modified": "2014-07-28T03:56:58Z"
         }
     }, 
     {
@@ -942,9 +1157,9 @@
             "target": 1, 
             "text": "pequifi", 
             "creation_date": "2014-07-13T17:00:32Z", 
-            "last_modified": "2014-07-28T03:56:58Z", 
+            "score": 0, 
             "user": 1, 
-            "score": 0
+            "last_modified": "2014-07-28T03:56:58Z"
         }
     }, 
     {
@@ -954,19 +1169,247 @@
             "target": 1, 
             "text": "hdkujehhie", 
             "creation_date": "2014-07-15T01:51:53Z", 
-            "last_modified": "2014-07-28T03:56:58Z", 
+            "score": 0, 
             "user": 1, 
-            "score": 0
+            "last_modified": "2014-07-28T03:56:58Z"
+        }
+    }, 
+    {
+        "pk": 1, 
+        "model": "digidemo.questioncomment", 
+        "fields": {
+            "target": 1, 
+            "text": "I think that once they upgrade the tar to crude it's the same as conventional crude.", 
+            "creation_date": "2014-08-06T05:08:51Z", 
+            "score": 0, 
+            "user": 1, 
+            "last_modified": "2014-08-06T05:08:51Z"
+        }
+    }, 
+    {
+        "pk": 1, 
+        "model": "digidemo.answercomment", 
+        "fields": {
+            "target": 1, 
+            "text": "It would be interesting to see some stats on the relevant frequencies of the different classes of breaches.  Have you seen anything like that?", 
+            "creation_date": "2014-08-06T05:19:51Z", 
+            "score": 0, 
+            "user": 1, 
+            "last_modified": "2014-08-06T05:19:51Z"
+        }
+    }, 
+    {
+        "pk": 2, 
+        "model": "digidemo.answercomment", 
+        "fields": {
+            "target": 2, 
+            "text": "aoeu", 
+            "creation_date": "2014-08-10T03:41:11Z", 
+            "score": 0, 
+            "user": 1, 
+            "last_modified": "2014-08-10T03:41:11Z"
+        }
+    }, 
+    {
+        "pk": 3, 
+        "model": "digidemo.answercomment", 
+        "fields": {
+            "target": 2, 
+            "text": "aeou", 
+            "creation_date": "2014-08-10T03:41:29Z", 
+            "score": 0, 
+            "user": 1, 
+            "last_modified": "2014-08-10T03:41:29Z"
+        }
+    }, 
+    {
+        "pk": 4, 
+        "model": "digidemo.answercomment", 
+        "fields": {
+            "target": 22, 
+            "text": "good", 
+            "creation_date": "2014-08-10T06:19:58Z", 
+            "score": 0, 
+            "user": 1, 
+            "last_modified": "2014-08-10T06:19:58Z"
+        }
+    }, 
+    {
+        "pk": 5, 
+        "model": "digidemo.answercomment", 
+        "fields": {
+            "target": 21, 
+            "text": "Yo", 
+            "creation_date": "2014-08-10T06:20:23Z", 
+            "score": 0, 
+            "user": 1, 
+            "last_modified": "2014-08-10T06:20:23Z"
+        }
+    }, 
+    {
+        "pk": 6, 
+        "model": "digidemo.answercomment", 
+        "fields": {
+            "target": 5, 
+            "text": "yo", 
+            "creation_date": "2014-08-10T08:50:15Z", 
+            "score": 0, 
+            "user": 1, 
+            "last_modified": "2014-08-10T08:50:15Z"
+        }
+    }, 
+    {
+        "pk": 1, 
+        "model": "digidemo.discussioncomment", 
+        "fields": {
+            "target": 1, 
+            "text": "ie", 
+            "creation_date": "2014-08-10T02:22:39Z", 
+            "score": 0, 
+            "user": 1, 
+            "last_modified": "2014-08-10T02:22:39Z"
+        }
+    }, 
+    {
+        "pk": 2, 
+        "model": "digidemo.discussioncomment", 
+        "fields": {
+            "target": 1, 
+            "text": "aeou", 
+            "creation_date": "2014-08-10T02:22:52Z", 
+            "score": 0, 
+            "user": 1, 
+            "last_modified": "2014-08-10T02:22:52Z"
+        }
+    }, 
+    {
+        "pk": 3, 
+        "model": "digidemo.discussioncomment", 
+        "fields": {
+            "target": 1, 
+            "text": "aoeu", 
+            "creation_date": "2014-08-10T02:23:50Z", 
+            "score": 0, 
+            "user": 1, 
+            "last_modified": "2014-08-10T02:23:50Z"
+        }
+    }, 
+    {
+        "pk": 4, 
+        "model": "digidemo.discussioncomment", 
+        "fields": {
+            "target": 1, 
+            "text": "boop", 
+            "creation_date": "2014-08-10T09:07:57Z", 
+            "score": 0, 
+            "user": 1, 
+            "last_modified": "2014-08-10T09:07:57Z"
+        }
+    }, 
+    {
+        "pk": 5, 
+        "model": "digidemo.discussioncomment", 
+        "fields": {
+            "target": 1, 
+            "text": "py", 
+            "creation_date": "2014-08-10T09:08:10Z", 
+            "score": 0, 
+            "user": 1, 
+            "last_modified": "2014-08-10T09:08:10Z"
+        }
+    }, 
+    {
+        "pk": 6, 
+        "model": "digidemo.discussioncomment", 
+        "fields": {
+            "target": 1, 
+            "text": "pyi", 
+            "creation_date": "2014-08-10T09:09:05Z", 
+            "score": 0, 
+            "user": 1, 
+            "last_modified": "2014-08-10T09:09:05Z"
+        }
+    }, 
+    {
+        "pk": 1, 
+        "model": "digidemo.replycomment", 
+        "fields": {
+            "target": 24, 
+            "text": "aeou", 
+            "creation_date": "2014-08-10T02:23:00Z", 
+            "score": 0, 
+            "user": 1, 
+            "last_modified": "2014-08-10T02:23:00Z"
+        }
+    }, 
+    {
+        "pk": 2, 
+        "model": "digidemo.replycomment", 
+        "fields": {
+            "target": 24, 
+            "text": "booo", 
+            "creation_date": "2014-08-10T02:23:15Z", 
+            "score": 0, 
+            "user": 1, 
+            "last_modified": "2014-08-10T02:23:15Z"
+        }
+    }, 
+    {
+        "pk": 3, 
+        "model": "digidemo.replycomment", 
+        "fields": {
+            "target": 34, 
+            "text": "Yippee", 
+            "creation_date": "2014-08-10T06:34:47Z", 
+            "score": 0, 
+            "user": 1, 
+            "last_modified": "2014-08-10T06:34:47Z"
+        }
+    }, 
+    {
+        "pk": 4, 
+        "model": "digidemo.replycomment", 
+        "fields": {
+            "target": 34, 
+            "text": "aueu", 
+            "creation_date": "2014-08-10T06:35:03Z", 
+            "score": 0, 
+            "user": 1, 
+            "last_modified": "2014-08-10T06:35:03Z"
+        }
+    }, 
+    {
+        "pk": 5, 
+        "model": "digidemo.replycomment", 
+        "fields": {
+            "target": 33, 
+            "text": "aoeu", 
+            "creation_date": "2014-08-10T06:35:19Z", 
+            "score": 0, 
+            "user": 1, 
+            "last_modified": "2014-08-10T06:35:19Z"
+        }
+    }, 
+    {
+        "pk": 6, 
+        "model": "digidemo.replycomment", 
+        "fields": {
+            "target": 37, 
+            "text": "Fifa", 
+            "creation_date": "2014-08-10T06:43:21Z", 
+            "score": 0, 
+            "user": 1, 
+            "last_modified": "2014-08-10T06:43:21Z"
         }
     }, 
     {
         "pk": 1, 
         "model": "digidemo.discussionvote", 
         "fields": {
-            "valence": 0, 
+            "valence": 1, 
             "creation_date": "2014-07-13T17:02:03Z", 
             "target": 1, 
-            "last_modified": "2014-07-17T05:54:52Z", 
+            "last_modified": "2014-08-21T16:41:22Z", 
             "user": 1
         }
     }, 
@@ -988,7 +1431,7 @@
             "valence": 1, 
             "creation_date": "2014-07-13T17:04:25Z", 
             "target": 1, 
-            "last_modified": "2014-07-15T01:50:31Z", 
+            "last_modified": "2014-08-20T04:27:30Z", 
             "user": 1
         }
     }, 
@@ -1022,6 +1465,61 @@
             "creation_date": "2014-07-15T01:52:09Z", 
             "target": 14, 
             "last_modified": "2014-07-15T01:52:09Z", 
+            "user": 1
+        }
+    }, 
+    {
+        "pk": 1, 
+        "model": "digidemo.questionvote", 
+        "fields": {
+            "valence": 1, 
+            "creation_date": "2014-08-10T06:21:38Z", 
+            "target": 1, 
+            "last_modified": "2014-08-17T19:38:07Z", 
+            "user": 1
+        }
+    }, 
+    {
+        "pk": 1, 
+        "model": "digidemo.answervote", 
+        "fields": {
+            "valence": 1, 
+            "creation_date": "2014-08-10T06:21:18Z", 
+            "target": 1, 
+            "last_modified": "2014-08-10T06:21:18Z", 
+            "user": 1
+        }
+    }, 
+    {
+        "pk": 2, 
+        "model": "digidemo.answervote", 
+        "fields": {
+            "valence": 1, 
+            "creation_date": "2014-08-10T08:50:24Z", 
+            "target": 5, 
+            "last_modified": "2014-08-20T21:23:40Z", 
+            "user": 1
+        }
+    }, 
+    {
+        "pk": 3, 
+        "model": "digidemo.answervote", 
+        "fields": {
+            "valence": 1, 
+            "creation_date": "2014-08-20T21:23:35Z", 
+            "target": 2, 
+            "last_modified": "2014-08-20T21:23:35Z", 
+            "user": 1
+        }
+    }, 
+    {
+        "pk": 4, 
+        "model": "digidemo.answervote", 
+        "fields": {
+            "valence": 1, 
+            "creation_date": "2014-08-20T21:23:41Z", 
+            "target": 4, 
+            "last_modified": "2014-08-21T17:12:08Z", 
             "user": 1
         }
     }
