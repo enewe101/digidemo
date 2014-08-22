@@ -7,11 +7,14 @@
 		</title>
 
 		{% block css %}
-
 			<link rel="stylesheet" type="text/css" 
 				href="{% static "digidemo/css/base.css" %}" />
 			<link rel="stylesheet" type="text/css" 
 				href="{% static "digidemo/css/alacarte.css" %}" />
+			<link rel="stylesheet" type="text/css" 
+				href="{% static "digidemo/css/widgets.css" %}" />
+			<link rel="stylesheet" type="text/css" 
+				href="{% static "digidemo/css/forms.css" %}" />
 			<link rel="stylesheet" type="text/css" 
 				href="{% static "digidemo/css/login.css" %}" />
 			<link rel="stylesheet" type="text/css" 
@@ -24,36 +27,26 @@
 				href="{% static "digidemo/css/tagit.ui-zendesk.css" %}" />
 			<link rel="stylesheet" type="text/css" 
 				href="{% static "digidemo/css/jquery.switchButton.css" %}" />
-	
-
 		{% endblock css %}
 
 		{% block js %}
-			<script type="text/javascript">
 
+			<script type="text/javascript">
 				var ALERT_AJAX_ERRORS = true;
 				var STRUCT = false;
 				var django ={{ django_vars_js|safe }};
 				var handle_ajax_url = '{% url "ajax_json_test" %}';
-
 			</script>
-
-
-
 
 			<script type="text/javascript"
 				src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
-
 			<script 
 				src="http://code.jquery.com/ui/1.11.0/jquery-ui.min.js">
 			</script>
-
 			<script type="text/javascript" 
 				src="{% static "digidemo/js/lib.js" %}"></script>
-
 			<script type="text/javascript" 
 				src="{% static "digidemo/js/jquery-ui.js" %}"></script>
-
 
 		{% endblock js %}
 
@@ -61,10 +54,47 @@
 
 	</head>
 	<body>
+
+		<!-- user login area - this should probably go in header -->
+		{% include "digidemo/_w_login_user.html" %}
+
+		<!-- start of header -->
 		{% block body %}
 			{% include "digidemo/_i_header.html" %}
 		{% endblock body %}
 		<div class="clear"></div>
+		<!-- end of header -->
+
+		<!-- content in the middle (vertical middle) of the page -->
+		<div id="middle">
+
+			<!-- centering device for the middle of the page layout -->
+			<div class="outer_center">
+				<div class="inner_center full_width">
+
+					{% block middle %}
+					{% endblock middle %}
+
+					<div class="clear"></div>
+				</div>
+			</div>
+			<!-- end of centering device for the middle of the page layout -->
+
+		</div>
+		<!-- end of the (vertical) middle of the page layout -->
+
+		<!-- start of page footer -->
+		<div id="footer">
+			<div class="outer_center">
+				<div class="inner_center">
+					{% block footer %}
+						footer
+					{% endblock footer %}
+				</div>
+			</div>
+		</div>
+		<!-- end of page footer -->
+
 	</body>
 </html>
 

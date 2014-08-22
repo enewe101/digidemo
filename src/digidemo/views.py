@@ -2,28 +2,43 @@ import difflib
 from django.core.urlresolvers import reverse
 from django.core import serializers
 from django.shortcuts import render, get_object_or_404, redirect
+from django.template import Context, RequestContext
+from django.template.loader import get_template
 from django.http import HttpResponse, HttpResponseRedirect
 from digidemo.models import *
 from forms import ProposalSearchForm
 from django.forms.formsets import formset_factory
 from digidemo.forms import *
 from digidemo import utils
-from settings import DEBUG
+from settings import DEBUG, SITE_NAME
 import json
 import sys
 from django import http
 from django.views.debug import ExceptionReporter
 
 
+# Names we use for the tabs in proposal sections
+OVERVIEW_TAB_NAME = 'overview'
+ISSUE_TAB_NAME = 'facts'
+QUESTIONS_TAB_NAME = 'questions'
+OPINION_TAB_NAME = 'petitions'
+
+# Names we use for the top level "button" navigation
+ISSUES_NAV_NAME = 'issues'
+CREATE_NAV_VAME = 'create'
+QUESTIONS_NAV_NAME = 'questions'
+OPINION_NAV_NAME = 'petitions'
+USERS_NAV_NAME = 'users'
+
+
 def get_proposal_tabs(proposal, active_tab):
 
 	# This is the basic tabs definition for the proposal views
 	proposal_tabs = [
-		{'name': 'overview','url': proposal.get_overview_url()},
-		{'name': 'proposal','url': proposal.get_proposal_url()},
-		{'name': 'questions','url': proposal.get_question_list_url()},
-		{'name': 'discuss','url': proposal.get_discussion_url()},
-		{'name': 'edit','url': proposal.get_edit_url()}
+		{'name': OVERVIEW_TAB_NAME,'url': proposal.get_overview_url()},
+		{'name': ISSUE_TAB_NAME,'url': proposal.get_proposal_url()},
+		{'name': QUESTIONS_TAB_NAME,'url': proposal.get_question_list_url()},
+		{'name': OPINION_TAB_NAME,'url': proposal.get_petitions_url()},
 	]
 
 	# mark the active tab as active
@@ -32,7 +47,11 @@ def get_proposal_tabs(proposal, active_tab):
 
 	return proposal_tabs
 	
-
+def get_globals():
+	return {
+		'SITE_NAME': SITE_NAME,
+		'DEBUG': DEBUG
+	}
 
 def get_django_vars(additional_vars={}):
 	django_vars = {
@@ -78,7 +97,7 @@ def overview(request, proposal_id):
 def proposal(request, proposal_id):
 	proposal = Proposal.objects.get(pk=proposal_id)
 	context = make_proposal_context(proposal)
-	context['tabs'] = get_proposal_tabs(proposal, 'proposal')
+	context['tabs'] = get_proposal_tabs(proposal, ISSUE_TAB_NAME)
 
 	return render(
 		request,
@@ -141,7 +160,6 @@ def split_keep(s, r):
 
 	substrings = []
 	last_end = 0
-	print 's:', s
 	for match in r.finditer(s):
 		substrings.append(s[last_end:match.end()])
 		last_end = match.end()
@@ -162,14 +180,12 @@ def split_at(s, r, max_len):
 		if match.end() - last_end > max_len:
 
 			if prev_match is not None:
-				print last_end, prev_match.end()
 				substrings.append(s[last_end:prev_match.end()])
 				last_end = prev_match.end()
 				prev_match = match
 
 			# But if there is no previous match, forcefully split at max_len
 			else:
-				print last_end, last_end+max_len
 				substrings.append(s[last_end:last_end+max_len])
 				last_end += max_len
 
@@ -287,92 +303,11 @@ def edit(request, proposal_id):
 				logged_in_user, exclude=['password'])}),
 			'proposal': proposal,
 			'proposal_vote_form': proposal_vote_form,
+			'headline': proposal.title,
 			'edit_proposal_form': edit_proposal_form,
 			'logged_in_user': logged_in_user,
-			'tabs': get_proposal_tabs(proposal, 'edit'),
-			'active_navitem': 'issues'
-		}
-	)
-
-
-def discuss(request, proposal_id):
-
-	proposal = Proposal.objects.get(pk=proposal_id)
-
-	# ** Hardcoded the logged in user to be enewe101 **
-	logged_in_user = User.objects.get(pk=1)
-
-	# make a proposal vote form
-	proposal_vote_form = get_vote_form(
-		ProposalVote, ProposalVoteForm, logged_in_user, proposal)
-
-	discussion_sections = []
-	for discussion in proposal.discussion_set.all():
-
-		# make a voting form for each discussion
-		discussion_vote = utils.get_or_none(
-			DiscussionVote, user=logged_in_user, target=discussion)
-
-		if discussion_vote:
-			discussion_vote_form = DiscussionVoteForm(
-				instance=discussion_vote,
-				cur_score=discussion.score)
-		else:
-			discussion_vote_form = DiscussionVoteForm(
-				initial={'user':logged_in_user.pk, 'target':discussion.pk},
-				cur_score=discussion.score
-			)
-
-		discussion_sections.append({
-			'discussion': discussion,
-			'discussion_vote_form': discussion_vote_form,
-			'reply_form': ReplyForm(
-				initial={'user':logged_in_user.pk, 'discussion':discussion.pk})
-		})
-
-	return render(
-		request,
-		'digidemo/discuss.html', 
-		{
-			'django_vars_js': get_django_vars_JSON(
-				{'user': utils.obj_to_dict(
-				logged_in_user, exclude=['password'])}),
-			'proposal': proposal,
-			'proposal_vote_form': proposal_vote_form,
-			'logged_in_user': logged_in_user,
-			'tabs': get_proposal_tabs(proposal, 'discuss'),
-			'discussion_sections': discussion_sections,
-			'active_navitem': 'issues'
-		}
-	)
-
-
-def proposal_question_list(request, proposal_id):
-
-	proposal = Proposal.objects.get(pk=proposal_id)
-
-	# ** Hardcoded the logged in user to be enewe101 **
-	logged_in_user = User.objects.get(pk=1)
-
-	# make a proposal vote form
-	proposal_vote_form = get_vote_form(
-		ProposalVote, ProposalVoteForm, logged_in_user, proposal)
-
-	questions = Question.objects.filter(target=proposal)
-
-	return render(
-		request,
-		'digidemo/proposal_question_list.html',
-		{
-			'django_vars_js': get_django_vars_JSON(
-				{'user': utils.obj_to_dict(
-				logged_in_user, exclude=['password'])}),
-			'proposal': proposal,
-			'proposal_vote_form': proposal_vote_form,
-			'logged_in_user': logged_in_user,
-			'tabs': get_proposal_tabs(proposal, 'questions'),
-			'questions': questions,
-			'active_navitem': 'questions'
+			'tabs': get_proposal_tabs(proposal, ISSUE_TAB_NAME),
+			'active_navitem': 'create'
 		}
 	)
 
@@ -418,155 +353,432 @@ def ask_question(request, proposal_id):
 	)
 
 
-def get_vote_form(VoteModel, VoteForm, user, target):
+def get_vote_form(VoteModel, VoteForm, user, target, id_prefix=''):
 	existing_vote = utils.get_or_none(VoteModel, user=user, target=target)
 
 	if existing_vote:
-		vote_form = VoteForm(instance=existing_vote, cur_score=target.score)
+		vote_form = VoteForm(
+			instance=existing_vote,
+			cur_score=target.score,
+			id_prefix=id_prefix
+		)
 	else:
 		vote_form = VoteForm(
 			initial={'user':user.pk, 'target':target.pk},
-			cur_score=target.score
+			cur_score=target.score,
+			id_prefix=id_prefix
 		)
 
 	return vote_form
 
 
-def view_question(request, question_id):
-	question = Question.objects.get(pk=question_id)
-	proposal = question.target
+class CommentSection(object):
+	''' 
+	this encapsulates a series of comments as well as an add comment
+	form. It removes the burden of creating links between these aspects
+	from the view
+	'''
+	def __init__(self, comment_set, comment_form):
+		self.comments = comment_set
+		self.comment_form = comment_form
+
+		# Below is the important line, which ensures that the 
+		# include id used to set the html id's in the comments area
+		# matches the comment_form's prefix id.  This is necessary for 
+		# allowing new comments submitted by the comment form to get displayed
+		# dynamically in the comments area by javascript
+		self.id_prefix = comment_form.id_prefix
 
 
-	# ** Hardcoded the logged in user to be enewe101 **
-	logged_in_user = User.objects.get(pk=1)
+class PostSection(object):
+	'''
+	This encapsulates a "post" along with its comments, comment_form,
+	and voting widget.  A "post" is an abstract object, and Question, Answer,
+	Discussion, Reply, and Letter, are, conceptually, non-abstract 
+	implementations of it.
+	
+	This class let's one build all of the widgetery that goes along with
+	a post, which is fairly repetitive buisiness.  In doing so, it makes 
+	sure that all of the id's, which ultimately become html ids, are 
+	syncronized so that assumptions that exist in the templates, which 
+	bind behaviors between elements in the post based on getting these elements
+	by id, are satisfied, and everything works nicely, and DRYly.
+	'''
 
-	# make a question vote form 
-	question_vote = get_vote_form(
-		QuestionVote, QuestionVoteForm, logged_in_user, question)
+	# These are not implemented in this class, because it is abstract
+	CommentForm = None
+	Vote = None
+	VoteForm = None
 
-	# make a comment form for the question
-	question_comment_form = QuestionCommentForm(
-		initial={'user':logged_in_user, 'target': question},
-		id_prefix='qc'
-	)
+	def __init__(
+			self,
+			post,
+			logged_in_user,
+			id_prefix=None
+		):
 
-	# make a proposal vote form
-	proposal_vote_form = get_vote_form(
-		ProposalVote, ProposalVoteForm, logged_in_user, proposal)
+		# ascertain the kind of post we're dealing with
+		self.post = post
 
-	answers = []
-	for answer_num, answer in enumerate(Answer.objects.all()):
-		vote_form = get_vote_form(
-			AnswerVote, AnswerVoteForm, logged_in_user, answer)
-		comment_form = AnswerCommentForm(
-			initial={'user':logged_in_user, 'target': answer},
-			id_prefix=answer_num
+		# derive the include id from the post's pk, guaranteed to be unique
+		# on the page unless for some reason the post is included multiple
+		# times
+		if id_prefix is None:
+			self.id_prefix = self.post.pk
+		else:
+			self.id_prefix = id_prefix
+
+		# get the associated object models for the post's widgetery
+		self.user = logged_in_user
+		self.comments = self.post.comment_set.all()
+		self.comment_form = self.CommentForm(
+			initial={'user':logged_in_user, 'target': self.post},
+			id_prefix=self.id_prefix
 		)
-		answers.append({
-			'content':answer,
-			'vote_form':vote_form,
-			'comment_form': comment_form
-		})
 
-	answer_form = AnswerForm(
-		initial={'user':logged_in_user, 'target':question})
+		# make a vote form
+		self.vote_form = get_vote_form(
+			self.Vote, 
+			self.VoteForm,
+			logged_in_user, 
+			post,
+			id_prefix=self.id_prefix
+		)
 
-	return render(
-		request,
-		'digidemo/view_question.html',
-		{
+		# make a comments section
+		self.comments_section = CommentSection(
+			self.comments, 
+			self.comment_form
+		)
+
+
+class QuestionSection(PostSection):
+	CommentForm = QuestionCommentForm
+	Vote = QuestionVote
+	VoteForm = QuestionVoteForm
+	
+class DiscussionSection(PostSection):
+	CommentForm = DiscussionCommentForm
+	Vote = DiscussionVote
+	VoteForm = DiscussionVoteForm
+
+class ReplySection(PostSection):
+	CommentForm = ReplyCommentForm
+	Vote = ReplyVote
+	VoteForm = ReplyVoteForm
+
+class AnswerSection(PostSection):
+	CommentForm = AnswerCommentForm
+	Vote = AnswerVote
+	VoteForm = AnswerVoteForm
+
+class LetterSection(PostSection):
+	CommentForm = LetterCommentForm
+	Vote = LetterVote
+	VoteForm = LetterVoteForm
+	ResendForm = ResendLetterForm
+
+	def __init__(self, 
+			post, 
+			logged_in_user, 
+			id_prefix=None, 
+			*args, 
+			**kwargs
+		):
+
+		# In addition to all of the equipment for a standard post...
+		super(LetterSection, self).__init__(
+			post,
+			logged_in_user,
+			*args,
+			id_prefix=id_prefix,
+			**kwargs
+		)
+
+		# We need a list of all the senders of the letter...
+		self.resenders = set([
+			l.user 
+			for l in Letter.objects
+				.exclude(user=self.post.user)
+				.filter(parent_letter=self.post)
+		])
+
+		# And we also need a resend-letter form.
+		self.resend_form = ResendLetterForm(
+			initial={
+				'parent_letter': self.post,
+				'proposal': self.post.proposal,
+				'body': self.post.body,
+				'recipients': self.post.recipients.all(),
+				'user': logged_in_user,
+				'valence': self.post.valence
+			}, 
+			id_prefix=self.id_prefix
+		)
+
+
+
+class AbstractView(object):
+
+	# override these 
+	template = 'digidemo/__base.html'
+
+
+	def view(self, request, *args, **kwargs):
+
+		# Register the views arguments for easy access
+		self.request = request
+		self.args = args
+		self.kwargs = kwargs
+
+		# Create the response
+		template = self.get_template()
+		context = self.get_context()
+		reply = HttpResponse(template.render(context))
+
+		# Return the response
+		return reply
+
+	def get_template(self):
+		return get_template(self.template)
+
+	def get_context(self):
+		# This is a hack until I put in proper authentication
+		logged_in_user = User.objects.get(pk=1)
+
+		# First put some basic stuff that we always want
+		context_data = {
+			'globals': get_globals(),
 			'django_vars_js': get_django_vars_JSON(
 				{'user': utils.obj_to_dict(
 				logged_in_user, exclude=['password'])}),
-			'question': {
-				'content':question,
-				'vote_form': question_vote,
-				'comment_form': question_comment_form
-			},
-			'answers': answers,
-			'answer_form': answer_form,
-			'proposal': proposal,
+			'logged_in_user': logged_in_user
+		}
+
+		# Now let the implementation of get_context_data override / add
+		# to the context
+		context_data.update(self.get_context_data())
+
+		# Return as a proper RequestContext
+		return RequestContext(self.request, context_data) 
+
+	def get_context_data(self):
+		return {'msg':'this is the AbstractView'}
+
+
+class PostAreaView(AbstractView):
+
+	# Override these with the appropriate templates, models, and forms
+	Post = None
+	PostSection = None
+	Subpost = None
+	SubpostSection = None
+	SubpostForm = None
+
+	# Other inheritance-based options
+	template = 'digidemo/post_area.html'
+	active_navitem = None
+	active_tab = None
+
+	def get_context_data(self):
+
+		# The following class attributes should be overriden 
+		concrete_attributes = [self.Post, self.PostSection, self.Subpost,
+			self.SubpostSection, self.SubpostForm]
+
+		# So none of them should be None if this method is being called...
+		if any([attr is None for attr in concrete_attributes]):
+			raise NotImplementedError('To use PostAreaView you must override'
+				' each of %s.' % ', '.join(
+					[str(attr) for attr in concrete_attributes]
+				)
+			)
+
+		post = self.Post.objects.get(pk=self.kwargs['post_id'])
+		target = post.target
+
+		# ** Hardcoded the logged in user to be enewe101 **
+		logged_in_user = User.objects.get(pk=1)
+
+		# TODO: remove proposal vote form from the post_area.html template
+		#	hence, don't include it here.
+
+		# make a proposal vote form
+		proposal_vote_form = get_vote_form(
+			ProposalVote, ProposalVoteForm, logged_in_user, target)
+
+		# make a section for the question
+		post_section = self.PostSection(
+			post, logged_in_user, id_prefix='q')
+
+		# make sections for subposts 
+		subpost_sections = []
+		for subpost in self.Subpost.objects.all():
+			subsection = self.SubpostSection(subpost, logged_in_user)
+			subpost_sections.append(subsection)
+
+		# make a form for submitting new answers
+		subpost_form = self.SubpostForm(
+			initial={'user':logged_in_user, 'target':post})
+
+		return {
+			'post_section': post_section,
+			'subpost_sections': subpost_sections,
+			'subpost_form': subpost_form,
+			'headline': target.title,
+			'proposal': target,
 			'proposal_vote_form': proposal_vote_form,
 			'logged_in_user': logged_in_user,
-			'tabs': get_proposal_tabs(proposal, 'questions'),
-			'active_navitem': 'questions'
+			'tabs': get_proposal_tabs(target, self.active_tab),
+			'active_navitem': self.active_navitem
 		}
-	)
+
+
+
+class PetitionListView(AbstractView):
+	template = 'digidemo/petition_list.html'
+	Target = Proposal
+	ListableObjects = Letter
+	active_navitem = 'issues'
+	active_tab = OPINION_TAB_NAME
+	headline_prefix = ''
+
+	def get_context_data(self):
+
+		# hack! remove this when we start using proper authentication
+		logged_in_user = User.objects.get(pk=1)
+
+		# get the current proposal
+		proposal = Proposal.objects.get(pk=self.kwargs['proposal_id'])
+
+		# Get all of the letters which are associated with this proposal
+		# and which are 'original letters'
+		letter_sections = []
+		letters = Letter.objects.filter(parent_letter=None, proposal=proposal)
+		for letter in letters:
+			letter_section = LetterSection(letter, logged_in_user)
+			letter_sections.append(letter_section)
+
+		add_letter_form = LetterForm(initial={
+			'proposal': proposal,
+			'user': logged_in_user,
+		})
+
+		return {
+			'section_title': '%d Petitions' % letters.count(),
+			'proposal': proposal,
+			'letter_form': add_letter_form,
+			'letter_sections': letter_sections,
+			'headline': proposal.title,
+			'logged_in_user': logged_in_user,
+			'tabs': get_proposal_tabs(proposal, OPINION_TAB_NAME),
+			'active_navitem': CREATE_NAV_VAME
+		}
+
+
+
+class DiscussionListView(AbstractView):
+	template = 'digidemo/discussion_list.html'
+
+	def get_context_data(self):
+		proposal = Proposal.objects.get(pk=self.kwargs['target_id'])
+		discussions_open = Discussion.objects.filter(
+			target=proposal,
+			is_open=True)
+		discussions_closed = Discussion.objects.filter(
+			target=proposal,
+			is_open=False)
+		logged_in_user = User.objects.get(pk=1)
+
+		return {
+			'section_title': 'Welcome to the editor\'s area',
+			'target': proposal,
+			'headline': proposal.title,
+			'items': discussions_open,
+			'closed_items': discussions_closed,
+			'logged_in_user': logged_in_user,
+			'tabs': get_proposal_tabs(proposal, ISSUE_TAB_NAME),
+			'active_navitem': 'create'
+		}
+
+
+class QuestionListView(AbstractView):
+	template = 'digidemo/question_list.html'
+
+	def get_context_data(self):
+		proposal = Proposal.objects.get(pk=self.kwargs['proposal_id'])
+		questions = Question.objects.filter(target=proposal)
+		logged_in_user = User.objects.get(pk=1)
+
+		return {
+			'section_title': '%d Questions' % questions.count(),
+			'target': proposal,
+			'headline': proposal.title,
+			'items': questions,
+			'logged_in_user': logged_in_user,
+			'tabs': get_proposal_tabs(proposal, QUESTIONS_TAB_NAME),
+			'active_navitem': QUESTIONS_NAV_NAME
+		}
+
+
+class PetitionView(AbstractView):
+	template = 'digidemo/view_petition.html'
+
+	def get_context_data(self):
+		logged_in_user = User.objects.get(pk=1)
+		letter = Letter.objects.get(pk=self.kwargs['petition_id'])
+		proposal = letter.proposal
+		letter_section = LetterSection(letter, logged_in_user)
+
+		return {
+			'headline': 'proposal.title',
+			'proposal': proposal,
+			'letter_section': letter_section,
+			'logged_in_user': logged_in_user,
+			'tabs': get_proposal_tabs(proposal, OPINION_TAB_NAME),
+			'active_navitem': OPINION_TAB_NAME
+		}
+
+
+class QuestionAreaView(PostAreaView):
+	Post = Question
+	PostSection = QuestionSection
+	Subpost = Answer
+	SubpostSection = AnswerSection
+	SubpostForm = AnswerForm
+	active_tab = QUESTIONS_TAB_NAME
+	active_navitem = 'issues'
+
+
+class DiscussionAreaView(PostAreaView):
+	Post = Discussion
+	PostSection = DiscussionSection
+	Subpost = Reply
+	SubpostSection = ReplySection
+	SubpostForm = ReplyForm
+	active_tab = OPINION_TAB_NAME
+	active_navitem = 'create'
 
 
 def make_proposal_context(proposal):
 
 	proposal_version = proposal.get_latest()
-	pos_factors = (
-		FactorVersion.objects
-		.filter(proposal_version=proposal_version,
-			valence__gt=0,
-			deleted=False)
-		.order_by('pk')
-	)
-	neg_factors = (
-		FactorVersion.objects
-		.filter(proposal_version=proposal_version,
-			valence__lt=0,
-			deleted=False)
-		.order_by('pk')
-	)
 
 	# ** Hardcoded the logged in user to be enewe101 **
 	logged_in_user = User.objects.get(pk=1)
 
 	proposal_vote_form = get_vote_form(
-		ProposalVote, ProposalVoteForm, logged_in_user, proposal)
+		ProposalVote, ProposalVoteForm, logged_in_user, proposal,
+		id_prefix='p'
+	)
 
 	# Get all of the letters which are associated with this proposal
 	# and which are 'original letters'
 	letter_sections = []
 	letters = Letter.objects.filter(parent_letter=None, proposal=proposal)
-	for letter_num, letter in enumerate(letters):
-
-		# TODO: use the convenience method to make a voting widget
-		# make a voting form for each letter
-		letter_vote = utils.get_or_none(
-			LetterVote, user=logged_in_user, target=letter)
-
-		if letter_vote:
-			letter_vote_form = LetterVoteForm(
-				instance=letter_vote,
-				cur_score=letter.score)
-		else:
-			letter_vote_form = LetterVoteForm(
-				initial={'user':logged_in_user.pk, 'target':letter.pk},
-				cur_score=letter.score
-			)
-
-		# make a re-sending form for each letter
-		resend_form = ResendLetterForm(
-			initial={
-				'parent_letter': letter,
-				'proposal': proposal,
-				'body': letter.body,
-				'recipients': letter.body,
-				'user': logged_in_user,
-				'valence': letter.valence
-			}, 
-		   	endpoint='resend_letter',
-		)
-
-		# compile the list of resenders -- don't include the original sender
-		resenders = set([l.user 
-			for l in Letter.objects.filter(parent_letter=letter)])
-
-		letter_sections.append({
-			'letter': letter,
-			'comment_form': LetterCommentForm(
-				initial={'user':logged_in_user.pk, 'target':letter.pk},
-				id_prefix = letter_num
-				),
-			'vote_form': letter_vote_form,
-			'resenders': resenders,
-			'resend_form': resend_form
-		}) 
-	
+	for letter in letters:
+		letter_section = LetterSection(letter, logged_in_user)
+		letter_sections.append(letter_section)
 
 	add_letter_form = LetterForm(initial={
 		'proposal': proposal,
@@ -574,19 +786,17 @@ def make_proposal_context(proposal):
 	})
 
 	context = {
-			'django_vars_js': get_django_vars_JSON(
-				{'user': utils.obj_to_dict(
-				logged_in_user, exclude=['password'])}),
-			'proposal': proposal,
-			'pos_factors': pos_factors,
-			'neg_factors': neg_factors,
-			'letter_form': add_letter_form,
-			'letter_sections': letter_sections,
-			'logged_in_user': logged_in_user,
-			'proposal_vote_form': proposal_vote_form,
-			'tabs': get_proposal_tabs(proposal, 'overview'),
-			'active_navitem': 'issues'
-		}
+		'django_vars_js': get_django_vars_JSON(
+			{'user': utils.obj_to_dict(
+			logged_in_user, exclude=['password'])}),
+		'proposal': proposal,
+		'letter_form': add_letter_form,
+		'letter_sections': letter_sections,
+		'logged_in_user': logged_in_user,
+		'proposal_vote_form': proposal_vote_form,
+		'tabs': get_proposal_tabs(proposal, 'overview'),
+		'active_navitem': 'issues'
+	}
 
 	return context
 

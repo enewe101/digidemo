@@ -123,6 +123,7 @@ a:active {
 
 body {
 	font-family: ubuntu;
+	font-size: 13px;
 	margin: 0;
 	padding: 0;
 }
@@ -169,3 +170,58 @@ a.navitem {
 
 .nav_horizontal_bar {
 }
+
+.outer_center {
+	text-align: center;
+}
+
+.inner_center {
+	text-align: left;
+	margin: auto;
+	width: 1024px;
+}
+
+#user {
+	float: right;
+}
+#middle {
+	clear: both;
+}
+
+div.tags ul {
+	list-style-type: none;
+	margin: 0;
+	padding: 0;
+}
+
+
+div.tags ul li div {
+	padding: 0 2px 0 2px;
+	margin: 2px;
+	float: left;
+	font-size: 12px;
+}
+
+div.tag {
+	border: solid 1px rgb(170, 0, 212);
+}
+
+.economy_sector_tag {
+	background: orange;
+	border: solid 1px orange;
+	color: black;
+}
+
+.environment_sector_tag {
+	color: white;
+	background: green;
+	border: solid 1px green;
+}
+
+#footer {
+	clear: both;
+}
+
+.comment_author {
+	font-weight: bold;
+} 

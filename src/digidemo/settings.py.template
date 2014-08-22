@@ -21,6 +21,8 @@ import os
 PROJECT_DIR = '/path/to/digidemo'	
 BASE_DIR = PROJECT_DIR + '/src'
 
+SITE_NAME = 'polis'
+
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/1.6/howto/deployment/checklist/
 

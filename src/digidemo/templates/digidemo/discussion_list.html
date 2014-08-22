@@ -1,0 +1,85 @@
+{% extends "digidemo/__two_column.html" %}
+{% load staticfiles %}
+
+
+{% block maincol %}
+
+	<!-- start the section title and section-specific buttons -->
+	<div class="section_header">
+		<h2 class="subtitle float_left">{{ section_title }}</h2>
+
+		<div class="section_buttons_right">
+			<a class="go_button_inline" href="{{ target.get_open_discussions_url }}">
+				{{closed_items.count}} closed discussions
+			</a>
+			<a class="go_button_inline_highlighted" href="{{ target.get_open_discussions_url }}">
+				{{items.count}} open discussions
+			</a>
+		</div>
+
+		<div class="clear"></div>
+	</div>
+	<!-- end the section title and section-specific buttons -->
+
+	<!-- start the discussions listing -->
+	<div class="listing">
+
+		{% for item in items %}
+			<div class="list_item">
+				<div class="status_indicator">
+					<div class="score">
+						{{ item.score }}
+					</div>
+					<div class="num_replies">
+						{{ item.replies.count }} 
+						replies
+					</div>
+				</div>
+				<div class="list_body">
+					<a href="{{ item.get_url }}">{{ item.title }}</a><br />
+						{{ item.text|truncatechars:180 }}
+					<span class="bold">~{{ item.user }}</span>
+				</div>
+				<div class="clear"></div>
+			</div>
+		{% endfor %}
+
+	</div>
+	<!-- end the discussions listing -->
+
+{% endblock maincol %}
+
+
+{% block rightcol %}
+
+	<div class="section">
+		<a class="go_button" href="{{ target.get_edit_url }}">
+			edit now
+		</a>
+
+
+		<div class="clear"></div>
+	</div>
+
+	<div class="take_note">
+		<img src="{% static "digidemo/images/icon_info.png" %}" 
+			class="note_icon" />
+		<p>
+		Thank you for helping to maintain our high standards of neutrality, 
+		accuracy, and completeness! Your contributions make this site work!
+		</p>
+
+		<p>
+		If this is your first time contributing, welcome :) Before you start 
+		editing, please read the the <a href="#">content guidelines</a>
+		</p>
+
+		<p>
+			Editor's discuss the issue write-up by opening "discussions".
+			Before editing, catch up on the latest discussions.
+		</p>
+
+	</div>
+
+
+{% endblock rightcol %}

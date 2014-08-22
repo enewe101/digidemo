@@ -2,13 +2,13 @@ import json
 from django.core.urlresolvers import reverse
 from django.shortcuts import render, get_object_or_404
 from django.http import HttpResponse, HttpResponseRedirect
-from django.template import Context
+from django.template import Context, RequestContext
 from django.template.loader import get_template
 from digidemo.models import *
 from digidemo.forms import *
 from digidemo.settings import DEBUG
 from digidemo.utils import get_or_none
-from digidemo.views import get_vote_form
+from digidemo.views import get_vote_form, AnswerSection, ReplySection
 from django.utils import timezone
 from django.views.decorators.csrf import csrf_exempt
 from django.contrib.auth import authenticate
@@ -186,6 +186,42 @@ def vote_letter(request):
 
 
 @ajax_endpoint
+def reply(request):
+
+	# ** Hardcoded the logged in user to be enewe101 **
+	logged_in_user = User.objects.get(pk=1)
+	 
+	reply_form = ReplyForm(request.POST)
+
+
+	if reply_form.is_valid():
+
+		# add the new (re)sent letter to the database
+		reply = reply_form.save()
+
+		# make an reply section
+		reply_section = ReplySection(reply, logged_in_user)
+
+		# render the reply section, and send it back for inclusion on page
+		template = get_template('digidemo/_i_post_with_comments.html')
+		context = RequestContext(request,{'post_section': reply_section})
+		reply_html = template.render(context)
+
+
+		return {
+			'success':True,
+			'html':reply_html, 
+			'errors': reply_form.json_errors()	# this will be empty
+		}
+
+	return {
+		'success':False,
+		'msg':'ajax.py: answer(): ReplyForm was not valid',
+		'errors': reply_form.json_errors()
+	}
+
+
+@ajax_endpoint
 def answer(request):
 
 	# ** Hardcoded the logged in user to be enewe101 **
@@ -193,32 +229,19 @@ def answer(request):
 	 
 	answer_form = AnswerForm(request.POST)
 
+
 	if answer_form.is_valid():
 
 		# add the new (re)sent letter to the database
 		answer = answer_form.save()
 
-		vote_form = get_vote_form(
-			AnswerVote, AnswerVoteForm, logged_in_user, answer)
+		# make an answer section
+		answer_section = AnswerSection(answer, logged_in_user)
 
-		# make a unique id for the vote form based on the userstats
-		num_prior_answers = Answer.objects.filter(
-			user=logged_in_user, target=answer.target).count()
-
-		comment_form = AnswerCommentForm(
-			initial={'user':logged_in_user, 'target': answer},
-			id_prefix=num_prior_answers - 1
-		)
-
-		# render an html snippet, containing the avatar
-		template = get_template('digidemo/_i_reply_with_comments.html')
+		# render the answer section, and send it back for inclusion on page
+		template = get_template('digidemo/_i_post_with_comments.html')
 		context = Context({
-			'include_id': logged_in_user.username + str(num_prior_answers - 1),
-			'reply': {
-				'content': answer,
-				'vote_form': vote_form,
-				'comment_form': comment_form
-			},
+			'post_section': answer_section,
 		})
 		reply_html = template.render(context)
 
@@ -226,7 +249,7 @@ def answer(request):
 		return {
 			'success':True,
 			'html':reply_html, 
-			'errors': answer_form.json_errors()	# these will be empty
+			'errors': answer_form.json_errors()	# this will be empty
 		}
 
 	return {
@@ -315,22 +338,22 @@ def get_factor_form(request):
 
 
 
-@ajax_endpoint
-def reply(request):
-	reply_form = ReplyForm(request.POST)
-	
-	if reply_form.is_valid():
-		reply = reply_form.save()
-		
-		template = get_template('digidemo/_i_discussion_reply.html')
-		context = Context({'reply': reply})
-		reply_html = template.render(context)
-		return {'success': True, 'html': reply_html}
-
-	return {
-		'success': False,
-		'msg':'ajax.py: reply(): ReplyForm was not valid'
-	}
+#@ajax_endpoint
+#def reply(request):
+#	reply_form = ReplyForm(request.POST)
+#	
+#	if reply_form.is_valid():
+#		reply = reply_form.save()
+#		
+#		template = get_template('digidemo/_i_discussion_reply.html')
+#		context = Context({'reply': reply})
+#		reply_html = template.render(context)
+#		return {'success': True, 'html': reply_html}
+#
+#	return {
+#		'success': False,
+#		'msg':'ajax.py: reply(): ReplyForm was not valid'
+#	}
 
 
 @ajax_endpoint
@@ -345,6 +368,13 @@ def question_comment(request):
 def comment(request):
 	return process_comment(request, LetterCommentForm)
 
+@ajax_endpoint
+def reply_comment(request):
+	return process_comment(request, ReplyCommentForm)
+
+@ajax_endpoint
+def discussion_comment(request):
+	return process_comment(request, DiscussionCommentForm)
 
 
 def process_comment(request, comment_form_class):
@@ -356,11 +386,16 @@ def process_comment(request, comment_form_class):
 		template = get_template('digidemo/_i_comment.html')
 		context = Context({'comment': comment})
 		reply_html = template.render(context)
-		return {'success': True, 'html': reply_html}
+		return {
+			'success': True,
+			'html': reply_html,
+			'errors': comment_form.json_errors()	# this will be empty
+		}
 
 	return {
 		'success': False,
-		'msg':'ajax.py: comment(): comment form was not valid'+str(comment_form.errors)
+		'msg':'ajax.py: comment(): comment form was not valid',
+		'errors': comment_form.json_errors()
 	}
 
 
@@ -414,7 +449,6 @@ def handle_ajax_logout(request):
         request.session.pop("user",None)
         data = test(request)
         return render(request, 'digidemo/ajax.html', {'json_data':data})
-
 
 
 @ajax_endpoint

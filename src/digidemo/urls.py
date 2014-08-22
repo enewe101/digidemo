@@ -1,4 +1,5 @@
 from django.conf.urls import patterns, include, url
+from django.conf.urls.static import static
 from django.conf import settings
 
 from django.contrib import admin
@@ -21,12 +22,9 @@ urlpatterns = patterns('',
 	url(r'^mainPage/$',mainPage, name='mainPage'),
 	url(r'^mainPage/sort=(?P<sort_type>\w+)/$',mainPage,name='mainPage'),
 
-        #Search results
-        url(r'^search/$',search,name='search'),
+	#Search results
+	url(r'^search/$',search,name='search'),
         
-	#Testing login
-	#   url(r'^Login/$',Login),
-                       
 	# Registration
 	url(r'^userRegistration/$', userRegistration,name='userRegistration'),
 
@@ -37,15 +35,27 @@ urlpatterns = patterns('',
 	url(r'^add_proposal/$', add_proposal, name='add_proposal'),
 	url(r'^overview/(?P<proposal_id>\w+)/.*$', overview, name='overview'),
 	url(r'^proposal/(?P<proposal_id>\w+)/.*$', proposal, name='proposal'),
-	url(r'^questions/(?P<proposal_id>\w+)/.*$', proposal_question_list, 
-		name='proposal_question_list'),
+	url(r'^questions/(?P<proposal_id>\w+)/.*$', QuestionListView().view, 
+		name='questions'),
 	url(r'^ask-question/(?P<proposal_id>\w+)/.*$', ask_question, 
 		name='ask_question'),
-	url(r'^view-question/(?P<question_id>\w+)/.*$', view_question, 
-		name='view_question'),
-	url(r'^discuss/(?P<proposal_id>\w+)/.*$', discuss, name='discussion'),
+	#url(r'^view-question/(?P<question_id>\w+)/.*$', view_question, 
+	#	name='view_question'),
+	url(r'^editors_area/(?P<target_id>\w+)/.*$', DiscussionListView().view, 
+		name='editors_area'),
+	url(r'^petitions/(?P<proposal_id>\w+)/.*$', 
+		PetitionListView().view, name='petitions'),
+	url(r'^view-discussion/(?P<post_id>\w+)/.*$', 
+		DiscussionAreaView().view, name='view_discussion'),
 	url(r'^edit/(?P<proposal_id>\w+)/.*$', edit, name='edit'),
 	url(r'^history/(?P<proposal_id>\w+)/.*$', history, name='history'),
+	url(r'^view-question/(?P<post_id>\w+)/.*$', QuestionAreaView().view, 
+		name='view_question'),
+
+	# petition-centric views
+	url(r'^view-petition/(?P<petition_id>\w+)/.*$', PetitionView().view, 
+		name='view_petition'),
+
 
 	# ajax urls
 	url(r'^ajaxJson/(?P<view>\w+)/$', handle_ajax_json, 
@@ -53,5 +63,5 @@ urlpatterns = patterns('',
 	url(r'^ajaxJson/$', handle_ajax_json, name='ajax_json_test'),
         url(r'^ajaxLogin/$', handle_ajax_login,name = 'handle_ajax_login'),
         url(r'^ajaxLogout/$', handle_ajax_logout,name = 'handle_ajax_logout'),
-)
+) + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 

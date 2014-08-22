@@ -10,7 +10,10 @@ NAME_LENGTH = 48
 URL_LENGTH = 256
 TITLE_LENGTH = 256
 DEFAULT_COMMENT_LENGTH = 512
-DEFAULT_TEXT_LENGTH = 65536
+DEFAULT_TEXT_LENGTH = 8192
+
+
+# *** Abstract Models *** #
 
 class TimeStamped(models.Model):
 	creation_date = models.DateTimeField(editable=False)
@@ -27,35 +30,10 @@ class TimeStamped(models.Model):
 		abstract = True
 
 
-class ScoredComment(TimeStamped):
-	user = models.ForeignKey(User)
-	score = models.SmallIntegerField(default=0, editable=False)
-	text = models.CharField(max_length=DEFAULT_COMMENT_LENGTH)
-
-	def __unicode__(self):
-		return self.text[:20]
-
-	class Meta:
-		abstract = True
-
-
 class ScoredPost(TimeStamped):
 	user = models.ForeignKey(User)
 	score = models.SmallIntegerField(default=0, editable=False)
-	title = models.CharField(max_length=TITLE_LENGTH)
-	text = models.TextField(max_length=DEFAULT_TEXT_LENGTH)
-
-	def __unicode__(self):
-		return self.title[:20]
-
-	class Meta:
-		abstract = True
-
-
-class ScoredReply(TimeStamped):
-	user = models.ForeignKey(User)
-	score = models.SmallIntegerField(default=0, editable=False)
-	text = models.TextField(max_length=DEFAULT_TEXT_LENGTH)
+	text = models.CharField(max_length=DEFAULT_TEXT_LENGTH)
 
 	def __unicode__(self):
 		return self.text[:20]
@@ -63,6 +41,16 @@ class ScoredReply(TimeStamped):
 	class Meta:
 		abstract = True
 
+
+class Vote(TimeStamped):
+	user = models.ForeignKey(User)
+	valence = models.SmallIntegerField(choices=VOTE_CHOICES)
+
+	class Meta:
+		abstract=True
+
+
+# *** Concrete Models *** # 
 
 class Sector(TimeStamped):
 	short_name = models.CharField(max_length=3)
@@ -72,12 +60,12 @@ class Sector(TimeStamped):
 		return self.short_name
 
 
-
 class Tag(TimeStamped):
 	name = models.CharField(max_length=48)
 
 	def __unicode__(self):
 		return self.name
+
 
 class Proposal(TimeStamped):
 	is_published = models.BooleanField(default=False)
@@ -85,6 +73,8 @@ class Proposal(TimeStamped):
 	title = models.CharField(max_length=256)
 	summary = models.TextField()
 	text = models.TextField()
+
+	# TODO: add (actors) as a many-to-many relationship
 
 	# propogate to creation
 	original_user = models.ForeignKey(
@@ -113,10 +103,24 @@ class Proposal(TimeStamped):
 		return self.get_url('ask_question')
 
 	def get_question_list_url(self):
-		return self.get_url('proposal_question_list')
+		url_stub = reverse('questions', kwargs={'proposal_id': self.pk})
+		return url_stub + slugify(self.title)
 
-	def get_discussion_url(self):
-		return self.get_url('discussion')
+	def get_open_discussions_url(self):
+		url_stub = reverse('editors_area', kwargs={'target_id': self.pk})
+		return url_stub + slugify(self.title)
+
+	def get_closed_discussions_url(self):
+		url_stub = reverse('editors_area', kwargs={'target_id': self.pk})
+		return url_stub + slugify(self.title)
+
+	def get_petitions_url(self):
+		url_stub = reverse('petitions', kwargs={'proposal_id': self.pk})
+		return url_stub + slugify(self.title)
+
+	#def get_discussion_url(self):
+	#	url_stub = reverse('discuss', kwargs={'target_id': self.pk})
+	#	return url_stub + slugify(self.title)
 
 	def get_edit_url(self):
 		return self.get_url('edit')
@@ -203,80 +207,6 @@ class UserProfile(TimeStamped):
 		self.rep -= self.get_rep_delta(event_name)
 
 
-class Discussion(TimeStamped):
-	proposal = models.ForeignKey(Proposal)
-	title = models.CharField(max_length=TITLE_LENGTH)
-	body = models.TextField()
-	user = models.ForeignKey(User)
-	score = models.SmallIntegerField(default=0)
-	is_open = models.BooleanField(default=False)
-
-	def __unicode__(self):
-		return self.title
-
-
-
-class Reply(TimeStamped):
-	discussion = models.ForeignKey(Discussion)
-	body = models.TextField()
-	user = models.ForeignKey(User)
-	score = models.SmallIntegerField(default=0)
-	is_open = models.BooleanField(default=False)
-
-	def __unicode__(self):
-		return self.user.username
-
-
-class Question(ScoredPost):
-	target = models.ForeignKey(Proposal)
-
-	def get_url(self):
-		url = reverse('view_question', kwargs={'question_id':self.pk})
-		return url + slugify(self.title)
-
-
-class Factor(TimeStamped):
-	proposal = models.ForeignKey(Proposal)
-	description = models.CharField(max_length=256)
-	valence = models.SmallIntegerField(choices=FACTOR_CHOICES)
-	sector = models.ForeignKey(Sector)
-	deleted = models.BooleanField('delete')
-
-
-	def __unicode__(self):
-		latest = self.get_latest()
-		return '%s %d' % (str(latest.sector), latest.valence)
-
-	def get_latest(self):
-		return FactorVersion.get_latest(self)
-
-
-class FactorVersion(TimeStamped):
-	factor = models.ForeignKey(
-		Factor, related_name='version', blank=True, null=True)
-	proposal_version = models.ForeignKey(
-		ProposalVersion, blank=True, null=True)
-	description = models.CharField(max_length=256)
-	valence = models.SmallIntegerField(choices=FACTOR_CHOICES)
-	sector = models.ForeignKey(Sector)
-	deleted = models.BooleanField('delete')
-
-	def __unicode__(self):
-		return self.description[:14]
-
-	@classmethod
-	def get_latest(cls, factor):
-
-		factor_versions = cls.objects.filter(
-			factor=factor).order_by('-creation_date')
-
-		if len(factor_versions) == 0:
-			raise cls.DoesNotExist('There are no proposal versions for that'
-				'proposal')
-
-		return factor_versions[0]
-
-
 class Person(TimeStamped):
 	fname = models.CharField(max_length=NAME_LENGTH)
 	lname = models.CharField(max_length=NAME_LENGTH)
@@ -294,6 +224,7 @@ class Organization(TimeStamped):
 	operations_summary = models.TextField()
 
 
+# Rename this "Actor"
 class Position(TimeStamped):
 	name = models.CharField(max_length=128) # name of position (i.e. title)
 	person = models.ForeignKey(Person)
@@ -316,36 +247,71 @@ class Letter(TimeStamped):
 	body = models.TextField()
 	recipients = models.ManyToManyField(Position, related_name='letters')
 	score = models.SmallIntegerField(default=0)
+	title = models.CharField(max_length=TITLE_LENGTH)
 
 	def __unicode__(self):
 		return "%s-%s" %(
 			self.user.username,
 			get_choice(VALENCE_CHOICES, self.valence))
 
+	def get_url(self):
+		url = reverse('view_petition', kwargs={'petition_id': self.pk})
+		return url + slugify(self.title)
+
+class Discussion(ScoredPost):
+	target = models.ForeignKey(Proposal, null=True)
+	title = models.CharField(max_length=TITLE_LENGTH)
+	is_open = models.BooleanField(default=False)
+
+	def __unicode__(self):
+		return self.title
+
+	def get_url(self):
+		url = reverse('view_discussion', kwargs={'post_id': self.pk})
+		return url + slugify(self.title)
+
+
+class Reply(ScoredPost):
+	target = models.ForeignKey(Discussion, null=True, related_name='replies')
+	is_open = models.BooleanField(default=False)
+
+	def __unicode__(self):
+		return self.user.username
+
+
+class Question(ScoredPost):
+	title = models.CharField(max_length=TITLE_LENGTH)
+	target = models.ForeignKey(Proposal)
+
+	def get_url(self):
+		url = reverse('view_question', kwargs={'post_id':self.pk})
+		return url + slugify(self.title)
+
+
+class Answer(ScoredPost):
+	target = models.ForeignKey(Question, related_name='replies')
+
 
 # This should be renamed "LetterComment"
-class Comment(ScoredComment):
+class Comment(ScoredPost):
 	target = models.ForeignKey(Letter, related_name='comment_set')
 
-class QuestionComment(ScoredComment):
+
+class QuestionComment(ScoredPost):
 	target = models.ForeignKey(Question, related_name='comment_set')
 	
 
-class Answer(ScoredReply):
-	target = models.ForeignKey(Question)
-
-
-class AnswerComment(ScoredComment):
+class AnswerComment(ScoredPost):
 	target = models.ForeignKey(Answer, related_name='comment_set')
 
 
+class DiscussionComment(ScoredPost):
+	target = models.ForeignKey(Discussion, related_name='comment_set')
 
-class Vote(TimeStamped):
-	user = models.ForeignKey(User)
-	valence = models.SmallIntegerField(choices=VOTE_CHOICES)
 
-	class Meta:
-		abstract=True
+class ReplyComment(ScoredPost):
+	target = models.ForeignKey(Reply, related_name='comment_set')
+
 
 class DiscussionVote(Vote):
 	target = models.ForeignKey(Discussion)

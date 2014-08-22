@@ -1,33 +1,17 @@
 {% extends "digidemo/__tabbed.html" %}
 {% load staticfiles %}
 
-
-{% block title %}
-	{{ proposal.title }} | {{ block.super }}
-{% endblock title %}
-
-
 {% block css %}
 	{{ block.super }}
 	<link rel="stylesheet" type="text/css" 
-		href="{% static "digidemo/css/proposal.css" %}" />
+		href="{% static "digidemo/css/__two_column.css" %}" />
 {% endblock css %}
 
-
-{% block headline %}
-	<!-- start of propasal score and icons -->
-	<div class="proposal_status_bar">
-		{% include "digidemo/_w_vote_form.html" with form=proposal_vote_form include_id="proposal_vote" %}
-	</div>
-	<!-- end of proposal score and icons -->
-
-	<h1 class="proposal_title">
-		{{ proposal.get_latest.title }}
-	</h1>
-{% endblock headline %}
-
-
 {% block maincontent %}
+
+	{% block section_title %}
+	{% endblock section_title %}
+
 	<!-- start the (horizontal) center column of middle page layout -->
 	<div id="main_col">
 
@@ -49,7 +33,6 @@
 	<!-- end of right column in middle page layout -->
 
 {% endblock maincontent %}
-
 
 {% block footer %}
 	footer

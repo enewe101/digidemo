@@ -1,0 +1,163 @@
+.letter {
+	position: relative;
+	padding: 10px;
+}
+
+.letter_status_bar, .letter_status_bar_spacer {
+	width: 100px;
+	float: left;
+	text-align: center;
+}
+
+.letter_status_bar_spacer {
+	height: 20px;
+}
+
+.resend {
+	font-family: computerModern;
+	font-size: 24px;
+	font-style: italic;
+	font-weight: bold;
+	line-height: 0.8em;
+}
+
+.letter_main {
+	width: 680px;
+	position: relative;
+	float: left;
+}
+
+.physical_letter {
+	width: 638px;
+	border: solid 1px rgb(80,80,80);
+	padding: 20px;
+}
+
+.cover_corner {
+	position: absolute;
+	top: 0px;
+	right: 0px;
+}
+
+.petition_title {
+}
+
+.greeting {
+	margin: 0;
+	padding: 0 0 10px 0;
+}
+
+.recipients_and_valence {
+	position: relative;
+	margin: 0 0 10px 0;
+}
+
+.recipients {
+	border-bottom: dotted 1px rgb(180,180,180);
+	border-top: dotted 1px rgb(180,180,180);
+	padding: 10px 0px;
+	margin: 0 0 20px 20px;
+	width: 350px;
+}
+
+.petition_title {
+	margin: 16px 0 10px 20px;
+	width: 350px
+}
+
+.recipient_title {
+	font-weight: bold;
+	font-size: 14px;
+}
+
+.recipient_name {
+	font-size: 14px;
+}
+
+.letter_valence {
+	margin: 14px 0 0 6px;
+}
+
+.resending {
+	float: left;
+	padding: 12px 0 0 6px;
+}
+
+.resender {
+	position: relative;
+	width: 42px;
+	height 56px;
+	float: left;
+	margin-right: 6px;
+}	
+
+.resenders_single_row {
+	float: right;
+	margin: 10px 0 10px 0;
+}
+
+.recipient {
+	font-size: 14px;
+	margin: 0;
+}
+
+.letter_body, .letter_body_abbreviated {
+	font-size: 16px;
+	padding-top: 10px;
+}
+
+.letter_body_abbreviated {
+	border-top: dotted 1px rgb(80,80,80); 
+}
+
+.sign_petition {
+	float:right;
+	font-size: 18px;
+	padding: 28px 20px 0 0;
+}
+
+a.send_letter {
+	margin-left: 4px;
+}
+
+a.send_letter:link {
+	color: rgb(170, 0, 212);
+	text-decoration: none;
+}
+a.send_letter:visited {
+	color: rgb(170, 0, 212);
+	text-decoration: none;
+}
+
+a.send_letter:hover {
+	color: rgb(170, 0, 212);
+	text-decoration: underline;
+}
+
+a.send_letter:active {
+	color: rgb(170, 0, 212);
+	text-decoration: underline;
+}
+
+.resend_letter_form_area .letter_body_textarea {
+	width: 636px;
+	height: 200px;
+	padding: 0;
+	margin: 0;
+}
+
+.resend_letter_form_area {
+	display: none;
+}
+
+#add_letter_div .letter_body_textarea {
+	width: 620px;
+	padding: 0;
+	margin: 0;
+}
+
+#add_letter_div {
+	width: 622px;
+	margin-left: 28px;
+}
+

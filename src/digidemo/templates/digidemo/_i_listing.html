@@ -1,0 +1,19 @@
+{% load staticfiles %}
+
+<div class="listing">
+
+	{% for item in items %}
+		<div class="list_item">
+			<div class="score">
+				{{ item.score }}<br />
+			</div>
+			<div class="list_body">
+				<a href="{{ item.get_url }}">{{ item.title }}</a><br />
+					{{ item.text|truncatechars:180 }}
+				<span class="bold">~{{ item.user }}</span>
+			</div>
+			<div class="clear"></div>
+		</div class="list_item">
+	{% endfor %}
+
+</div>

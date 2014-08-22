@@ -1,0 +1,192 @@
+{% extends "digidemo/__two_column.html" %}
+{% load apptags %}
+{% load staticfiles %}
+
+{% block css %}
+
+	{{block.super}} 
+	<link rel="stylesheet" type="text/css" 
+		href="{% static "digidemo/css/letter.css" %}" /> 
+	<link rel="stylesheet" type="text/css" 
+		href="{% static "digidemo/css/proposal.css" %}" /> 
+
+{% endblock css %}
+
+{% block title %}
+	{{ headline }} | {{ block.super }} 
+{% endblock title %}
+
+{% block  headline_title %}
+	<img src="{% static "digidemo/images/compas_icon.png" %}" />
+	<span class="content_type">ISSUE:</span>
+	{{ proposal.get_latest.title }}
+{% endblock headline_title %}
+
+{% block maincol %}
+
+	<!-- start the proposal -->
+	<h2 class="subtitle">
+		{{letter_sections|length}}
+		Petition{{letter_sections|length|pluralize}}
+	</h2>
+
+
+	<!-- start the open letters area -->
+	<div id="letters">
+	{% for letter_section in letter_sections %}
+
+		<!-- start of an open letter -->
+		<div id="letter_{{ letter_section.id_prefix }}" class="letter">
+
+			<div class="status_indicator">
+				<div class="score">
+					{{ letter_section.post.letter_set.distinct.count }}<img 
+						class="resend_widget" 
+						src="{% static "digidemo/images/feather_sign.png" %}" />
+				</div>
+				<div class="num_replies">
+					<span class="num">
+						{{ letter_section.comments_section.comments|length }}
+					</span><img 
+						src="{% static "digidemo/images/comment_icon.png" %}"/>
+				</div>
+			</div>
+
+			<!-- start the content of the letter -->
+			<div class="letter_main">
+				<div class="physical_letter">
+
+					<h2 class="post_title">
+						<a href="{{letter_section.post.get_url}}">
+							{{letter_section.post.title}}
+						</a>
+					</h2>
+
+
+					<div class="letter_body_abbreviated">
+						{{ letter_section.post.body|truncatewords:100 }}
+						<br />
+						<a href="{{letter_section.post.get_url}}">
+							go to petition...
+						</a>
+					</div>
+
+					<!-- start the list of senders -->
+					<div class="senders">
+
+						<!-- people that have resent the letter -->
+						<div class="resenders_single_row" 
+							id="{{ letter_section.id_prefix }}_resenders" >
+								{% for resender in letter_section.resenders %}
+
+									{% include "digidemo/_i_resender_avatar.html" %}
+								{% endfor %}
+							<div class="clear"></div>
+						</div>
+						<!-- end of re-senders  -->
+
+						<div class="float_right">
+							{% include "digidemo/_i_user_id.html" with user=letter_section.post.user %}
+						</div>
+
+
+						<div class="clear"></div>
+
+					</div>
+					<!-- end of letter senders area -->
+
+					<div class="clear"></div>
+				</div>
+
+				<img class="cover_corner"
+					src="{% static "digidemo/images/corner.png" %}" />
+
+			</div> 
+			<!-- end of letter main content -->
+
+			<div class="clear"></div>
+		</div>
+		<!-- end of a letter -->
+
+		<div class="clear"></div>
+
+	{% endfor %} <!-- loop over all letters for the proposal -->
+
+		<div class="hr_flourish">
+			<div class="hr"></div> 
+			<div class="flourish"></div>
+		</div>
+
+		<!-- start form for adding new letters -->
+		<h1>Your Letter</h1>
+		<div id="add_letter_div">
+
+		{% include "digidemo/_w_ajax_form.html" with form=letter_form include_id="add" %}
+
+		</div>
+		<!-- end form for adding new letters -->
+
+	</div>
+	<!-- end of letters area -->
+{% endblock maincol %}
+
+{% block rightcol %}
+
+	<!-- Yo there's issues with this so I've commented it out for now -->
+
+	<!--script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+	<script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.10.2/jquery-ui.min.js"></script>
+	<script src="{% static "digidemo/js/jquery.switchButton.js" %}"></script>
+
+	<script>
+		$(function() {
+			$('#basic.demo input').switchButton();
+		}());
+	</script-->
+
+	<div class="demo" id="basic">
+		<input type="checkbox" value="1" />
+	</div>
+
+	<!-- start of proposal sectors -->
+	<div class="tags">
+		Sectors
+		<ul>
+			<li>
+				<div class="economy_sector_tag">
+					Economy
+				</div>
+			</li>
+			<li>
+				<div class="environment_sector_tag">
+					Environment
+				</div>
+			</li>
+		</ul>
+		<div class="clear"></div>
+	</div>
+	<!-- end of proposal sectors -->
+
+	<!-- start of tags -->
+	<div class="tags">
+		Tags
+		<ul>
+			<li>
+				<div class="tag">
+					Tar-sands
+				</div>
+			</li>
+			<li>
+				<div class="tag">
+					CO2
+				</div>
+				<div class="tag">
+					Fossil-fuel
+				</div>
+			</li>
+		</ul>
+		<div class="clear"></div>
+	</div>
+	<!-- end of tags -->
+
+{% endblock rightcol %}

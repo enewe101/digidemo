@@ -89,7 +89,6 @@ function ajax(endpoint, data, handlers) {
 // django ajax function `endpoint` and optionally fires `success` or `error` 
 // with the parsed JSON response.
 function ajaxForm(endpoint, form, handlers) {
-
 	form_as_array = form.serializeArray();
 	as_dict = dict(form_as_array);
 	ajax(endpoint, as_dict, handlers);
@@ -146,7 +145,7 @@ function register_widget(widget_id, widget, widget_class) {
 function register_form(form_id, endpoint, form_class, submit_id) {
 
 	var form_widget = new FormWidget(
-		$('#'+form_id), endpoint, $('#' + submit_id));
+		form_id, endpoint, submit_id);
 
 	register_widget(form_id, form_widget, form_class);
 
@@ -164,7 +163,11 @@ function register_form(form_id, endpoint, form_class, submit_id) {
 //////////////////////////
 
 
-function FormWidget(form, endpoint, submit_button) {
+function FormWidget(form_id, endpoint, submit_id) {
+
+	// get the html elements that were passed by id
+	var submit_button = $('#' + submit_id);
+	var form = $('#'+form_id);
 
 	var events = ['before', 'success', 'error', 'after'];
 	var hooks = make_page_hooks(this, events) 
@@ -183,17 +186,17 @@ function FormWidget(form, endpoint, submit_button) {
 					'success': $.proxy(function(data, textStatus, jqXHR) {
 						if(data.success) {
 							hooks['success'](data, textStatus, jqXHR);
-							render_errors(data);
+							render_errors(data, form_id);
 						} else {
 							hooks['error'](data, textStatus);
-							render_errors(data);
+							render_errors(data, form_id);
 						}
 
 					}, this),
 
 					'error': $.proxy(function(data, textStatus, jqXHR) {
 						hooks['error'](data, textStatus, jqXHR);
-						render_errors(data);
+						render_errors(data, form_id);
 					}, this),
 
 					'after': $.proxy(function(data, textStatus, jqXHR) {
@@ -206,7 +209,8 @@ function FormWidget(form, endpoint, submit_button) {
 }
 
 
-function render_errors(data) {
+function render_errors(data, form_id) {
+
 	// Since errors were returned, iterate over the fields, and mark
 	// those with errors using styling and errorr text
 	for(field_id in data.errors) {
@@ -214,12 +218,15 @@ function render_errors(data) {
 		// the special field "__all__" represents errors with the form
 		// in general.  There is a special div for this
 		if(field_id == '__all__') {
-			all_errs = $('#{{form.form_class}}_{{include_id}}_errors')
+			all_errs = $('#' + form_id + '_errors')
 			all_errs.text(data.errors[field_id].join('<br />'));
 		}
 
 		// All other errors are field-specific.  get the field
-		field = $('#'+field_id)
+		// only the field name is passed.  Tack on the id_prefix
+		full_field_id = form_id + '_' + field_id;
+
+		field = $('#'+full_field_id);
 
 		// Deal with all the errors
 		if(data.errors[field_id].length) {
@@ -234,8 +241,8 @@ function render_errors(data) {
 
 			// otherwise its bad form data (user's fault). Mark errors.
 			} else {
-				$('#'+field_id).addClass('error')
-				$('#'+field_id+'_errors').text(
+				$('#'+full_field_id).addClass('error')
+				$('#'+full_field_id+'_errors').text(
 					data.errors[field_id].join('<br />'))
 			}
 
@@ -247,9 +254,9 @@ function render_errors(data) {
 				continue;
 			}
 
-			console.log(field_id);
-			$('#'+field_id+'_errors').text('');
-			$('#'+field_id).removeClass('error');
+			console.log(full_field_id);
+			$('#'+full_field_id+'_errors').text('');
+			$('#'+full_field_id).removeClass('error');
 		}
 	}
 }
@@ -484,11 +491,14 @@ function ResenderList(wrapper, init_users) {
 	// put it in the wrapper div
 	this.add_user = function(user_pk) {
 		
+		alert('resender add');
 		// if the user is already in the list, do nothing
 		if($.inArray(user_pk, users) >= 0) {
+			alert('chose not to add');
 			return;
 		}
 
+		alert('about to add');
 		// otherwise, we add the user, and append her avatar image
 		users.push(user_pk);
 		get_user_avatar_html(user_pk);
@@ -663,61 +673,26 @@ function ToggleHidden(toggle_div, content) {
 
 //////////////////////
 //  				//
-//   Reply widget	//
+//   Reply widget	//  Depricated.  Just use FormWidget
 //  				//
 //////////////////////
 
-function ReplyWidget(form, endpoint, submit_button) {
-
-	var events = ['before', 'success', 'error', 'after'];
-	var hooks = make_page_hooks(this, events);
-	hooks.error = alert_ajax_error;
-
-	// the ReplyWidget decorates a form widget
-	var form_widget = new FormWidget(form, endpoint, submit_button);
-
-	// get the reply text-area
-	var reply_input = $('textarea[name=body]', form);
-
-	// when the reply is successfully posted, clear the textarea,
-	// and call the success hook
-	var success = function(data, statusText, jqXHR) {
-		reply_input.val('');
-		hooks.success(data, statusText, jqXHR);
-	}
-
-	// forward hooks to the underlying form widget
-	form_widget.hook('success', success);
-	form_widget.hook('before', hooks.before);
-	form_widget.hook('error', hooks.error);
-	form_widget.hook('after', hooks.after);
-}
-
-
-
-
-//////////////////////
-//  				//
-//  Comment widget	//	Deprecated.  Just use FormWidget.
-//  				//
-//////////////////////
-
-//function CommentWidget(form, endpoint, submit_button) {
+//function ReplyWidget(form, endpoint, submit_button) {
 //
 //	var events = ['before', 'success', 'error', 'after'];
 //	var hooks = make_page_hooks(this, events);
 //	hooks.error = alert_ajax_error;
 //
-//	// the CommentWidget decorates a form widget
+//	// the ReplyWidget decorates a form widget
 //	var form_widget = new FormWidget(form, endpoint, submit_button);
 //
-//	// get the comment text-area
-//	var comment_input = $('textarea[name=body]', form);
+//	// get the reply text-area
+//	var reply_input = $('textarea[name=body]', form);
 //
-//	// when the comment is successfully posted, clear the textarea,
+//	// when the reply is successfully posted, clear the textarea,
 //	// and call the success hook
 //	var success = function(data, statusText, jqXHR) {
-//		comment_input.val('');
+//		reply_input.val('');
 //		hooks.success(data, statusText, jqXHR);
 //	}
 //
@@ -727,7 +702,7 @@ function ReplyWidget(form, endpoint, submit_button) {
 //	form_widget.hook('error', hooks.error);
 //	form_widget.hook('after', hooks.after);
 //}
-
+//
 
 function AddFactorVersionWidget(add_link, form_wrapper, 
 	num_forms_input, valence) {

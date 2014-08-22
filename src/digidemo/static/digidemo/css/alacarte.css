@@ -58,3 +58,223 @@
 .full_width {
 	width: 1024px;
 }
+
+.disabled{
+	color: rgb(220,220,220);
+}
+
+.hr_flourish {
+	position: relative;
+	height: 25px;
+	margin: 30px 0 40px 0;
+}
+
+.hr_flourish div.hr {
+	position: absolute;
+	width: 100%;
+	top: 12px;
+	border: none;
+	border-top: solid 1px black;
+}
+
+.hr_flourish div.flourish {
+	position: absolute;
+	top: 0;
+	width: 100%;
+	height: 24px;
+	background: no-repeat center url('../images/horizontal_rule_flourish.png');
+}
+
+hr {
+	border: none;
+	border-top: 1px black solid;
+	margin: 30px 0 30px 0;
+}
+
+.take_note {
+	background: rgb(249, 249, 218);
+	padding: 1px 20px;
+	margin-bottom: 10px;
+}
+
+.list_item {
+	background: rgb(245,245,245);
+	padding: 10px;
+	margin-bottom: 10px;
+}
+
+.list_item .status_indicator, .letter .status_indicator {
+	text-align: center;
+	float: left;
+	width: 60px;
+	margin: 0px 10px 0px 0;
+	padding: 4px;
+}
+
+.letter .status_indicator {
+}
+
+.list_item .status_indicator {
+	border: solid 1px rgb(120,120,120);
+	background: white;
+}
+
+.list_item .score, .letter .score {
+	font-size: 32px;
+	margin: 0;
+	padding: 0;
+}
+
+
+.info {
+	padding-left: 30px;
+	background: 2px 2px no-repeat url('../images/info.png');
+	margin-bottom: 10px;
+}
+
+.go_button, .go_button_highlighted, .go_button_inline, .go_button_inline_highlighted {
+	display: block;
+	padding: 4px;
+}
+
+.go_button, .go_button_highlighted {
+	float: left;
+	margin: 0 0px 10px 0px;
+}
+
+.go_button_inline, .go_button_inline_highlighted {
+	float: right;
+	margin: 0 0 0 2px;
+}
+
+.go_button, .go_button_inline {
+	background: rgb(80,80,80);
+	color: white;
+	border: solid 1px rgb(80,80,80);
+}
+
+.go_button_highlighted, .go_button_inline_highlighted {
+	background: white;
+	color: rgb(170, 0, 212);
+	border: solid 1px rgb(170, 0, 212);
+}
+
+.go_button:link, .go_button_inline:link {
+	color: white;
+}
+.go_button:visited, .go_button_inline:visited {
+	color: white;
+}
+.go_button:hover, .go_button_inline:hover {
+	color: white;
+}
+.go_button:active, .go_button_inline:active {
+	color: white;
+}
+
+.go_button_highlighted:link, .go_button_inline_highlighted:link {
+	color: rgb(170, 0, 212);
+}
+.go_button_highlighted:visited, .go_button_inline_highlighted:visited {
+	color: rgb(170, 0, 212);
+}
+.go_button_highlighted:hover, .go_button_inline_highlighted:hover {
+	color: rgb(170, 0, 212);
+}
+.go_button_highlighted:active, .go_button_inline_highlighted:active {
+	color: rgb(170, 0, 212);
+}
+
+.subtitle {
+	margin: 0 0 10px 0;
+	padding: 0;
+	font-size: 24px;
+}
+
+.section {
+	margin: 0 0 10px 0;
+	clear: both;
+}
+
+.section_buttons_right {
+	float: right;
+}
+
+.num_replies {
+	font-size: 10px;
+}
+
+.num_replies .num {
+	font-size: 14px;
+}
+
+.post_title{
+	margin: 0 0 10px 0;
+}
+
+.senders {
+	margin: 20px 0 0 0;
+}
+
+.sender {
+	float: left;
+	height: 100px;
+	text-align: center;
+}
+
+.sender_avatar_image {
+	position: relative;
+	width: 56px;
+	height: 56px;
+	margin: auto;
+	margin-top: 0.6em;
+}
+
+.avatar_image_medium {
+	width: 56px;
+	height: 56px;
+}
+
+.avatar_mask_medium {
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 56px;
+	height: 56px;
+}
+
+.sender_name_and_bling {
+	float: left;
+	text-align: center;
+}
+
+.sender_name {
+	line-height: 12px;
+	margin-top: 0.6em;
+}
+
+.sender_bling {
+	font-size: 12px;
+}
+
+
+.avatar_image_small {
+	margin-top: 6px;
+	height: 42px;
+	width: 42px;
+}
+
+.avatar_mask_small {
+	position: absolute;
+	height: 42px;
+	width: 42px;
+	top: 6px;
+	left: 0;
+}
+
+.content_type {
+	font-size: 18px;
+	position: relative;
+	top: -6px;
+	left: -4px;
+}
