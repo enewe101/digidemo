@@ -3,12 +3,26 @@
 	
 
 
-<div id = "message"> ABC </div>
+<div id = "message">  </div>
      <div class="demo" id="basic">
+
+{% if request|getFollowPostStatus:proposal.id == "unlogged" %}
 <form>
-<input type="radio" id="followPost" value="follow" onClick="handleClick(this)">Follow Post<br>
-<input type="radio" id="unfollowPost" value="unfollow" onClick="handleClick(this)">Unfollow Post
+<input type="radio" name="PostFollow" id="followPost" value="follow" onClick="handleClick(this)">Follow Post<br>
+<input type="radio" name="PostFollow" id="unfollowPost" value="unfollow" onClick="handleClick(this)">Unfollow Post
 </form>
+{% elif request|getFollowPostStatus:proposal.id == "following" %}
+<form>
+<input type="radio" name="PostFollow" id="followPost" value="follow" onClick="handleClick(this)" checked />Follow Post<br>
+<input type="radio" name="PostFollow" id="unfollowPost" value="unfollow" onClick="handleClick(this)">Unfollow Post
+</form>
+{% else %}
+<form>
+<input type="radio" name="PostFollow" id="followPost" value="follow" onClick="handleClick(this)">Follow Post<br>
+<input type="radio" name="PostFollow" id="unfollowPost" value="unfollow" onClick="handleClick(this)" checked />Unfollow Post
+</form>
+{% endif %}
+
       </div>
 
 
@@ -17,7 +31,7 @@
 	$('#message').hide();
 
 
-	var ID =" {{ proposal.id }}";
+	var ID ="{{ proposal.id }}";
 	var URL = "{% url "handle_ajax_json" "follow_post" %}";
 	
 	function handleClick(cb) {

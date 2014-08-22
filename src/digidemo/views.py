@@ -735,3 +735,10 @@ def search(request):
         'notes' : results,
     })
 
+def userProfile(request, userName) :
+        print "abc aba abc"
+        userLoggedIn = User.objects.get(username = userName);
+        userProfile = UserProfile.objects.get(user = userLoggedIn);
+        return render (request, 'digidemo/userProfile.html', {
+                'user' : userProfile,
+                })

@@ -383,15 +383,17 @@ def follow_post(request):
         if(request.session.has_key('user')):
                 proposalID = request.POST['id'];
                 proposal = Proposal.objects.get(pk=proposalID);
-                print proposal;
                 userName = request.session['user'];
-                print "yes yes"
                 userLoggedIn = User.objects.get(username = userName);
                 userProfile = UserProfile.objects.get(user = userLoggedIn);
-                userProfile.followedProposals.add(proposal);
-                print "yo"
-                userProfile.save();
-                print "yo"
+                if proposal in userProfile.followedProposals.all() :
+                        userProfile.followedProposals.remove(proposal);
+                        print "exits already";   
+                else:
+                        print "Doesnt exists"
+                        userProfile.followedProposals.add(proposal);
+                        userProfile.save();
+                print "returning"
                 return "logged"
         else :
                 return "unlogged"

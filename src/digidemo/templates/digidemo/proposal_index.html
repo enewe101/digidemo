@@ -35,10 +35,10 @@
             <div class="post">
         <div class="details">
           <p class="l"> <span class="category">Last modified on {{ featured_post.last_modified }} </span> - Created by on {{featured_post.creation_date}} </p>
-          <p class="r"> <a href="/proposals/{{featured_post.name}}">21 Comments</a> </p>
+          <p class="r"> <a href = "{{featured_post.get_proposal_url}}">21 Comments</a> </p>
         </div>
         <div class="thumb"><a href="/proposals/{{featured_post.name}}"><img src="{{featured_post.proposal_image}}" alt="" /></a></div>
-        <h2><a href="/proposals/{{featured_post.name}}">{{featured_post.title}}</a></h2>
+        <h2><a href = "{{featured_post.get_proposal_url}}">{{featured_post.title}}</a></h2>
             <p> {{featured_post.text|getSummary}} </p>
     </div>
     </div>
@@ -55,10 +55,10 @@
       <div class="post">
         <div class="details">
           <p class="l"> <span class="category">Last modified on {{ proposal.last_modified }} </span> - Created by {{users|getAuthor:proposal}}  on {{proposal.creation_date}} </p>
-          <p class="r"> <a href="/proposals/{{proposal.name}}"> {{ proposal.score }} score</a> </p>
+          <p class="r"> <a href = "{{proposal.get_proposal_url}}"> {{ proposal.score }} score</a> </p>
         </div>
         <div class="thumb"><a href="/proposals/{{proposal.name}}"> <img src="{{proposal.proposal_image}}" alt="" /></a></div>
-        <h2><a href="/proposals/{{proposal.name}}"> {{proposal.title}}</a></h2>
+        <h2><a href = "{{proposal.get_proposal_url}}"> {{proposal.title}}</a></h2>
         <p> {{proposal.text|getSummary}} </p>
       </div>
 	{% endfor %}

@@ -6,7 +6,10 @@
 <nav>
   <ul>
     <li id="login-trigger"> Welcome {{request|getLoggedInUser}}
-    </li>
+    </li> 
+	<li id="login-trigger">
+		<a href="{% url "userProfile" request|getLoggedInUser %}" > User Profile </a>
+	</li>
     <li id ="login-trigger"><input type="button" id="logout" value="logout">
    </li>
   </ul>

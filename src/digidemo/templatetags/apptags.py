@@ -27,6 +27,20 @@ def getLoggedInUser(request):
         return(request.session['user'])
     return "false"
 
+@register.filter(name='getFollowPostStatus')
+def getFollowPostStatus(request,proposalID):
+    #print request.session.keys()
+    if(request.session.has_key("user")):
+            proposal = Proposal.objects.get(pk=proposalID);
+            userName = request.session['user'];
+            userLoggedIn = User.objects.get(username = userName);
+            userProfile = UserProfile.objects.get(user = userLoggedIn);
+            if proposal in userProfile.followedProposals.all() :
+                return "following";
+            else :
+                return "unfollowing";
+    else:
+        return "unlogged"
 
 @register.filter(needs_autoescape=True)
 def markdown(text, autoescape=None):

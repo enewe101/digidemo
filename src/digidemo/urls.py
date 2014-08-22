@@ -23,6 +23,9 @@ urlpatterns = patterns('',
 
         #Search results
         url(r'^search/$',search,name='search'),
+
+        #userProfiles
+        url(r'^userProfile/(?P<userName>\w+)/$', userProfile,name='userProfile'),
         
 	#Testing login
 	#   url(r'^Login/$',Login),
