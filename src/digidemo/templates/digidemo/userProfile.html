@@ -5,6 +5,14 @@
 	{% block body %}
 	{{block.super}}
 
+	{{user.user.userName}}
+	
+	Yo yo yo
+	{% if request|getLoggedInUser == user.user.username %}
+	<a href = "edit"><h2> Edit Profile </h2> </a> 
+	{% endif %}
+
+
 	<!-- Display basic information about everything--> 
 	Welcome : {{user.user.username}}
 	<br /> <br />

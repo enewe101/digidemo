@@ -952,12 +952,32 @@ def search(request):
     })
 
 def userProfile(request, userName) :
-        print "abc aba abc"
         userLoggedIn = User.objects.get(username = userName);
         userProfile = UserProfile.objects.get(user = userLoggedIn);
         return render (request, 'digidemo/userProfile.html', 
 			{
 				'django_vars_js': get_django_vars_JSON(),
-                'user' : userProfile,
+                                'user' : userProfile,
 			}
 		)
+
+
+def userProfileEdit(request,userName) :
+        try :
+                if (request.session['user'] != userName):
+                        return(errorPage(request,"No Necessary Permissions"));
+        except :
+                return(errorPage(request,"You have not been authorised to access the page"));
+        
+        return(errorPage(request,"Page not yet constructed"))
+
+
+def errorPage(request, error):
+        return render(request,'digidemo/errorPage.html',
+                      {
+                 	'django_vars_js': get_django_vars_JSON(),
+                        'error' : error,
+                        }
+                      )
+
+
