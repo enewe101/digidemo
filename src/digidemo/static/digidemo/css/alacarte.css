@@ -193,7 +193,6 @@ hr {
 
 .section {
 	margin: 0 0 10px 0;
-	clear: both;
 }
 
 .section_buttons_right {
@@ -277,4 +276,12 @@ hr {
 	position: relative;
 	top: -6px;
 	left: -4px;
+}
+
+.username {
+	font-weight: bold;
+}
+
+.Q_icon {
+	margin-bottom: -6px;
 }

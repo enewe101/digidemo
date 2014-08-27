@@ -1,0 +1,12 @@
+{% extends "digidemo/post_area.html" %}
+{% load staticfiles %}
+{% load apptags %}
+
+{% block  headline_title %}
+	<img src="{% static "digidemo/images/comment_icon_med.png" %}" />
+	<span class="content_type">:</span>
+	{{ proposal.get_latest.title }}
+{% endblock headline_title %}
+
+{% block subpost_type %}Reply{% endblock %}
+

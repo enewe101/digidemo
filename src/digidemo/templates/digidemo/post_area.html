@@ -8,6 +8,16 @@
 		href="{% static "digidemo/css/post_area.css" %}" />
 {% endblock css %}
 
+{% block title %}
+	{{ post_section.post.title }} | {{ block.super }} 
+{% endblock title %}
+
+{% block  headline_title %}
+	<img src="{% static "digidemo/images/compas_icon.png" %}" />
+	<span class="content_type">ISSUE:</span>
+	{{ proposal.get_latest.title }}
+{% endblock headline_title %}
+
 {% block maincol %}
 
 	{% include "digidemo/_i_titled_post.html" with post_section=post_section %}
@@ -40,7 +50,7 @@
 	<a id="_w_toggle_hidden_subpost_form_switch" class="pointer"></a>
 
 	<div id="_w_toggle_hidden_subpost_form_content">
-		<h2>Your Answer</h2>
+		<h2>Your {% block subpost_type %}Answer{% endblock %}</h2>
 		{% include "digidemo/_w_ajax_form.html" with form=subpost_form %}
 	</div>
 

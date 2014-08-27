@@ -177,6 +177,8 @@ class UserProfile(TimeStamped):
 		'dn_question': -2,
 		'up_answer': 10,
 		'dn_answer': -2,
+		'up_reply': 10,
+		'dn_reply': -2,
 	}
                 
 	def __unicode__(self):
@@ -283,7 +285,7 @@ class Reply(ScoredPost):
 
 
 class Question(ScoredPost):
-	title = models.CharField(max_length=TITLE_LENGTH)
+	title = models.CharField('question title', max_length=TITLE_LENGTH)
 	target = models.ForeignKey(Proposal)
 
 	def get_url(self):

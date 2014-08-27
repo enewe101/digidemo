@@ -1,9 +1,7 @@
 <form class="{{ form.form_class}}" 
-	id="{{ form.form_class }}_{{ include_id }}" 
+	id="{{ form.form_class }}_{{ form.id_prefix }}" 
 	action="{{ form.endpoint }}" 
 	method="post" />
-
-	{{ form.errors.as_json }}
 
 	{% csrf_token %}
 
@@ -12,17 +10,23 @@
 	{% endfor %}
 
 	{% for field in form.visible_fields %}
-	<div class="form_line">
-		<div class="field_label_wrapper">
-			{{ field.label_tag }}
+		<div class="form_line">
+
+			<div class="field_label_wrapper">
+				<span class="field_errors" id="{{field.id_for_label}}_errors">
+					{% for error in field.errors %}
+						{{ error }}
+					{% endfor %}
+				</span>
+				{{ field.label_tag }}
+			</div>
+			<div class="field_wrapper{% if field.errors %}_error{% endif %}">
+				{{ field }}
+			</div>
 		</div>
-		<div class="field_wrapper">
-			{{ field }}
-		</div>
-	</div>
 	{% endfor %}
 
-	<input id="{{ form.form_class}}_{{ include_id }}_submit" 
+	<input id="{{ form.form_class}}_{{ form.id_prefix }}_submit" 
 		class="submit" type="submit" value="submit" />
 
 </form>

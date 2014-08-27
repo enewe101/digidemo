@@ -2,9 +2,10 @@ import time
 import copy
 import unittest
 from django.core.urlresolvers import reverse
-from django.test import TestCase, LiveServerTestCase
 from django.core.files import File
-from digidemo import settings
+from django.test import TestCase, LiveServerTestCase
+from django.utils.html import escape
+from digidemo import settings, markdown as md
 from digidemo.models import *
 from selenium import webdriver
 from selenium.common.exceptions import TimeoutException
@@ -14,7 +15,6 @@ from selenium.webdriver.support.select import Select
 from selenium.webdriver.common.by import By
 import filecmp
 import os
-
 
 def pyWait(predicate, timeout=3, period=0.15):
 
@@ -49,38 +49,25 @@ def createUser():
 	return user
 
 
-
-class ProposalTest(TestCase):
+def text_is_similar(text_1, text_2):
 	'''
-	Tests functionality related to the proposal model.
+		checks for equality in strings, ignoring any white space.
 	'''
-
-	def setUp(self):
-		self.proposal = Proposal.objects.get(pk=1)
-
-	def test_url_resolution(self):
-		pk = self.proposal.pk
-		self.assertTrue(
-			self.proposal.get_overview_url().endswith(
-			'/overview/%d/keystone-xl-pipeline-extension' % pk)
-		)
-		self.assertTrue(
-			self.proposal.get_proposal_url().endswith(
-			'/proposal/%d/keystone-xl-pipeline-extension' % pk)
-		)
-		self.assertTrue(
-			self.proposal.get_discussion_url().endswith(
-			'/discuss/%d/keystone-xl-pipeline-extension' % pk)
-		)
-
-		self.assertTrue(
-			self.proposal.get_edit_url().endswith(
-			'/edit/%d/keystone-xl-pipeline-extension' % pk)
-		)
+	MATCH_WSPACE = re.compile(r'\s')
+	text_1 = MATCH_WSPACE.sub('', text_1)
+	text_2 = MATCH_WSPACE.sub('', text_2)
+	return text_1 == text_2
 
 
 
 class SeleniumTestCase(LiveServerTestCase):
+	'''
+		This is an abstract test class.  It provides derived classes with
+		access to a WebDriver and a WebDriverWait object.  Any classes
+		designed to test the actual behavior of webpages in a browser should
+		inheret from this class.  See the wiki for an explanation of 
+		how to use WebDriver and WebDriverWait
+	'''
 
 	@classmethod
 	def setUpClass(cls):
@@ -94,6 +81,53 @@ class SeleniumTestCase(LiveServerTestCase):
 		super(SeleniumTestCase, cls).tearDownClass()
 
 
+	def element_contains(self, element_id, content, use_html=True):
+		'''
+			returns a boolean indicating whether the element with html_id
+			<element_id> contains the text <content>.  Ignores differences
+			in whitespace.
+		'''
+		if use_html:
+			found_content = (
+				self.driver.find_element('id', element_id)
+				.get_attribute('innerHTML')
+			)
+		else:
+			found_content = self.driver.find_element('id', element_id).text
+
+
+		if not text_is_similar(found_content, content):
+			print '<<'
+			print found_content
+			print '-- is different from --'
+			print content
+			print '>>'
+			return False
+
+		else: return True
+
+
+	def elements_contain(self, contents_spec, use_html=True):
+		'''
+			returns a boolean value indicating whether each of the indicated 
+			html elements (html id given as keys of <contents_spec>)
+			contains the corresponding content (given as values of 
+			<content_spec>).  Ignores differences in whitespace
+		'''
+
+		valid = True
+		for element_id, content in contents_spec.items():
+			valid = (
+				self.element_contains(element_id, content, use_html)
+				and valid
+			)
+
+		return valid
+
+	def click(self, element_id):
+		self.driver.find_element('id', element_id).click()
+
+
 class QuestionRenderTest(SeleniumTestCase):
 	'''
 		tests that the test question in the database renders correctly
@@ -103,986 +137,844 @@ class QuestionRenderTest(SeleniumTestCase):
 		question = Question.objects.get(pk=1)
 		self.driver.get(self.live_server_url + question.get_url())
 
-		self.driver.find_element_by_class_name('discussion_title')
-		self.driver.find_element_by_id('q_upvote')
-		self.driver.find_element_by_id('q_score')
-		self.driver.find_element_by_id('q_downvote')
+		# Make sure the voting widget showed up properly
+		self.driver.find_element_by_id('QuestionVoteForm_q_upvote')
+		self.driver.find_element_by_id('QuestionVoteForm_q_score')
+		self.driver.find_element_by_id('QuestionVoteForm_q_downvote')
 
+		# make sure the question contents displayed correctly
+		title = self.driver.find_element_by_class_name('post_title')
+		self.assertEqual(title.text, question.title)
+		body = self.driver.find_element_by_class_name('post_body')
+		self.assertEqual(body.text, question.text)
 
-
+		# make sure that all the answers showed up
+		answers = Answer.objects.filter(target=question)
+		answer_divs = self.driver.find_elements_by_class_name('subpost_body')
+		self.assertEqual(len(answer_divs), answers.count())
+		space_match = re.compile(r'\s')
+		for i in range(len(answer_divs)):
+			a, a_div = answers[i], answer_divs[i]
+			self.assertEqual(
+				space_match.sub('', a_div.text), 
+				space_match.sub('', a.text)
+			)
+			self.driver.find_element('id', 'AnswerVoteForm_%d_upvote'%(i+1))
+			self.driver.find_element('id', 'AnswerVoteForm_%d_score'%(i+1))
+			self.driver.find_element('id', 'AnswerVoteForm_%d_downvote'%(i+1))
 		
-class SeleniumFormTestCase(SeleniumTestCase):
-
-	@classmethod
-	def setUpClass(cls):
-
-		# SeleniumFormTestCase is an abstract test class.  It shouldn't be run
-		# but classes that inherit from it should.
-		if cls == SeleniumFormTestCase:
-			raise unittest.SkipTest('abstract class')
-
-		else:
-			super(SeleniumFormTestCase, cls).setUpClass()
-
-
-	FIELD_TYPES = ['SUBMIT', 'TEXTS', 'SELECTIONS']
-
-	def fill_form_correctly_and_verify(self):
-
-		# Fill and submit the form
-		self.fill_and_submit(self.FORM_DATA)
-
-		# verify that the proposal and related objects are found in the 
-		# database
-		self.check_valid()
-
-
-	def fill_and_submit(self, data):
-		self.fill_form(data)
-		self.submit_form()
-	
-
-	def fill_form(self, data):
-
-		# Accomodate the fact that the form elements may be dynamically
-		# loaded, but timeout if form elements not found within three seconds
-
-		# Apply the select choices
-		if 'SELECTIONS' in data:
-			for spec in data['SELECTIONS']:
-				element_id, datum = spec[0], spec[1]
-				elm = self.wait.until( lambda driver:
-					Select(driver.find_element('id', element_id)))
-				elm.select_by_visible_text(datum)
-
-		# Enter text in text-based inputs
-		if 'TEXTS' in data:
-			for spec in data['TEXTS']:
-				element_id, datum = spec[0], spec[1]
-				elm = self.wait.until(lambda driver: 
-					driver.find_element('id', element_id))
-				elm.send_keys(datum)
-
-
-	def clear_fields(self, data):
-
-		# Accomodate the fact that the form elements may be dynamically
-		# loaded, but timeout if form elements not found within three seconds
-
-		# Apply the select choices
-		if 'SELECTIONS' in data:
-			for spec in data['SELECTIONS']:
-				element_id = spec[0]
-				elm = self.wait.until( lambda driver:
-					Select(driver.find_element('id', element_id)))
-				elm.select_by_visible_text('-'*9)
-
-		# Enter text in text-based inputs
-		if 'TEXTS' in data:
-			for spec in data['TEXTS']:
-				element_id = spec[0]
-				elm = self.wait.until(lambda driver: 
-					driver.find_element('id', element_id))
-				elm.clear()
-
-
-	def submit_form(self):
-		# submit the form
-		self.driver.find_element('id', self.FORM_DATA['SUBMIT']).click()
-
-
-	def get_current_url(self):
-		return self.driver.current_url
-
-
-	def test_simple_add(self):
-		# This test simply does a vanilla form filling, submission, and check
-		self.driver.get(self.ADD_FORM_URL)
-		self.fill_form_correctly_and_verify()
-
-
-	def test_form_errors(self):
-		self.driver.get(self.ADD_FORM_URL)
-		self.fill_form(self.FORM_DATA)
-
-		for field_type in self.FIELD_TYPES:
-			if field_type in self.FORM_DATA and field_type != 'SUBMIT':
-				for spec in self.FORM_DATA[field_type]:
-
-					# check whether the field is specified as required
-					required = False
-					try:
-						required = bool(spec[2] == 'require')
-					except IndexError:
-						pass
-
-					# if required, try ommitting it; ensure error.
-					if required:
-						self.clear_fields({field_type: [spec]})
-						self.submit_form()
-						self.check_invalid()
-
-						# replace the missing field
-						self.fill_form({field_type: [spec]})
-
-
-		# finally, confirm that the form submits correctly,
-		# with all the fields filled
-		self.submit_form()
-		self.check_valid()
 
 
 
-class CommentTest(SeleniumFormTestCase):
+class CommentTest(SeleniumTestCase):
 
-	def setUp(self):
-		self.COMMENT_TEXT = 'Test comment!'
-		self.COMMENT_TEXTAREA_ID = 'LetterCommentForm_1_text'
-		self.FORM_DATA = {
-			'TEXTS': [
-				(self.COMMENT_TEXTAREA_ID, self.COMMENT_TEXT, 'require')],
-			'SUBMIT': 'LetterCommentForm_1_submit'
+	def test_petition_comment(self):
+		# choose a petition, go to its page
+		letter = Letter.objects.get(pk=1)
+		comment_form_spec = {
+			'url': self.live_server_url + letter.get_url(),
+			'comment_class': Comment,
+			'comment_textarea_id': 'LetterCommentForm_1_text',
+			'toggler_id': '_w_toggle_hidden_comment_1',
+			'comment_text': 'Test comment!',
+			'comments_wrapper_id': 'comments_1',
+			'comments_class': 'letter_comment',
+			'username': User.objects.get(pk=1).username,
+			'submit_id': 'LetterCommentForm_1_submit'
 		}
-
-		self.PROPOSAL = Proposal.objects.get(pk=1)
-		self.ADD_FORM_URL = (self.live_server_url 
-			+ self.PROPOSAL.get_overview_url())
-
-		self.USER = User.objects.get(username='superuser')
-
-		self.SHOW_COMMENT_SWITCH_ID = '_w_toggle_hidden_comment_1'
-		self.COMMENT_LIST_WRAPPER_ID = 'comments_1'
+		self.submit_comment(**comment_form_spec)
 
 
-	@unittest.skip('skip for now')
-	def test_form_errors(self):
-		super(CommentTest, self).test_form_errors()
+	def test_blank_petition_comment(self):
+		# choose a petition, go to its page
+		letter = Letter.objects.get(pk=1)
+		comment_form_spec = {
+			'url': self.live_server_url + letter.get_url(),
+			'comment_class': Comment,
+			'comment_textarea_id': 'LetterCommentForm_1_text',
+			'toggler_id': '_w_toggle_hidden_comment_1',
+			'comment_text': 'Test comment!',
+			'comments_wrapper_id': 'comments_1',
+			'comments_class': 'letter_comment',
+			'username': User.objects.get(pk=1).username,
+			'submit_id': 'LetterCommentForm_1_submit',
+			'error_div_id': 'LetterCommentForm_1_text_errors',
+			'error_text': 'This field is required.'
+		}
+		self.submit_blank_comment(**comment_form_spec)
 
-	def test_simple_add(self):
+	def test_question_comment(self):
+		# choose a petition, go to its page
+		question = Question.objects.get(pk=1)
+		comment_form_spec = {
+			'url': self.live_server_url + question.get_url(),
+			'comment_class': QuestionComment,
+			'comment_textarea_id': 'QuestionCommentForm_q_text',
+			'toggler_id': '_w_toggle_hidden_comment_q',
+			'comment_text': 'Test comment!',
+			'comments_wrapper_id': 'comments_q',
+			'comments_class': 'letter_comment',
+			'username': User.objects.get(pk=1).username,
+			'submit_id': 'QuestionCommentForm_q_submit'
+		}
+		self.submit_comment(**comment_form_spec)
 
-		self.driver.get(self.ADD_FORM_URL)
+	def test_blank_question_comment(self):
+		# choose a petition, go to its page
+		question = Question.objects.get(pk=1)
+		comment_form_spec = {
+			'url': self.live_server_url + question.get_url(),
+			'comment_class': QuestionComment,
+			'comment_textarea_id': 'QuestionCommentForm_q_text',
+			'toggler_id': '_w_toggle_hidden_comment_q',
+			'comment_text': 'Test comment!',
+			'comments_wrapper_id': 'comments_q',
+			'comments_class': 'letter_comment',
+			'username': User.objects.get(pk=1).username,
+			'submit_id': 'QuestionCommentForm_q_submit',
+			'error_div_id': 'QuestionCommentForm_q_text_errors',
+			'error_text': 'This field is required.'
+		}
+		self.submit_blank_comment(**comment_form_spec)
 
-		# Click the link to reveal the comment form
-		show_comment_switch = self.wait.until(lambda driver: 
-			driver.find_element('id', self.SHOW_COMMENT_SWITCH_ID))
-		show_comment_switch.click()
+	def test_answer_comment(self):
+		# choose a petition, go to its page
+		question = Question.objects.get(pk=1)
+		comment_form_spec = {
+			'url': self.live_server_url + question.get_url(),
+			'comment_class': AnswerComment,
+			'comment_textarea_id': 'AnswerCommentForm_1_text',
+			'toggler_id': '_w_toggle_hidden_comment_1',
+			'comment_text': 'Test comment!',
+			'comments_wrapper_id': 'comments_1',
+			'comments_class': 'letter_comment',
+			'username': User.objects.get(pk=1).username,
+			'submit_id': 'AnswerCommentForm_1_submit'
+		}
+		self.submit_comment(**comment_form_spec)
 
-		self.fill_form_correctly_and_verify()
-	
+	def test_blank_answer_comment(self):
+		# choose a petition, go to its page
+		question = Question.objects.get(pk=1)
+		comment_form_spec = {
+			'url': self.live_server_url + question.get_url(),
+			'comment_class': AnswerComment,
+			'comment_textarea_id': 'AnswerCommentForm_1_text',
+			'toggler_id': '_w_toggle_hidden_comment_1',
+			'comment_text': 'Test comment!',
+			'comments_wrapper_id': 'comments_1',
+			'comments_class': 'letter_comment',
+			'username': User.objects.get(pk=1).username,
+			'submit_id': 'AnswerCommentForm_1_submit',
+			'error_div_id': 'AnswerCommentForm_1_text_errors',
+			'error_text': 'This field is required.'
+		}
+		self.submit_blank_comment(**comment_form_spec)
 
-	def check_valid(self):
+	def test_answer_comment_2(self):
+		# choose a petition, go to its page
+		question = Question.objects.get(pk=1)
+		comment_form_spec = {
+			'url': self.live_server_url + question.get_url(),
+			'comment_class': AnswerComment,
+			'comment_textarea_id': 'AnswerCommentForm_2_text',
+			'toggler_id': '_w_toggle_hidden_comment_2',
+			'comment_text': 'Test comment!',
+			'comments_wrapper_id': 'comments_2',
+			'comments_class': 'letter_comment',
+			'username': User.objects.get(pk=1).username,
+			'submit_id': 'AnswerCommentForm_2_submit'
+		}
+		self.submit_comment(**comment_form_spec)
 
-		# Check that the comment was added to the database
-		matching_comments = Comment.objects.filter(
-			user=self.USER, text=self.COMMENT_TEXT)
-		self.assertTrue(pyWait(lambda: matching_comments.count() == 1))
+	def test_blank_answer_comment_2(self):
+		# choose a petition, go to its page
+		question = Question.objects.get(pk=1)
+		comment_form_spec = {
+			'url': self.live_server_url + question.get_url(),
+			'comment_class': AnswerComment,
+			'comment_textarea_id': 'AnswerCommentForm_2_text',
+			'toggler_id': '_w_toggle_hidden_comment_2',
+			'comment_text': 'Test comment!',
+			'comments_wrapper_id': 'comments_2',
+			'comments_class': 'letter_comment',
+			'username': User.objects.get(pk=1).username,
+			'submit_id': 'AnswerCommentForm_2_submit',
+			'error_div_id': 'AnswerCommentForm_2_text_errors',
+			'error_text': 'This field is required.'
+		}
+		self.submit_blank_comment(**comment_form_spec)
 
-		# Check that the comment was added to the page
-		comment_list = self.driver.find_element(
-			'id', self.COMMENT_LIST_WRAPPER_ID)
-		comments = comment_list.find_elements_by_class_name('letter_comment')
-		last_comment = comments[-1]
+
+	def submit_comment(
+			self,
+			url,
+			comment_class,
+			comment_textarea_id,
+			toggler_id,
+			comment_text,
+			comments_wrapper_id,
+			comments_class,
+			username,
+			submit_id
+		):
+
+		# go to the given url
+		self.driver.get(url)
+
+		# get the comment textarea.  Initially it should be hidden empty.
+		comment_textarea = self.driver.find_element('id', comment_textarea_id)
+		self.assertFalse(comment_textarea.is_displayed())
+
+		# reveal the comment form by clicking the toggler.  It should be empty
+		comment_form_toggler = self.driver.find_element('id', toggler_id)
+		comment_form_toggler.click()
+		self.assertTrue(comment_textarea.is_displayed())
+		self.assertEqual(comment_textarea.text, '')
+
+		# Add a comment.  But first check how many comments there are.
+		comments_wrapper = self.driver.find_element('id', comments_wrapper_id)
+		comments = comments_wrapper.find_elements_by_class_name(
+			comments_class)
+		initial_num_comments = len(comments)
+		comment_textarea.send_keys(comment_text)
+		self.driver.find_element('id', submit_id).click()
+
+		# Now expect that the number of comments will increse soon
+		self.wait.until(lambda driver:
+			len(comments_wrapper.find_elements_by_class_name(comments_class))
+			== initial_num_comments + 1
+		)
+		last_comment = comments_wrapper.find_elements_by_class_name(
+			comments_class)[-1]
 		text = last_comment.find_element_by_class_name(
 			'letter_comment_body').text
 		author = last_comment.find_element_by_class_name(
 			'comment_author').text
-		self.assertEqual(text, self.COMMENT_TEXT)
-		self.assertEqual(author, '~ ' + self.USER.username)
+		self.assertEqual(text, comment_text)
+		self.assertEqual(author, '~ ' + username)
 
-		# Check that comment form was hidden and cleared
-		comment_form = self.driver.find_element(
-			'id', self.COMMENT_TEXTAREA_ID)
-		self.assertFalse(comment_form.is_displayed())
-		self.assertEqual(comment_form.get_attribute('value'), '')
+		# Check that the comment can be found in the database
+		comment_class.objects.get(text=comment_text)
 
-
-	def check_invalid(self):
-		pass
-
+		# Check that the comment textarea was hidden, and that when shown
+		# it has been cleared of the last comment entered
+		self.assertFalse(comment_textarea.is_displayed())
+		comment_form_toggler.click()
+		self.assertEqual(comment_textarea.get_attribute('value'), '')
 
 
-class QuestionAnswerCommentTest(SeleniumTestCase):
+	def submit_blank_comment(
+			self,
+			url,
+			comment_class,
+			comment_textarea_id,
+			toggler_id,
+			comment_text,
+			comments_wrapper_id,
+			comments_class,
+			username,
+			submit_id,
+			error_div_id,
+			error_text
+		):
 
-	def post_comment_submit_and_check(self, comment_text, tot_num_comments):
+		# go to the given url
+		self.driver.get(url)
 
-		# put some text in the form and submit it
-		text = self.driver.find_element('id', self.spec['comment_input_id'])
-		text.send_keys(comment_text)
-		submit = self.driver.find_element('id', self.spec['submit_id'])
-		submit.click()
+		# get the comment textarea.  Initially it should be hidden empty.
+		comment_textarea = self.driver.find_element('id', comment_textarea_id)
+		self.assertFalse(comment_textarea.is_displayed())
 
-		# wait until the comment is put onto the page.  How can we tell?
-		# We wait until the total number of comments found is tot_num_comments
-		comment_divs_wrapper = self.driver.find_element(
-			'id', self.spec['comments_div_id'])
-		self.wait.until(lambda driver: 
-			len(comment_divs_wrapper.find_elements_by_class_name(
-				'letter_comment')) == tot_num_comments)
+		# reveal the comment form by clicking the toggler.  It should be empty
+		comment_form_toggler = self.driver.find_element('id', toggler_id)
+		comment_form_toggler.click()
+		self.assertTrue(comment_textarea.is_displayed())
+		self.assertEqual(comment_textarea.text, '')
+		
+		# Attempt to submit blank comment.  But first check how many 
+		# comments there are.
+		comments_wrapper = self.driver.find_element('id', comments_wrapper_id)
+		comments = comments_wrapper.find_elements_by_class_name(
+			comments_class)
+		initial_num_comments = len(comments)
+		self.driver.find_element('id', submit_id).click()
 
-		# get the comment body and author
-		comment_divs = comment_divs_wrapper.find_elements_by_class_name(
-			'letter_comment')
-		comment_body = comment_divs[-1].find_element_by_class_name(
-			'letter_comment_body')
-		self.assertEqual(comment_body.text, comment_text)
-		comment_author = comment_divs[-1].find_element_by_class_name(
-			'comment_author')
-		self.assertEqual(comment_author.text, '~ ' + self.spec['username'])
+		# Now expect that an error will be displayed
+		self.wait.until(lambda driver:
+			driver.find_element('id', error_div_id).text == error_text)
+		self.assertTrue('error' in comment_textarea.get_attribute('class'))
 
+		# hide the comment textarea again
+		comment_form_toggler.click()
 
-	def check_comment_visibility_toggle(self):
-
-		# get the comment input (which starts out hidden) and the link that
-		# reveals it when clicked.
-		hidden_div = self.driver.find_element(
-			'id', self.spec['hidden_comment_id'])
-		show_link = self.driver.find_element(
-			'id', self.spec['visibility_toggler'])
-
-		# initially the comment form is hidden
-		# clicking the add-comment link shows it.  At first it's empty
-		self.assertTrue(not hidden_div.is_displayed())
-		show_link.click()
-		self.assertTrue(hidden_div.is_displayed())
-		self.assertEqual(hidden_div.text, '')
-
-		# clicking again hides it again, and again shows it again
-		show_link.click()
-		self.assertTrue(not hidden_div.is_displayed())
-		show_link.click()
-		self.assertTrue(hidden_div.is_displayed())
-
-
-	def do_test_comment(self, num_initial_comments):
-
-		# make sure the comment starts hidden, and is revealed properly
-		self.check_comment_visibility_toggle()
-
-		# try adding a comment
-		self.post_comment_submit_and_check(
-			self.spec['text1'], num_initial_comments + 1)
-
-		# make sure that its hidden again, that the old submitted comment
-		# was cleared from the form, and that it still gets revealed properly
-		self.check_comment_visibility_toggle()
-
-		# make sure that submitting a second comment works
-		self.post_comment_submit_and_check(
-			self.spec['text2'], num_initial_comments + 2)
-
-
-	def test_question_comment(self):
-
-		question = Question.objects.get(pk=1)
-
-		# provide the comment test specification
-		self.spec = {
-			'username': User.objects.get(username='superuser').username,
-			'visibility_toggler': '_w_toggle_hidden_comment_qc',
-			'text1': 'First test comment text',
-			'text2': 'Second test comment text',
-			'hidden_comment_id': '_w_toggle_hidden_content_comment_qc',
-			'comment_input_id': 'QuestionCommentFormqc_text',
-			'submit_id': 'QuestionCommentForm_qc_submit',
-			'comments_div_id': 'comments_qc'
-		}
- 
-		# now test it
-		self.driver.get(self.live_server_url + question.get_url())
-		self.do_test_comment(1)
 		
 
-	def test_answer_comment(self):
+class AnswerFormTest(SeleniumTestCase):
 
-		# We'll test adding a comment to an existing answer
+	def test_submit_answer(self):
 		question = Question.objects.get(pk=1)
-
-		# provide the comment test specification
-		self.spec = {
-			'username': User.objects.get(username='superuser').username,
-			'visibility_toggler': '_w_toggle_hidden_comment_0',
-			'text1': 'First test comment text',
-			'text2': 'Second test comment text',
-			'hidden_comment_id': '_w_toggle_hidden_content_comment_0',
-			'comment_input_id': 'AnswerCommentForm0_text',
-			'submit_id': 'AnswerCommentForm_0_submit',
-			'comments_div_id': 'comments_0'
+		submit_answer_spec = {
+			'url': self.live_server_url + question.get_url(),
+			'textarea_id': 'AnswerForm__text',
+			'answer_class_name': 'subpost',
+			'answer_text': 'A new answer!',
+			'answer_body_class': 'subpost_body',
+			'toggle_id': '_w_toggle_hidden_subpost_form_switch',
+			'submit_id': 'AnswerForm__submit',
 		}
 
-		# now test it
-		self.driver.get(self.live_server_url + question.get_url())
-		self.do_test_comment(1)
+		self.submit_answer(**submit_answer_spec)
 
-
-	def test_new_answer_comment(self):
-
-		# Test making a new answer and adding a comment to the 
-		# new answer without refreshing the page.  First make an answer:
+	def test_submit_blank_answer(self):
 		question = Question.objects.get(pk=1)
-		self.driver.get(self.live_server_url + question.get_url())
-		self.driver.find_element('id', self.ANSWER_TEXT_ID).send_keys(
-				'Test answer.')
-		self.driver.find_element('id', 'AnswerForm__submit').click()
-
-		# wait for 'add comment' form for the new answer to show up
-		answers_wrapper = self.driver.find_element('id', 'answers')
-		self.wait.until(lambda driver: 
-			len(answers_wrapper.find_elements_by_class_name('add_comment'))
-			== 2
-		)
-
-		# get the new answer's add-comment form
-		new_answer_comment_div = answers_wrapper.find_elements_by_class_name(
-			'add_comment')[-1]
-
-		# provide the comment test specification
-		username = User.objects.get(username='superuser').username
-
-		self.spec = {
-			'username': username,
-			'visibility_toggler': '_w_toggle_hidden_comment_'+username+'1',
-			'text1': 'First test comment text',
-			'text2': 'Second test comment text',
-			'hidden_comment_id': 
-				'_w_toggle_hidden_content_comment_'+username+'1',
-			'comment_input_id': 'AnswerCommentForm1_text',
-			'submit_id': 'AnswerCommentForm_1_submit',
-			'comments_div_id': 'comments_'+username+'1'
+		submit_answer_spec = {
+			'url': self.live_server_url + question.get_url(),
+			'textarea_id': 'AnswerForm__text',
+			'answer_class_name': 'subpost',
+			'answer_text': 'A new answer!',
+			'answer_body_class': 'subpost_body',
+			'answer_error_id': 'AnswerForm__text_errors',
+			'error_message': 'This field is required.',
+			'toggle_id': '_w_toggle_hidden_subpost_form_switch',
+			'submit_id': 'AnswerForm__submit'
 		}
 
+		self.submit_blank_answer(**submit_answer_spec)
+
+	def submit_blank_answer(
+			self,
+			url,
+			textarea_id,
+			answer_class_name,
+			answer_text,
+			answer_body_class,
+			answer_error_id,
+			error_message,
+			toggle_id,
+			submit_id,
+		):
+
+		# go to the given page
+		self.driver.get(url)
+
+		# count how many answers are on the page initially
+		initial_num_answers = len(
+			self.driver.find_elements_by_class_name(answer_class_name))
+
+		# submit a blank answer
+		textarea = self.driver.find_element('id', textarea_id)
+		self.driver.find_element('id', submit_id).click()
+
+		# An error message should be displayed
+		error_text = self.driver.find_element('id', answer_error_id).text
+		self.assertEqual(error_text, error_message)
+
+		# And the textarea should be styled with the class error
+		self.assertTrue('error' in textarea.get_attribute('class'))
 
 
-class AnswerFormTest(SeleniumFormTestCase):
+	def submit_answer(
+			self,
+			url,
+			textarea_id,
+			answer_class_name,
+			answer_text,
+			answer_body_class,
+			toggle_id,
+			submit_id,
+		):
 
-	def setUp(self):
-		self.TEXT = 'Test answer text'
-		self.ANSWER_TEXT_ID = 'AnswerForm__text'
-		self.FORM_DATA = {
-			'TEXTS': [(self.ANSWER_TEXT_ID, self.TEXT, 'require')],
-			'SUBMIT': 'AnswerForm__submit' 
-		}
+		# go to the given page
+		self.driver.get(url)
 
-		self.QUESTION = Question.objects.get(pk=1)
-		self.ADD_FORM_URL = self.live_server_url + self.QUESTION.get_url()
-		self.USER = User.objects.get(username='superuser')
+		# count how many answers are on the page initially
+		initial_num_answers = len(
+			self.driver.find_elements_by_class_name(answer_class_name))
 
-		self.HIDE_ANSWER_DIV_ID = '_w_toggle_hidden_subpost_form_content'
-		self.TOGGLE_SHOW_ANSWER_ID = '_w_toggle_hidden_subpost_form_switch'
+		# submit a new answer
+		textarea = self.driver.find_element('id', textarea_id)
+		textarea.send_keys(answer_text)
+		self.driver.find_element('id', submit_id).click()
 
-	def test_form_errors(self):
-		super(AnswerFormTest, self).test_form_errors()
+		# the new answer should appear shortly on the page
+		self.wait.until(lambda driver:
+			len(driver.find_elements_by_class_name(answer_class_name)) 
+			== initial_num_answers + 1)
+		last_answer = self.driver.find_elements_by_class_name(
+			answer_class_name)[-1]
+		last_answer_text = last_answer.find_element_by_class_name(
+				answer_body_class).text
+		self.assertEqual(last_answer_text, answer_text)
+
+		# the new answer should appear in the database too
+		answer = Answer.objects.get(text=answer_text)
+		self.assertEqual(answer.target.pk, 1)
+
+		# the answer form should have been hidden.  When revealed, it should
+		# be blank.
+		self.assertFalse(textarea.is_displayed())
+		self.driver.find_element('id', toggle_id).click()
+		self.assertTrue(textarea.is_displayed())
+		self.assertEqual(textarea.get_attribute('value'), '')
 
 
-	def test_simple_add(self):
-		super(AnswerFormTest, self).test_simple_add()
+class QuestionFormTest(SeleniumTestCase):
+	'''
+		Tests adding a question using the QuestionForm
+	'''
+
+	title_input_id = 'QuestionForm__title'
+	title_text = 'Test Question Title?'
+
+	textarea_id = 'QuestionForm__text'
+	question_text = 'This is only a test?'
+
+	texts = [
+		(title_input_id, title_text),
+		(textarea_id, question_text)
+	]
+
+	submit_id = 'QuestionForm__submit'
 
 
-	def check_invalid(self):
+	def test_submit_question(self):
 
-		# We should see an error message
-		error_msg_elm = self.wait.until(lambda driver:
-			driver.find_element('id', 'AnswerForm__text_errors'))
-		self.assertEqual(error_msg_elm.text, 'This field is required.')
+		# go to the submit question page 
+		proposal = Proposal.objects.get(pk=1)
+		url = self.live_server_url + proposal.get_question_url()
+		self.driver.get(url)
 
-		# The text area should get assigned a class of `error`
-		text_input = self.wait.until(lambda driver: 
-			driver.find_element('id', self.ANSWER_TEXT_ID))
-		self.assertIn('error', text_input.get_attribute('class'))
+		# fill out the inputs
+		for t in self.texts:
+			self.driver.find_element('id', t[0]).send_keys(t[1])
 
+		# submit the form.  
+		self.driver.find_element('id', self.submit_id).click()
 		
-	def check_valid(self):
+		# We should be redirected to a page containing the question
+		found_title_text = self.driver.find_element_by_class_name(
+			'post_title').text
+		self.assertEqual(found_title_text, self.title_text)
+		found_question_text = self.driver.find_element_by_class_name(
+			'post_body').text
+		self.assertEqual(found_question_text, self.question_text)
 
-		# We may have to wait, but soon the new answer is in the db
-		self.assertTrue(
-			pyWait(lambda: Answer.objects.count()==2, 3, 0.15))
-
-		answer = Answer.objects.all().last()
-		self.assertEqual(answer.text, self.TEXT)
-		self.assertEqual(answer.user, self.USER)
-		self.assertEqual(answer.target, self.QUESTION)
-		self.assertEqual(answer.score, 0)
-
-		# check that the new answer is on the page
-		reply_body = self.wait.until(
-			lambda driver: driver.find_elements_by_class_name('reply_body'))
-
-		# check for the voting elements.  When they are inserted, their id is
-		# built from some user data.
-		vote_id = 'AnswerVoteForm_' + str(answer.pk)
-
-		self.wait.until(
-			lambda driver: driver.find_element('id', vote_id + '_upvote'))
-		self.wait.until(
-			lambda driver: driver.find_element('id', vote_id + '_score'))
-		self.wait.until(
-			lambda driver: driver.find_element('id', vote_id + '_downvote'))
-
-		# check that the divider was introduced between the Q and A
-		hr_flourishes = self.wait.until(
-			lambda driver: driver.find_elements_by_class_name('flourish'))
-		self.assertEqual(len(hr_flourishes), 2)
-
-		# check that the entry box was hidden
-		hide_answer_div = self.wait.until(lambda driver:
-			driver.find_element('id', self.HIDE_ANSWER_DIV_ID))
-
-		# Shortly after the form is submitted, the add answer form will be
-		# hidden
-		self.assertTrue(pyWait(lambda: not hide_answer_div.is_displayed()))
-
-		# The link to reveal the form again (to add another answer) is shown
-		show_answer_switch = self.driver.find_element('id',
-			self.TOGGLE_SHOW_ANSWER_ID)
-		self.assertTrue(
-			pyWait(lambda: show_answer_switch.text == 'Add another answer'))
-
-		# clicking that link shows the answer form again
-		show_answer_switch.click()
-		self.assertTrue(pyWait(lambda: hide_answer_div.is_displayed()))
+		# The question should be in the database. (this automatically raises 
+		# an error if no match for the query is found.)
+		Question.objects.get(
+			target=proposal, title=self.title_text, text=self.question_text)
 
 
+	def test_submit_incomplete_question(self):
+		FIELD_WRAPPER_ERROR_CLASS = 'field_wrapper_error'	
+
+		# go to the submit question page 
+		proposal = Proposal.objects.get(pk=1)
+		url = self.live_server_url + proposal.get_question_url()
+		self.driver.get(url)
+
+		# submit without a title
+		t = self.texts[1]
+		body = self.driver.find_element('id', t[0])
+		body.send_keys(t[1])
+
+		# submit the form.  
+		submit = self.driver.find_element('id', self.submit_id).click()
+
+		# we should still face the form, and the title should have an 
+		# error class and error message
+		title = self.driver.find_element('id', self.texts[0][0])
+		error_class = title.find_element_by_xpath('..').get_attribute('class')
+		self.assertEqual(error_class, FIELD_WRAPPER_ERROR_CLASS)
+
+		# submit without a question body
+		t = self.texts[0]
+		self.driver.find_element('id', self.texts[0][0]).send_keys(
+			self.texts[0][1])
+		self.driver.find_element('id', self.texts[1][0]).clear()
+		self.driver.find_element('id', self.submit_id).click()
+
+		# we should still face the form, and the title should have an 
+		# error class and error message
+		body = self.driver.find_element('id', self.texts[1][0])
+		error_class = body.find_element_by_xpath('..').get_attribute('class')
+		self.assertEqual(error_class, FIELD_WRAPPER_ERROR_CLASS)
 
 
-class QuestionFormTest(SeleniumFormTestCase):
-	'''
-	Tests adding a question using the QuestionForm
-	'''
+class FormTest(SeleniumTestCase):
 
-	def setUp(self):
+	def fill_form(self, form_data_spec, clear=[]):
 
-		self.TITLE = 'Test Title'
-		self.TEXT = 'Test text.'
-		self.FORM_DATA = {
-			'TEXTS': [
-				('QuestionForm_title', self.TITLE, 'require'),
-				('QuestionForm_text', self.TEXT, 'require')
-			],
-			'SUBMIT': 'QuestionForm__submit'
+		# clear is an optional element_id or list thereof for elements to
+		# be cleared.  Helpful for filling all fields except certain ones.
+		if isinstance(clear, basestring):
+			clear = [clear]
+
+		for form_element_id, form_data in form_data_spec.items():
+
+			# form_data might just be the text to input itself
+			if isinstance(form_data, basestring):
+				input_type = 'text'
+				input_val = form_data
+
+			else:
+				input_val = form_data['value']
+				try:
+					input_type = form_data['input_type']
+				except KeyError:
+					input_type = 'text'
+
+
+			# first clear the input
+			self.clear_input(form_element_id, input_type)
+
+			# if this element was listed in the clear argument, 
+			# then that's all we do
+			if form_element_id in clear:
+				continue
+
+			# Next, delegate filling the element to the appropriate method
+			self.fill_input(form_element_id, input_val, input_type)
+			
+
+	def fill_input(self, element_id, input_val, input_type):
+		if input_type == 'text':
+			self.driver.find_element('id', element_id).send_keys(input_val)
+
+		elif input_type == 'select':
+			Select(self.driver.find_element('id', element_id)).select_by_value(
+				input_val)
+
+
+	def clear_input(self, element_id, input_type):
+
+		if input_type is None or input_type == 'text':
+			self.driver.find_element('id', element_id).clear()
+
+		elif input_type == 'select':
+			# may not be implemented correctly
+			Select(self.find_element('id', element_id)).select_by_value(
+				'None')
+
+
+class ProposalFormTest(FormTest):
+
+	values = ['Test Proposal Title', 'This is only a test summary.',
+				'This is only a test body.']
+	form_data = {
+		'ProposalVersionForm__title': {
+
+			'value': values[0],
+			'error_id': 'ProposalVersionForm__title_errors',
+			'display_id': 'proposal_title',
+			'expect': 'Test Proposal Title'
+
+		}, 'ProposalVersionForm__summary': {
+
+			'value': values[1],
+			'error_id': 'ProposalVersionForm__summary_errors',
+			'display_id': 'proposal_summary',
+			'expect': md.markdown('This is only a test summary.')
+
+		}, 'ProposalVersionForm__text': {
+
+			'value': values[2], 
+			'error_id': 'ProposalVersionForm__text_errors',
+			'display_id': 'proposal_text',
+			'expect': md.markdown('This is only a test body.')
+
+		}
+	}
+
+	test_proposal_pk = 1
+	submit_id = 'ProposalVersionForm__submit'
+	escape_text = '<&>'
+	error_msg = 'This field is required.'
+	error_class = 'field_wrapper_error'
+	username = 'superuser'	# TODO: test proper login
+
+	def test_edit_proposal_ensure_escape(self):
+		form_data_needs_escape = dict([
+			(k, self.escape_text) for k in self.form_data.keys()])
+
+		expect_escaped_data = {
+			'proposal_title': escape(self.escape_text),
+			'proposal_summary': md.markdown(escape(self.escape_text)),
+			'proposal_text': md.markdown(escape(self.escape_text))
 		}
 
-		self.PROPOSAL = Proposal.objects.get(pk=1)
-		self.ADD_FORM_URL = (self.live_server_url 
-			+ self.PROPOSAL.get_question_url())
-		self.USER = User.objects.get(username='superuser')
+		# Go to the edit page for a test proposal
+		proposal = Proposal.objects.get(pk=self.test_proposal_pk)
+		url = self.live_server_url + proposal.get_edit_url() 
+		self.driver.get(url)
+
+		# Fill and submit the form with data that should get escaped
+		self.fill_form(form_data_needs_escape)
+		self.driver.find_element('id', self.submit_id).click()
+
+		# check that the proposal was correctly loaded
+		self.assertTrue(self.elements_contain(expect_escaped_data))
+
+		# check the database
+		proposal = Proposal.objects.get(pk=self.test_proposal_pk)
+		self.check_db(proposal, self.escape_text, 
+			self.escape_text, self.escape_text, self.username)
 
 
-	def check_valid(self):
+	def check_db(self, proposal, title, summary, text, username):
+		self.assertEqual(title, proposal.title)
+		self.assertEqual(summary, proposal.summary)
+		self.assertEqual(text, proposal.text)
+		self.assertEqual(username, proposal.user.username)
 
-		# check whether the new question was created
-		question_set = self.PROPOSAL.question_set.filter(
-			title=self.TITLE)
-		self.assertEqual(question_set.count(), 1)
-
-		# verify the question has the right data
-		self.question = question_set[0]
-		self.assertEqual(self.question.text, self.TEXT)
-		self.assertEqual(self.question.user, self.USER)
-		self.assertEqual(self.question.target, self.PROPOSAL)
-
-		# check that we were redirected to the view-question page
-		self.assertEqual(
-			self.get_current_url(),
-			self.live_server_url + self.question.get_url()
-		)
+		proposal_version = proposal.get_latest()
+		self.assertEqual(title, proposal_version.title)
+		self.assertEqual(summary, proposal_version.summary)
+		self.assertEqual(text, proposal_version.text)
+		self.assertEqual(username, proposal_version.user.username)
 
 
-	def check_invalid(self):
+	def test_edit_proposal_incomplete(self):
 
-		# ensure the new question was not created
-		question_set = self.PROPOSAL.question_set.filter(
-			title=self.TITLE)
-		self.assertEqual(question_set.count(), 0)
+		# html id's for the divs that contain error messages
 
-		# ensure we are faced with the form again (rather than redirected)
-		self.assertEqual(self.get_current_url(), self.ADD_FORM_URL)
+		# Go to the edit page for a test proposal
+		proposal = Proposal.objects.get(pk=self.test_proposal_pk)
+		url = self.live_server_url + proposal.get_edit_url() 
+		self.driver.get(url)
 
+		# we'll submit the form several times, 
+		# each time ommitting a different field
+		for ommitted_id, spec in self.form_data.items():
 
-	def get_success_url(self):
-		return self.question.get_url()
+			error_id = spec['error_id']
 
+			self.fill_form(self.form_data, clear=ommitted_id)
+			self.click(self.submit_id)
 
+			# Check for the error message
+			self.assertTrue(self.element_contains(error_id, self.error_msg,
+				use_html=False))
 
-
-class ProposalFormTest(SeleniumFormTestCase):
-	'''
-	Tests adding and editing proposals (proposal versions), and their 
-	associated factors. 
-	'''
-
-	def setUp(self):
-		# Text fields for proposal version
-		self.TITLE = 'Test Title'
-		self.SUMMARY = 'Test summary.'
-		self.TEXT = 'Test text.'
-
-
-		self.TITLE_INPUT_ID = 'ProposalVersionForm__title'
-		# The hardcoded logged in user's name.  Change this when logging in
-		# users is ready
-		self.USERNAME = 'superuser'
-
-		## Second, Pair dummy datas with the form elements in which they 
-		## are to be entered
-
-		# Valence, textarea id, and input text for factors
-		self.FACTOR_TEXTS = [
-			(
-				1 if val=='pos' else -1,
-				'id_%s-%d-description' % (val,i),
-				u'Test %s factor %d' % (val,i),
-			) 
-			for val in ['pos', 'neg'] for i in range(5) 
-		]
-
-		# Text to put in proposal version text inputs and textareas
-		self.PLAIN_ENTRIES = [
-			(self.TITLE_INPUT_ID, self.TITLE, 'require'),
-			('ProposalVersionForm__summary', self.SUMMARY, 'require'),
-			('ProposalVersionForm__text', self.TEXT, 'require'),
-		]
-		self.FACTOR_ENTRIES = [(f[1],f[2]) for f in self.FACTOR_TEXTS]
-		self.TEXTS = self.PLAIN_ENTRIES + self.FACTOR_ENTRIES
-
-		# Sector selections to use in factors
-		self.SELECTIONS = [ 
-			('id_pos-0-sector', u'ECO', 'require'),
-			('id_pos-1-sector', u'ENV'),
-			('id_pos-2-sector', u'HEA'),
-			('id_pos-3-sector', u'EDU'),
-			('id_pos-4-sector', u'IR' ),
-								      
-			('id_neg-0-sector', u'SOC'),
-			('id_neg-1-sector', u'SEC'),
-			('id_neg-2-sector', u'DEM'),
-			('id_neg-3-sector', u'ECO'),
-			('id_neg-4-sector', u'ENV'),
-		]
-
-		self.FORM_DATA = {
-			'SUBMIT': 'EditProposalForm_submit',
-			'SELECTIONS': self.SELECTIONS,
-			'TEXTS': self.TEXTS
-		}
-
-		self.ADD_FORM_URL = self.live_server_url + reverse('add_proposal')
-		print self.ADD_FORM_URL
-		self.EDIT_FORM_URL = (self.live_server_url 
-			+ Proposal.objects.get(title="Keystone XL Pipeline Extension")\
-				.get_edit_url())
+			# Check that the input was styled with an error styling
+			ommitted_elm = self.driver.find_element('id', ommitted_id)
+			wrapper = ommitted_elm.find_element_by_xpath('..')
+			self.assertTrue(
+				self.error_class in wrapper.get_attribute('class'))
 
 
 	def test_edit_proposal(self):
-		self.driver.get(self.EDIT_FORM_URL)
 
-		# clear all the data.  Add extra factor forms first to prevent
-		# selenium from complaining about not finding the elemnt to clear
-		self.click_add_factor_forms()
-		self.click_add_factor_forms()
-		self.click_add_factor_forms()
-		self.click_add_factor_forms()
-		self.clear_all_fields()
+		# Go to the edit page for a test proposal
+		proposal = Proposal.objects.get(pk=self.test_proposal_pk)
+		url = self.live_server_url + proposal.get_edit_url() 
+		self.driver.get(url)
 
-		# populate it with new data and submit
-		self.fill_form_correctly_and_verify()
+		# Fill and submit the form with valid data
+		self.fill_form(self.form_data)
+		self.driver.find_element('id', self.submit_id).click()
 
+		# check that the proposal was correctly loaded
+		expect_data = dict([
+			(v['display_id'], v['expect']) for v in self.form_data.values()
+		])
+		self.assertTrue(self.elements_contain(expect_data))
 
-
-	def test_edit_delete_factor(self):
-
-		self.driver.get(self.EDIT_FORM_URL)
-
-		# Test clicking delete after description or sector (or neither) has
-		# been cleared -- form should still validate
-		self.driver.find_element('id', 'id_neg-0-description').clear()
-		elm = Select(self.driver.find_element('id', 'id_pos-1-sector'))
-		elm.select_by_visible_text('-'*9)
-
-		# If we have description filled, sector blank, its ok (ignored) if
-		# deleted is checked
-		self.click_add_factor_forms() # we need to add a form for this
-		elm = self.wait.until(lambda driver: 
-			driver.find_element('id', 'id_neg-2-description'))
-		elm.send_keys(self.SELECTIONS[6][1])
-
-		# Check deleted on all the above factors (and one other)
-		for id_stub in ['pos-0', 'neg-0', 'pos-1', 'neg-2']:
-			self.driver.find_element('id', 'id_%s-deleted' % id_stub).click()
-
-		# we can also have sector selected on an add-form, as long as 
-		# description is not selected too
-		elm = Select(self.driver.find_element('id', 'id_neg-1-sector'))
-		elm.select_by_visible_text('HEA')
-
-
-		# for convenience in verification, also change the title
-		title_elm = self.driver.find_element('id', self.TITLE_INPUT_ID)
-		title_elm.clear()
-		title_elm.send_keys(self.TITLE)
-
-		self.submit_form()
-
-		# Make sure the form was submitted successfully
-		self.verify_form_validated()
-
-		p = Proposal.objects.get(title=self.TITLE)
-		fs = p.factor_set.filter(deleted=False)
-		self.assertEqual(fs.count(), 1)
-		self.assertTrue(fs[0].description.startswith('Facilitating'))
-
-
-	def clear_all_fields(self):
-		for field_kind in ['SELECTIONS', 'TEXTS']:
-			for idx in range(len(self.FORM_DATA[field_kind])):
-				self.clear_field(field_kind, idx)
-
-
-	def clear_and_return_field(self, field_kind, idx):
-
-		# Get the datum that will be cleared from the form.  
-		# Copy it into a form_data datastructure
-		if field_kind.upper() == 'SELECTIONS':
-			datum = self.FORM_DATA['SELECTIONS'][idx]
-			return_datum = {'SELECTIONS': [datum], 'TEXTS': []}
-
-		elif field_kind.upper() == 'TEXTS':
-			datum = self.FORM_DATA['TEXTS'][idx]
-			return_datum = {'SELECTIONS':[], 'TEXTS': [datum]}
-
-		self.clear_field(field_kind, idx)
-		return return_datum
-
-
-	def clear_field(self, field_kind, idx):
-
-		if field_kind.upper() == 'SELECTIONS':
-			id_to_clear = self.FORM_DATA['SELECTIONS'][idx][0]
-			elm = self.wait.until( lambda driver:
-				Select(driver.find_element('id', id_to_clear)))
-			elm.select_by_visible_text('---------')
-
-		elif field_kind.upper() == 'TEXTS':
-			id_to_clear = self.FORM_DATA['TEXTS'][idx][0]
-			self.driver.find_element('id', id_to_clear).clear()
-
-
-	def clear_field_submit_ensure_error(self, field_kind, idx):
-		return_datum = self.clear_and_return_field(field_kind, idx)
-		self.submit_form()
-		# We should be faced with the form again (same url) because of errors
-		self.check_invalid()
-		return return_datum
-		
-
-	def fill_form_correctly_and_verify(self):
-		self.fill_and_submit(self.FORM_DATA)
-		self.check_valid()
-
-
-	def check_valid(self):
-		self.check_db()
-		self.verify_form_validated()
-
-
-	def check_invalid(self):
-		self.assertTrue(
-			self.get_current_url() in [self.ADD_FORM_URL, self.EDIT_FORM_URL])
-
-
-	def verify_form_validated(self):
-		# We should be redirected to the proposal view page
-		self.assertEqual(self.driver.current_url, self.get_view_proposal_url())
-
-
-	def get_view_proposal_url(self):
-		return 	(
-			self.live_server_url 
-			+ Proposal.objects.get(title=self.TITLE).get_proposal_url())
-	
-
-	def fill_and_submit(self, data):
-		self.fill_form(data)
-		self.submit_form()
-
-
-	def click_add_factor_forms(self):
-		# click on the add another factor link to expose more factor forms
-		# This implicitly tests that these links do reveal more factor forms
-		for val in ['pos', 'neg']:
-			element_id = 'add_%s_factor_form' % val
-			self.driver.find_element('id', element_id).click()
-
-
-	def fill_form(self, data):
-
-		# We'll add two extra factors, to test adding extra factors
-		self.click_add_factor_forms()
-		self.click_add_factor_forms()
-	
-		super(ProposalFormTest, self).fill_form(data)
-
-
-
-	def check_db(self):
-		## Third, look in the database to see if the new Proposal, 
-		## ProposalVersion, Factors, and FactorVersions were created, and do
-		## integrity checks
-
-		# Get the proposal by title
-		# Check data in fields of both the Proposal and ProposalVersion  
-		proposal = Proposal.objects.get(title=self.TITLE)
-		proposal_version = proposal.get_latest()
-		for prop_obj in [proposal, proposal_version]:
-			self.assertEqual(prop_obj.summary, self.SUMMARY) 
-			self.assertEqual(prop_obj.text, self.TEXT) 
-			self.assertEqual(prop_obj.user.username, self.USERNAME)
-			self.assertSequenceEqual(prop_obj.tags.all(), [])
-
-		self.assertEqual(proposal.original_user.username, self.USERNAME)
-
-		# Default score should be 0
-		self.assertEqual(proposal.score, 0)
-
-		# Check foreign key back-link from ProposalVersion to Proposal
-		self.assertEqual(proposal_version.proposal, proposal)
-
-		# Check that all the factors were made
-		factor_properties = []
-		factor_version_properties = []
-		for factor in proposal.factor_set.all():
-			# While we're at it, check that the factor mirrors the content
-			# of its latest factor version
-			factor_version = factor.get_latest()
-
-			# check integrity -- does factor version reference its factor
-			self.assertEqual(factor_version.factor, factor)
-
-			self.assertEqual(
-				factor_version.proposal_version, proposal_version)
-			self.assertFalse(factor.deleted)
-			self.assertFalse(factor_version.deleted)
+		# check the database
+		proposal = Proposal.objects.get(pk=self.test_proposal_pk)
+		self.check_db(proposal, *self.values, username=self.username)
 			
-			# Accumulate all the factor properties together so that they
-			# can be checked in a batch
-			expected_factor_property_tuple = (
-				factor.valence,
-				factor.sector.short_name,
-				factor.description,
-			)
-
-			expected_factor_version_property_tuple = (
-				factor_version.valence,
-				factor_version.sector.short_name,
-				factor_version.description,
-			)
-			factor_properties.append(expected_factor_property_tuple)
-			factor_version_properties.append(
-				expected_factor_version_property_tuple)
-
-		# Accumulate all the *expected* factor properties 
-		expected_factor_properties = [(d[0],s[1], d[2]) 
-			for s,d in zip(self.SELECTIONS, self.FACTOR_TEXTS)]
 
 
-		self.assertItemsEqual(factor_properties, expected_factor_properties)
-		self.assertItemsEqual(
-			factor_version_properties, expected_factor_properties)
+
+class VoteTest(SeleniumTestCase):
+
+	up_on_class = 'upvote_on'
+	down_on_class = 'downvote_on'
 
 
-class VoteTests(SeleniumTestCase):
-	'''
-	Tests vote widgets associated to posts
-	'''
-
-	def setUp(self):
-		self.proposal = Proposal.objects.get(pk=1)
-
-	def get_and_test_vote_widget(self, vote_widget_test):
-
-		# abbreviate
-		vwt = vote_widget_test
-
-		self.driver.get(self.live_server_url + vwt['url'])
-
-		# get the vote elements
-		up_elm = self.driver.find_element('id', vwt['up_id'])
-		down_elm = self.driver.find_element('id', vwt['down_id'])
-		score_elm = self.driver.find_element('id', vwt['score_id'])
-
-		# check that vote widget class names are correct
-		up_class = up_elm.get_attribute('class')
-		down_class = down_elm.get_attribute('class')
-		self.assertTrue(up_class == vwt['up_on'] or up_class == vwt['up_off'])
-		if up_class == vwt['up_off']:
-			self.assertTrue(down_class == vwt['down_off'])
-		else:
-			self.assertTrue(down_class == vwt['down_on'] 
-				or down_class == vwt['down_off'])
-
-		# get the current score
-		score = int(score_elm.text)
-		
-		widget = {'up_elm':up_elm, 'down_elm':down_elm, 'score_elm':score_elm,
-			'up_class':up_class, 'down_class':down_class, 'score':score}
-
-		return widget
-
-
-	def upvote_test(
-		self, vote_widget_test):
-		'''
-		`vote_test_specs` should look like this:
-
-		{
-			'url': <url on which vote widget is found>,
-			'up_id': <html id for upvote widget element>,
-			'down_id': <html id for downvote widget element>,
-			'score_id': <html id for div displaying score>,
-			'up_on': <name of class for upvote on>,
-			'up_off': <name of calass for upvote off>,
-			'down_on': <name of class for downvote on>,
-			'down_off': <name of calass for downvote off>,
-		}
-		'''
-		
-		# abbreviate
-		vwt = vote_widget_test
-
-		# get the vote widget, and test its initial state
-		widget = self.get_and_test_vote_widget(vwt)
-
-		# click the upvote and see if it toggled class and changed score
-		widget['up_elm'].click()
-		new_upvote_class = widget['up_elm'].get_attribute('class')
-		new_downvote_class = widget['down_elm'].get_attribute('class')
-		new_score = int(widget['score_elm'].text)
-
-		# check that the score and element class were updated correctly
-		if widget['up_class'] == vwt['up_off']:
-			self.assertTrue(new_upvote_class == vwt['up_on'])
-
-			if widget['down_class'] == vwt['down_off']:
-				self.assertTrue(new_score == widget['score'] + 1)
-
-			else:
-				self.assertTrue(new_score == widget['score'] + 2)
-
-		else:
-			self.assertTrue(new_upvote_class == vwt['up_off'])
-			self.assertTrue(new_score == widget['score'] - 1)
-
-		self.assertTrue(new_downvote_class == vwt['down_off'])
-
-		return new_score 
-
-
-	def downvote_test(
-		self, vote_widget_test):
-		'''
-		`vote_test_specs` should look like this:
-
-		{
-			'url': <url on which vote widget is found>,
-			'up_id': <html id for upvote widget element>,
-			'down_id': <html id for downvote widget element>,
-			'score_id': <html id for div displaying score>,
-			'up_on': <name of class for upvote on>,
-			'up_off': <name of calass for upvote off>,
-			'down_on': <name of class for downvote on>,
-			'down_off': <name of calass for downvote off>,
-		}
-		'''
-		
-		# abbreviate
-		vwt = vote_widget_test
-
-		# make a driven browser instance, navigate to specified url
-		self.driver.get(self.live_server_url + vwt['url'])
-
-		# get the vote widget, and test its initial state
-		widget = self.get_and_test_vote_widget(vwt)
-
-		# click the upvote and see if it toggled class and changed score
-		widget['down_elm'].click()
-		new_downvote_class = widget['down_elm'].get_attribute('class')
-		new_upvote_class = widget['up_elm'].get_attribute('class')
-		new_score = int(widget['score_elm'].text)
-
-		# check that the score and element class were updated correctly
-		if widget['down_class'] == vwt['down_off']:
-			self.assertTrue(new_downvote_class == vwt['down_on'])
-
-			if widget['up_class'] == vwt['up_off']:
-				self.assertTrue(new_score == widget['score'] - 1)
-
-			else:
-				self.assertTrue(new_score == widget['score'] - 2)
-
-		else:
-			self.assertTrue(new_downvote_class == vwt['down_off'])
-			self.assertTrue(new_score == widget['score'] + 1)
-
-		self.assertTrue(new_upvote_class == vwt['up_off'])
-
-		return new_score 
-
-
-	def vote_test(self, test_url, vote_form_prefix):
-
-		# specify the expected vote element class_names
-		vote_test_specs = {
-			'url': test_url,
-			'up_id': vote_form_prefix + 'upvote',
-			'down_id': vote_form_prefix + 'downvote',
-			'score_id': vote_form_prefix + 'score',
-			'up_on': 'upvote_on',
-			'up_off': 'upvote_off',
-			'down_on': 'downvote_on',
-			'down_off': 'downvote_off'
+	def test_QuestionVote(self):
+		url = self.live_server_url + Question.objects.get(pk=1).get_url()
+		vote_spec = {
+			'up_id': 'QuestionVoteForm_q_upvote',
+			'score_id': 'QuestionVoteForm_q_score',
+			'down_id': 'QuestionVoteForm_q_downvote',
+			'url': url
 		}
 
-		# test upvote element behavior, and check if it registers in db
-		new_score = self.upvote_test(vote_test_specs)
-		discussion = Proposal.objects.get(pk=1).discussion_set.all()[0]
-		self.assertTrue(discussion.score == new_score)
+		self.vote_test(**vote_spec)
+
+
+	def test_AnswerVote(self):
+		url = self.live_server_url + Question.objects.get(pk=1).get_url()
+		vote_spec = {
+			'up_id': 'AnswerVoteForm_1_upvote',
+			'score_id': 'AnswerVoteForm_1_score',
+			'down_id': 'AnswerVoteForm_1_downvote',
+			'url': url
+		}
+
+		self.vote_test(**vote_spec)
+
+
+	def test_NewAnswerVote(self):
+		url = self.live_server_url + Question.objects.get(pk=1).get_url()
+		self.driver.get(url)
+
+		post_id = 1 + len(self.driver.find_elements_by_class_name('subpost'))
+
+		self.driver.find_element('id', 'AnswerForm__text').send_keys('test')
+		self.click('AnswerForm__submit')
+
+		vote_spec = {
+			'up_id': 'AnswerVoteForm_%d_upvote' % post_id,
+			'score_id': 'AnswerVoteForm_%d_score' % post_id,
+			'down_id': 'AnswerVoteForm_%d_downvote' % post_id,
+			'url': url
+		}
+
+		self.vote_test(**vote_spec)
+
+
+	def test_DiscussionVote(self):
+		url = self.live_server_url + Discussion.objects.get(pk=1).get_url()
+		vote_spec = {
+			'up_id': 'DiscussionVoteForm_q_upvote',
+			'score_id': 'DiscussionVoteForm_q_score',
+			'down_id': 'DiscussionVoteForm_q_downvote',
+			'url': url
+		}
+
+		self.vote_test(**vote_spec)
+
+
+	def test_ReplyVote(self):
+		url = self.live_server_url + Discussion.objects.get(pk=1).get_url()
+		vote_spec = {
+			'up_id': 'ReplyVoteForm_26_upvote',
+			'score_id': 'ReplyVoteForm_26_score',
+			'down_id': 'ReplyVoteForm_26_downvote',
+			'url': url
+		}
+
+		self.vote_test(**vote_spec)
+
+
+	def test_NewReplyVote(self):
+		# figure out what the next post id will be
+		user = User.objects.get(pk=1)
+		post_id = 1 + Reply.objects.filter(user=user).order_by('-pk')[0].pk
+
+		url = self.live_server_url + Discussion.objects.get(pk=1).get_url()
+		self.driver.get(url)
+
+		self.driver.find_element('id', 'ReplyForm__text').send_keys('test')
+		self.click('ReplyForm__submit')
+
+		vote_spec = {
+			'up_id': 'ReplyVoteForm_%d_upvote' % post_id,
+			'score_id': 'ReplyVoteForm_%d_score' % post_id,
+			'down_id': 'ReplyVoteForm_%d_downvote' % post_id,
+			'url': url
+		}
+
+		self.vote_test(**vote_spec)
+	def get_elements(self):
+		self.up_elm = self.driver.find_element('id', self.up_id)
+		self.score_elm = self.driver.find_element('id', self.score_id)
+		self.down_elm = self.driver.find_element('id', self.down_id)
 		
-		# test downvote element behavior, and check if it registers in db
-		new_score = self.downvote_test(vote_test_specs)
-		discussion = Proposal.objects.get(pk=1).discussion_set.all()[0]
-		self.assertTrue(discussion.score == new_score)
-		
 
-	def test_discussion_voting_widget(self):
-		self.vote_test(
-			test_url = self.live_server_url + 'view-discussion/1/',
-			vote_form_prefix = 'DiscussionVoteForm_q_'
-		)
+	def get_voting_status(self):
+		is_up_on = self.up_elm.get_attribute('class') == self.up_on_class
+		is_down_on = self.down_elm.get_attribute('class') == self.down_on_class
 
+		# the user may have either upvoted or downvoted, or neither
+		# but not both
+		state = 0
+		if is_up_on:
+			state = 1
+			self.assertTrue(not is_down_on) 
+		elif is_down_on:
+			state = -1
+			self.assertTrue(not is_up_on)
 
-	def test_letter_voting_widget(self):
+		score = int(self.score_elm.text)
 
-		# Letters are on proposal overviews.  Get url for a proposal overview
-		proposal = Proposal.objects.get(pk=1)
-		proposal_url = proposal.get_overview_url()
-
-		# Test the vote widgets associated to letters on the page
-		self.vote_test(
-			test_url = proposal_url,
-			vote_form_prefix = 'LetterVoteForm_1_'
-		)
+		return (is_up_on, is_down_on, state, score)
 
 
-	def test_proposal_voting_widget(self):
+	def vote_test(self, up_id, score_id, down_id, url):
 
-		# navigate to a proposal's overview page
-		proposal = Proposal.objects.get(pk=1)
-		proposal_url = proposal.get_overview_url()
+		self.up_id = up_id
+		self.score_id = score_id
+		self.down_id = down_id
 
-		# Test the vote widgets associated to letters on the page
-		self.vote_test(
-			test_url = proposal_url,
-			vote_form_prefix = 'ProposalVoteForm_p_'
-		)
+		# go to the right page
+		self.driver.get(url)
 
+		# get the vote widget elements
+		self.get_elements()
+
+		# what's the current voting state?
+		is_up_on1, is_down_on1, state1, score1 = self.get_voting_status()
+
+		# try upvoting, and get the new state
+		self.up_elm.click()
+
+		# get status after the vote
+		is_up_on2, is_down_on2, state2, score2 = self.get_voting_status()
+
+		# check that the right state transition occured
+		if state1 == 1:
+			self.assertEqual(state2, 0)
+			self.assertEqual(score2, score1 - 1)
+
+		elif state1 == 0:
+			self.assertEqual(state2, 1)
+			self.assertEqual(score2, score1 + 1)
+
+		elif state1 == -1:
+			self.assertEqual(state2, 1)
+			self.assertEqual(score2, score1 + 2)
+
+		# check that the vote was recorded by refreshing the page
+		self.driver.get(url)
+
+		# we should be in the same state as before refreshing
+		self.get_elements()
+		is_up_on3, is_down_on3, state3, score3 = self.get_voting_status()
+		self.assertEqual(state3, state2)
+		self.assertEqual(score3, score2)
+
+		# now try downvoting
+		self.down_elm.click()
+
+		# get status after the vote
+		is_up_on4, is_down_on4, state4, score4 = self.get_voting_status()
+
+		# check that the right state transition occured
+		if state3 == 1:
+			self.assertEqual(state4, -1)
+			self.assertEqual(score4, score3 - 2)
+
+		elif state3 == 0:
+			self.assertEqual(state4, -1)
+			self.assertEqual(score4, score3 - 1)
+
+		elif state3 == -1:
+			self.assertEqual(state4, 0)
+			self.assertEqual(score4, score3 + 1)
+
+		# check that the vote was recorded by refreshing the page
+		self.driver.get(url)
+
+		# we should be in the same state as before refreshing
+		self.get_elements()
+		is_up_on5, is_down_on5, state5, score5 = self.get_voting_status()
+		self.assertEqual(state5, state4)
+		self.assertEqual(score5, score4)
 
 
 

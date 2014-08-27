@@ -6,6 +6,15 @@
 	{{ proposal.title }} | {{ block.super }} 
 {% endblock title %}
 
+{% block css %}
+	{{block.super}}
+	<link rel="stylesheet" type="text/css" 
+		href="{% static "digidemo/css/overview.css" %}" />
+	<link rel="stylesheet" type="text/css" 
+		href="{% static "digidemo/css/letter.css" %}" />
+{% endblock css %}
+
+
 {% block  headline_title %}
 	<img src="{% static "digidemo/images/compas_icon.png" %}" />
 	<span class="content_type">ISSUE:</span>
@@ -16,45 +25,131 @@
 <!-- start the proposal -->
 <div id="overview">
 
-	<!-- start the open letters area -->
-	<h1>Petitions</h1>
-	<div id="letters">
-	{% for letter_section in letter_sections %}
+	<div class="overview_section">
+		<h2 class="overview_section_heading">
+			{{letter_sections|length}} 
+			Petition{{letter_sections|length|pluralize}}
+			<a class="overview_section_link" 
+				href="{{proposal.get_petitions_url}}">see all</a>
+		</h2>
+		<div class="overview_section_body">
 
-		{% if not forloop.first %}
-			<hr />
-		{% endif %}
+		{% for letter_section in letter_sections %}
 
-		{% include "digidemo/_i_letter.html" with letter_section=letter_section %}
-		<div class="clear"></div>
+			<!-- start of an open letter -->
+			<div id="letter_{{ letter_section.id_prefix }}" class="letter">
 
-	{% endfor %} <!-- loop over all letters for the proposal -->
 
-		<div class="hr_flourish">
-			<div class="hr"></div> 
-			<div class="flourish"></div>
+				<!-- start the content of the letter -->
+				<div class="overview_letter_main">
+					<div class="overview_physical_letter">
+
+						<div class="overview_petition_status_indicator">
+							<div class="score">
+								{{ letter_section.post.letter_set.distinct.count }}<img 
+									class="resend_widget" 
+									src="{% static "digidemo/images/feather_sign.png" %}" />
+							</div>
+							<div class="num_replies">
+								<span class="num">
+									{{ letter_section.comments_section.comments|length }}
+								</span><img 
+									src="{% static "digidemo/images/comment_icon.png" %}"/>
+							</div>
+						</div>
+
+						<span class="overview_petition_title">
+							<a href="{{letter_section.post.get_url}}">
+								{{letter_section.post.title}}
+							</a>
+						</span>
+
+
+						<span class="overview_letter_body">
+							{{ letter_section.post.body|truncatechars:100 }}
+						</span>
+						<span class="username">~{{user}}</span>
+
+
+						<div class="clear"></div>
+					</div>
+
+					<img class="cover_corner"
+						src="{% static "digidemo/images/corner.png" %}" />
+
+				</div> 
+				<!-- end of letter main content -->
+
+				<div class="clear"></div>
+			</div>
+			<!-- end of a letter -->
+
+			<div class="clear"></div>
+
+		{% endfor %} <!-- loop over all letters for the proposal -->
+			
 		</div>
-
-		<!-- start form for adding new letters -->
-		<h1>Your Letter</h1>
-		<div id="add_letter_div">
-
-			{% include "digidemo/_w_ajax_form.html" with form=letter_form include_id="add" %}
-
-		</div>
-		<!-- end form for adding new letters -->
-
 	</div>
-	<!-- end of letters area -->
+
+	<div class="overview_section">
+		<h2 class="overview_serifs_section_heading">The issue in brief
+			<a class="overview_section_link" 
+				href="{{proposal.get_proposal_url}}">full text</a>
+		</h2>
+		<div id="overview_in_brief" class="overview_section_body">
+			{{ proposal.summary }}
+		</div>
+	</div>
+
+	<div class="overview_section">
+		<h2 class="overview_section_heading">
+			{{num_questions}} Question{{num_questions|pluralize}}
+			<a class="overview_section_link" 
+				href="{{proposal.get_question_list_url}}">see all</a>
+		</h2>
+		<div class="overview_section_body">
+			{% for question in questions %}
+
+				<div class="list_item">
+					<div class="status_indicator">
+						<div class="score">
+							{{ question.score }}
+						</div>
+						<div class="num_replies">
+							{{ question.replies.count }} 
+							answers
+						</div>
+					</div>
+					<div class="list_body">
+						<a href="{{ question.get_url }}">
+							{{ question.title|truncatechars:72 }}
+						</a>
+						<span class="bold">~{{ question.user }}</span>
+					</div>
+					<div class="clear"></div>
+				</div>
+
+			{% endfor %}
+
+		</div>
+	</div>
+
+
+
+
+
+
 </div>
 {% endblock maincol %}
 
 {% block rightcol %}
 
-	{% include "digidemo/_w_follow_post.html" %}
- 
+	<div class="section">
+		{% include "digidemo/_w_follow_post.html" %}
+	</div>
+
 	<!-- start of proposal sectors -->
-	<div class="tags">
+	<div class="section tags">
 		Sectors
 		<ul>
 			<li>
@@ -73,7 +168,7 @@
 	<!-- end of proposal sectors -->
 
 	<!-- start of tags -->
-	<div class="tags">
+	<div class="section tags">
 		Tags
 		<ul>
 			<li>

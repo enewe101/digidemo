@@ -4,7 +4,8 @@
 
 		{% csrf_token %}
 
-		<div id="{{form.form_class}}_{{form.id_prefix}}_errors">
+		<div class="form_errors"
+			id="{{form.form_class}}_{{form.id_prefix}}_errors">
 		</div>
 
 		{% for hidden in form.hidden_fields %}
@@ -13,13 +14,14 @@
 
 		{% for field in form.visible_fields %}
 			<div class="form_line">
-				<div id="{{field.id_for_label}}_errors"></div>
+				<div class="field_errors" id="{{field.id_for_label}}_errors">
+				</div>
 				{{ field }}
 			</div>
 		{% endfor %}
 
 		<input id="{{ form.form_class}}_{{ form.id_prefix }}_submit" 
-		class="submit_letter" type="button" value="send" />
+		class="submit_letter" type="button" value="submit" />
 	</form>
 {% endblock ajax_form_form %}
 

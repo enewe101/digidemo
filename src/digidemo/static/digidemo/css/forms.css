@@ -94,8 +94,12 @@
 	font-weight: bold;
 }
 
-textarea.error,
-textarea.error {
+.field_wrapper_error textarea, .field_wrapper_error input, textarea.error {
 	border: solid 1px brown;
 	background: rgb(255,250,250);
+}
+
+.field_errors {
+	color: brown;
+	font-style: italic;
 }

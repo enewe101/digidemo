@@ -3,50 +3,7 @@
 
 {% block maincol %}
 
-
-	<form class="{{ edit_proposal_form.form_class}}" 
-		id="{{ edit_proposal_form.form_class }}" 
-		action="{{ edit_proposal_form.endpoint }}" 
-		method="post" />
-
-		{% csrf_token %}
-
-		{% for hidden in edit_proposal_form.proposal_version_form.hidden_fields %}
-			{{ hidden }}
-		{% endfor %}
-
-		<!-- include the proposal version edit form -->
-		{{ edit_proposal_form.proposal_version_form.errors }}
-		<div class="form_line">
-			<div>
-				{{ edit_proposal_form.proposal_version_form.title.label_tag }}
-			</div>
-			<div>
-				{{ edit_proposal_form.proposal_version_form.title }}
-			</div>
-		</div>
-		<div class="form_line">
-			<div>
-			{{ edit_proposal_form.proposal_version_form.summary.label_tag }}
-			</div>
-			<div>
-				{{ edit_proposal_form.proposal_version_form.summary }}
-			</div>
-		</div>
-
-		<div class="form_line">
-			<div>
-				{{ edit_proposal_form.proposal_version_form.text.label_tag }}
-			</div>
-			<div>
-				{{ edit_proposal_form.proposal_version_form.text }}
-			</div>
-		</div>
-
-		<input id="{{ edit_proposal_form.form_class }}_submit" 
-			class="submit" type="submit" value="submit" />
-
-	</form>
+	{% include "digidemo/_w_simple_form_wrapped.html" with form=edit_proposal_form %}
 
 {% endblock maincol %}
 

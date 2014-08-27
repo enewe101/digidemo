@@ -18,6 +18,68 @@ import os
 #logging.basicConfig(filename=log_fname, level=logging.DEBUG)
 
 
+class AugmentedFormMixin(object):
+
+	endpoint = None
+	class_name = None
+
+	def __init__(self, *args, **kwargs):
+
+		# allow specifying the endpoint for the form.  This is the
+		# form action ( <form action=... ), or ajax endpoint (ajax.py)
+		self.endpoint = kwargs.pop('endpoint', self.endpoint)
+
+		# The form gets a class name ( <form class=... )
+		default_class_name = self.class_name or self.__class__.__name__
+		self.form_class = kwargs.pop('form_class', default_class_name)
+
+		# An id-prefix can optionally be specified.  This changes the
+		# html id attribute form elements, but not the name attribute
+		self.id_prefix = kwargs.pop('id_prefix', '')
+
+		default_auto_id = self.form_class + '_' + str(self.id_prefix)
+
+		# Customize the forms auto_id 
+		auto_id = kwargs.pop('auto_id', default_auto_id + '_%s')
+
+		# The form's fields automatically get classes too, based on
+		# the forms class and the fields name
+		auto_add_input_class(self.form_class, self)
+
+		# now call the usual form constructor
+		super(AugmentedFormMixin, self).__init__(
+			*args, auto_id=auto_id, **kwargs)
+
+
+	def get_endpoint(self):
+		# if none is supplied, theres no default, so an endpoint
+		# *must be provided
+		if self.endpoint is None:
+			raise ValueError("No endpoint is bound to this form")
+
+		return self.endpoint
+
+
+	def json_errors(self):
+
+		# We're going to make a dict of all fields and their errors
+		# it will be exaustive (empty lists appear for fields without
+		# errors.  First, get an empty error dict with all fields:
+		all_fields = dict([(field.name, []) for field in self])
+
+		# Now we get the fields that actually have some errors
+		error_dict = {}
+		for field, error_list in self.errors.items():
+			field_id = field
+			# field_id = self[field].id_for_label
+			error_dict[field_id] = list(error_list)
+
+		# mix them together before returning
+		all_fields.update(error_dict)
+		return all_fields
+
+
+
 def bound_form(endpoint=None, class_name=None):
 	'''
 	A class decorator for turning SomeFormClass into an ajax-ready form.  
@@ -52,6 +114,8 @@ def bound_form(endpoint=None, class_name=None):
 
 	def class_decorator(cls):
 		class AugmentedForm(cls):
+			error_css_class = 'error'
+
 			def __init__(self, *args, **kwargs):
 
 				# allow specifying the endpoint for the form.  This is the
@@ -91,9 +155,9 @@ def bound_form(endpoint=None, class_name=None):
 
 			def json_errors(self):
 
-				# We're going to make a dict of all fields and there errors
+				# We're going to make a dict of all fields and their errors
 				# it will be exaustive (empty lists appear for fields without
-				# erorrs.  First, get an empty error dict with all fields:
+				# errors.  First, get an empty error dict with all fields:
 				all_fields = dict([(field.name, []) for field in self])
 
 				# Now we get the fields that actually have some errors
@@ -107,21 +171,6 @@ def bound_form(endpoint=None, class_name=None):
 				all_fields.update(error_dict)
 				return all_fields
 
-
-			@classmethod
-			def init_from_object(cls, obj, *args, **kwargs):
-				if obj is None:
-					return cls(*args, **kwargs)
-
-				initial = {}
-				for field in cls.Meta.fields:
-					try:
-						field_val = getattr(obj, field)
-						initial[field] = field_val
-					except AttributeError:
-						pass
-
-				return cls(initial=initial, *args, **kwargs)
 
 
 		return AugmentedForm
@@ -139,7 +188,6 @@ def auto_add_input_class(form_class_name, form_instance):
 		<textarea class="CommentForm_body" ...
 
 	'''
-	logging.debug(form_class_name)
 	for field in form_instance.Meta.fields:
 
 		# for each field, get the widget
@@ -284,8 +332,7 @@ class ResendLetterForm(LetterForm):
 	
 
 
-@bound_form()
-class ProposalVersionForm(ModelForm):
+class ProposalVersionForm(AugmentedFormMixin, ModelForm):
 	class Meta:
 		model = ProposalVersion
 		fields = [
@@ -300,91 +347,15 @@ class ProposalVersionForm(ModelForm):
 		}
 
 
-class EditProposalForm(object):
-
-	'''
-	this is an aggregator for a set of forms that together enable editing
-	of a proposal (i.e. create a new proposal, or a new *version* of an
-	existing proposal).  Note that it only aggregates Forms, it does not 
-	itself subclass Form
-	'''
-
-	def __init__(self, proposal=None, data=None, *args, **kwargs):
-
-		if proposal is not None:
-			self._init_with_proposal(proposal, *args, **kwargs)
-
-		elif data is not None:
-			self._init_with_data(data, *args, **kwargs)
-
-		else:
-			self._init_blank(*args, **kwargs)
-
-
-	def _init_blank(self, endpoint, initial=None, num_factors=3):
-
-		# set some form-wide attributes
-		self.form_class = self.__class__.__name__
-		self.endpoint = endpoint
-
-		# get a form to edit the proposal, i.e. create a proposal version
-		self.proposal_version_form = ProposalVersionForm(initial=initial)
-
-		# This is an unbound (but prepopulated) form
-		self.is_bound = False
-
-
-	def _init_with_proposal(self, proposal, endpoint):
-
-		# get ahold of the proposal and its latest version
-		self.proposal = proposal
-		self.proposal_version = proposal.get_latest()
-
-		# Set some form-wide attributes
-		self.endpoint = endpoint
-		self.form_class = self.__class__.__name__
-
-		# get a form to edit the proposal, i.e. create a proposal version
-		self.proposal_version_form = ProposalVersionForm.init_from_object(
-			self.proposal_version,
-		)
-
-		# This is an unbound (but prepopulated) form
-		self.is_bound = False
-
-
-	def _init_with_data(self, data, endpoint):
-
-		# Set some form-wide attributes
-		self.endpoint = endpoint
-		self.form_class = self.__class__.__name__
-
-
-		# make the formset for the proposal version based on POSTed data
-		self.proposal_version_form = ProposalVersionForm(data)
-
-		# this is a bound form!
-		self.is_bound = True
-
-
-	def is_valid(self):
-
-		if not self.is_bound:
-			return True 
-
-		# validate the proposal version
-		return self.proposal_version_form.is_valid()
-
-
-	def save(self):
+	def save(self, commit=True):
 
 		# If the proposal version isn't bound to a proposal, we are making
 		# a brand new proposal
-		if self.proposal_version_form.cleaned_data['proposal'] is None:
+		if self.cleaned_data['proposal'] is None:
 
 			# Make the new proposal
 			proposal_init = utils.extract_dict(
-				self.proposal_version_form.cleaned_data,
+				self.cleaned_data,
 				['title', 'summary', 'text', 'user']
 			)
 			proposal_init['original_user'] = proposal_init['user']
@@ -392,7 +363,7 @@ class EditProposalForm(object):
 			self.proposal.save()
 
 			# Bind it to the proposal version and save the proposal version
-			new_proposal_version = self.proposal_version_form.save(
+			new_proposal_version = super(ProposalVersionForm, self).save(
 				commit=False)
 			new_proposal_version.proposal = self.proposal
 			new_proposal_version.save()
@@ -403,18 +374,19 @@ class EditProposalForm(object):
 
 			# Update the values in the Proposal which mirror the 
 			# ProposalVersion
-			self.proposal = self.proposal_version_form.cleaned_data['proposal']
+			self.proposal = self.cleaned_data['proposal']
 			for field in ['title', 'summary', 'text', 'user']:
-				setattr(self.proposal, field,
-					self.proposal_version_form.cleaned_data[field])
+				setattr(self.proposal, field, self.cleaned_data[field])
 			self.proposal.save()
 
 			# and of course, save the ProposalVersion
-			new_proposal_version = self.proposal_version_form.save()
+			new_proposal_version = super(ProposalVersionForm, self).save(
+				commit=False)
+			new_proposal_version.save()
 
 
 		# Finally, return a reference to the proposal
-		return self.proposal
+		return new_proposal_version
 
 	
 

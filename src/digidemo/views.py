@@ -24,7 +24,7 @@ QUESTIONS_TAB_NAME = 'questions'
 OPINION_TAB_NAME = 'petitions'
 
 # Names we use for the top level "button" navigation
-ISSUES_NAV_NAME = 'issues'
+ISSUE_NAV_NAME = 'issues'
 CREATE_NAV_VAME = 'create'
 QUESTIONS_NAV_NAME = 'questions'
 OPINION_NAV_NAME = 'petitions'
@@ -80,18 +80,6 @@ def show_server_error(request):
 def get_django_vars_JSON(additional_vars={}):
 	return json.dumps(get_django_vars(additional_vars))
 
-
-def overview(request, proposal_id):
-
-	proposal = Proposal.objects.get(pk=proposal_id)
-	context = make_proposal_context(proposal)
-	context['tabs'] = get_proposal_tabs(proposal, 'overview')
-
-	return render(
-		request,
-		'digidemo/overview.html', 
-		context
-	)
 
 
 def proposal(request, proposal_id):
@@ -279,18 +267,27 @@ def edit(request, proposal_id):
 
 	if request.POST:
 
-		edit_proposal_form = EditProposalForm(
+		edit_proposal_form = ProposalVersionForm(
 			data=request.POST,
 			endpoint=proposal.get_url('edit')
 		)
 
 		if edit_proposal_form.is_valid():
-			proposal = edit_proposal_form.save()
-			return redirect(proposal.get_url('proposal'))
+			proposal_version = edit_proposal_form.save()
+			redirect_url = proposal_version.proposal.get_url('proposal')
+			return redirect(redirect_url)
 
 	else:
-		edit_proposal_form = EditProposalForm(
-			proposal=proposal,
+		proposal_version_data = {
+				'proposal': proposal,
+				'title': proposal.title,
+				'summary': proposal.summary,
+				'text': proposal.text,
+				'user': logged_in_user
+		}
+
+		edit_proposal_form = ProposalVersionForm(
+			data=proposal_version_data,
 			endpoint=proposal.get_url('edit')
 		)
 
@@ -311,46 +308,6 @@ def edit(request, proposal_id):
 		}
 	)
 
-
-def ask_question(request, proposal_id):
-
-	proposal = Proposal.objects.get(pk=proposal_id)
-
-	# ** Hardcoded the logged in user to be enewe101 **
-	logged_in_user = User.objects.get(pk=1)
-
-	# make a proposal vote form
-	proposal_vote_form = get_vote_form(
-		ProposalVote, ProposalVoteForm, logged_in_user, proposal)
-
-
-	if request.method == 'POST':
-		form = QuestionForm(request.POST, endpoint=proposal.get_question_url())
-		if form.is_valid():
-			question = form.save()
-			return redirect(question.get_url())
-	
-	else:
-		form = QuestionForm(
-			initial={'user':logged_in_user, 'target':proposal},
-			endpoint=proposal.get_question_url()
-		)
-
-	return render(
-		request,
-		'digidemo/ask_question.html',
-		{
-			'django_vars_js': get_django_vars_JSON(
-				{'user': utils.obj_to_dict(
-				logged_in_user, exclude=['password'])}),
-			'proposal': proposal,
-			'proposal_vote_form': proposal_vote_form,
-			'logged_in_user': logged_in_user,
-			'tabs': get_proposal_tabs(proposal, 'questions'),
-			'form': form,
-			'active_navitem': 'questions'
-		}
-	)
 
 
 def get_vote_form(VoteModel, VoteForm, user, target, id_prefix=''):
@@ -531,6 +488,14 @@ class AbstractView(object):
 		self.args = args
 		self.kwargs = kwargs
 
+		if self.request.POST:
+			return self.handle_post()
+
+		else:
+			return self.handle_get()
+
+
+	def handle_get(self):
 		# Create the response
 		template = self.get_template()
 		context = self.get_context()
@@ -539,8 +504,10 @@ class AbstractView(object):
 		# Return the response
 		return reply
 
+
 	def get_template(self):
 		return get_template(self.template)
+
 
 	def get_context(self):
 		# This is a hack until I put in proper authentication
@@ -555,15 +522,115 @@ class AbstractView(object):
 			'logged_in_user': logged_in_user
 		}
 
-		# Now let the implementation of get_context_data override / add
+		# Now let the implementation of handle_get override / add
 		# to the context
 		context_data.update(self.get_context_data())
 
 		# Return as a proper RequestContext
 		return RequestContext(self.request, context_data) 
 
+
 	def get_context_data(self):
 		return {'msg':'this is the AbstractView'}
+
+
+	def handle_post(self):
+		# providing handle_post is optional: 
+		# unless it is overriden, a post request will just call handle_get
+		return self.handle_get()
+
+
+class AskQuestionView(AbstractView):
+
+	template = 'digidemo/ask_question.html'
+
+	def get_context_data(self):
+
+		proposal = Proposal.objects.get(pk=self.kwargs['proposal_id'])
+
+		# ** Hardcoded the logged in user to be enewe101 **
+		logged_in_user = User.objects.get(pk=1)
+
+		form = QuestionForm(
+			initial={'user':logged_in_user, 'target':proposal},
+			endpoint=proposal.get_question_url()
+		)
+
+		return 	{
+			'headline': proposal.title,
+			'proposal': proposal,
+			'tabs': get_proposal_tabs(proposal, 'questions'),
+			'form': form,
+			'active_navitem': 'questions'
+		}
+
+
+	def handle_post(self):
+		proposal = Proposal.objects.get(pk=self.kwargs['proposal_id'])
+
+		form = QuestionForm(
+			self.request.POST, endpoint=proposal.get_question_url())
+
+		# If the form is valid, save question and redirect to the 
+		# question view page
+		if form.is_valid():
+			question = form.save()
+			return redirect(question.get_url())
+
+		# If the form wasn't valid, we don't redirect.  
+		# build the context
+		logged_in_user = User.objects.get(pk=1)
+		context_data = {
+			'globals': get_globals(),
+			'django_vars_js': get_django_vars_JSON(
+				{'user': utils.obj_to_dict(
+				logged_in_user, exclude=['password'])}),
+			'logged_in_user': logged_in_user,
+			'headline': proposal.title,
+			'proposal': proposal,
+			'tabs': get_proposal_tabs(proposal, 'questions'),
+			'form': form,
+			'active_navitem': 'questions'
+		}
+		context = RequestContext(self.request, context_data) 
+
+		# get the template
+		template = self.get_template()
+
+		# return the reply
+		return HttpResponse(template.render(context))
+
+
+class IssueOverview(AbstractView):
+	template = 'digidemo/overview.html'
+
+	def get_context_data(self):
+		proposal = Proposal.objects.get(pk=self.kwargs['proposal_id'])
+		questions = Question.objects.filter(target=proposal)
+
+		# ** Hardcoded the logged in user to be enewe101 **
+		logged_in_user = User.objects.get(pk=1)
+
+		# Get all of the letters which are associated with this proposal
+		# and which are 'original letters'
+		letter_sections = []
+		letters = Letter.objects.filter(parent_letter=None, proposal=proposal)
+		for letter in letters:
+			letter_section = LetterSection(letter, logged_in_user)
+			letter_sections.append(letter_section)
+
+		return {
+			'django_vars_js': get_django_vars_JSON(
+				{'user': utils.obj_to_dict(
+				logged_in_user, exclude=['password'])}),
+			'proposal': proposal,
+			'num_questions': questions.count,
+			'questions': questions[0:5],
+			'letter_sections': letter_sections,
+			'user': logged_in_user,
+			'tabs': get_proposal_tabs(proposal, OVERVIEW_TAB_NAME),
+			'active_navitem': ISSUE_NAV_NAME
+		}
 
 
 class PostAreaView(AbstractView):
@@ -600,20 +667,13 @@ class PostAreaView(AbstractView):
 		# ** Hardcoded the logged in user to be enewe101 **
 		logged_in_user = User.objects.get(pk=1)
 
-		# TODO: remove proposal vote form from the post_area.html template
-		#	hence, don't include it here.
-
-		# make a proposal vote form
-		proposal_vote_form = get_vote_form(
-			ProposalVote, ProposalVoteForm, logged_in_user, target)
-
 		# make a section for the question
 		post_section = self.PostSection(
 			post, logged_in_user, id_prefix='q')
 
 		# make sections for subposts 
 		subpost_sections = []
-		for subpost in self.Subpost.objects.all():
+		for subpost in self.Subpost.objects.filter(target=post):
 			subsection = self.SubpostSection(subpost, logged_in_user)
 			subpost_sections.append(subsection)
 
@@ -627,8 +687,6 @@ class PostAreaView(AbstractView):
 			'subpost_form': subpost_form,
 			'headline': target.title,
 			'proposal': target,
-			'proposal_vote_form': proposal_vote_form,
-			'logged_in_user': logged_in_user,
 			'tabs': get_proposal_tabs(target, self.active_tab),
 			'active_navitem': self.active_navitem
 		}
@@ -637,11 +695,6 @@ class PostAreaView(AbstractView):
 
 class PetitionListView(AbstractView):
 	template = 'digidemo/petition_list.html'
-	Target = Proposal
-	ListableObjects = Letter
-	active_navitem = 'issues'
-	active_tab = OPINION_TAB_NAME
-	headline_prefix = ''
 
 	def get_context_data(self):
 
@@ -672,7 +725,7 @@ class PetitionListView(AbstractView):
 			'headline': proposal.title,
 			'logged_in_user': logged_in_user,
 			'tabs': get_proposal_tabs(proposal, OPINION_TAB_NAME),
-			'active_navitem': CREATE_NAV_VAME
+			'active_navitem': OPINION_NAV_NAME
 		}
 
 
@@ -712,6 +765,7 @@ class QuestionListView(AbstractView):
 
 		return {
 			'section_title': '%d Questions' % questions.count(),
+			'proposal': proposal,
 			'target': proposal,
 			'headline': proposal.title,
 			'items': questions,
@@ -741,23 +795,25 @@ class PetitionView(AbstractView):
 
 
 class QuestionAreaView(PostAreaView):
+	template = 'digidemo/view_question.html'
 	Post = Question
 	PostSection = QuestionSection
 	Subpost = Answer
 	SubpostSection = AnswerSection
 	SubpostForm = AnswerForm
 	active_tab = QUESTIONS_TAB_NAME
-	active_navitem = 'issues'
+	active_navitem = QUESTIONS_NAV_NAME
 
 
 class DiscussionAreaView(PostAreaView):
+	template = 'digidemo/view_discussion.html'
 	Post = Discussion
 	PostSection = DiscussionSection
 	Subpost = Reply
 	SubpostSection = ReplySection
 	SubpostForm = ReplyForm
-	active_tab = OPINION_TAB_NAME
-	active_navitem = 'create'
+	active_tab = ISSUE_TAB_NAME
+	active_navitem = ISSUE_NAV_NAME
 
 
 def make_proposal_context(proposal):
@@ -882,6 +938,7 @@ def mainPage(request,sort_type='most_recent'):
 			'featured_post':featured_post,
 		}
 	)
+
 
 def userRegistration(request):
 	if(request.method == 'POST'):

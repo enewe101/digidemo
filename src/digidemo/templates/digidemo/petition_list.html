@@ -17,8 +17,8 @@
 {% endblock title %}
 
 {% block  headline_title %}
-	<img src="{% static "digidemo/images/compas_icon.png" %}" />
-	<span class="content_type">ISSUE:</span>
+	<img src="{% static "digidemo/images/petition_icon.png" %}" />
+	<span class="content_type">PETITIONS:</span>
 	{{ proposal.get_latest.title }}
 {% endblock headline_title %}
 
@@ -132,24 +132,12 @@
 
 {% block rightcol %}
 
-	<!-- Yo there's issues with this so I've commented it out for now -->
-
-	<!--script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
-	<script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.10.2/jquery-ui.min.js"></script>
-	<script src="{% static "digidemo/js/jquery.switchButton.js" %}"></script>
-
-	<script>
-		$(function() {
-			$('#basic.demo input').switchButton();
-		}());
-	</script-->
-
-	<div class="demo" id="basic">
-		<input type="checkbox" value="1" />
+	<div class="section">
+		{% include "digidemo/_w_follow_post.html" %}
 	</div>
 
 	<!-- start of proposal sectors -->
-	<div class="tags">
+	<div class="section tags">
 		Sectors
 		<ul>
 			<li>
@@ -168,7 +156,7 @@
 	<!-- end of proposal sectors -->
 
 	<!-- start of tags -->
-	<div class="tags">
+	<div class="section tags">
 		Tags
 		<ul>
 			<li>

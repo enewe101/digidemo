@@ -1,86 +1,123 @@
 {% extends "digidemo/__base.html" %}
 {% load staticfiles %}
 {% load apptags %}
-<!-- BEGIN wrapper -->
-		{% block css %}
-			{{ block.super }}
-			<link rel="stylesheet" type="text/css" 
-				href="{% static "digidemo/css/proposal_index_style.css" %}" />
-		{% endblock css %}
+
+{% block css %}
+	{{ block.super }}
+	<link rel="stylesheet" type="text/css" 
+		href="{% static "digidemo/css/proposal_index_style.css" %}" />
+{% endblock css %}
+
+
+{% block js %}
+	{{ block.super }}
+{% endblock js %}
+
+
+{% block middle %}
+
+	<!-- BEGIN content -->
+	<div id="content">
+
+		<!-- begin featured -->
+		<div class="articles">
+
+			<h2 class="title">Featured News</h2>
+			<div class="post">
+
+				<div class="details">
+
+					<p class="l"><span class="category">
+						Last modified on 
+						{{ featured_post.last_modified }} </span> - 
+						Created by on {{featured_post.creation_date}} 
+					</p>
+
+					<p class="r"> 
+						<a href="{{featured_post.get_proposal_url}}">
+							21 Comments
+						</a> 
+					</p>
+				</div>
+
+				<div class="thumb">
+					<a href="/proposals/{{featured_post.title}}">
+						<img src="{{featured_post.proposal_image}}" alt="" />
+					</a>
+				</div>
+
+				<h2>
+					<a href = "{{featured_post.get_proposal_url}}">
+						{{featured_post.title}}
+					</a>
+				</h2>
+
+				<p> {{featured_post.text|getSummary}} </p>
+			</div>
+		</div>
+		<!-- end featured -->
+
+
+		<!-- begin more articles -->
+		<div class="articles">
 		
-		{% block js %}
-			{{ block.super }}
-		<!-- Let's stick to one version of jquery -->
+			<h2 class="title">Featured</h2>
+			
+			<!-- begin post -->
+			{% for proposal in proposals%}
+			<div class="post">
 
-		<!--script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script-->
-		{% endblock js %}
+				<div class="details">
+					<p class="l">
+						<span class="category">
+							Last modified on {{ proposal.last_modified }} 
+						</span> 
+						- Created by {{users|getAuthor:proposal}}  on 
+						{{proposal.creation_date}} 
+					</p>
 
+					<p class="r">
+						<a href = "{{proposal.get_proposal_url}}"> 
+							{{ proposal.score }} score</a> 
+					</p>
+				</div>
 
-{% block body %}
-{{ block.super }}
-<div id="wrapper">
-  <!-- BEGIN header -->
-  <div id="header">
+				<div class="thumb">
+					<a href="/proposals/{{proposal.title}}"> 
+						<img src="{{proposal.proposal_image}}" alt="" />
+					</a>
+				</div>
 
-    <div class="break"></div>
-    <h1><a>InnodeMag</a></h1>
-    <div class="ad"><img src="{% static "digidemo/images/ad468x60.jpg" %}" alt="" /></div>
+				<h2>
+					<a href = "{{proposal.get_proposal_url}}"> 
+						{{proposal.title}}
+					</a>
+				</h2>
 
-  </div>
-  <!-- END header -->
-  <!-- BEGIN content -->
-  <div id="content">
-    <!-- begin featured -->
-    <div class="articles">
-      <h2 class="title">Featured News</h2>
-            <div class="post">
-        <div class="details">
-          <p class="l"> <span class="category">Last modified on {{ featured_post.last_modified }} </span> - Created by on {{featured_post.creation_date}} </p>
-          <p class="r"> <a href = "{{featured_post.get_proposal_url}}">21 Comments</a> </p>
-        </div>
-        <div class="thumb"><a href="/proposals/{{featured_post.title}}"><img src="{{featured_post.proposal_image}}" alt="" /></a></div>
-        <h2><a href = "{{featured_post.get_proposal_url}}">{{featured_post.title}}</a></h2>
-            <p> {{featured_post.text|getSummary}} </p>
-    </div>
-    </div>
-    <!-- end featured -->
+				<p> {{proposal.text|getSummary}} </p>
+			</div>
+			{% endfor %}
+		
+			<div class="clear"></div>
+		</div>
+		<!-- end more articles -->
 
+		<!-- begin post navigation -->
+		<div class="postnav">
+			<ul>
+				<li>
+					<a href="/mainPage/sort=top_score">Sort by Top score</a></li>
+				<li>
+					<a href="/mainPage/sort=most_comments">Sort by comments</a>
+				</li>
+				<li>
+					<a href="/mainPage/sort=most_recent">Sort by Latest</a>
+				</li>
+			</ul>
+		</div>
+		<!-- end post navigation -->
+	</div>
 
-    <!-- begin more articles -->
-    <div class="articles">
+	{% include "digidemo/_i_mainpage_sidebar.html" %}
 
-      <h2 class="title">Featured</h2>
-
-      <!-- begin post -->
-	{% for proposal in proposals%}
-      <div class="post">
-        <div class="details">
-          <p class="l"> <span class="category">Last modified on {{ proposal.last_modified }} </span> - Created by {{users|getAuthor:proposal}}  on {{proposal.creation_date}} </p>
-          <p class="r"> <a href = "{{proposal.get_proposal_url}}"> {{ proposal.score }} score</a> </p>
-        </div>
-        <div class="thumb"><a href="/proposals/{{proposal.title}}"> <img src="{{proposal.proposal_image}}" alt="" /></a></div>
-        <h2><a href = "{{proposal.get_proposal_url}}"> {{proposal.title}}</a></h2>
-        <p> {{proposal.text|getSummary}} </p>
-      </div>
-	{% endfor %}
-
-
-
-      <div class="break"></div>
-    </div>
-    <!-- end more articles -->
-    <!-- begin post navigation -->
-    <div class="postnav">
-      <ul>
-        <li><a href="/mainPage/sort=top_score">Sort by Top score</a></li>
-        <li><a href="/mainPage/sort="most_comments">Sort by comments</a></li>
-        <li><a href="/mainPage/sort=most_recent">Sort by Latest</a></li>
-      </ul>
-    </div>
-    <!-- end post navigation -->
-  </div>
-
-{% include "digidemo/_i_mainpage_sidebar.html" %}
-
-<!-- END wrapper -->
-{% endblock body %}
+{% endblock middle %}

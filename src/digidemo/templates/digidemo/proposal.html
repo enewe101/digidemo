@@ -15,7 +15,7 @@
 {% block  headline_title %}
 	<img src="{% static "digidemo/images/compas_icon.png" %}" />
 	<span class="content_type">ISSUE:</span>
-	{{ proposal.get_latest.title }}
+	<span id="proposal_title">{{ proposal.get_latest.title }}</span>
 {% endblock headline_title %}
 
 {% block maincol %}
@@ -24,17 +24,19 @@
 		<div id="proposal">
 
 				<!-- start proposal summary -->
-				<div class="summary" id="proposal_summary">
+				<div class="summary" id="proposal_summary_wrapper">
 					<h1>
 						In brief
 					</h1>
-					{{ proposal.get_latest.summary|markdown }}
+					<div id="proposal_summary">
+						{{ proposal.get_latest.summary|markdown }}
+					</div>
 				</div>	
 				<!-- end proposal summary -->
 
 				{% include "digidemo/_i_hr_flourish.html" %}
 
-				<div class="proposal_text">
+				<div id="proposal_text" class="proposal_text">
 					{% block proposal_text %}
 						{{ proposal.get_latest.text|markdown }}
 					{% endblock proposal_text %}
@@ -59,6 +61,9 @@
 		<div class="clear"></div>
 	</div>
 
+	<div class="section">
+		{% include "digidemo/_w_follow_post.html" %}
+	</div>
 	<!-- start of proposal sectors -->
 	<div class="section tags">
 		Sectors

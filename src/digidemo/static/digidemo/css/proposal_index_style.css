@@ -1,26 +1,7 @@
-* {
-	margin: 0; padding: 0;
-}
-body {
-	text-align: center;
-	font: 12px Verdana;
-	color: #112222;
-	background: url(../images/background.gif) repeat-x 0 0;
-}
-a {
-	color: #234566;
-}
-a:hover {
-	text-decoration: none;
-	color: #ff0000;
-}
-img {
-	border: 0;
-}
-
 .break {
 	font-size: 0;
-	width: 0; height: 0;
+	width: 0; 
+	height: 0;
 	clear: both;
 }
 .alignleft {
@@ -41,17 +22,13 @@ img {
 /** BEGIN wrapper **/
 #wrapper {
 	width: 900px;
-	margin: auto auto;
+	margin: auto;
 	text-align: left;
 	padding: 25px 0;
 }
 /** END wrapper **/
 
 /** BEGIN header **/
-#header {
-	padding-bottom: 5px;
-	background: url(../images/headerbg.gif) repeat-x 0 0;
-}
 	#header .pages {
 		list-style-type: none;
 		float: left;
@@ -184,7 +161,6 @@ img {
 				font-weight: bold;
 				padding: 2px;
 				font-size: 0.9em;
-				font-family: Verdana;
 			}
 			#content .postnav ul li a {
 				display: block;
@@ -197,16 +173,12 @@ img {
 			#content .postnav ul li a:hover {
 				background-color: #234566;
 			}
-	#content h2.title {
-		font-size: 0.8em;
-		text-transform: uppercase;
-		background: url(../images/header1.gif) no-repeat center 0;
-		color: #ffffff;
-		width: 175px;
-		text-align: center;
-		padding: 1px 0 3px;
-		margin-bottom: 10px;
-	}
+
+h2.title {
+	color: rgb(80,80,80);
+	padding: 0 0 0 20px;
+}
+
 	#wp_page_numbers ul {
 		border-top: 0 !important;
 	}
@@ -234,7 +206,6 @@ img {
 		#content .single h2 {
 			margin-bottom: 10px;
 			font-size: 1.4em;
-			text-transform: none;
 		}
 		#content .single p {
 			line-height: 1.5em;
@@ -273,7 +244,6 @@ img {
 	}
 	#sidebar h2 {
 		font-size: 0.8em;
-		text-transform: uppercase;
 		background: url(../images/header1.gif) no-repeat center 0;
 		color: #ffffff;
 		width: 175px;
@@ -377,7 +347,6 @@ img {
 		#comments form input, textarea {
 			border: 1px solid #cccccc;
 			font-size: 0.9em;
-			font-family: Verdana;
 			padding: 4px;
 			background-position: 4px 4px;
 			background-repeat: no-repeat;
@@ -394,7 +363,6 @@ img {
 		#comments form button {
 			border: 1px solid #a0a0a0;
 			font-size: 1em;
-			font-family: Verdana;
 			padding: 2px 6px;
 		}
 	.commentdetails {
@@ -414,10 +382,10 @@ img {
 	}
 h2.title {
 	font-size: 1em !important;
-	text-transform: uppercase;
 	padding: 10px;
 	color: #565656;
 }
+
 .notfound {
 	padding: 40px;
 }

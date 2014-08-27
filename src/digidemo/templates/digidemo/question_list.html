@@ -2,9 +2,10 @@
 {% load staticfiles %}
 
 {% block  headline_title %}
-	<img src="{% static "digidemo/images/compas_icon.png" %}" />
-	<span class="content_type">ISSUE:</span>
-	{{ headline }}
+	<img class="Q_icon" 
+		src="{% static "digidemo/images/question_icon.png" %}" />
+	<span class="content_type">:</span>
+	{{ proposal.get_latest.title }}
 {% endblock headline_title %}
 
 {% block maincol %}
@@ -14,7 +15,7 @@
 
 
 		<div class="section_buttons_right">
-			<a class="go_button_inline" href="ask_question">
+			<a class="go_button_inline" href="{{ proposal.get_question_url }}">
 				ask a question
 			</a>
 		</div>
@@ -53,9 +54,12 @@
 
 {% block rightcol %}
 	
+	<div class="section">
+		{% include "digidemo/_w_follow_post.html" %}
+	</div>
 
 	<div class="take_note">
-		<img src="{% static "digidemo/images/icon_info.png" %}" 
+		<img src="{% static "digidemo/images/bulb_icon.png" %}" 
 			class="note_icon" />
 		<p>
 			Note: Post your questions about the issue here.  If you want to

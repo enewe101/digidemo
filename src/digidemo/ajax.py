@@ -184,6 +184,19 @@ def vote_letter(request):
 	return vote(vote_spec, request)
 
 
+@ajax_endpoint
+def vote_reply(request):
+
+	vote_spec = {
+		'model' : ReplyVote,
+		'form': ReplyVoteForm,
+		'up_event': 'up_reply',
+		'dn_event': 'dn_reply',
+	}
+
+	return vote(vote_spec, request)
+
+
 
 @ajax_endpoint
 def reply(request):
