@@ -1,0 +1,23 @@
+{% extends "digidemo/__two_column.html" %}
+{% load staticfiles %}
+
+{% block  headline_title %}
+	<img src="{% static "digidemo/images/add_proposal_icon.png" %}" />
+	<span class="content_type">:</span>
+	New Issue
+{% endblock headline_title %}
+
+{% block maincol %}
+
+	{% include "digidemo/_w_simple_form_wrapped.html" with form=edit_proposal_form %}
+
+{% endblock maincol %}
+
+{% block rightcol %}	
+<a class="go_button" href="{{ cancel_url }}">
+		cancel
+	</a>
+	<a class="go_button" href="#">
+		preview
+	</a>
+{% endblock rightcol %}	

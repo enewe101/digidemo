@@ -687,14 +687,25 @@ class ProposalFormTest(FormTest):
 		}
 	}
 
-	test_proposal_pk = 1
 	submit_id = 'ProposalVersionForm__submit'
 	escape_text = '<&>'
 	error_msg = 'This field is required.'
 	error_class = 'field_wrapper_error'
 	username = 'superuser'	# TODO: test proper login
+	expect_proposal_id = 1
+
+	def get_url(self):
+		return (self.live_server_url 
+			+ Proposal.objects.get(pk=self.expect_proposal_id).get_edit_url())
+
+
+	def expect_proposal_id(self):
+		return 1
+
 
 	def test_edit_proposal_ensure_escape(self):
+		expected_id = self.expect_proposal_id()
+
 		form_data_needs_escape = dict([
 			(k, self.escape_text) for k in self.form_data.keys()])
 
@@ -705,9 +716,7 @@ class ProposalFormTest(FormTest):
 		}
 
 		# Go to the edit page for a test proposal
-		proposal = Proposal.objects.get(pk=self.test_proposal_pk)
-		url = self.live_server_url + proposal.get_edit_url() 
-		self.driver.get(url)
+		self.driver.get(self.get_url())
 
 		# Fill and submit the form with data that should get escaped
 		self.fill_form(form_data_needs_escape)
@@ -717,13 +726,14 @@ class ProposalFormTest(FormTest):
 		self.assertTrue(self.elements_contain(expect_escaped_data))
 
 		# check the database
-		proposal = Proposal.objects.get(pk=self.test_proposal_pk)
-		self.check_db(proposal, self.escape_text, 
+		self.check_db(expected_id, self.escape_text, 
 			self.escape_text, self.escape_text, self.username)
 
 
-	def check_db(self, proposal, title, summary, text, username):
-		self.assertEqual(title, proposal.title)
+	def check_db(self, expected_id, title, summary, text, username):
+		proposal = Proposal.objects.get(title=title)
+
+		self.assertEqual(expected_id, proposal.pk)
 		self.assertEqual(summary, proposal.summary)
 		self.assertEqual(text, proposal.text)
 		self.assertEqual(username, proposal.user.username)
@@ -737,12 +747,8 @@ class ProposalFormTest(FormTest):
 
 	def test_edit_proposal_incomplete(self):
 
-		# html id's for the divs that contain error messages
-
 		# Go to the edit page for a test proposal
-		proposal = Proposal.objects.get(pk=self.test_proposal_pk)
-		url = self.live_server_url + proposal.get_edit_url() 
-		self.driver.get(url)
+		self.driver.get(self.get_url())
 
 		# we'll submit the form several times, 
 		# each time ommitting a different field
@@ -766,10 +772,10 @@ class ProposalFormTest(FormTest):
 
 	def test_edit_proposal(self):
 
+		expected_id = self.expect_proposal_id()
+
 		# Go to the edit page for a test proposal
-		proposal = Proposal.objects.get(pk=self.test_proposal_pk)
-		url = self.live_server_url + proposal.get_edit_url() 
-		self.driver.get(url)
+		self.driver.get(self.get_url())
 
 		# Fill and submit the form with valid data
 		self.fill_form(self.form_data)
@@ -782,9 +788,18 @@ class ProposalFormTest(FormTest):
 		self.assertTrue(self.elements_contain(expect_data))
 
 		# check the database
-		proposal = Proposal.objects.get(pk=self.test_proposal_pk)
-		self.check_db(proposal, *self.values, username=self.username)
+		self.check_db(expected_id, *self.values, username=self.username)
 			
+
+
+class AddProposalTest(ProposalFormTest):
+
+	def get_url(self):
+		return self.live_server_url + reverse('add_proposal')
+
+	def expect_proposal_id(self):
+		return Proposal.objects.all().count() + 1
+
 
 
 

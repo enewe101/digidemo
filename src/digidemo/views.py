@@ -102,34 +102,41 @@ def add_proposal(request):
 
 	if request.POST:
 
-		edit_proposal_form = EditProposalForm(
+		edit_proposal_form = ProposalVersionForm(
 			data=request.POST,
 			endpoint=reverse('add_proposal')
 		)
 
 		if edit_proposal_form.is_valid():
-			proposal = edit_proposal_form.save()
+			proposal_version = edit_proposal_form.save()
+			proposal = proposal_version.proposal
 			return redirect(proposal.get_url('proposal'))
 
 	else:
-		edit_proposal_form = EditProposalForm(
+		edit_proposal_form = ProposalVersionForm(
 			endpoint=reverse('add_proposal'),
 			initial={'user': logged_in_user}
 		)
 
+	cancel_url = reverse('mainPage')
+	if 'HTTP_REFERER' in request.META:
+		cancel_url = request.META['HTTP_REFERER']
+
 	return render(
 		request,
-		'digidemo/edit.html', 
+		'digidemo/add_proposal.html', 
 		{
 			'django_vars_js': get_django_vars_JSON(
 				{'user': utils.obj_to_dict(
 				logged_in_user, exclude=['password'])}),
 			'proposal': None,
 			'proposal_vote_form': None,
+			'headline': 'new proposal',
 			'edit_proposal_form': edit_proposal_form,
 			'logged_in_user': logged_in_user,
 			'tabs': None,
-			'active_navitem': 'create'
+			'active_navitem': 'create',
+			'cancel_url': cancel_url
 		}
 	)
 
