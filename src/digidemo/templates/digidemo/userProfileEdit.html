@@ -1,0 +1,56 @@
+{% extends "digidemo/__base.html" %}
+{% load apptags %}
+{% load staticfiles %}
+
+	{% block body %}
+	{{block.super}}
+	
+	{{user.user.userName}}
+	
+	{% if request|getLoggedInUser == user.user.username %}
+	<a href = "edit"><h2> Edit Profile </h2> </a> 
+	{% endif %}
+
+
+	<!-- Display basic information about everything--> 
+	Welcome : {{user.user.username}}
+	
+	<form action="" method="post" enctype="multipart/form-data">{% csrf_token %}
+
+	<br /> <br />
+	First Name : <input type="text" value = "{{ user.user.first_name }}" name="fname">
+ 	<br /> <br />
+	Last Name : <input type="text" value = "{{ user.user.last_name }}" name="lname">
+	<br /> <br />
+	Email :  <input type="text" value = "{{ user.user.email }}" name="email">
+	<br /> <br />
+	
+	Profile pic : {% include "digidemo/_w_image_upload.html" %}
+	<br /> <br />
+	
+	Street : <input type="text" value="{{user.street}}" name="street">
+	<br /> <br />
+
+	Zip Code : <input type="text" value="{{user.zip_code}}" name="zip_code">
+	<br /> <br />
+
+	Country : 
+	<select name="country">
+		{% for key,countryname in country %}
+			{% if key == user.country %}
+				<option value="{{key}}" selected="selected">{{countryname}}</option>
+			{% else %}
+				<option value="{{key}}">{{countryname}}</option>
+			{% endif %}
+		{% endfor %}
+	</select>
+	<br /> <br />
+	
+	Province : <input type="text" value="{{user.province}}" name="province">
+	<br /> <br />
+
+        <input type="submit" value="Submit" />
+            </form>
+	
+
+	{% endblock body %}
