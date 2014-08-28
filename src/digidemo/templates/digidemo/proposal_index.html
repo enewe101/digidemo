@@ -16,108 +16,84 @@
 
 {% block middle %}
 
-	<!-- BEGIN content -->
-	<div id="content">
-
-		<!-- begin featured -->
-		<div class="articles">
-
-			<h2 class="title">Featured News</h2>
-			<div class="post">
-
-				<div class="details">
-
-					<p class="l"><span class="category">
-						Last modified on 
-						{{ featured_post.last_modified }} </span> - 
-						Created by on {{featured_post.creation_date}} 
-					</p>
-
-					<p class="r"> 
-						<a href="{{featured_post.get_proposal_url}}">
-							21 Comments
-						</a> 
-					</p>
-				</div>
-
-				<div class="thumb">
-					<a href="/proposals/{{featured_post.title}}">
-						<img src="{{featured_post.proposal_image}}" alt="" />
-					</a>
-				</div>
-
-				<h2>
-					<a href = "{{featured_post.get_proposal_url}}">
-						{{featured_post.title}}
-					</a>
-				</h2>
-
-				<p> {{featured_post.text|getSummary}} </p>
-			</div>
-		</div>
-		<!-- end featured -->
-
-
-		<!-- begin more articles -->
-		<div class="articles">
-		
-			<h2 class="title">Featured</h2>
-			
-			<!-- begin post -->
-			{% for proposal in proposals%}
-			<div class="post">
-
-				<div class="details">
-					<p class="l">
-						<span class="category">
-							Last modified on {{ proposal.last_modified }} 
-						</span> 
-						- Created by {{users|getAuthor:proposal}}  on 
-						{{proposal.creation_date}} 
-					</p>
-
-					<p class="r">
-						<a href = "{{proposal.get_proposal_url}}"> 
-							{{ proposal.score }} score</a> 
-					</p>
-				</div>
-
-				<div class="thumb">
-					<a href="/proposals/{{proposal.title}}"> 
-						<img src="{{proposal.proposal_image}}" alt="" />
-					</a>
-				</div>
-
-				<h2>
-					<a href = "{{proposal.get_proposal_url}}"> 
-						{{proposal.title}}
-					</a>
-				</h2>
-
-				<p> {{proposal.text|getSummary}} </p>
-			</div>
-			{% endfor %}
-		
-			<div class="clear"></div>
-		</div>
-		<!-- end more articles -->
-
-		<!-- begin post navigation -->
-		<div class="postnav">
-			<ul>
-				<li>
-					<a href="/mainPage/sort=top_score">Sort by Top score</a></li>
-				<li>
-					<a href="/mainPage/sort=most_comments">Sort by comments</a>
-				</li>
-				<li>
-					<a href="/mainPage/sort=most_recent">Sort by Latest</a>
-				</li>
-			</ul>
-		</div>
-		<!-- end post navigation -->
+	<div id="welcome" class="centered">
+		<img src="{% static "digidemo/images/banner.png" %}" />
 	</div>
 
-	{% include "digidemo/_i_mainpage_sidebar.html" %}
+	<!-- begin featured -->
+	<div class="marquee_section">
+
+		<h2 class="marquee_heading">
+			Today&rsquo;s Featured Issue
+			<a href="{% url "issue_list" order_by="interesting" %}" class="marquee_see_more">
+				See all
+			</a>
+		</h2>
+
+		<div class="marquee_body">
+			{% include "digidemo/_i_issue_preview.html" with issue=featured_post %}
+		</div>
+		<div class="clear"></div>
+	</div>
+	<!-- end featured -->
+
+
+	<!-- begin more articles -->
+	<div class="marquee_section">
+		<h2 class="marquee_heading">
+			Active Issues
+			<a href="{% url "issue_list" order_by="activity" %}" class="marquee_see_more">
+				See all
+			</a>
+		</h2>
+
+		<div class="marquee_body">
+			<!-- begin post -->
+			{% for proposal in active_issues %}
+				<div class="issue_info">
+					<h3 class="issue_title"> 
+						<a href="{{ proposal.get_proposal_url }}">
+							{{proposal.title}}
+						</a> 
+					</h3>
+					<span class="last_modified">
+						Last mod {{ featured_post.last_modified }} 
+					</span>
+				</div>
+			{% endfor %}
+		</div>
+		<div class="clear"></div>
+	</div>
+	<!-- end more articles -->
+
+
+	<!-- begin post navigation -->
+	<div class="marquee_section">
+		<h2 class="marquee_heading">
+			New Petitions
+			<a href="{% url "petition_list" %}" class="marquee_see_more">
+				See all
+			</a>
+		</h2>
+
+		{% for petition in new_petitions %}
+			<div class="petition_preview">
+				<div class="petition_score">
+					{{ petition.score }}<img src="{% static "digidemo/images/feather_sign.png" %}" />
+				</div>
+
+				<div class="petition_title_div">
+					<h3 class="petition_title">
+						<a href="{{ petition.get_url }}">
+							{{ petition.title }}
+						</a>
+					</h3>
+				</div>
+				<div class="clear"></div>
+			</div>
+		{% endfor %}
+
+	</div>
+	<!-- end post navigation -->
 
 {% endblock middle %}

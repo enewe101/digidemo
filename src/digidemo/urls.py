@@ -22,6 +22,11 @@ urlpatterns = patterns('',
 	url(r'^mainPage/$',mainPage, name='mainPage'),
 	url(r'^mainPage/sort=(?P<sort_type>\w+)/$',mainPage,name='mainPage'),
 
+	# main tabs
+	url(r'^petition_list', petition_list, name="petition_list"),
+	url(r'^issue_list/(?P<order_by>\w*)', IssueListView().view, 
+		name="issue_list"),
+
 	#Search results
 	url(r'^search/$',search,name='search'),
 
@@ -37,8 +42,7 @@ urlpatterns = patterns('',
 	# proposal-specific urls
 	url(r'^add_proposal/$', add_proposal, name='add_proposal'),
 	url(r'^overview/(?P<proposal_id>\w+)/.*$', IssueOverview().view,
-		name='overview'),
-	url(r'^proposal/(?P<proposal_id>\w+)/.*$', proposal, name='proposal'),
+		name='proposal'),
 	url(r'^questions/(?P<proposal_id>\w+)/.*$', QuestionListView().view, 
 		name='questions'),
 	url(r'^ask-question/(?P<proposal_id>\w+)/.*$', AskQuestionView().view, 

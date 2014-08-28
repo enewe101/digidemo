@@ -1,0 +1,30 @@
+{% load staticfiles %}
+{% load apptags %}
+
+
+
+<div class="issue_preview">
+
+	<h2 class="issue_title">
+		<a href = "{{featured_post.get_proposal_url}}">
+			{{featured_post.title}}
+		</a>
+	</h2>
+	<!--span class="score">
+		&nbsp;&nbsp;{{ issue.letter_set.all.count }}<img src="{% static "digidemo/images/petition_icon_small.png" %}" />
+	</span>
+	<span class="subscore">
+		{{ issue.question_set.all.count }}<img class="q_icon" src="{% static "digidemo/images/question_icon_small.png" %}" />
+	</span-->
+
+	<div class="info_line">
+		<span class="last_modified">
+			Last mod {{ featured_post.last_modified }} 
+		</span>
+	</div>
+
+	<div class="preview_summary">
+		<span class="bold">In brief:</span> {{featured_post.summary}} 
+	</div>
+</div>
+

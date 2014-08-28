@@ -138,46 +138,59 @@ body {
 }
 
 #header {
-	padding: 20px;
+	position: fixed;
+	padding: 4px;
 	border-bottom: solid 1px rgb(200,200,200);
 	background: rgb(230,230,230);
 	margin-bottom: 40px;
+	z-index: 999;
+	width: 100%;
 }
 
 #colophon {
 	float: left;
-	margin: 0 20px;
+	margin: 0 0 0 60px;
 }
 
 div#navbar {
 	display: block;
 	list-style-type: none;
 	padding: 0;
-	margin: 32px 0 0 130px;
+	margin: 0px 0 0 60px;
+	float: left;
+}
+
+a.navitem, a.navitem_active {
+	display: block;
+	padding: 6px 8px;
+	margin: 6px 3px 3px 3px;
 	float: left;
 }
 
 a.navitem_active {
-	display: block;
 	background: white;
 	color: rgb(170, 0, 212);
 	border: solid 1px rgb(170, 0, 212);
-	padding: 6px 8px;
-	margin: 4px;
-	float: left;
 }
 
 a.navitem {
-	display: block;
 	background: rgb(80,80,80);
 	border: solid 1px rgb(80,80,80);
 	color: white;
-	padding: 6px 8px;
-	margin: 4px;
-	float: left;
 }
 
-.nav_horizontal_bar {
+a.create_navitem {
+	margin-left: 30px;
+}
+
+#search_bar {
+	float: left;
+	margin: 9px 0 0 60px;
+}
+
+#search_bar input {
+	border: solid 1px rgb(80,80,80);
+	background: white;
 }
 
 .outer_center {
@@ -193,7 +206,9 @@ a.navitem {
 #user {
 	float: right;
 }
+
 #middle {
+	padding-top: 80px;
 	clear: both;
 }
 
@@ -203,32 +218,30 @@ div.tags ul {
 	padding: 0;
 }
 
-
-div.tags ul li div {
-	padding: 0 2px 0 2px;
-	margin: 2px;
-	float: left;
-	font-size: 12px;
+.tag, .sector_tag {
+	display: inline;
+	padding: 0 3px 1px 4px;
+	margin-right: 4px;
+	font-family: ubuntu;
 }
 
-div.tag {
-	border: solid 1px rgb(170, 0, 212);
+.tag {
+	background: rgb(250, 220, 255);
 }
 
-.economy_sector_tag {
+.economy_sector {
 	background: orange;
-	border: solid 1px orange;
 	color: black;
 }
 
-.environment_sector_tag {
+.environment_sector {
 	color: white;
 	background: green;
-	border: solid 1px green;
 }
 
 #footer {
 	clear: both;
+	background: rgb(230,230,230);
 }
 
 .comment_author {

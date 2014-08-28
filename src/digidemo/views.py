@@ -19,7 +19,6 @@ from django.views.debug import ExceptionReporter
 
 # Names we use for the tabs in proposal sections
 OVERVIEW_TAB_NAME = 'overview'
-ISSUE_TAB_NAME = 'facts'
 QUESTIONS_TAB_NAME = 'questions'
 OPINION_TAB_NAME = 'petitions'
 
@@ -35,8 +34,7 @@ def get_proposal_tabs(proposal, active_tab):
 
 	# This is the basic tabs definition for the proposal views
 	proposal_tabs = [
-		{'name': OVERVIEW_TAB_NAME,'url': proposal.get_overview_url()},
-		{'name': ISSUE_TAB_NAME,'url': proposal.get_proposal_url()},
+		{'name': OVERVIEW_TAB_NAME,'url': proposal.get_proposal_url()},
 		{'name': QUESTIONS_TAB_NAME,'url': proposal.get_question_list_url()},
 		{'name': OPINION_TAB_NAME,'url': proposal.get_petitions_url()},
 	]
@@ -46,6 +44,36 @@ def get_proposal_tabs(proposal, active_tab):
 	proposal_tabs[active_index]['active'] = True
 
 	return proposal_tabs
+
+
+def get_issue_list_tabs(active_tab):
+
+	# This is the basic tabs definition for the proposal views
+	issue_list_tabs = [
+		{
+			'name': 'interesting',
+			'url': reverse('issue_list', kwargs={'order_by':'interesting'})
+		},
+		{
+			'name': 'activity',
+			'url': reverse('issue_list', kwargs={'order_by':'activity'})
+		},
+		{
+			'name': 'newest',
+			'url': reverse('issue_list', kwargs={'order_by':'newest'})
+		},
+		{
+			'name': 'location',
+			'url': reverse('issue_list', kwargs={'order_by':'location'})
+		},
+	]
+
+	# mark the active tab as active
+	active_index = [t['name'] for t in issue_list_tabs].index(active_tab)
+	issue_list_tabs[active_index]['active'] = True
+
+	return issue_list_tabs
+
 	
 def get_globals():
 	return {
@@ -85,7 +113,7 @@ def get_django_vars_JSON(additional_vars={}):
 def proposal(request, proposal_id):
 	proposal = Proposal.objects.get(pk=proposal_id)
 	context = make_proposal_context(proposal)
-	context['tabs'] = get_proposal_tabs(proposal, ISSUE_TAB_NAME)
+	context['tabs'] = get_proposal_tabs(proposal, OVERVIEW_TAB_NAME)
 
 	return render(
 		request,
@@ -310,7 +338,7 @@ def edit(request, proposal_id):
 			'headline': proposal.title,
 			'edit_proposal_form': edit_proposal_form,
 			'logged_in_user': logged_in_user,
-			'tabs': get_proposal_tabs(proposal, ISSUE_TAB_NAME),
+			'tabs': get_proposal_tabs(proposal, OVERVIEW_TAB_NAME),
 			'active_navitem': 'create'
 		}
 	)
@@ -503,6 +531,7 @@ class AbstractView(object):
 
 
 	def handle_get(self):
+
 		# Create the response
 		template = self.get_template()
 		context = self.get_context()
@@ -545,6 +574,36 @@ class AbstractView(object):
 		# providing handle_post is optional: 
 		# unless it is overriden, a post request will just call handle_get
 		return self.handle_get()
+
+
+class IssueListView(AbstractView):
+	template = 'digidemo/issue_list.html'
+
+	def get_context_data(self):
+		
+		# get the list of issues, sorted in the desired way
+		order_by = self.kwargs['order_by'] or 'interesting'
+		if order_by == 'interesting':
+			issues = Proposal.objects.all().order_by('?')
+
+		elif order_by == 'newest':
+			issues = Proposal.objects.all().order_by('-creation_date')
+
+		elif order_by == 'activity':
+			issues = Proposal.objects.all().order_by('-creation_date')
+
+		elif order_by == 'location':
+			issues = Proposal.objects.all().order_by('-creation_date')
+
+		# build the tabs, and show the right tab as active
+		tabs = get_issue_list_tabs(order_by)
+
+		return {
+			'issues': issues,
+			'tabs': tabs,
+		}
+
+
 
 
 class AskQuestionView(AbstractView):
@@ -757,7 +816,7 @@ class DiscussionListView(AbstractView):
 			'items': discussions_open,
 			'closed_items': discussions_closed,
 			'logged_in_user': logged_in_user,
-			'tabs': get_proposal_tabs(proposal, ISSUE_TAB_NAME),
+			'tabs': get_proposal_tabs(proposal, OVERVIEW_TAB_NAME),
 			'active_navitem': 'create'
 		}
 
@@ -819,7 +878,7 @@ class DiscussionAreaView(PostAreaView):
 	Subpost = Reply
 	SubpostSection = ReplySection
 	SubpostForm = ReplyForm
-	active_tab = ISSUE_TAB_NAME
+	active_tab = OVERVIEW_TAB_NAME
 	active_navitem = ISSUE_NAV_NAME
 
 
@@ -918,31 +977,34 @@ def login(request, provider_name):
 
 	return response;
 
+def petition_list(request):
+	return mainPage(request)
+
+def issue_list(request):
+	return mainPage(request)
 
 def mainPage(request,sort_type='most_recent'):
 
-        if(sort_type=='most_recent'):
-                proposals = Proposal.objects.order_by('-creation_date')[:5]
-        elif(sort_type=='top_score'):
-                proposals = Proposal.objects.order_by('-score')[:5]
+	if(sort_type=='most_recent'):
+		proposals = Proposal.objects.order_by('-creation_date')[:5]
+	elif(sort_type=='top_score'):
+		proposals = Proposal.objects.order_by('-score')[:5]
 
-        popular_posts =  Proposal.objects.order_by('-score')[:6]
+	active_issues =  Proposal.objects.order_by('-score')[:6]
+	featured_post = Proposal.objects.get(pk=1);
+	users = UserProfile.objects.all();
+	new_petitions = Letter.objects.all()
 
-        featured_post = Proposal.objects.get(pk=1);
-        
-        users = UserProfile.objects.all();
-
-        # Hard coded Featured news
         
 	return render(
 		request,
 		'digidemo/proposal_index.html',
 		{
 			'django_vars_js': get_django_vars_JSON(),
-			'proposals': proposals,
 			'users': users,
-			'popular_posts':popular_posts,
-			'featured_post':featured_post,
+			'active_issues': active_issues,
+			'featured_post': featured_post,
+			'new_petitions': new_petitions
 		}
 	)
 

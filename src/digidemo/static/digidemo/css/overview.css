@@ -25,8 +25,10 @@
 .overview_section {
 	float:left;
 	position: relative;
-	width: 360px;
-	margin: 10px 40px 30px 0;
+	width: 298px;
+	margin: 10px;
+	padding: 20px 10px 10px 10px;
+	border: dotted 1px rgb(120,120,120);
 }
 
 .overview_petition_status_indicator {
@@ -39,7 +41,7 @@
 .overview_letter_main {
 	position: relative;
 	float: left;
-	width: 320px;
+	width: 278px;
 }
 
 .overview_physical_letter {
@@ -64,4 +66,40 @@
 #overview_in_brief {
 	font-family: computerModern;
 	font-size: 14px;
+}
+
+#previews {
+	float: right;
+}
+
+#article {
+	font-family: computerModern;
+	font-size: 16px;
+}
+
+#article h1, h2, h3 {
+	margin: 0;
+	padding: 0;
+}
+
+#article h1 {
+	font-size: 28px;
+}
+
+#article h2 {
+	font-size: 22px;
+}
+
+#article h3 {
+	font-size: 18px;
+	display: inline;
+}
+
+
+#article p {
+	margin: 0 0 14px;
+	padding: 0;
+}
+
+#article .inbrief {
 }

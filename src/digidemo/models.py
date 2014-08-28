@@ -96,9 +96,6 @@ class Proposal(TimeStamped):
 		url_stub = reverse(view_name, kwargs={'proposal_id': self.pk})
 		return url_stub + slugify(self.title)
 
-	def get_overview_url(self):
-		return self.get_url('overview')
-
 	def get_question_url(self):
 		return self.get_url('ask_question')
 
@@ -117,10 +114,6 @@ class Proposal(TimeStamped):
 	def get_petitions_url(self):
 		url_stub = reverse('petitions', kwargs={'proposal_id': self.pk})
 		return url_stub + slugify(self.title)
-
-	#def get_discussion_url(self):
-	#	url_stub = reverse('discuss', kwargs={'target_id': self.pk})
-	#	return url_stub + slugify(self.title)
 
 	def get_edit_url(self):
 		return self.get_url('edit')

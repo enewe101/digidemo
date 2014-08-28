@@ -1,0 +1,71 @@
+{% extends "digidemo/__two_column.html" %}
+{% load staticfiles %}
+
+{% block  headline_title %}
+	<img src="{% static "digidemo/images/compas_icon.png" %}" />
+	Issues
+{% endblock headline_title %}
+
+{% block maincol %}
+	<!-- start the section title and section-specific buttons -->
+	<div class="section_header">
+		<h2 class="subtitle float_left">{{issues.count}} Issues{{issues.count|pluralize}}</h2>
+
+
+		<div class="section_buttons_right">
+			<a class="go_button_inline" href="{% url "add_proposal" %}">
+				create an issue
+			</a>
+		</div>
+
+		<div class="clear"></div>
+	</div>
+	<!-- end the section title and section-specific buttons -->
+
+	<!-- start the section title and section-specific buttons -->
+	<div class="listing">
+
+		{% for issue in issues %}
+			<div class="list_item">
+				<div class="status_indicator">
+					<div class="score">
+						{{ issue.letter_set.count }}
+					</div>
+					<div class="num_replies">
+						{{ issue.question_set.count }} 
+						questions
+					</div>
+				</div>
+				<div class="list_body">
+					<a href="{{ issue.get_proposal_url }}">{{ issue.title }}</a><br />
+						{{ issue.summary|truncatechars:180 }}
+					<span class="bold">~{{ issue.user }}</span>
+				</div>
+				<div class="clear"></div>
+			</div>
+		{% endfor %}
+
+	</div>
+	<!-- end the section title and section-specific buttons -->
+
+{% endblock maincol %}
+
+{% block rightcol %}
+	
+
+	<div class="take_note">
+		<img src="{% static "digidemo/images/bulb_icon.png" %}" 
+			class="note_icon" />
+		<p>
+			Note: Post your questions about the issue here.  If you want to
+			contribute to the writing of the issue (it is a wiki after all!),
+			then you can post contstructive comments about the 
+			<span class="italic">content of the proposal</span> in the
+			discussion area.
+		</p>
+		<p>
+			Make sure to read the <a href="#">asking good questions</a> 
+			guideline before contributing :)
+		</p>
+	</div>
+{% endblock rightcol %}
