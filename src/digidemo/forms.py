@@ -289,7 +289,7 @@ class ProposalVersionForm(ModelForm):
 	class Meta:
 		model = ProposalVersion
 		fields = [
-			'proposal', 'title', 'summary', 'text', 'user'
+			'proposal', 'title', 'summary', 'text', 'user','tags'
 		]
 		widgets = {
 			'proposal': forms.HiddenInput(),
@@ -297,7 +297,9 @@ class ProposalVersionForm(ModelForm):
 			'title': forms.TextInput(),
 			'summary': forms.Textarea(),
 			'text': forms.Textarea(),
+                        'tags':forms.Textarea(),
 		}
+		
 
 
 class EditProposalForm(object):
@@ -372,8 +374,11 @@ class EditProposalForm(object):
 		if not self.is_bound:
 			return True 
 
-		# validate the proposal version
-		return self.proposal_version_form.is_valid()
+                if len(self.proposal_version_form.errors) == 1 :
+                        if self.proposal_version_form.errors.keys()[0] == 'tags':
+                                return True
+                else: 
+                        return self.proposal_version_form.is_valid()
 
 
 	def save(self):
@@ -389,12 +394,31 @@ class EditProposalForm(object):
 			)
 			proposal_init['original_user'] = proposal_init['user']
 			self.proposal = Proposal(**proposal_init)
-			self.proposal.save()
-
+                        self.proposal.save()
+			
 			# Bind it to the proposal version and save the proposal version
-			new_proposal_version = self.proposal_version_form.save(
-				commit=False)
+			proposal_init.pop("original_user", None)
+                        new_proposal_version = ProposalVersion(**proposal_init);
+		#	new_proposal_version = self.proposal_version_form.save(
+                #			commit=False)
 			new_proposal_version.proposal = self.proposal
+			new_proposal_version.save()
+
+                        #Used for spliiting and saving the tags
+			allTags = self.proposal_version_form.data['tags'].split(',');
+
+                        print self.proposal_version_form.data['tags']
+                        
+                        for eachTag in allTags:
+                                try :
+                                        tag = Tag.objects.get(name=eachTag);
+                                except:
+                                        tag = Tag(name=eachTag)
+                                        tag.save();
+                                self.proposal.tags.add(tag);
+                                new_proposal_version.tags.add(tag);
+			
+			self.proposal.save()
 			new_proposal_version.save()
 
 		# Otherwise, we are not making a new proposal, only saving a new
@@ -407,11 +431,32 @@ class EditProposalForm(object):
 			for field in ['title', 'summary', 'text', 'user']:
 				setattr(self.proposal, field,
 					self.proposal_version_form.cleaned_data[field])
+				
 			self.proposal.save()
 
+			
+                        proposal_init = utils.extract_dict(
+				self.proposal_version_form.cleaned_data,
+				['title', 'summary', 'text', 'user']
+			)
 			# and of course, save the ProposalVersion
-			new_proposal_version = self.proposal_version_form.save()
+			new_proposal_version = ProposalVersion(**proposal_init);
+                        new_proposal_version.proposal = self.proposal
+			new_proposal_version.save()
 
+                        #Used for splitting and saving all the tags
+        		allTags = self.proposal_version_form.data['tags'].split(',');
+                        for eachTag in allTags:
+                                try :
+                                        tag = Tag.objects.get(name=eachTag);
+                                except:
+                                        tag = Tag(name=eachTag)
+                                        tag.save();
+                                self.proposal.tags.add(tag);
+                                new_proposal_version.tags.add(tag);
+			
+			self.proposal.save()
+			new_proposal_version.save()
 
 		# Finally, return a reference to the proposal
 		return self.proposal

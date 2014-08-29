@@ -25,6 +25,9 @@ urlpatterns = patterns('',
 	#Search results
 	url(r'^search/$',search,name='search'),
 
+        #AllUserDisplay
+        url(r'^users/$',users,name='users'),
+        
 	#userProfiles
         #Seeing the user Profile - Basic information and followed Posts
         

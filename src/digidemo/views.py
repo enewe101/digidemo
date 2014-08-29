@@ -122,7 +122,7 @@ def add_proposal(request):
 			data=request.POST,
 			endpoint=reverse('add_proposal')
 		)
-
+                print "Form retrieved"
 		if edit_proposal_form.is_valid():
 			proposal = edit_proposal_form.save()
 			return redirect(proposal.get_url('proposal'))
@@ -132,7 +132,7 @@ def add_proposal(request):
 			endpoint=reverse('add_proposal'),
 			initial={'user': logged_in_user}
 		)
-
+        print "Here here"
 	return render(
 		request,
 		'digidemo/edit.html', 
@@ -297,6 +297,8 @@ def edit(request, proposal_id):
 			proposal=proposal,
 			endpoint=proposal.get_url('edit')
 		)
+		
+		edit_proposal_form.proposal_version_form.tags="";
 
 	return render(
 		request,
@@ -955,6 +957,31 @@ def search(request):
         'notes' : results,
     })
 
+def users(request):
+
+        listToReturn = []
+        
+        if request.POST:
+                print request.POST['userName'];
+                dictionary ={};
+        
+                for user in UserProfile.objects.all():
+                        dictionary[user] = lev(user.user.username,request.POST['userName'])
+
+                # Use this for descending order 
+                # for w in sorted(dictionary,key=dictionary.get,reverse=True)
+        
+                for user in sorted(dictionary, key=dictionary.get):
+                        listToReturn.append(user);
+
+                
+        
+        return render(request,'digidemo/users.html',
+                      {
+                              'django_vars_js': get_django_vars_JSON(),
+                              'usersList' : listToReturn,
+                              }
+                      )
 
 # A dry view for displaying the userProfile
 # Every profile is public
@@ -1032,4 +1059,9 @@ def errorPage(request, error):
                         }
                       )
 
+
+def lev(a, b):
+        if not a: return len(b)
+        if not b: return len(a)
+        return min(lev(a[1:], b[1:])+(a[0] != b[0]), lev(a[1:], b)+1, lev(a, b[1:])+1)
 

@@ -81,21 +81,16 @@
 	<!-- start of tags -->
 	<div class="section tags">
 		Tags
+		{% for tag in proposal.tags.all %}
 		<ul>
 			<li>
 				<div class="tag">
-					Tar-sands
+					{{tag.name}}
 				</div>
 			</li>
-			<li>
-				<div class="tag">
-					CO2
-				</div>
-				<div class="tag">
-					Fossil-fuel
-				</div>
-			</li>
+
 		</ul>
+		{% endfor %}
 		<div class="clear"></div>
 	</div>
 	<!-- end of tags -->

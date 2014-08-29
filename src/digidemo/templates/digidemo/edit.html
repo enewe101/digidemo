@@ -42,13 +42,24 @@
 				{{ edit_proposal_form.proposal_version_form.text }}
 			</div>
 		</div>
+		
+		{% include "digidemo/_w_tagit.html" %}
 
 		<input id="{{ edit_proposal_form.form_class }}_submit" 
 			class="submit" type="submit" value="submit" />
 
 	</form>
 
+
+<script>
+	$( '#{{edit_proposal_form.form_class}}' ).submit(function( event ) {
+	var value = $('#tagsFieldInput').val();
+  	 $('#ProposalVersionForm__tags').val(value);
+});
+</script>
+
 {% endblock maincol %}
+
 
 {% block rightcol %}	
 	<div class="info"> 

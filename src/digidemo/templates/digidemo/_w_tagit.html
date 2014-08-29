@@ -1,0 +1,50 @@
+{% load apptags %}
+{% load staticfiles %}
+
+
+<! -- aehlke github tagit code -->
+<script src="{% static "digidemo/js/tag-it.js" %}" type="text/javascript" charset="utf-8"></script>
+                  
+<link rel="stylesheet" type="text/css" href="http://ajax.googleapis.com/ajax/libs/jqueryui/1/themes/flick/jquery-ui.css">
+
+
+<script type="text/javascript">
+
+
+ var sampleTags = ['c++', 'java' ];
+    $(document).ready(function() {
+	$( "#tagsFieldInput" ).hide();
+	$( "#ProposalVersionForm__tags" ).hide();
+        $("#tagsField").tagit({
+		caseSensitive : false,
+		availableTags: sampleTags,
+	//	requireAutocomplete: true,
+		singleField: true,
+	//	singleFieldNode: $('#ProposalVersionForm__tags'),
+		singleFieldNode: $('#tagsFieldInput'),
+	});
+        $("#sectorsField").tagit({
+		caseSensitive : false,
+		availableTags: sampleTags,
+		requireAutocomplete: true,
+		singleField: true,
+		singleFieldNode: $('#sectorsFieldInput'),
+	});
+	
+    });
+
+</script>
+
+{{edit_proposal_form.proposal_version_form.tags.label_tag}}
+<ul id="tagsField">
+    <!-- Existing list items will be pre-added to the tags -->
+</ul>
+{{ edit_proposal_form.proposal_version_form.tags }}
+ <input name="tagsFieldInput" id="tagsFieldInput" disabled="true" value ="{{proposal|getTags}}"> 
+<br /> <br />
+
+Sectors 
+<ul id="sectorsField">
+</ul>
+<input name="sectorsFieldInput" id="sectorsFieldInput" disabled="true">
+<br /> <br />
