@@ -1,18 +1,28 @@
 {% extends "digidemo/__two_column.html" %}
 {% load staticfiles %}
 
+{% block  headline_title %}
+	<img src="{% static "digidemo/images/discuss_edits.png" %}" />
+	{{ issue.title }}
+
+	<div id="follow">
+		{% include "digidemo/_w_follow_post.html" with proposal=issue %}
+	</div>
+
+{% endblock headline_title %}
+
 
 {% block maincol %}
 
 	<!-- start the section title and section-specific buttons -->
 	<div class="section_header">
-		<h2 class="subtitle float_left">{{ section_title }}</h2>
+		<h2 class="subtitle float_left">Editor's discussion area</h2>
 
 		<div class="section_buttons_right">
-			<a class="go_button_inline" href="{{ target.get_open_discussions_url }}">
+			<a class="go_button_inline" href="{{ issue.get_open_discussions_url }}">
 				{{closed_items.count}} closed discussions
 			</a>
-			<a class="go_button_inline_highlighted" href="{{ target.get_open_discussions_url }}">
+			<a class="go_button_inline_highlighted" href="{{ issue.get_open_discussions_url }}">
 				{{items.count}} open discussions
 			</a>
 		</div>
@@ -52,14 +62,6 @@
 
 {% block rightcol %}
 
-	<div class="section">
-		<a class="go_button" href="{{ target.get_edit_url }}">
-			edit now
-		</a>
-
-
-		<div class="clear"></div>
-	</div>
 
 	<div class="take_note">
 		<img src="{% static "digidemo/images/icon_info.png" %}" 

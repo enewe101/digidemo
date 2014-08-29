@@ -19,7 +19,7 @@ from django.views.debug import ExceptionReporter
 
 
 # Names we use for the tabs in proposal sections
-OVERVIEW_TAB_NAME = 'overview'
+OVERVIEW_TAB_NAME = 'issue'
 QUESTIONS_TAB_NAME = 'questions'
 OPINION_TAB_NAME = 'petitions'
 
@@ -48,10 +48,34 @@ def get_proposal_tabs(proposal, active_tab):
 	return proposal_tabs
 
 
+def get_edit_tabs(active_tab, issue):
+
+	# This is the basic tabs definition for the proposal views
+	tabs = [
+		{
+			'name': 'discuss',
+			'url': reverse('editors_area', kwargs={'issue_id':issue.pk})
+		},
+		{
+			'name': 'edit',
+			'url': reverse('edit', kwargs={'issue_id':issue.pk})
+		},
+		{
+			'name': 'preview',
+			'url': reverse('edit', kwargs={'issue_id':issue.pk})
+		},
+	]
+
+	# mark the active tab as active
+	active_index = [t['name'] for t in tabs].index(active_tab)
+	tabs[active_index]['active'] = True
+
+	return tabs
+
 def get_issue_list_tabs(active_tab):
 
 	# This is the basic tabs definition for the proposal views
-	issue_list_tabs = [
+	tabs = [
 		{
 			'name': 'interesting',
 			'url': reverse('issue_list', kwargs={'order_by':'interesting'})
@@ -71,10 +95,42 @@ def get_issue_list_tabs(active_tab):
 	]
 
 	# mark the active tab as active
-	active_index = [t['name'] for t in issue_list_tabs].index(active_tab)
-	issue_list_tabs[active_index]['active'] = True
+	active_index = [t['name'] for t in tabs].index(active_tab)
+	tabs[active_index]['active'] = True
 
-	return issue_list_tabs
+	return tabs
+
+
+def get_question_list_tabs(active_tab):
+
+	# This is the basic tabs definition for the proposal views
+	question_list_tabs = [
+		{
+			'name': 'interesting',
+			'url': reverse('all_questions_list', 
+				kwargs={'order_by':'interesting'})
+		},
+		{
+			'name': 'activity',
+			'url': reverse('all_questions_list', 
+				kwargs={'order_by':'activity'})
+		},
+		{
+			'name': 'newest',
+			'url': reverse('all_questions_list', kwargs={'order_by':'newest'})
+		},
+		{
+			'name': 'location',
+			'url': reverse('all_questions_list', 
+				kwargs={'order_by':'location'})
+		},
+	]
+
+	# mark the active tab as active
+	active_index = [t['name'] for t in question_list_tabs].index(active_tab)
+	question_list_tabs[active_index]['active'] = True
+
+	return question_list_tabs
 
 	
 def get_globals():
@@ -291,12 +347,12 @@ def history(request, proposal_id):
 	)
 
 
-def edit(request, proposal_id):
+def edit(request, issue_id):
 
 	# ** Hardcoded the logged in user to be enewe101 **
 	logged_in_user = User.objects.get(pk=1)
 
-	proposal = Proposal.objects.get(pk=proposal_id)
+	proposal = Proposal.objects.get(pk=issue_id)
 
 	# make a proposal vote form
 	proposal_vote_form = get_vote_form(
@@ -325,7 +381,7 @@ def edit(request, proposal_id):
 
 		edit_proposal_form = ProposalVersionForm(
 			data=proposal_version_data,
-			endpoint=proposal.get_url('edit')
+			endpoint=proposal.get_edit_url()
 		)
 
 	return render(
@@ -340,7 +396,7 @@ def edit(request, proposal_id):
 			'headline': proposal.title,
 			'edit_proposal_form': edit_proposal_form,
 			'logged_in_user': logged_in_user,
-			'tabs': get_proposal_tabs(proposal, OVERVIEW_TAB_NAME),
+			'tabs': get_edit_tabs('edit', proposal),
 			'active_navitem': 'create'
 		}
 	)
@@ -638,6 +694,70 @@ class IssueListView(AbstractView):
 
 
 
+class AllPetitionsListView(AbstractView):
+	template = 'digidemo/all_petitions_list.html'
+
+	def get_context_data(self):
+
+		logged_in_user = User.objects.get(pk=1)
+
+		# get the list of petitions, sorted in the desired way
+		order_by = self.kwargs['order_by'] or 'interesting'
+		if order_by == 'interesting':
+			petitions = Letter.objects.filter(parent_letter=None).order_by('?')
+
+		elif order_by == 'newest':
+			petitions = Letter.objects.filter(parent_letter=None).order_by('-creation_date')
+
+		elif order_by == 'activity':
+			petitions = Letter.objects.filter(parent_letter=None).order_by('-creation_date')
+
+		elif order_by == 'location':
+			petitions = Letter.objects.filter(parent_letter=None).order_by('-creation_date')
+
+		# build the tabs, and show the right tab as active
+		tabs = get_question_list_tabs(order_by)
+
+		return {
+			'letters': petitions,
+			'tabs': tabs,
+			'logged_in_user': logged_in_user,
+			'active_navitem': OPINION_NAV_NAME
+		}
+
+
+class AllQuestionsListView(AbstractView):
+	template = 'digidemo/all_questions_list.html'
+
+	def get_context_data(self):
+
+		logged_in_user = User.objects.get(pk=1)
+
+		# get the list of questions, sorted in the desired way
+		order_by = self.kwargs['order_by'] or 'interesting'
+		if order_by == 'interesting':
+			questions = Question.objects.all().order_by('?')
+
+		elif order_by == 'newest':
+			questions = Question.objects.all().order_by('-creation_date')
+
+		elif order_by == 'activity':
+			questions = Question.objects.all().order_by('-creation_date')
+
+		elif order_by == 'location':
+			questions = Question.objects.all().order_by('-creation_date')
+
+		# build the tabs, and show the right tab as active
+		tabs = get_question_list_tabs(order_by)
+
+		return {
+			'questions': questions,
+			'tabs': tabs,
+			'logged_in_user': logged_in_user,
+			'active_navitem': QUESTIONS_NAV_NAME
+		}
+
+
 
 class AskQuestionView(AbstractView):
 
@@ -833,7 +953,7 @@ class DiscussionListView(AbstractView):
 	template = 'digidemo/discussion_list.html'
 
 	def get_context_data(self):
-		proposal = Proposal.objects.get(pk=self.kwargs['target_id'])
+		proposal = Proposal.objects.get(pk=self.kwargs['issue_id'])
 		discussions_open = Discussion.objects.filter(
 			target=proposal,
 			is_open=True)
@@ -844,12 +964,12 @@ class DiscussionListView(AbstractView):
 
 		return {
 			'section_title': 'Welcome to the editor\'s area',
-			'target': proposal,
+			'issue': proposal,
 			'headline': proposal.title,
 			'items': discussions_open,
 			'closed_items': discussions_closed,
 			'logged_in_user': logged_in_user,
-			'tabs': get_proposal_tabs(proposal, OVERVIEW_TAB_NAME),
+			'tabs': get_edit_tabs('discuss', proposal),
 			'active_navitem': 'create'
 		}
 

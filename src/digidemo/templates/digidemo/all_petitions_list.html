@@ -1,0 +1,135 @@
+{% extends "digidemo/__two_column.html" %}
+{% load staticfiles %}
+
+{% block css %}
+
+	{{block.super}} 
+	<link rel="stylesheet" type="text/css" 
+		href="{% static "digidemo/css/letter.css" %}" /> 
+	<link rel="stylesheet" type="text/css" 
+		href="{% static "digidemo/css/proposal.css" %}" /> 
+
+{% endblock css %}
+
+{% block  headline_title %}
+	<img src="{% static "digidemo/images/petition_icon.png" %}" />
+	Petitions
+{% endblock headline_title %}
+
+{% block maincol %}
+	<!-- start the section title and section-specific buttons -->
+	<div class="section_header">
+		<h2 class="subtitle float_left">{{letters.count}} Question{{letters.count|pluralize}}</h2>
+
+
+		<div class="section_buttons_right">
+			<a class="go_button_inline" href="#">
+				ask a question
+			</a>
+		</div>
+
+		<div class="clear"></div>
+	</div>
+	<!-- end the section title and section-specific buttons -->
+
+	<!-- start the open letters area -->
+	<div id="letters">
+		{% for letter in letters %}
+
+			<!-- start of an open letter -->
+			<div id="letter_{{ forloop.counter }}" class="letter">
+
+				<div class="status_indicator">
+					<div class="score">
+						{{ letter.score }}<img 
+							class="resend_widget" 
+							src="{% static "digidemo/images/feather_sign.png" %}" />
+					</div>
+					<div class="num_replies">
+						<span class="num">
+							{{ letter.comment_set.count }}
+						</span><img 
+							src="{% static "digidemo/images/comment_icon.png" %}"/>
+					</div>
+				</div>
+
+				<!-- start the content of the letter -->
+				<div class="letter_main">
+					<div class="physical_letter">
+
+						<h2 class="post_title">
+							<a href="{{letter.get_url}}">
+								{{letter.title}}
+							</a>
+						</h2>
+
+
+						<div class="letter_body_abbreviated">
+							{{ letter.body|truncatewords:100 }}
+							<br />
+							<a href="{{letter.get_url}}">
+								go to petition...
+							</a>
+						</div>
+
+						<!-- start the list of senders -->
+						<div class="senders">
+
+							<!-- people that have resent the letter -->
+							<div class="resenders_single_row" 
+								id="{{ forloop.counter }}_resenders" >
+									{% for resender in letter.resenders %}
+
+										{% include "digidemo/_i_resender_avatar.html" %}
+									{% endfor %}
+								<div class="clear"></div>
+							</div>
+							<!-- end of re-senders  -->
+
+							<div class="float_right">
+								{% include "digidemo/_i_user_id.html" with user=letter.user %}
+							</div>
+
+
+							<div class="clear"></div>
+
+						</div>
+						<!-- end of letter senders area -->
+
+						<div class="clear"></div>
+					</div>
+
+					<img class="cover_corner"
+						src="{% static "digidemo/images/corner.png" %}" />
+
+				</div> 
+				<!-- end of letter main content -->
+
+				<div class="clear"></div>
+			</div>
+			<!-- end of a letter -->
+
+			<div class="clear"></div>
+
+		{% endfor %} <!-- loop over all letters for the proposal -->
+
+
+	</div>
+	<!-- end of letters area -->
+
+{% endblock maincol %}
+
+{% block rightcol %}
+	
+	<div class="take_note">
+		<img src="{% static "digidemo/images/bulb_icon.png" %}" 
+			class="note_icon" />
+		<p>
+			Petition admonition goes here...
+		</p>
+		<p>
+			Make sure to read the <a href="#">writing a good petition</a> 
+			guideline before contributing :)
+		</p>
+	</div>
+{% endblock rightcol %}

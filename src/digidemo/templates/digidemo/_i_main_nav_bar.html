@@ -15,11 +15,14 @@
 		Topics
 	</a>
 
-	<a class="{% if active_navitem == "questions" %}navitem_active{% else %}navitem{% endif %}">
+	<a class="{% if active_navitem == "questions" %}navitem_active{% else %}navitem{% endif %}"
+		href="{% url "all_questions_list" order_by="interesting" %}">
+
 		Questions
 	</a>
 
-	<a class="{% if active_navitem == "petitions" %}navitem_active{% else %}navitem{% endif %}">
+	<a class="{% if active_navitem == "petitions" %}navitem_active{% else %}navitem{% endif %}"
+		href="{% url "all_petitions_list" order_by="interesting" %}">
 		Petitions
 	</a>
 

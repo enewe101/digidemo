@@ -17,7 +17,6 @@
 
 {% block  headline_title %}
 	<img src="{% static "digidemo/images/compas_icon.png" %}" />
-	<span class="content_type">ISSUE:</span>
 	{{ proposal.get_latest.title }}
 
 	<div id="follow">
@@ -29,6 +28,11 @@
 {% block maincontent %}
 <!-- start the proposal -->
 <div id="previews">
+	<div>
+		<a href="{% url "editors_area" issue_id=proposal.id %}" class="go_button">
+			edit
+		</a>
+	</div>
 
 	<div class="marquee_section">
 		<h2 class="marquee_heading">
@@ -51,7 +55,7 @@
 
 						<div class="overview_petition_status_indicator">
 							<div class="score">
-								{{ letter_section.post.letter_set.distinct.count }}<img 
+								{{ letter_section.post.score }}<img 
 									class="resend_widget" 
 									src="{% static "digidemo/images/feather_sign.png" %}" />
 							</div>

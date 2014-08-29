@@ -106,7 +106,7 @@ class Proposal(TimeStamped):
 		return url_stub + slugify(self.title)
 
 	def get_open_discussions_url(self):
-		url_stub = reverse('editors_area', kwargs={'target_id': self.pk})
+		url_stub = reverse('editors_area', kwargs={'issue_id': self.pk})
 		return url_stub + slugify(self.title)
 
 	def get_closed_discussions_url(self):
@@ -118,8 +118,9 @@ class Proposal(TimeStamped):
 		return url_stub + slugify(self.title)
 
 	def get_edit_url(self):
-		return self.get_url('edit')
-
+		url_stub = reverse('edit', kwargs={'issue_id': self.pk})
+		return url_stub + slugify(self.title)
+ 
 	def get_proposal_url(self):
 		return self.get_url('proposal')
 
@@ -240,13 +241,14 @@ class Position(TimeStamped):
 
 
 class Letter(TimeStamped):
-	parent_letter = models.ForeignKey('self', blank=True, null=True)
+	parent_letter = models.ForeignKey('self', blank=True, null=True, 
+		related_name='resent_letters')
 	proposal = models.ForeignKey(Proposal)
 	valence = models.SmallIntegerField(choices=VALENCE_CHOICES)
 	user = models.ForeignKey(User)
 	body = models.TextField()
 	recipients = models.ManyToManyField(Position, related_name='letters')
-	score = models.SmallIntegerField(default=0)
+	score = models.SmallIntegerField(default=1)
 	title = models.CharField(max_length=TITLE_LENGTH)
 
 	def __unicode__(self):

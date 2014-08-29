@@ -2,19 +2,19 @@
 {% load staticfiles %}
 
 {% block  headline_title %}
-	<img class="Q_icon" 
-		src="{% static "digidemo/images/question_icon.png" %}" />
-	{{ proposal.get_latest.title }}
+	<img class="Q_icon"
+	src="{% static "digidemo/images/question_icon.png" %}" />
+	Questions
 {% endblock headline_title %}
 
 {% block maincol %}
 	<!-- start the section title and section-specific buttons -->
 	<div class="section_header">
-		<h2 class="subtitle float_left">{{items.count}} Question{{items.count|pluralize}}</h2>
-
+		<h2 class="subtitle float_left">{{questions.count}} Question{{questions.count|pluralize}}</h2>
 
 		<div class="section_buttons_right">
-			<a class="go_button_inline" href="{{ proposal.get_question_url }}">
+			<a class="go_button_inline" 
+				href="#">
 				ask a question
 			</a>
 		</div>
@@ -23,24 +23,23 @@
 	</div>
 	<!-- end the section title and section-specific buttons -->
 
-	<!-- start the section title and section-specific buttons -->
 	<div class="listing">
 
-		{% for item in items %}
+		{% for question in questions %}
 			<div class="list_item">
 				<div class="status_indicator">
 					<div class="score">
-						{{ item.score }}
+						{{ question.score }}
 					</div>
 					<div class="num_replies">
-						{{ item.replies.count }} 
+						{{ question.replies.count }} 
 						answers
 					</div>
 				</div>
 				<div class="list_body">
-					<a href="{{ item.get_url }}">{{ item.title }}</a><br />
-						{{ item.text|truncatechars:180 }}
-					<span class="bold">~{{ item.user }}</span>
+					<a href="{{ question.get_url }}">{{ question.title }}</a><br />
+						{{ question.text|truncatechars:180 }}
+					<span class="bold">~{{ question.user }}</span>
 				</div>
 				<div class="clear"></div>
 			</div>
@@ -53,9 +52,6 @@
 
 {% block rightcol %}
 	
-	<div class="section">
-		{% include "digidemo/_w_follow_post.html" %}
-	</div>
 
 	<div class="take_note">
 		<img src="{% static "digidemo/images/bulb_icon.png" %}" 
