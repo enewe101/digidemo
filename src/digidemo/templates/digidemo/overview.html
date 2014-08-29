@@ -144,21 +144,11 @@
 
 	<!-- start of proposal sectors -->
 	<div class='tags'>
-		<div class="sector_tag economy_sector">
-				Economy
-		</div>
-		<div class="sector_tag environment_sector">
-				Environment
-		</div>
-		<div class="tag">
-				Tar-sands
-		</div>
-		<div class="tag">
-				CO2
-		</div>
-		<div class="tag">
-				Fossil-fuel
-		</div>
+		{% for tag in proposal.tags.all %}
+			<div class="tag">
+				{{ tag.name }}
+			</div>
+		{% endfor %}
 	</div>
 	<!-- end of proposal sectors -->
 

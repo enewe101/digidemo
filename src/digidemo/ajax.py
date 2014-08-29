@@ -425,7 +425,6 @@ def editProposal(request):
         proposal.last_modified = timezone.now()
         
         proposal.save()
-        print "Here222"
 	return {'test':'success!'}
 
 

@@ -35,8 +35,14 @@ urlpatterns = patterns('',
 	#Search results
 	url(r'^search/$',search,name='search'),
 
+        #AllUserDisplay
+        url(r'^users/$',users,name='users'),
+        
 	#userProfiles
-	url(r'^userProfile/(?P<userName>\w+)/$', userProfile,name='userProfile'),
+        #Seeing the user Profile - Basic information and followed Posts
+        
+        url(r'^userProfile/(?P<userName>\w+)/$', userProfile,name='userProfile'),
+        url(r'^userProfile/(?P<userName>\w+)/edit$',userProfileEdit,name='userProfileEdit'),
 
 	# Registration
 	url(r'^userRegistration/$', userRegistration,name='userRegistration'),

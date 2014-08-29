@@ -332,11 +332,12 @@ class ResendLetterForm(LetterForm):
 	
 
 
+# TODO: seem to be losing the original user during save
 class ProposalVersionForm(AugmentedFormMixin, ModelForm):
 	class Meta:
 		model = ProposalVersion
 		fields = [
-			'proposal', 'title', 'summary', 'text', 'user'
+			'proposal', 'title', 'summary', 'text', 'user', 'tags'
 		]
 		widgets = {
 			'proposal': forms.HiddenInput(),
@@ -344,7 +345,18 @@ class ProposalVersionForm(AugmentedFormMixin, ModelForm):
 			'title': forms.TextInput(),
 			'summary': forms.Textarea(),
 			'text': forms.Textarea(),
+			'tags': forms.TextInput()
 		}
+
+	def is_valid(self):
+
+		valid = super(ProposalVersionForm, self).is_valid()
+
+		if len(self.errors) == 1 :
+			if self.errors.keys()[0] == 'tags':
+				return True
+
+		return valid
 
 
 	def save(self, commit=True):
@@ -368,6 +380,21 @@ class ProposalVersionForm(AugmentedFormMixin, ModelForm):
 			new_proposal_version.proposal = self.proposal
 			new_proposal_version.save()
 
+			#Used for spliiting and saving the tags
+			allTags = self.data['tags'].split(',');
+
+			for eachTag in allTags:
+				try :
+					tag = Tag.objects.get(name=eachTag);
+				except:
+					tag = Tag(name=eachTag)
+					tag.save();
+				self.proposal.tags.add(tag);
+				new_proposal_version.tags.add(tag);
+	
+			self.proposal.save()
+			new_proposal_version.save()
+
 		# Otherwise, we are not making a new proposal, only saving a new
 		# proposal version
 		else:
@@ -384,14 +411,22 @@ class ProposalVersionForm(AugmentedFormMixin, ModelForm):
 				commit=False)
 			new_proposal_version.save()
 
+			#Used for splitting and saving all the tags
+			allTags = self.proposal_version_form.data['tags'].split(',');
+			for eachTag in allTags:
+				try :
+					tag = Tag.objects.get(name=eachTag);
+				except:
+					tag = Tag(name=eachTag)
+					tag.save();
+				self.proposal.tags.add(tag);
+				new_proposal_version.tags.add(tag);
+			
+			self.proposal.save()
+			new_proposal_version.save()
 
 		# Finally, return a reference to the proposal
 		return new_proposal_version
-
-	
-
-
-
 
 
 

@@ -16,6 +16,10 @@ import json
 import sys
 from django import http
 from django.views.debug import ExceptionReporter
+from django.core.files.storage import default_storage
+from django.core.files.base import ContentFile
+from django.conf import settings
+from choices import *;
 
 
 # Names we use for the tabs in proposal sections
@@ -192,7 +196,7 @@ def add_proposal(request):
 			data=request.POST,
 			endpoint=reverse('add_proposal')
 		)
-
+                print "Form retrieved"
 		if edit_proposal_form.is_valid():
 			proposal_version = edit_proposal_form.save()
 			proposal = proposal_version.proposal
@@ -383,6 +387,8 @@ def edit(request, issue_id):
 			data=proposal_version_data,
 			endpoint=proposal.get_edit_url()
 		)
+		
+		edit_proposal_form.proposal_version_form.tags="";
 
 	return render(
 		request,
@@ -1230,13 +1236,111 @@ def search(request):
         'notes' : results,
     })
 
+def users(request):
+
+        listToReturn = []
+        
+        if request.POST:
+                print request.POST['userName'];
+                dictionary ={};
+        
+                for user in UserProfile.objects.all():
+                        dictionary[user] = lev(user.user.username,request.POST['userName'])
+
+                # Use this for descending order 
+                # for w in sorted(dictionary,key=dictionary.get,reverse=True)
+        
+                for user in sorted(dictionary, key=dictionary.get):
+                        listToReturn.append(user);
+
+                
+        
+        return render(request,'digidemo/users.html',
+                      {
+                              'django_vars_js': get_django_vars_JSON(),
+                              'usersList' : listToReturn,
+                              }
+                      )
+
+# A dry view for displaying the userProfile
+# Every profile is public
+# Read the userName from the URL, get the obkect and send it to the view
+# TO - DO : Establish the distinction of making the user profile public or private
+
 def userProfile(request, userName) :
-        print "abc aba abc"
         userLoggedIn = User.objects.get(username = userName);
-        userProfile = UserProfile.objects.get(user = userLoggedIn);
+        userProfile = UserProfile.objects.get(user = userLoggedIn); 
         return render (request, 'digidemo/userProfile.html', 
 			{
 				'django_vars_js': get_django_vars_JSON(),
-                'user' : userProfile,
+                                'user' : userProfile,
 			}
 		)
+
+
+# View used for editing the userProfile
+# If the request is a POST request, the user has made changes to the form. The changes are accepted and redirected to display the userProfile page
+# If the user has uploaded an image, the image is uploaded and linked appropriately
+# Else, the normal userProfileEdit page is shown with prefilled data.
+#TO -DO : Write a python script to automatically which images are not linked to any userProfile and delete them
+# Django has a good mechanism where same files are renamed and linked
+# Alaternatively you could check if the user has uploaded an image previously and delete it and upload a different one
+
+def userProfileEdit(request,userName) :
+
+        userLoggedIn = User.objects.get(username = userName);
+        userProfileLoggedIn = UserProfile.objects.get(user = userLoggedIn);
+
+        if request.method == 'POST':
+
+                userLoggedIn.first_name = request.POST['fname'];
+                userLoggedIn.last_name = request.POST['lname'];
+                userLoggedIn.email = request.POST['email'];
+
+                userLoggedIn.save();
+
+                userProfileLoggedIn.street = request.POST['street'];
+                userProfileLoggedIn.zip_code = request.POST['zip_code']
+                userProfileLoggedIn.country = request.POST['country']
+                userProfileLoggedIn.province = request.POST['province']
+
+                if 'image' in request.FILES:
+                        uploadedImage = request.FILES['image'];
+                        uploadedImage.name = userName;
+                        userProfileLoggedIn.avatar_img = uploadedImage;               
+
+                userProfileLoggedIn.save();
+                
+                return (userProfile(request,userName))
+                
+        else :
+                
+                try :
+                        if (request.session['user'] != userName):
+                                return(errorPage(request,"No Necessary Permissions"));
+                except :
+                        return(errorPage(request,"You have not been authorised to access the page"));
+                
+                return render (request, 'digidemo/userProfileEdit.html', 
+                                {
+                                        'django_vars_js': get_django_vars_JSON(),
+                                        'user' : userProfileLoggedIn,
+                                        'country':COUNTRIES,
+                                }
+                        )
+
+
+def errorPage(request, error):
+        return render(request,'digidemo/errorPage.html',
+                      {
+                 	'django_vars_js': get_django_vars_JSON(),
+                        'error' : error,
+                        }
+                      )
+
+
+def lev(a, b):
+        if not a: return len(b)
+        if not b: return len(a)
+        return min(lev(a[1:], b[1:])+(a[0] != b[0]), lev(a[1:], b)+1, lev(a, b[1:])+1)
+

@@ -19,10 +19,23 @@ def getSummary(proposal):
     returnText+= '......';
     return returnText
 
+@register.filter(name='getTags')
+def getTags(proposal):
+    if(proposal is None):
+        return "";
+    returnString = "";
+    
+    for tag in proposal.tags.all():
+        print tag.name;
+        returnString = returnString + tag.name
+        returnString = str(returnString) + ", "
+    if(len(returnString)>0):
+        returnString = returnString[:-1]
+    return returnString
 
 @register.filter(name='getLoggedInUser')
 def getLoggedInUser(request):
-    #print request.session.keys()
+    
     if(request.session.has_key("user")):
         return(request.session['user'])
     return "false"
