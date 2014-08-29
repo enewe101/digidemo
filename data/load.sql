@@ -217,8 +217,8 @@ CREATE TABLE `digidemo_answer` (
   PRIMARY KEY (`id`),
   KEY `digidemo_answer_6340c63c` (`user_id`),
   KEY `digidemo_answer_70bfdfd1` (`target_id`),
-  CONSTRAINT `target_id_refs_id_e84baa74` FOREIGN KEY (`target_id`) REFERENCES `digidemo_question` (`id`),
-  CONSTRAINT `user_id_refs_id_daa77108` FOREIGN KEY (`user_id`) REFERENCES `auth_user` (`id`)
+  CONSTRAINT `user_id_refs_id_daa77108` FOREIGN KEY (`user_id`) REFERENCES `auth_user` (`id`),
+  CONSTRAINT `target_id_refs_id_e84baa74` FOREIGN KEY (`target_id`) REFERENCES `digidemo_question` (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=30 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -250,8 +250,8 @@ CREATE TABLE `digidemo_answercomment` (
   PRIMARY KEY (`id`),
   KEY `digidemo_answercomment_6340c63c` (`user_id`),
   KEY `digidemo_answercomment_70bfdfd1` (`target_id`),
-  CONSTRAINT `user_id_refs_id_bf3a0f99` FOREIGN KEY (`user_id`) REFERENCES `auth_user` (`id`),
-  CONSTRAINT `target_id_refs_id_5979b3a6` FOREIGN KEY (`target_id`) REFERENCES `digidemo_answer` (`id`)
+  CONSTRAINT `target_id_refs_id_5979b3a6` FOREIGN KEY (`target_id`) REFERENCES `digidemo_answer` (`id`),
+  CONSTRAINT `user_id_refs_id_bf3a0f99` FOREIGN KEY (`user_id`) REFERENCES `auth_user` (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -283,8 +283,8 @@ CREATE TABLE `digidemo_answervote` (
   UNIQUE KEY `user_id` (`user_id`,`target_id`),
   KEY `digidemo_answervote_6340c63c` (`user_id`),
   KEY `digidemo_answervote_70bfdfd1` (`target_id`),
-  CONSTRAINT `user_id_refs_id_c58dd99d` FOREIGN KEY (`user_id`) REFERENCES `auth_user` (`id`),
-  CONSTRAINT `target_id_refs_id_b2d5d960` FOREIGN KEY (`target_id`) REFERENCES `digidemo_answer` (`id`)
+  CONSTRAINT `target_id_refs_id_b2d5d960` FOREIGN KEY (`target_id`) REFERENCES `digidemo_answer` (`id`),
+  CONSTRAINT `user_id_refs_id_c58dd99d` FOREIGN KEY (`user_id`) REFERENCES `auth_user` (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -316,8 +316,8 @@ CREATE TABLE `digidemo_comment` (
   PRIMARY KEY (`id`),
   KEY `digidemo_comment_6340c63c` (`user_id`),
   KEY `digidemo_comment_70bfdfd1` (`target_id`),
-  CONSTRAINT `user_id_refs_id_b202d78c` FOREIGN KEY (`user_id`) REFERENCES `auth_user` (`id`),
-  CONSTRAINT `target_id_refs_id_549c5f06` FOREIGN KEY (`target_id`) REFERENCES `digidemo_letter` (`id`)
+  CONSTRAINT `target_id_refs_id_549c5f06` FOREIGN KEY (`target_id`) REFERENCES `digidemo_letter` (`id`),
+  CONSTRAINT `user_id_refs_id_b202d78c` FOREIGN KEY (`user_id`) REFERENCES `auth_user` (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=15 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -349,8 +349,8 @@ CREATE TABLE `digidemo_commentvote` (
   UNIQUE KEY `user_id` (`user_id`,`target_id`),
   KEY `digidemo_commentvote_6340c63c` (`user_id`),
   KEY `digidemo_commentvote_70bfdfd1` (`target_id`),
-  CONSTRAINT `user_id_refs_id_5b5404b8` FOREIGN KEY (`user_id`) REFERENCES `auth_user` (`id`),
-  CONSTRAINT `target_id_refs_id_29c7728e` FOREIGN KEY (`target_id`) REFERENCES `digidemo_comment` (`id`)
+  CONSTRAINT `target_id_refs_id_29c7728e` FOREIGN KEY (`target_id`) REFERENCES `digidemo_comment` (`id`),
+  CONSTRAINT `user_id_refs_id_5b5404b8` FOREIGN KEY (`user_id`) REFERENCES `auth_user` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -383,8 +383,8 @@ CREATE TABLE `digidemo_discussion` (
   PRIMARY KEY (`id`),
   KEY `digidemo_discussion_6340c63c` (`user_id`),
   KEY `digidemo_discussion_70bfdfd1` (`target_id`),
-  CONSTRAINT `user_id_refs_id_dc56e1ff` FOREIGN KEY (`user_id`) REFERENCES `auth_user` (`id`),
-  CONSTRAINT `target_id_refs_id_67b12962` FOREIGN KEY (`target_id`) REFERENCES `digidemo_proposal` (`id`)
+  CONSTRAINT `target_id_refs_id_67b12962` FOREIGN KEY (`target_id`) REFERENCES `digidemo_proposal` (`id`),
+  CONSTRAINT `user_id_refs_id_dc56e1ff` FOREIGN KEY (`user_id`) REFERENCES `auth_user` (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -486,8 +486,8 @@ CREATE TABLE `digidemo_letter` (
   KEY `digidemo_letter_b0eaace7` (`parent_letter_id`),
   KEY `digidemo_letter_ad574d3c` (`proposal_id`),
   KEY `digidemo_letter_6340c63c` (`user_id`),
-  CONSTRAINT `proposal_id_refs_id_a3d9d864` FOREIGN KEY (`proposal_id`) REFERENCES `digidemo_proposal` (`id`),
   CONSTRAINT `parent_letter_id_refs_id_5234e149` FOREIGN KEY (`parent_letter_id`) REFERENCES `digidemo_letter` (`id`),
+  CONSTRAINT `proposal_id_refs_id_a3d9d864` FOREIGN KEY (`proposal_id`) REFERENCES `digidemo_proposal` (`id`),
   CONSTRAINT `user_id_refs_id_747eea8b` FOREIGN KEY (`user_id`) REFERENCES `auth_user` (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=46 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -550,8 +550,8 @@ CREATE TABLE `digidemo_lettervote` (
   UNIQUE KEY `user_id` (`user_id`,`target_id`),
   KEY `digidemo_lettervote_6340c63c` (`user_id`),
   KEY `digidemo_lettervote_70bfdfd1` (`target_id`),
-  CONSTRAINT `user_id_refs_id_955f482c` FOREIGN KEY (`user_id`) REFERENCES `auth_user` (`id`),
-  CONSTRAINT `target_id_refs_id_2b6488e6` FOREIGN KEY (`target_id`) REFERENCES `digidemo_letter` (`id`)
+  CONSTRAINT `target_id_refs_id_2b6488e6` FOREIGN KEY (`target_id`) REFERENCES `digidemo_letter` (`id`),
+  CONSTRAINT `user_id_refs_id_955f482c` FOREIGN KEY (`user_id`) REFERENCES `auth_user` (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -646,8 +646,8 @@ CREATE TABLE `digidemo_position` (
   PRIMARY KEY (`id`),
   KEY `digidemo_position_16f39487` (`person_id`),
   KEY `digidemo_position_de772da3` (`organization_id`),
-  CONSTRAINT `person_id_refs_id_791b385c` FOREIGN KEY (`person_id`) REFERENCES `digidemo_person` (`id`),
-  CONSTRAINT `organization_id_refs_id_e8072702` FOREIGN KEY (`organization_id`) REFERENCES `digidemo_organization` (`id`)
+  CONSTRAINT `organization_id_refs_id_e8072702` FOREIGN KEY (`organization_id`) REFERENCES `digidemo_organization` (`id`),
+  CONSTRAINT `person_id_refs_id_791b385c` FOREIGN KEY (`person_id`) REFERENCES `digidemo_person` (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -746,8 +746,8 @@ CREATE TABLE `digidemo_proposalversion` (
   PRIMARY KEY (`id`),
   KEY `digidemo_proposalversion_ad574d3c` (`proposal_id`),
   KEY `digidemo_proposalversion_6340c63c` (`user_id`),
-  CONSTRAINT `user_id_refs_id_947246bb` FOREIGN KEY (`user_id`) REFERENCES `auth_user` (`id`),
-  CONSTRAINT `proposal_id_refs_id_5991915b` FOREIGN KEY (`proposal_id`) REFERENCES `digidemo_proposal` (`id`)
+  CONSTRAINT `proposal_id_refs_id_5991915b` FOREIGN KEY (`proposal_id`) REFERENCES `digidemo_proposal` (`id`),
+  CONSTRAINT `user_id_refs_id_947246bb` FOREIGN KEY (`user_id`) REFERENCES `auth_user` (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=37 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -808,8 +808,8 @@ CREATE TABLE `digidemo_proposalvote` (
   UNIQUE KEY `user_id` (`user_id`,`target_id`),
   KEY `digidemo_proposalvote_6340c63c` (`user_id`),
   KEY `digidemo_proposalvote_70bfdfd1` (`target_id`),
-  CONSTRAINT `user_id_refs_id_baf64dae` FOREIGN KEY (`user_id`) REFERENCES `auth_user` (`id`),
-  CONSTRAINT `target_id_refs_id_2722b1c2` FOREIGN KEY (`target_id`) REFERENCES `digidemo_proposal` (`id`)
+  CONSTRAINT `target_id_refs_id_2722b1c2` FOREIGN KEY (`target_id`) REFERENCES `digidemo_proposal` (`id`),
+  CONSTRAINT `user_id_refs_id_baf64dae` FOREIGN KEY (`user_id`) REFERENCES `auth_user` (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -842,8 +842,8 @@ CREATE TABLE `digidemo_question` (
   PRIMARY KEY (`id`),
   KEY `digidemo_question_6340c63c` (`user_id`),
   KEY `digidemo_question_70bfdfd1` (`target_id`),
-  CONSTRAINT `user_id_refs_id_b7595eaf` FOREIGN KEY (`user_id`) REFERENCES `auth_user` (`id`),
-  CONSTRAINT `target_id_refs_id_246dc8e3` FOREIGN KEY (`target_id`) REFERENCES `digidemo_proposal` (`id`)
+  CONSTRAINT `target_id_refs_id_246dc8e3` FOREIGN KEY (`target_id`) REFERENCES `digidemo_proposal` (`id`),
+  CONSTRAINT `user_id_refs_id_b7595eaf` FOREIGN KEY (`user_id`) REFERENCES `auth_user` (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -853,7 +853,7 @@ CREATE TABLE `digidemo_question` (
 
 LOCK TABLES `digidemo_question` WRITE;
 /*!40000 ALTER TABLE `digidemo_question` DISABLE KEYS */;
-REPLACE INTO `digidemo_question` (`id`, `creation_date`, `last_modified`, `user_id`, `score`, `text`, `title`, `target_id`) VALUES (1,'2014-07-25 21:25:57','2014-08-17 19:38:07',1,1,'I would like to know how likely spills are, based on the rate of previous incidents. It will probably be important to take into account the kind of piping technology used, and the kind of service. For example, repurposed piping originally for the transport of natural gas is likely to be different from newly built piping. Or, (and I\'m not sure), there may be a difference due to the fact that this is crude derived from tarsands, rather than conventional crude.','How likely (or frequent) can we expect spills along the pipeline extension to be?',1),(2,'2014-08-25 05:13:50','2014-08-25 05:13:50',1,0,'Really I want to know.','Why is my hair white?',1),(3,'2014-08-25 05:20:49','2014-08-25 05:20:49',1,0,'Really I want to know.','Why is my hair white?',1),(4,'2014-08-25 05:31:24','2014-08-25 05:31:24',1,0,'Really I want to know.','Why is my hair white?',1),(5,'2014-08-25 06:54:46','2014-08-25 06:54:46',1,0,'test','test',1);
+REPLACE INTO `digidemo_question` (`id`, `creation_date`, `last_modified`, `user_id`, `score`, `text`, `title`, `target_id`) VALUES (1,'2014-07-25 21:25:57','2014-08-28 06:51:35',1,0,'I would like to know how likely spills are, based on the rate of previous incidents. It will probably be important to take into account the kind of piping technology used, and the kind of service. For example, repurposed piping originally for the transport of natural gas is likely to be different from newly built piping. Or, (and I\'m not sure), there may be a difference due to the fact that this is crude derived from tarsands, rather than conventional crude.','How likely (or frequent) can we expect spills along the pipeline extension to be?',1),(2,'2014-08-25 05:13:50','2014-08-25 05:13:50',1,0,'Really I want to know.','Why is my hair white?',1),(3,'2014-08-25 05:20:49','2014-08-25 05:20:49',1,0,'Really I want to know.','Why is my hair white?',1),(4,'2014-08-25 05:31:24','2014-08-25 05:31:24',1,0,'Really I want to know.','Why is my hair white?',1),(5,'2014-08-25 06:54:46','2014-08-25 06:54:46',1,0,'test','test',1);
 /*!40000 ALTER TABLE `digidemo_question` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -875,8 +875,8 @@ CREATE TABLE `digidemo_questioncomment` (
   PRIMARY KEY (`id`),
   KEY `digidemo_questioncomment_6340c63c` (`user_id`),
   KEY `digidemo_questioncomment_70bfdfd1` (`target_id`),
-  CONSTRAINT `target_id_refs_id_91b3fcca` FOREIGN KEY (`target_id`) REFERENCES `digidemo_question` (`id`),
-  CONSTRAINT `user_id_refs_id_89b69e62` FOREIGN KEY (`user_id`) REFERENCES `auth_user` (`id`)
+  CONSTRAINT `user_id_refs_id_89b69e62` FOREIGN KEY (`user_id`) REFERENCES `auth_user` (`id`),
+  CONSTRAINT `target_id_refs_id_91b3fcca` FOREIGN KEY (`target_id`) REFERENCES `digidemo_question` (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -908,8 +908,8 @@ CREATE TABLE `digidemo_questionvote` (
   UNIQUE KEY `user_id` (`user_id`,`target_id`),
   KEY `digidemo_questionvote_6340c63c` (`user_id`),
   KEY `digidemo_questionvote_70bfdfd1` (`target_id`),
-  CONSTRAINT `target_id_refs_id_5f95e94d` FOREIGN KEY (`target_id`) REFERENCES `digidemo_question` (`id`),
-  CONSTRAINT `user_id_refs_id_71f545ab` FOREIGN KEY (`user_id`) REFERENCES `auth_user` (`id`)
+  CONSTRAINT `user_id_refs_id_71f545ab` FOREIGN KEY (`user_id`) REFERENCES `auth_user` (`id`),
+  CONSTRAINT `target_id_refs_id_5f95e94d` FOREIGN KEY (`target_id`) REFERENCES `digidemo_question` (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -919,7 +919,7 @@ CREATE TABLE `digidemo_questionvote` (
 
 LOCK TABLES `digidemo_questionvote` WRITE;
 /*!40000 ALTER TABLE `digidemo_questionvote` DISABLE KEYS */;
-REPLACE INTO `digidemo_questionvote` (`id`, `creation_date`, `last_modified`, `user_id`, `valence`, `target_id`) VALUES (1,'2014-08-10 06:21:38','2014-08-17 19:38:07',1,1,1);
+REPLACE INTO `digidemo_questionvote` (`id`, `creation_date`, `last_modified`, `user_id`, `valence`, `target_id`) VALUES (1,'2014-08-10 06:21:38','2014-08-28 06:51:35',1,0,1);
 /*!40000 ALTER TABLE `digidemo_questionvote` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -975,8 +975,8 @@ CREATE TABLE `digidemo_replycomment` (
   PRIMARY KEY (`id`),
   KEY `digidemo_replycomment_6340c63c` (`user_id`),
   KEY `digidemo_replycomment_70bfdfd1` (`target_id`),
-  CONSTRAINT `user_id_refs_id_ef745eb1` FOREIGN KEY (`user_id`) REFERENCES `auth_user` (`id`),
-  CONSTRAINT `target_id_refs_id_d2d98a7c` FOREIGN KEY (`target_id`) REFERENCES `digidemo_reply` (`id`)
+  CONSTRAINT `target_id_refs_id_d2d98a7c` FOREIGN KEY (`target_id`) REFERENCES `digidemo_reply` (`id`),
+  CONSTRAINT `user_id_refs_id_ef745eb1` FOREIGN KEY (`user_id`) REFERENCES `auth_user` (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -1008,8 +1008,8 @@ CREATE TABLE `digidemo_replyvote` (
   UNIQUE KEY `user_id` (`user_id`,`target_id`),
   KEY `digidemo_replyvote_6340c63c` (`user_id`),
   KEY `digidemo_replyvote_70bfdfd1` (`target_id`),
-  CONSTRAINT `user_id_refs_id_d659ef00` FOREIGN KEY (`user_id`) REFERENCES `auth_user` (`id`),
-  CONSTRAINT `target_id_refs_id_9f87ff39` FOREIGN KEY (`target_id`) REFERENCES `digidemo_reply` (`id`)
+  CONSTRAINT `target_id_refs_id_9f87ff39` FOREIGN KEY (`target_id`) REFERENCES `digidemo_reply` (`id`),
+  CONSTRAINT `user_id_refs_id_d659ef00` FOREIGN KEY (`user_id`) REFERENCES `auth_user` (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -1046,7 +1046,7 @@ CREATE TABLE `digidemo_sector` (
 
 LOCK TABLES `digidemo_sector` WRITE;
 /*!40000 ALTER TABLE `digidemo_sector` DISABLE KEYS */;
-REPLACE INTO `digidemo_sector` (`id`, `creation_date`, `last_modified`, `short_name`, `name`) VALUES (1,'2014-07-13 17:04:46','2014-07-13 17:04:46','ECO','economy'),(2,'2014-07-13 17:04:46','2014-07-13 17:04:46','ENV','environment'),(3,'2014-07-13 17:04:46','2014-07-13 17:04:46','HEA','health'),(4,'2014-07-13 17:04:46','2014-07-13 17:04:46','EDU','education'),(5,'2014-07-13 17:04:46','2014-07-13 17:04:46','IR','international relations'),(6,'2014-07-13 17:04:46','2014-07-13 17:04:46','SOC','society and culture'),(7,'2014-07-13 17:04:46','2014-07-13 17:04:46','SEC','security and readiness'),(8,'2014-07-13 17:04:46','2014-07-13 17:04:46','DEM','democratic mechanisms');
+REPLACE INTO `digidemo_sector` (`id`, `creation_date`, `last_modified`, `short_name`, `name`) VALUES (1,'2014-07-13 17:04:46','2014-07-13 17:04:46','ECO','economy'),(2,'2014-07-13 17:04:46','2014-07-13 17:04:46','ENV','environment'),(3,'2014-07-13 17:04:46','2014-07-13 17:04:46','HEA','health'),(4,'2014-07-13 17:04:46','2014-07-13 17:04:46','EDU','education'),(5,'2014-07-13 17:04:46','2014-08-29 04:29:23','IR','relations'),(6,'2014-07-13 17:04:46','2014-08-29 04:28:35','SOC','culture'),(7,'2014-07-13 17:04:46','2014-08-29 04:28:59','SEC','readiness'),(8,'2014-07-13 17:04:46','2014-08-29 04:28:17','DEM','democracy');
 /*!40000 ALTER TABLE `digidemo_sector` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -1062,8 +1062,14 @@ CREATE TABLE `digidemo_tag` (
   `creation_date` datetime NOT NULL,
   `last_modified` datetime NOT NULL,
   `name` varchar(48) NOT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+  `sector_id` int(11) DEFAULT NULL,
+  `target_id` int(11) DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `digidemo_tag_663ed8c9` (`sector_id`),
+  KEY `digidemo_tag_70bfdfd1` (`target_id`),
+  CONSTRAINT `target_id_refs_id_f8085903` FOREIGN KEY (`target_id`) REFERENCES `digidemo_tag` (`id`),
+  CONSTRAINT `sector_id_refs_id_ce1721cd` FOREIGN KEY (`sector_id`) REFERENCES `digidemo_sector` (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=62 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -1072,6 +1078,7 @@ CREATE TABLE `digidemo_tag` (
 
 LOCK TABLES `digidemo_tag` WRITE;
 /*!40000 ALTER TABLE `digidemo_tag` DISABLE KEYS */;
+REPLACE INTO `digidemo_tag` (`id`, `creation_date`, `last_modified`, `name`, `sector_id`, `target_id`) VALUES (1,'2014-08-29 04:05:09','2014-08-29 04:05:09','tuition',4,NULL),(2,'2014-08-29 04:05:39','2014-08-29 04:05:39','education-tax',4,NULL),(3,'2014-08-29 04:06:10','2014-08-29 04:06:10','language-of-instruction',4,NULL),(4,'2014-08-29 04:06:34','2014-08-29 04:06:34','curriculum',4,NULL),(5,'2014-08-29 04:06:56','2014-08-29 04:06:56','public-school',4,NULL),(6,'2014-08-29 04:07:03','2014-08-29 04:07:03','private-school',4,NULL),(7,'2014-08-29 04:07:35','2014-08-29 04:07:35','standardized-testing',4,NULL),(8,'2014-08-29 04:08:22','2014-08-29 04:08:22','scholarships',4,NULL),(9,'2014-08-29 04:08:57','2014-08-29 04:08:57','professional-training',4,NULL),(10,'2014-08-29 04:09:45','2014-08-29 04:09:45','national-debt',1,NULL),(11,'2014-08-29 04:09:55','2014-08-29 04:09:55','national-deficit',1,NULL),(12,'2014-08-29 04:10:11','2014-08-29 04:10:11','poverty',1,NULL),(13,'2014-08-29 04:10:27','2014-08-29 04:10:27','minimum-wage',1,NULL),(14,'2014-08-29 04:11:00','2014-08-29 04:11:00','income-tax',1,NULL),(15,'2014-08-29 04:11:47','2014-08-29 04:11:47','redistribution',1,NULL),(16,'2014-08-29 04:12:09','2014-08-29 04:12:09','capital-gains',1,NULL),(17,'2014-08-29 04:12:30','2014-08-29 04:12:30','gini-coefficient',1,NULL),(18,'2014-08-29 04:12:47','2014-08-29 04:12:47','foreign-investment',1,NULL),(19,'2014-08-29 04:13:06','2014-08-29 04:13:06','trade',1,NULL),(20,'2014-08-29 04:13:43','2014-08-29 04:13:43','tarrif',1,NULL),(21,'2014-08-29 04:31:52','2014-08-29 04:31:52','climate-change',2,NULL),(22,'2014-08-29 04:32:12','2014-08-29 04:32:12','pesticides',2,NULL),(23,'2014-08-29 04:32:36','2014-08-29 04:32:36','nuclear-power',2,NULL),(24,'2014-08-29 04:32:48','2014-08-29 04:32:48','alternative-energy',2,NULL),(25,'2014-08-29 04:33:05','2014-08-29 04:33:05','carbon-tax',2,NULL),(26,'2014-08-29 04:33:37','2014-08-29 04:33:37','product-lifecycle',2,NULL),(27,'2014-08-29 04:34:15','2014-08-29 04:34:15','oceans',2,NULL),(28,'2014-08-29 04:34:24','2014-08-29 04:34:24','extinction',2,NULL),(29,'2014-08-29 04:34:35','2014-08-29 04:34:35','air-pollution',2,NULL),(30,'2014-08-29 04:35:45','2014-08-29 04:35:45','hospital-wait-times',3,NULL),(31,'2014-08-29 04:38:38','2014-08-29 04:38:38','doctor-salaries',3,NULL),(32,'2014-08-29 04:38:54','2014-08-29 04:38:54','doctor-shortage',3,NULL),(33,'2014-08-29 04:39:34','2014-08-29 04:39:34','two-tier-system',3,NULL),(34,'2014-08-29 04:41:56','2014-08-29 04:41:56','trade-agreements',5,NULL),(35,'2014-08-29 04:42:34','2014-08-29 04:42:34','NATO',5,NULL),(36,'2014-08-29 04:42:38','2014-08-29 04:42:38','foreign-investment',5,NULL),(37,'2014-08-29 04:43:12','2014-08-29 04:43:12','aid',5,NULL),(38,'2014-08-29 04:44:16','2014-08-29 04:44:16','usa',5,NULL),(39,'2014-08-29 04:45:09','2014-08-29 04:45:09','bursaries',6,NULL),(40,'2014-08-29 04:45:21','2014-08-29 04:45:21','free-speach',6,NULL),(41,'2014-08-29 04:45:53','2014-08-29 04:45:53','imigration',6,NULL),(42,'2014-08-29 04:46:31','2014-08-29 04:46:31','language-laws',6,NULL),(43,'2014-08-29 04:46:52','2014-08-29 04:46:52','statutory-holidays',6,NULL),(44,'2014-08-29 04:47:05','2014-08-29 04:47:05','religion',6,NULL),(45,'2014-08-29 04:48:16','2014-08-29 04:48:16','emergency-response',7,NULL),(46,'2014-08-29 04:48:39','2014-08-29 04:48:39','natural-resources',7,NULL),(47,'2014-08-29 04:48:49','2014-08-29 04:48:49','surveillance',7,NULL),(48,'2014-08-29 04:49:04','2014-08-29 04:49:04','cyber-security',7,NULL),(49,'2014-08-29 04:49:27','2014-08-29 04:49:27','energy-security',7,NULL),(50,'2014-08-29 04:49:40','2014-08-29 04:49:40','food-security',7,NULL),(51,'2014-08-29 04:50:07','2014-08-29 04:50:07','epidemic',7,NULL),(52,'2014-08-29 04:51:33','2014-08-29 04:51:33','access-to-information',8,NULL),(53,'2014-08-29 04:51:35','2014-08-29 04:51:35','voting',8,NULL),(54,'2014-08-29 04:52:00','2014-08-29 04:52:00','independant-media',8,NULL),(55,'2014-08-29 04:52:15','2014-08-29 04:52:15','free-speach',8,NULL),(56,'2014-08-29 04:52:58','2014-08-29 04:52:58','transparency',8,NULL),(57,'2014-08-29 04:53:08','2014-08-29 04:53:08','budget',8,NULL),(58,'2014-08-29 04:53:26','2014-08-29 04:53:26','feedback-mechanisms',8,NULL),(59,'2014-08-29 04:54:18','2014-08-29 04:54:18','health-insurance-fraud',3,NULL),(60,'2014-08-29 04:55:24','2014-08-29 04:55:24','preventative-medicine',3,NULL),(61,'2014-08-29 04:55:59','2014-08-29 04:55:59','alternative-medicine',3,NULL);
 /*!40000 ALTER TABLE `digidemo_tag` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -1106,7 +1113,7 @@ CREATE TABLE `digidemo_userprofile` (
 
 LOCK TABLES `digidemo_userprofile` WRITE;
 /*!40000 ALTER TABLE `digidemo_userprofile` DISABLE KEYS */;
-REPLACE INTO `digidemo_userprofile` (`id`, `creation_date`, `last_modified`, `user_id`, `email_validated`, `avatar_img`, `rep`, `street`, `zip_code`, `country`, `province`) VALUES (1,'2014-07-13 17:04:58','2014-08-27 21:08:59',1,1,'avatars/superuser.jpg',80,'Somewhere','560072','India','Karnatka'),(2,'2014-07-13 17:04:58','2014-07-15 01:52:09',2,1,'avatars/regularuser.jpg',34,'56 Long Ave.','51515','CAN','QC'),(3,'2014-08-22 16:40:26','2014-08-22 16:45:16',3,0,'',0,'','','','');
+REPLACE INTO `digidemo_userprofile` (`id`, `creation_date`, `last_modified`, `user_id`, `email_validated`, `avatar_img`, `rep`, `street`, `zip_code`, `country`, `province`) VALUES (1,'2014-07-13 17:04:58','2014-08-28 06:51:35',1,1,'avatars/superuser.jpg',70,'Somewhere','560072','India','Karnatka'),(2,'2014-07-13 17:04:58','2014-07-15 01:52:09',2,1,'avatars/regularuser.jpg',34,'56 Long Ave.','51515','CAN','QC'),(3,'2014-08-22 16:40:26','2014-08-22 16:45:16',3,0,'',0,'','','','');
 /*!40000 ALTER TABLE `digidemo_userprofile` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -1221,7 +1228,6 @@ CREATE TABLE `django_session` (
 
 LOCK TABLES `django_session` WRITE;
 /*!40000 ALTER TABLE `django_session` DISABLE KEYS */;
-REPLACE INTO `django_session` (`session_key`, `session_data`, `expire_date`) VALUES ('6dvysqyx8rg1pkvirwwt5l4kudp0zy1k','ZTZhM2E3N2JhYjNjNmYxZDIzN2YwMGIyNzYyMzQxZjg3ZTZjNWNiNzp7fQ==','2014-09-05 17:54:44');
 /*!40000 ALTER TABLE `django_session` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -1234,4 +1240,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2014-08-27 17:13:37
+-- Dump completed on 2014-08-29  1:39:26

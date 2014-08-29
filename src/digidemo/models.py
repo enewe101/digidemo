@@ -62,6 +62,8 @@ class Sector(TimeStamped):
 
 class Tag(TimeStamped):
 	name = models.CharField(max_length=48)
+	sector = models.ForeignKey(Sector, null=True)
+	target = models.ForeignKey('self', null=True)
 
 	def __unicode__(self):
 		return self.name

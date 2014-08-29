@@ -97,8 +97,8 @@
         "pk": 5, 
         "model": "digidemo.sector", 
         "fields": {
-            "last_modified": "2014-07-13T17:04:46Z", 
-            "name": "international relations", 
+            "last_modified": "2014-08-29T04:29:23Z", 
+            "name": "relations", 
             "short_name": "IR", 
             "creation_date": "2014-07-13T17:04:46Z"
         }
@@ -107,8 +107,8 @@
         "pk": 6, 
         "model": "digidemo.sector", 
         "fields": {
-            "last_modified": "2014-07-13T17:04:46Z", 
-            "name": "society and culture", 
+            "last_modified": "2014-08-29T04:28:35Z", 
+            "name": "culture", 
             "short_name": "SOC", 
             "creation_date": "2014-07-13T17:04:46Z"
         }
@@ -117,8 +117,8 @@
         "pk": 7, 
         "model": "digidemo.sector", 
         "fields": {
-            "last_modified": "2014-07-13T17:04:46Z", 
-            "name": "security and readiness", 
+            "last_modified": "2014-08-29T04:28:59Z", 
+            "name": "readiness", 
             "short_name": "SEC", 
             "creation_date": "2014-07-13T17:04:46Z"
         }
@@ -127,10 +127,681 @@
         "pk": 8, 
         "model": "digidemo.sector", 
         "fields": {
-            "last_modified": "2014-07-13T17:04:46Z", 
-            "name": "democratic mechanisms", 
+            "last_modified": "2014-08-29T04:28:17Z", 
+            "name": "democracy", 
             "short_name": "DEM", 
             "creation_date": "2014-07-13T17:04:46Z"
+        }
+    }, 
+    {
+        "pk": 1, 
+        "model": "digidemo.tag", 
+        "fields": {
+            "sector": 4, 
+            "last_modified": "2014-08-29T04:05:09Z", 
+            "creation_date": "2014-08-29T04:05:09Z", 
+            "target": null, 
+            "name": "tuition"
+        }
+    }, 
+    {
+        "pk": 2, 
+        "model": "digidemo.tag", 
+        "fields": {
+            "sector": 4, 
+            "last_modified": "2014-08-29T04:05:39Z", 
+            "creation_date": "2014-08-29T04:05:39Z", 
+            "target": null, 
+            "name": "education-tax"
+        }
+    }, 
+    {
+        "pk": 3, 
+        "model": "digidemo.tag", 
+        "fields": {
+            "sector": 4, 
+            "last_modified": "2014-08-29T04:06:10Z", 
+            "creation_date": "2014-08-29T04:06:10Z", 
+            "target": null, 
+            "name": "language-of-instruction"
+        }
+    }, 
+    {
+        "pk": 4, 
+        "model": "digidemo.tag", 
+        "fields": {
+            "sector": 4, 
+            "last_modified": "2014-08-29T04:06:34Z", 
+            "creation_date": "2014-08-29T04:06:34Z", 
+            "target": null, 
+            "name": "curriculum"
+        }
+    }, 
+    {
+        "pk": 5, 
+        "model": "digidemo.tag", 
+        "fields": {
+            "sector": 4, 
+            "last_modified": "2014-08-29T04:06:56Z", 
+            "creation_date": "2014-08-29T04:06:56Z", 
+            "target": null, 
+            "name": "public-school"
+        }
+    }, 
+    {
+        "pk": 6, 
+        "model": "digidemo.tag", 
+        "fields": {
+            "sector": 4, 
+            "last_modified": "2014-08-29T04:07:03Z", 
+            "creation_date": "2014-08-29T04:07:03Z", 
+            "target": null, 
+            "name": "private-school"
+        }
+    }, 
+    {
+        "pk": 7, 
+        "model": "digidemo.tag", 
+        "fields": {
+            "sector": 4, 
+            "last_modified": "2014-08-29T04:07:35Z", 
+            "creation_date": "2014-08-29T04:07:35Z", 
+            "target": null, 
+            "name": "standardized-testing"
+        }
+    }, 
+    {
+        "pk": 8, 
+        "model": "digidemo.tag", 
+        "fields": {
+            "sector": 4, 
+            "last_modified": "2014-08-29T04:08:22Z", 
+            "creation_date": "2014-08-29T04:08:22Z", 
+            "target": null, 
+            "name": "scholarships"
+        }
+    }, 
+    {
+        "pk": 9, 
+        "model": "digidemo.tag", 
+        "fields": {
+            "sector": 4, 
+            "last_modified": "2014-08-29T04:08:57Z", 
+            "creation_date": "2014-08-29T04:08:57Z", 
+            "target": null, 
+            "name": "professional-training"
+        }
+    }, 
+    {
+        "pk": 10, 
+        "model": "digidemo.tag", 
+        "fields": {
+            "sector": 1, 
+            "last_modified": "2014-08-29T04:09:45Z", 
+            "creation_date": "2014-08-29T04:09:45Z", 
+            "target": null, 
+            "name": "national-debt"
+        }
+    }, 
+    {
+        "pk": 11, 
+        "model": "digidemo.tag", 
+        "fields": {
+            "sector": 1, 
+            "last_modified": "2014-08-29T04:09:55Z", 
+            "creation_date": "2014-08-29T04:09:55Z", 
+            "target": null, 
+            "name": "national-deficit"
+        }
+    }, 
+    {
+        "pk": 12, 
+        "model": "digidemo.tag", 
+        "fields": {
+            "sector": 1, 
+            "last_modified": "2014-08-29T04:10:11Z", 
+            "creation_date": "2014-08-29T04:10:11Z", 
+            "target": null, 
+            "name": "poverty"
+        }
+    }, 
+    {
+        "pk": 13, 
+        "model": "digidemo.tag", 
+        "fields": {
+            "sector": 1, 
+            "last_modified": "2014-08-29T04:10:27Z", 
+            "creation_date": "2014-08-29T04:10:27Z", 
+            "target": null, 
+            "name": "minimum-wage"
+        }
+    }, 
+    {
+        "pk": 14, 
+        "model": "digidemo.tag", 
+        "fields": {
+            "sector": 1, 
+            "last_modified": "2014-08-29T04:11:00Z", 
+            "creation_date": "2014-08-29T04:11:00Z", 
+            "target": null, 
+            "name": "income-tax"
+        }
+    }, 
+    {
+        "pk": 15, 
+        "model": "digidemo.tag", 
+        "fields": {
+            "sector": 1, 
+            "last_modified": "2014-08-29T04:11:47Z", 
+            "creation_date": "2014-08-29T04:11:47Z", 
+            "target": null, 
+            "name": "redistribution"
+        }
+    }, 
+    {
+        "pk": 16, 
+        "model": "digidemo.tag", 
+        "fields": {
+            "sector": 1, 
+            "last_modified": "2014-08-29T04:12:09Z", 
+            "creation_date": "2014-08-29T04:12:09Z", 
+            "target": null, 
+            "name": "capital-gains"
+        }
+    }, 
+    {
+        "pk": 17, 
+        "model": "digidemo.tag", 
+        "fields": {
+            "sector": 1, 
+            "last_modified": "2014-08-29T04:12:30Z", 
+            "creation_date": "2014-08-29T04:12:30Z", 
+            "target": null, 
+            "name": "gini-coefficient"
+        }
+    }, 
+    {
+        "pk": 18, 
+        "model": "digidemo.tag", 
+        "fields": {
+            "sector": 1, 
+            "last_modified": "2014-08-29T04:12:47Z", 
+            "creation_date": "2014-08-29T04:12:47Z", 
+            "target": null, 
+            "name": "foreign-investment"
+        }
+    }, 
+    {
+        "pk": 19, 
+        "model": "digidemo.tag", 
+        "fields": {
+            "sector": 1, 
+            "last_modified": "2014-08-29T04:13:06Z", 
+            "creation_date": "2014-08-29T04:13:06Z", 
+            "target": null, 
+            "name": "trade"
+        }
+    }, 
+    {
+        "pk": 20, 
+        "model": "digidemo.tag", 
+        "fields": {
+            "sector": 1, 
+            "last_modified": "2014-08-29T04:13:43Z", 
+            "creation_date": "2014-08-29T04:13:43Z", 
+            "target": null, 
+            "name": "tarrif"
+        }
+    }, 
+    {
+        "pk": 21, 
+        "model": "digidemo.tag", 
+        "fields": {
+            "sector": 2, 
+            "last_modified": "2014-08-29T04:31:52Z", 
+            "creation_date": "2014-08-29T04:31:52Z", 
+            "target": null, 
+            "name": "climate-change"
+        }
+    }, 
+    {
+        "pk": 22, 
+        "model": "digidemo.tag", 
+        "fields": {
+            "sector": 2, 
+            "last_modified": "2014-08-29T04:32:12Z", 
+            "creation_date": "2014-08-29T04:32:12Z", 
+            "target": null, 
+            "name": "pesticides"
+        }
+    }, 
+    {
+        "pk": 23, 
+        "model": "digidemo.tag", 
+        "fields": {
+            "sector": 2, 
+            "last_modified": "2014-08-29T04:32:36Z", 
+            "creation_date": "2014-08-29T04:32:36Z", 
+            "target": null, 
+            "name": "nuclear-power"
+        }
+    }, 
+    {
+        "pk": 24, 
+        "model": "digidemo.tag", 
+        "fields": {
+            "sector": 2, 
+            "last_modified": "2014-08-29T04:32:48Z", 
+            "creation_date": "2014-08-29T04:32:48Z", 
+            "target": null, 
+            "name": "alternative-energy"
+        }
+    }, 
+    {
+        "pk": 25, 
+        "model": "digidemo.tag", 
+        "fields": {
+            "sector": 2, 
+            "last_modified": "2014-08-29T04:33:05Z", 
+            "creation_date": "2014-08-29T04:33:05Z", 
+            "target": null, 
+            "name": "carbon-tax"
+        }
+    }, 
+    {
+        "pk": 26, 
+        "model": "digidemo.tag", 
+        "fields": {
+            "sector": 2, 
+            "last_modified": "2014-08-29T04:33:37Z", 
+            "creation_date": "2014-08-29T04:33:37Z", 
+            "target": null, 
+            "name": "product-lifecycle"
+        }
+    }, 
+    {
+        "pk": 27, 
+        "model": "digidemo.tag", 
+        "fields": {
+            "sector": 2, 
+            "last_modified": "2014-08-29T04:34:15Z", 
+            "creation_date": "2014-08-29T04:34:15Z", 
+            "target": null, 
+            "name": "oceans"
+        }
+    }, 
+    {
+        "pk": 28, 
+        "model": "digidemo.tag", 
+        "fields": {
+            "sector": 2, 
+            "last_modified": "2014-08-29T04:34:24Z", 
+            "creation_date": "2014-08-29T04:34:24Z", 
+            "target": null, 
+            "name": "extinction"
+        }
+    }, 
+    {
+        "pk": 29, 
+        "model": "digidemo.tag", 
+        "fields": {
+            "sector": 2, 
+            "last_modified": "2014-08-29T04:34:35Z", 
+            "creation_date": "2014-08-29T04:34:35Z", 
+            "target": null, 
+            "name": "air-pollution"
+        }
+    }, 
+    {
+        "pk": 30, 
+        "model": "digidemo.tag", 
+        "fields": {
+            "sector": 3, 
+            "last_modified": "2014-08-29T04:35:45Z", 
+            "creation_date": "2014-08-29T04:35:45Z", 
+            "target": null, 
+            "name": "hospital-wait-times"
+        }
+    }, 
+    {
+        "pk": 31, 
+        "model": "digidemo.tag", 
+        "fields": {
+            "sector": 3, 
+            "last_modified": "2014-08-29T04:38:38Z", 
+            "creation_date": "2014-08-29T04:38:38Z", 
+            "target": null, 
+            "name": "doctor-salaries"
+        }
+    }, 
+    {
+        "pk": 32, 
+        "model": "digidemo.tag", 
+        "fields": {
+            "sector": 3, 
+            "last_modified": "2014-08-29T04:38:54Z", 
+            "creation_date": "2014-08-29T04:38:54Z", 
+            "target": null, 
+            "name": "doctor-shortage"
+        }
+    }, 
+    {
+        "pk": 33, 
+        "model": "digidemo.tag", 
+        "fields": {
+            "sector": 3, 
+            "last_modified": "2014-08-29T04:39:34Z", 
+            "creation_date": "2014-08-29T04:39:34Z", 
+            "target": null, 
+            "name": "two-tier-system"
+        }
+    }, 
+    {
+        "pk": 34, 
+        "model": "digidemo.tag", 
+        "fields": {
+            "sector": 5, 
+            "last_modified": "2014-08-29T04:41:56Z", 
+            "creation_date": "2014-08-29T04:41:56Z", 
+            "target": null, 
+            "name": "trade-agreements"
+        }
+    }, 
+    {
+        "pk": 35, 
+        "model": "digidemo.tag", 
+        "fields": {
+            "sector": 5, 
+            "last_modified": "2014-08-29T04:42:34Z", 
+            "creation_date": "2014-08-29T04:42:34Z", 
+            "target": null, 
+            "name": "NATO"
+        }
+    }, 
+    {
+        "pk": 36, 
+        "model": "digidemo.tag", 
+        "fields": {
+            "sector": 5, 
+            "last_modified": "2014-08-29T04:42:38Z", 
+            "creation_date": "2014-08-29T04:42:38Z", 
+            "target": null, 
+            "name": "foreign-investment"
+        }
+    }, 
+    {
+        "pk": 37, 
+        "model": "digidemo.tag", 
+        "fields": {
+            "sector": 5, 
+            "last_modified": "2014-08-29T04:43:12Z", 
+            "creation_date": "2014-08-29T04:43:12Z", 
+            "target": null, 
+            "name": "aid"
+        }
+    }, 
+    {
+        "pk": 38, 
+        "model": "digidemo.tag", 
+        "fields": {
+            "sector": 5, 
+            "last_modified": "2014-08-29T04:44:16Z", 
+            "creation_date": "2014-08-29T04:44:16Z", 
+            "target": null, 
+            "name": "usa"
+        }
+    }, 
+    {
+        "pk": 39, 
+        "model": "digidemo.tag", 
+        "fields": {
+            "sector": 6, 
+            "last_modified": "2014-08-29T04:45:09Z", 
+            "creation_date": "2014-08-29T04:45:09Z", 
+            "target": null, 
+            "name": "bursaries"
+        }
+    }, 
+    {
+        "pk": 40, 
+        "model": "digidemo.tag", 
+        "fields": {
+            "sector": 6, 
+            "last_modified": "2014-08-29T04:45:21Z", 
+            "creation_date": "2014-08-29T04:45:21Z", 
+            "target": null, 
+            "name": "free-speach"
+        }
+    }, 
+    {
+        "pk": 41, 
+        "model": "digidemo.tag", 
+        "fields": {
+            "sector": 6, 
+            "last_modified": "2014-08-29T04:45:53Z", 
+            "creation_date": "2014-08-29T04:45:53Z", 
+            "target": null, 
+            "name": "imigration"
+        }
+    }, 
+    {
+        "pk": 42, 
+        "model": "digidemo.tag", 
+        "fields": {
+            "sector": 6, 
+            "last_modified": "2014-08-29T04:46:31Z", 
+            "creation_date": "2014-08-29T04:46:31Z", 
+            "target": null, 
+            "name": "language-laws"
+        }
+    }, 
+    {
+        "pk": 43, 
+        "model": "digidemo.tag", 
+        "fields": {
+            "sector": 6, 
+            "last_modified": "2014-08-29T04:46:52Z", 
+            "creation_date": "2014-08-29T04:46:52Z", 
+            "target": null, 
+            "name": "statutory-holidays"
+        }
+    }, 
+    {
+        "pk": 44, 
+        "model": "digidemo.tag", 
+        "fields": {
+            "sector": 6, 
+            "last_modified": "2014-08-29T04:47:05Z", 
+            "creation_date": "2014-08-29T04:47:05Z", 
+            "target": null, 
+            "name": "religion"
+        }
+    }, 
+    {
+        "pk": 45, 
+        "model": "digidemo.tag", 
+        "fields": {
+            "sector": 7, 
+            "last_modified": "2014-08-29T04:48:16Z", 
+            "creation_date": "2014-08-29T04:48:16Z", 
+            "target": null, 
+            "name": "emergency-response"
+        }
+    }, 
+    {
+        "pk": 46, 
+        "model": "digidemo.tag", 
+        "fields": {
+            "sector": 7, 
+            "last_modified": "2014-08-29T04:48:39Z", 
+            "creation_date": "2014-08-29T04:48:39Z", 
+            "target": null, 
+            "name": "natural-resources"
+        }
+    }, 
+    {
+        "pk": 47, 
+        "model": "digidemo.tag", 
+        "fields": {
+            "sector": 7, 
+            "last_modified": "2014-08-29T04:48:49Z", 
+            "creation_date": "2014-08-29T04:48:49Z", 
+            "target": null, 
+            "name": "surveillance"
+        }
+    }, 
+    {
+        "pk": 48, 
+        "model": "digidemo.tag", 
+        "fields": {
+            "sector": 7, 
+            "last_modified": "2014-08-29T04:49:04Z", 
+            "creation_date": "2014-08-29T04:49:04Z", 
+            "target": null, 
+            "name": "cyber-security"
+        }
+    }, 
+    {
+        "pk": 49, 
+        "model": "digidemo.tag", 
+        "fields": {
+            "sector": 7, 
+            "last_modified": "2014-08-29T04:49:27Z", 
+            "creation_date": "2014-08-29T04:49:27Z", 
+            "target": null, 
+            "name": "energy-security"
+        }
+    }, 
+    {
+        "pk": 50, 
+        "model": "digidemo.tag", 
+        "fields": {
+            "sector": 7, 
+            "last_modified": "2014-08-29T04:49:40Z", 
+            "creation_date": "2014-08-29T04:49:40Z", 
+            "target": null, 
+            "name": "food-security"
+        }
+    }, 
+    {
+        "pk": 51, 
+        "model": "digidemo.tag", 
+        "fields": {
+            "sector": 7, 
+            "last_modified": "2014-08-29T04:50:07Z", 
+            "creation_date": "2014-08-29T04:50:07Z", 
+            "target": null, 
+            "name": "epidemic"
+        }
+    }, 
+    {
+        "pk": 52, 
+        "model": "digidemo.tag", 
+        "fields": {
+            "sector": 8, 
+            "last_modified": "2014-08-29T04:51:33Z", 
+            "creation_date": "2014-08-29T04:51:33Z", 
+            "target": null, 
+            "name": "access-to-information"
+        }
+    }, 
+    {
+        "pk": 53, 
+        "model": "digidemo.tag", 
+        "fields": {
+            "sector": 8, 
+            "last_modified": "2014-08-29T04:51:35Z", 
+            "creation_date": "2014-08-29T04:51:35Z", 
+            "target": null, 
+            "name": "voting"
+        }
+    }, 
+    {
+        "pk": 54, 
+        "model": "digidemo.tag", 
+        "fields": {
+            "sector": 8, 
+            "last_modified": "2014-08-29T04:52:00Z", 
+            "creation_date": "2014-08-29T04:52:00Z", 
+            "target": null, 
+            "name": "independant-media"
+        }
+    }, 
+    {
+        "pk": 55, 
+        "model": "digidemo.tag", 
+        "fields": {
+            "sector": 8, 
+            "last_modified": "2014-08-29T04:52:15Z", 
+            "creation_date": "2014-08-29T04:52:15Z", 
+            "target": null, 
+            "name": "free-speach"
+        }
+    }, 
+    {
+        "pk": 56, 
+        "model": "digidemo.tag", 
+        "fields": {
+            "sector": 8, 
+            "last_modified": "2014-08-29T04:52:58Z", 
+            "creation_date": "2014-08-29T04:52:58Z", 
+            "target": null, 
+            "name": "transparency"
+        }
+    }, 
+    {
+        "pk": 57, 
+        "model": "digidemo.tag", 
+        "fields": {
+            "sector": 8, 
+            "last_modified": "2014-08-29T04:53:08Z", 
+            "creation_date": "2014-08-29T04:53:08Z", 
+            "target": null, 
+            "name": "budget"
+        }
+    }, 
+    {
+        "pk": 58, 
+        "model": "digidemo.tag", 
+        "fields": {
+            "sector": 8, 
+            "last_modified": "2014-08-29T04:53:26Z", 
+            "creation_date": "2014-08-29T04:53:26Z", 
+            "target": null, 
+            "name": "feedback-mechanisms"
+        }
+    }, 
+    {
+        "pk": 59, 
+        "model": "digidemo.tag", 
+        "fields": {
+            "sector": 3, 
+            "last_modified": "2014-08-29T04:54:18Z", 
+            "creation_date": "2014-08-29T04:54:18Z", 
+            "target": null, 
+            "name": "health-insurance-fraud"
+        }
+    }, 
+    {
+        "pk": 60, 
+        "model": "digidemo.tag", 
+        "fields": {
+            "sector": 3, 
+            "last_modified": "2014-08-29T04:55:24Z", 
+            "creation_date": "2014-08-29T04:55:24Z", 
+            "target": null, 
+            "name": "preventative-medicine"
+        }
+    }, 
+    {
+        "pk": 61, 
+        "model": "digidemo.tag", 
+        "fields": {
+            "sector": 3, 
+            "last_modified": "2014-08-29T04:55:59Z", 
+            "creation_date": "2014-08-29T04:55:59Z", 
+            "target": null, 
+            "name": "alternative-medicine"
         }
     }, 
     {
@@ -415,12 +1086,12 @@
             "email_validated": true, 
             "province": "Karnatka", 
             "country": "India", 
-            "rep": 80, 
+            "rep": 70, 
             "creation_date": "2014-07-13T17:04:58Z", 
             "followedProposals": [], 
             "street": "Somewhere", 
             "user": 1, 
-            "last_modified": "2014-08-27T21:08:59Z", 
+            "last_modified": "2014-08-28T06:51:35Z", 
             "avatar_img": "avatars/superuser.jpg", 
             "zip_code": "560072"
         }
@@ -929,9 +1600,9 @@
             "title": "How likely (or frequent) can we expect spills along the pipeline extension to be?", 
             "text": "I would like to know how likely spills are, based on the rate of previous incidents. It will probably be important to take into account the kind of piping technology used, and the kind of service. For example, repurposed piping originally for the transport of natural gas is likely to be different from newly built piping. Or, (and I'm not sure), there may be a difference due to the fact that this is crude derived from tarsands, rather than conventional crude.", 
             "creation_date": "2014-07-25T21:25:57Z", 
-            "score": 1, 
+            "score": 0, 
             "user": 1, 
-            "last_modified": "2014-08-17T19:38:07Z"
+            "last_modified": "2014-08-28T06:51:35Z"
         }
     }, 
     {
@@ -1847,10 +2518,10 @@
         "pk": 1, 
         "model": "digidemo.questionvote", 
         "fields": {
-            "valence": 1, 
+            "valence": 0, 
             "creation_date": "2014-08-10T06:21:38Z", 
             "target": 1, 
-            "last_modified": "2014-08-17T19:38:07Z", 
+            "last_modified": "2014-08-28T06:51:35Z", 
             "user": 1
         }
     }, 

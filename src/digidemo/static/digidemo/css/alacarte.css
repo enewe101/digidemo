@@ -343,3 +343,14 @@ hr {
 	font-size: 14px;
 	margin: 10px 0 0 0;
 }
+
+#preamble {
+	padding: 0px 100px 40px 100px;
+}
+
+.one_third_col {
+	float:left;
+	width: 338px;
+}
+
+

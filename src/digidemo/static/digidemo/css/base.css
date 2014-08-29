@@ -123,9 +123,10 @@ a:active {
 
 body {
 	font-family: ubuntu;
-	font-size: 13px;
+	font-size: 15px;
 	margin: 0;
 	padding: 0;
+	color: rgb(80,80,80);
 }
 
 #footer {
@@ -212,16 +213,17 @@ a.create_navitem {
 	clear: both;
 }
 
-div.tags ul {
-	list-style-type: none;
-	margin: 0;
-	padding: 0;
+div.tags  {
+	width: 650px;
+	float:left;
+	margin: 10px 0 20px 0;
 }
 
 .tag, .sector_tag {
-	display: inline;
+	display: block;
+	float: left;
 	padding: 0 3px 1px 4px;
-	margin-right: 4px;
+	margin: 2px;
 	font-family: ubuntu;
 }
 
@@ -236,7 +238,37 @@ div.tags ul {
 
 .environment_sector {
 	color: white;
-	background: green;
+	background: lightgreen;
+}
+
+.relations_sector {
+	color: white;
+	background: blue;
+}
+
+.readiness_sector {
+	color: white;
+	background: red;
+}
+
+.culture_sector {
+	color: white;
+	background: rgb(170, 0, 212);
+}
+
+.health_sector {
+	background: pink;
+	color: black;
+}
+
+.democracy_sector {
+	background: rgb(80,80,80);
+	color: white;
+}
+
+.education_sector {
+	background: cyan;
+	color: black;
 }
 
 #footer {
@@ -247,3 +279,7 @@ div.tags ul {
 .comment_author {
 	font-weight: bold;
 } 
+
+h1, h2, h3 {
+	margin: 0;
+}

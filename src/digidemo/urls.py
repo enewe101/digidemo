@@ -26,6 +26,7 @@ urlpatterns = patterns('',
 	url(r'^petition_list', petition_list, name="petition_list"),
 	url(r'^issue_list/(?P<order_by>\w*)', IssueListView().view, 
 		name="issue_list"),
+	url(r'^topics/$', TagListView().view, name="topics"),
 
 	#Search results
 	url(r'^search/$',search,name='search'),

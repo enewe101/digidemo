@@ -70,11 +70,13 @@
 
 #previews {
 	float: right;
+	margin-left: 30px;
 }
 
 #article {
 	font-family: computerModern;
 	font-size: 16px;
+	text-align: justify;
 }
 
 #article h1, h2, h3 {

@@ -1,0 +1,57 @@
+{% extends "digidemo/__base.html" %}
+{% load staticfiles %}
+{% load apptags %}
+
+{% block css %}
+	{{ block.super }}
+{% endblock css %}
+
+{% block js %}
+	{{ block.super }}
+{% endblock js %}
+
+
+{% block middle %}
+
+	<div id="preamble">
+		<h2>Topics</h2>
+		<p>
+			Find issues that you care about by browsing topics.  Issues can
+			belong to many topics.	
+			Subscribe to a topic to get alerts when there is activity
+			on issues issues in that topic.  You can receive alerts on this 
+			site or have them sent to your inbox, it's up to you.
+		</p>
+	</div>
+
+	<!-- begin post navigation -->
+	{% for sector_set in sector_sets %}
+	<div class="one_third_col">
+
+		{% for sector in sector_set %}
+
+			<div class="marquee_section">
+				<h2 class="marquee_heading">
+					<div class="sector_tag {{sector.sector.name}}_sector">
+						{{sector.sector.name}}
+					</div>
+					<a href="{% url "petition_list" %}" class="marquee_see_more">
+						See all
+					</a>
+				</h2>
+
+				<div class="marquee_body">
+					{% for tag in sector.tags %}
+						<div class='tag'>
+							{{ tag.name }}
+						</div>
+					{% endfor %}
+				</div>
+				<div class="clear"></div>
+			</div>
+		{% endfor %}
+	</div>
+	{% endfor %}
+
+
+{% endblock middle %}

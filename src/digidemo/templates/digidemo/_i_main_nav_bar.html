@@ -6,11 +6,12 @@
 
 <div id="navbar">
 	<a class="{% if active_navitem == "issues" %}navitem_active{% else %}navitem{% endif %}"
-		href="{% url "mainPage" %}">
+		href="{% url "issue_list" order_by="interesting" %}">
 			Issues
 	</a>
 
-	<a class="{% if active_navitem == "topics" %}navitem_active{% else %}navitem{% endif %}">
+	<a class="{% if active_navitem == "topics" %}navitem_active{% else %}navitem{% endif %}"
+		href="{% url "topics" %}">
 		Topics
 	</a>
 

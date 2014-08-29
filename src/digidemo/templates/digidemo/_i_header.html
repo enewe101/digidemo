@@ -4,8 +4,10 @@
 	<div class="outer_center">
 		<div class="inner_center">
 
-			<img id="colophon" 
-			src="{% static "digidemo/images/colophon_inline.png"%}" />
+			<a href="{% url "mainPage" %}">
+				<img id="colophon" 
+					src="{% static "digidemo/images/colophon_inline.png"%}" />
+			</a>
 
 			{% include "digidemo/_i_main_nav_bar.html" %}
 

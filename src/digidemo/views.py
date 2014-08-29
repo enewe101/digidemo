@@ -1,4 +1,5 @@
 import difflib
+import collections as c
 from django.core.urlresolvers import reverse
 from django.core import serializers
 from django.shortcuts import render, get_object_or_404, redirect
@@ -24,6 +25,7 @@ OPINION_TAB_NAME = 'petitions'
 
 # Names we use for the top level "button" navigation
 ISSUE_NAV_NAME = 'issues'
+TOPICS_NAV_NAME = 'topics'
 CREATE_NAV_VAME = 'create'
 QUESTIONS_NAV_NAME = 'questions'
 OPINION_NAV_NAME = 'petitions'
@@ -576,6 +578,36 @@ class AbstractView(object):
 		return self.handle_get()
 
 
+class TagListView(AbstractView):
+	template = 'digidemo/tags.html'
+
+	def get_context_data(self):
+		sectors = []
+		sector_set_names = [
+			['education', 'health', 'democracy'],
+			['economy', 'environment', 'culture'],
+			['readiness', 'relations']
+		]
+
+		sector_sets = []
+		for sector_names in sector_set_names:
+			sector_set = []
+			for name in sector_names:
+				s = Sector.objects.get(name=name)
+				sector_set.append({
+					'sector': s,
+					'tags': Tag.objects.filter(sector=s)
+				})
+
+			sector_sets.append(sector_set)
+				
+
+		return {
+			'sector_sets': sector_sets,
+			'active_navitem': TOPICS_NAV_NAME
+		}
+
+
 class IssueListView(AbstractView):
 	template = 'digidemo/issue_list.html'
 
@@ -601,6 +633,7 @@ class IssueListView(AbstractView):
 		return {
 			'issues': issues,
 			'tabs': tabs,
+			'active_navitem': ISSUE_NAV_NAME
 		}
 
 
@@ -627,7 +660,7 @@ class AskQuestionView(AbstractView):
 			'proposal': proposal,
 			'tabs': get_proposal_tabs(proposal, 'questions'),
 			'form': form,
-			'active_navitem': 'questions'
+			'active_navitem': QUESTIONS_NAV_NAME
 		}
 
 
