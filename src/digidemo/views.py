@@ -358,37 +358,34 @@ def edit(request, issue_id):
 
 	proposal = Proposal.objects.get(pk=issue_id)
 
-	# make a proposal vote form
-	proposal_vote_form = get_vote_form(
-		ProposalVote, ProposalVoteForm, logged_in_user, proposal)
-
 	if request.POST:
 
-		edit_proposal_form = ProposalVersionForm(
+		proposal_form = TaggedProposalForm(
 			data=request.POST,
-			endpoint=proposal.get_url('edit')
+			endpoint=proposal.get_edit_url()
 		)
 
-		if edit_proposal_form.is_valid():
-			proposal_version = edit_proposal_form.save()
-			redirect_url = proposal_version.proposal.get_url('proposal')
+		if proposal_form.is_valid():
+			proposal_version = proposal_form.save()
+			redirect_url = proposal_version.proposal.get_proposal_url()
 			return redirect(redirect_url)
 
 	else:
-		proposal_version_data = {
-				'proposal': proposal,
-				'title': proposal.title,
-				'summary': proposal.summary,
-				'text': proposal.text,
-				'user': logged_in_user
+		initial = {
+			'proposal': proposal,
+			'title': proposal.title,
+			'summary': proposal.summary,
+			'text': proposal.text,
+			'user': logged_in_user,
+			'tags': ','.join([t.name for t in proposal.tags.all()]),
+			'sectors': proposal.sectors.all()
 		}
 
-		edit_proposal_form = ProposalVersionForm(
-			data=proposal_version_data,
+		proposal_form = TaggedProposalForm(
+			initial=initial,
 			endpoint=proposal.get_edit_url()
 		)
 		
-		edit_proposal_form.proposal_version_form.tags="";
 
 	return render(
 		request,
@@ -398,9 +395,8 @@ def edit(request, issue_id):
 				{'user': utils.obj_to_dict(
 				logged_in_user, exclude=['password'])}),
 			'proposal': proposal,
-			'proposal_vote_form': proposal_vote_form,
 			'headline': proposal.title,
-			'edit_proposal_form': edit_proposal_form,
+			'proposal_form': proposal_form,
 			'logged_in_user': logged_in_user,
 			'tabs': get_edit_tabs('edit', proposal),
 			'active_navitem': 'create'

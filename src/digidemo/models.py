@@ -4,6 +4,7 @@ from django.contrib.auth.models import User
 from django.utils import timezone 
 from django.core.urlresolvers import reverse
 from django.template.defaultfilters import slugify
+from django.utils.safestring import mark_safe
 import re
 
 NAME_LENGTH = 48
@@ -57,7 +58,16 @@ class Sector(TimeStamped):
 	name = models.CharField(max_length=64)
 
 	def __unicode__(self):
-		return self.short_name
+		return self.render()
+
+	def render(self):
+		html =  (
+			'<div class="sector_tag ' + self.name + '_sector">' 
+				+ self.name + 
+			'</div>'
+		)
+
+		return mark_safe(html)
 
 
 class Tag(TimeStamped):
@@ -87,6 +97,8 @@ class Proposal(TimeStamped):
 		upload_to='proposal_avatars',default='/digidemo/proposal-images/');
 	tags = models.ManyToManyField(
 		Tag, related_name='proposals', blank=True, null=True)
+	sectors = models.ManyToManyField(
+		Sector, related_name='proposals', blank=True, null=True)
 
 	def get_latest(self):
 		return ProposalVersion.get_latest(self)
@@ -136,6 +148,8 @@ class ProposalVersion(TimeStamped):
 	user = models.ForeignKey(User)
 	tags = models.ManyToManyField(
 		Tag, related_name='proposal_versions',blank=True, null=True)
+	sectors = models.ManyToManyField(
+		Sector, related_name='proposal_versions', blank=True, null=True)
 
 	@classmethod
 	def get_latest(cls, proposal):

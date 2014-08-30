@@ -12,6 +12,7 @@ from digidemo.choices import *
 from digidemo.models import *
 from digidemo.settings import PROJECT_DIR
 from digidemo import utils
+from digidemo import widgets as app_widgets
 import os
 
 #log_fname = os.path.join(PROJECT_DIR, 'media/~log.txt')
@@ -337,7 +338,7 @@ class ProposalVersionForm(AugmentedFormMixin, ModelForm):
 	class Meta:
 		model = ProposalVersion
 		fields = [
-			'proposal', 'title', 'summary', 'text', 'user', 'tags'
+			'proposal', 'title', 'summary', 'text', 'user', 'sectors'
 		]
 		widgets = {
 			'proposal': forms.HiddenInput(),
@@ -345,18 +346,8 @@ class ProposalVersionForm(AugmentedFormMixin, ModelForm):
 			'title': forms.TextInput(),
 			'summary': forms.Textarea(),
 			'text': forms.Textarea(),
-			'tags': forms.TextInput()
+			'sectors': forms.CheckboxSelectMultiple()
 		}
-
-	def is_valid(self):
-
-		valid = super(ProposalVersionForm, self).is_valid()
-
-		if len(self.errors) == 1 :
-			if self.errors.keys()[0] == 'tags':
-				return True
-
-		return valid
 
 
 	def save(self, commit=True):
@@ -365,35 +356,32 @@ class ProposalVersionForm(AugmentedFormMixin, ModelForm):
 		# a brand new proposal
 		if self.cleaned_data['proposal'] is None:
 
-			# Make the new proposal
+			# Copy data from the proposal_version, 
+			# which is used to make the proposal itself
 			proposal_init = utils.extract_dict(
 				self.cleaned_data,
 				['title', 'summary', 'text', 'user']
 			)
+
+			# In proposal, we also have a field called original user
 			proposal_init['original_user'] = proposal_init['user']
+
+			# now make the proposal
 			self.proposal = Proposal(**proposal_init)
+
+			# copy over sectors manually
+			for sector in self.cleaned_data['sectors']:
+				self.proposal.sectors.add(sector)
+
+			# and save
 			self.proposal.save()
 
-			# Bind it to the proposal version and save the proposal version
+			# Now, save the proposal_version, and bind it to the proposal
 			new_proposal_version = super(ProposalVersionForm, self).save(
 				commit=False)
 			new_proposal_version.proposal = self.proposal
 			new_proposal_version.save()
-
-			#Used for spliiting and saving the tags
-			allTags = self.data['tags'].split(',');
-
-			for eachTag in allTags:
-				try :
-					tag = Tag.objects.get(name=eachTag);
-				except:
-					tag = Tag(name=eachTag)
-					tag.save();
-				self.proposal.tags.add(tag);
-				new_proposal_version.tags.add(tag);
-	
-			self.proposal.save()
-			new_proposal_version.save()
+			new_proposal_version.save_m2m()
 
 		# Otherwise, we are not making a new proposal, only saving a new
 		# proposal version
@@ -404,29 +392,94 @@ class ProposalVersionForm(AugmentedFormMixin, ModelForm):
 			self.proposal = self.cleaned_data['proposal']
 			for field in ['title', 'summary', 'text', 'user']:
 				setattr(self.proposal, field, self.cleaned_data[field])
+
+			# We also need to manually copy over the sectors.
+			# But first, clear them, which makes deletion possible
+			self.proposal.sectors.clear()
+			for sector in self.cleaned_data['sectors']:
+				self.proposal.sectors.add(sector)
 			self.proposal.save()
 
 			# and of course, save the ProposalVersion
-			new_proposal_version = super(ProposalVersionForm, self).save(
-				commit=False)
-			new_proposal_version.save()
-
-			#Used for splitting and saving all the tags
-			allTags = self.proposal_version_form.data['tags'].split(',');
-			for eachTag in allTags:
-				try :
-					tag = Tag.objects.get(name=eachTag);
-				except:
-					tag = Tag(name=eachTag)
-					tag.save();
-				self.proposal.tags.add(tag);
-				new_proposal_version.tags.add(tag);
-			
-			self.proposal.save()
-			new_proposal_version.save()
+			new_proposal_version = super(ProposalVersionForm, self).save()
 
 		# Finally, return a reference to the proposal
 		return new_proposal_version
+
+
+class TaggedProposalForm(object):
+
+	# tags can consist of letters, numbers, hyphens, and underscores
+	# a valid list of tags is at least one tag (containing at least one
+	# of the above characters, followed by any number of tags separated by
+	# commas
+	valid_tags_re = re.compile(r'^[-a-zA-Z0-9]+(,[-a-zA-Z0-9]+)*$')
+
+	def __init__(self, initial=None, data=None, endpoint=None):
+
+		self.tag_errors = ''
+		self.taggit = {
+			'tags': '',
+			'label': 'tags',
+			'name': 'tags'
+		}
+
+		if data is not None:
+
+			self.taggit['tags'] = data['tags']
+			self.proposal_version_form = ProposalVersionForm(
+				data, endpoint=endpoint)
+
+		elif initial is not None:
+
+			self.taggit['tags'] = initial.pop('tags', '')
+			self.proposal_version_form = ProposalVersionForm(
+				initial=initial, endpoint=endpoint)
+
+		else:
+			self.proposal_version_form = ProposalVersionForm(
+				endpoint=endpoint)
+
+
+	def is_valid(self):
+
+		valid = self.proposal_version_form.is_valid()
+
+		if self.valid_tags_re.match(self.taggit['tags']) is None:
+			self.tag_errors = 'Tags can only contain letters, numbers and '\
+				 'hyphens'
+			
+			valid = False
+
+		else:
+			self.tags = self.taggit['tags'].split(',')
+
+		return valid
+
+
+	def save(self):
+
+		proposal_version = self.proposal_version_form.save()
+		proposal = proposal_version.proposal
+
+		# we will clear the current tags, then add the ones that were
+		# actually sent in the form.  This means that if the user deleted
+		# tags, they will actually be deleted on the proposal
+		proposal.tags.clear()
+
+		for tag_name in self.tags:
+			tag, created = Tag.objects.get_or_create(name=tag_name)
+
+			proposal_version.tags.add(tag)
+			proposal.tags.add(tag)
+
+		proposal_version.save()
+		proposal.save()
+
+		return proposal_version
+	
+
+
 
 
 

@@ -27,7 +27,8 @@
 				href="{% static "digidemo/css/tagit.ui-zendesk.css" %}" />
 			<link rel="stylesheet" type="text/css" 
 				href="{% static "digidemo/css/jquery.switchButton.css" %}" />
-
+			<link rel="stylesheet" type="text/css" 
+				href="http://ajax.googleapis.com/ajax/libs/jqueryui/1/themes/flick/jquery-ui.css" />
 		{% endblock css %}
 
 		{% block js %}
@@ -45,8 +46,12 @@
 			<script 
 				src="http://code.jquery.com/ui/1.11.0/jquery-ui.min.js">
 			</script>
+
 			<script type="text/javascript" 
 				src="{% static "digidemo/js/lib.js" %}"></script>
+
+			<script src="{% static "digidemo/js/tag-it.js" %}" 
+				type="text/javascript" charset="utf-8"></script>
 
 		{% endblock js %}
 

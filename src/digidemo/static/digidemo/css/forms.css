@@ -103,3 +103,22 @@
 	color: brown;
 	font-style: italic;
 }
+
+#ProposalVersionForm__sectors {
+	width: 500px;
+	height: 50px;
+	list-style-type: none;
+	padding: 0;
+	margin: 0 200px 0 0;
+}
+
+#ProposalVersionForm__sectors li {
+	float:left;
+	padding: 0;
+	margin: 0;
+	width: 120px;
+}
+
+#ProposalVersionForm__sectors li input {
+	float: left;
+}

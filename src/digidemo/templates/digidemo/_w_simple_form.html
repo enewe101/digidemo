@@ -1,18 +1,20 @@
-{{ form.non_field_errors }}
-
 {% for hidden in form.hidden_fields %}
-	{{ hidden.errors }}
 	{{ hidden }}
 {% endfor %}
 
 {% for field in form.visible_fields %}
-<div class="form_line">
-	<div class="field_label_wrapper">
-		{{ field.label_tag }}
-		{{ field.errors }}
+	<div class="form_line">
+
+		<div class="field_label_wrapper">
+			<span class="field_errors" id="{{field.id_for_label}}_errors">
+				{% for error in field.errors %}
+					{{ error }}
+				{% endfor %}
+			</span>
+			{{ field.label_tag }}
+		</div>
+		<div class="field_wrapper{% if field.errors %}_error{% endif %}">
+			{{ field }}
+		</div>
 	</div>
-	<div class="field_wrapper">
-		{{ field }}
-	</div>
-</div>
 {% endfor %}

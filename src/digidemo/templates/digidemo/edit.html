@@ -1,62 +1,23 @@
 {% extends "digidemo/__two_column.html" %}
 {% load staticfiles %}
 
+
 {% block maincol %}
-
-
-	<form class="{{ edit_proposal_form.form_class}}" 
-		id="{{ edit_proposal_form.form_class }}" 
-		action="{{ edit_proposal_form.endpoint }}" 
+	{% with version_form=proposal_form.proposal_version_form %}
+	
+	<form class="{{ version_form.form_class}}" 
+		id="{{ version_form.form_class }}_{{ version_form.id_prefix }}" 
+		action="{{ version_form.endpoint }}" 
 		method="post" />
 
 		{% csrf_token %}
+		{% include "digidemo/_w_simple_form.html" with form=version_form  %}
+		{% include "digidemo/_w_tagit.html" with taggit=proposal_form.taggit %}
 
-		{% for hidden in edit_proposal_form.hidden_fields %}
-			{{ hidden }}
-		{% endfor %}
-
-		<!-- include the proposal version edit form -->
-		{{ edit_proposal_form.errors }}
-		<div class="form_line">
-			<div>
-				{{ edit_proposal_form.title.label_tag }}
-			</div>
-			<div>
-				{{ edit_proposal_form.title }}
-			</div>
-		</div>
-		<div class="form_line">
-			<div>
-			{{ edit_proposal_form.summary.label_tag }}
-			</div>
-			<div>
-				{{ edit_proposal_form.summary }}
-			</div>
-		</div>
-
-		<div class="form_line">
-			<div>
-				{{ edit_proposal_form.text.label_tag }}
-			</div>
-			<div>
-				{{ edit_proposal_form.text }}
-			</div>
-		</div>
-		
-		{% include "digidemo/_w_tagit.html" %}
-
-		<input id="{{ edit_proposal_form.form_class }}_submit" 
-			class="submit" type="submit" value="submit" />
-
+		<input type="submit" value="submit" />
 	</form>
 
-
-<script>
-	$( '#{{edit_proposal_form.form_class}}' ).submit(function( event ) {
-	var value = $('#tagsFieldInput').val();
-  	 $('#ProposalVersionForm__tags').val(value);
-});
-</script>
+	{% endwith %}
 
 {% endblock maincol %}
 

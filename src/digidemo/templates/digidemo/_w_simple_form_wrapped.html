@@ -5,26 +5,7 @@
 
 	{% csrf_token %}
 
-	{% for hidden in form.hidden_fields %}
-		{{ hidden }}
-	{% endfor %}
-
-	{% for field in form.visible_fields %}
-		<div class="form_line">
-
-			<div class="field_label_wrapper">
-				<span class="field_errors" id="{{field.id_for_label}}_errors">
-					{% for error in field.errors %}
-						{{ error }}
-					{% endfor %}
-				</span>
-				{{ field.label_tag }}
-			</div>
-			<div class="field_wrapper{% if field.errors %}_error{% endif %}">
-				{{ field }}
-			</div>
-		</div>
-	{% endfor %}
+	{% include "digidemo/_w_simple_form.html" %}
 
 	<input id="{{ form.form_class}}_{{ form.id_prefix }}_submit" 
 		class="submit" type="submit" value="submit" />

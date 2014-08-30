@@ -13,36 +13,34 @@
 
  var sampleTags = ['c++', 'java' ];
     $(document).ready(function() {
-	$( "#tagsFieldInput" ).hide();
-	$( "#ProposalVersionForm__tags" ).hide();
-        $("#tagsField").tagit({
-		caseSensitive : false,
-		availableTags: sampleTags,
-	//	requireAutocomplete: true,
-		singleField: true,
-	//	singleFieldNode: $('#ProposalVersionForm__tags'),
-		singleFieldNode: $('#tagsFieldInput'),
-	});
-        $("#sectorsField").tagit({
-		caseSensitive : false,
-		availableTags: sampleTags,
-		requireAutocomplete: true,
-		singleField: true,
-		singleFieldNode: $('#sectorsFieldInput'),
-	});
-	
+		$("#tagsField").tagit({
+			caseSensitive : false,
+			availableTags: sampleTags,
+			singleField: true,
+			singleFieldNode: $('#tagsFieldInput'),
+		});
+
+		//$("#sectorsField").tagit({
+		//	caseSensitive : false,
+		//	availableTags: sampleTags,
+		//	requireAutocomplete: true,
+		//	singleField: true,
+		//	singleFieldNode: $('#sectorsFieldInput'),
+		//});
+		
     });
 
 </script>
 
-{{edit_proposal_form.tags.label_tag}}
+<label for="tagsFieldInput" />{{ taggit.label|capfirst }}:</label>
 <ul id="tagsField">
     <!-- Existing list items will be pre-added to the tags -->
 </ul>
-{{ edit_proposal_form.tags }}
- <input name="tagsFieldInput" id="tagsFieldInput" disabled="true" value ="{{proposal|getTags}}"> 
-<br /> <br />
 
+<input type="hidden" id="tagsFieldInput" 
+	value="{{ taggit.tags }}" name="{{ taggit.name }}" /> 
+
+<br /> <br />
 Sectors 
 <ul id="sectorsField">
 </ul>
