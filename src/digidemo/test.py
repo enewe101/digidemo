@@ -703,6 +703,52 @@ class ProposalFormTest(FormTest):
 		return 1
 
 
+	def test_edit_proposal(self):
+
+		expected_id = self.expect_proposal_id()
+
+		# Go to the edit page for a test proposal
+		self.driver.get(self.get_url())
+
+		# Fill and submit the form with valid data
+		self.fill_form(self.form_data)
+		self.driver.find_element('id', self.submit_id).click()
+
+		# check that the proposal was correctly loaded
+		expect_data = dict([
+			(v['display_id'], v['expect']) for v in self.form_data.values()
+		])
+		self.assertTrue(self.elements_contain(expect_data))
+
+		# check the database
+		self.check_db(expected_id, *self.values, username=self.username)
+
+
+	def test_edit_proposal_incomplete(self):
+
+		# Go to the edit page for a test proposal
+		self.driver.get(self.get_url())
+
+		# we'll submit the form several times, 
+		# each time ommitting a different field
+		for ommitted_id, spec in self.form_data.items():
+
+			error_id = spec['error_id']
+
+			self.fill_form(self.form_data, clear=ommitted_id)
+			self.click(self.submit_id)
+
+			# Check for the error message
+			self.assertTrue(self.element_contains(error_id, self.error_msg,
+				use_html=False))
+
+			# Check that the input was styled with an error styling
+			ommitted_elm = self.driver.find_element('id', ommitted_id)
+			wrapper = ommitted_elm.find_element_by_xpath('..')
+			self.assertTrue(
+				self.error_class in wrapper.get_attribute('class'))
+
+
 	def test_edit_proposal_ensure_escape(self):
 		expected_id = self.expect_proposal_id()
 
@@ -744,51 +790,6 @@ class ProposalFormTest(FormTest):
 		self.assertEqual(text, proposal_version.text)
 		self.assertEqual(username, proposal_version.user.username)
 
-
-	def test_edit_proposal_incomplete(self):
-
-		# Go to the edit page for a test proposal
-		self.driver.get(self.get_url())
-
-		# we'll submit the form several times, 
-		# each time ommitting a different field
-		for ommitted_id, spec in self.form_data.items():
-
-			error_id = spec['error_id']
-
-			self.fill_form(self.form_data, clear=ommitted_id)
-			self.click(self.submit_id)
-
-			# Check for the error message
-			self.assertTrue(self.element_contains(error_id, self.error_msg,
-				use_html=False))
-
-			# Check that the input was styled with an error styling
-			ommitted_elm = self.driver.find_element('id', ommitted_id)
-			wrapper = ommitted_elm.find_element_by_xpath('..')
-			self.assertTrue(
-				self.error_class in wrapper.get_attribute('class'))
-
-
-	def test_edit_proposal(self):
-
-		expected_id = self.expect_proposal_id()
-
-		# Go to the edit page for a test proposal
-		self.driver.get(self.get_url())
-
-		# Fill and submit the form with valid data
-		self.fill_form(self.form_data)
-		self.driver.find_element('id', self.submit_id).click()
-
-		# check that the proposal was correctly loaded
-		expect_data = dict([
-			(v['display_id'], v['expect']) for v in self.form_data.values()
-		])
-		self.assertTrue(self.elements_contain(expect_data))
-
-		# check the database
-		self.check_db(expected_id, *self.values, username=self.username)
 			
 
 
