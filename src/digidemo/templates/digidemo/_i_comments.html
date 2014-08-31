@@ -9,7 +9,17 @@
 <!-- end of comments area -->
 
 <div class="add_comment">
-	<a id="_w_toggle_hidden_comment_{{ comments_section.id_prefix }}" class="pointer"> 
+	<!-- 
+		The following is a link that reveals the comment form.  
+		It will be disabled if the user is not authenticated.  Here we add a 
+		tooltip telling unauthenticated users they can't comment 
+	-->
+	<a {% if user.is_authenticated %}
+		{%else%}
+			title="You must login to comment!"
+		{% endif %}
+		id="_w_toggle_hidden_comment_{{ comments_section.id_prefix }}" 
+		class="pointer"> 
 		add comment
 	</a>
 	<div id="_w_toggle_hidden_content_comment_{{ comments_section.id_prefix }}"
@@ -24,42 +34,54 @@
 
 (function(){
 
-	var COMMENT_FORM_ID_PREFIX = '{{ comments_section.comment_form.form_class }}_{{ comments_section.comment_form.id_prefix }}';
-	var COMMENT_TEXTAREA_ID = (
-		'#' + COMMENT_FORM_ID_PREFIX + '_text');
+ // below we will enable a toggler that reveals a comment form allowing the
+ // user to post comments, and also binds a callback to the comment form, so 
+ // that when it is submitted, the new comment get's displayed on the page
+ //
+ // However, if the user is not logged in, we don't do any of this.
 
-	//
-	// Create a toggler to show / hide the comment form
-	//
-	var toggle_div = $('#_w_toggle_hidden_comment_{{ comments_section.id_prefix }}');
-	var content = $('#_w_toggle_hidden_content_comment_{{ comments_section.id_prefix }}');
-	var toggler = new ToggleHidden(toggle_div, content);
-	register_widget('toggle_hidden_comment_{{ comments_section.id_prefix }}', toggler,
-		 'toggle_hidden');
+	if(django.IS_USER_AUTHENTICATED) {
+
+		var COMMENT_FORM_ID_PREFIX = '{{ comments_section.comment_form.form_class }}_{{ comments_section.comment_form.id_prefix }}';
+		var COMMENT_TEXTAREA_ID = (
+			'#' + COMMENT_FORM_ID_PREFIX + '_text');
+
+		//
+		// Create a toggler to show / hide the comment form.
+		//
+		var toggle_div = $(
+			'#_w_toggle_hidden_comment_{{ comments_section.id_prefix }}');
+		var content = $(
+			'#_w_toggle_hidden_content_comment_{{ comments_section.id_prefix }}');
+		var toggler = new ToggleHidden(toggle_div, content);
+		register_widget(
+			'toggle_hidden_comment_{{ comments_section.id_prefix }}', 
+			toggler, 'toggle_hidden');
+	
 
 
-	//
-	// Bind a callback to the comment form so that when a user 
-	// submits a comment, the comment text gets inserted
-	//
-	$(document).ready(function() {
+		//
+		// Bind a callback to the comment form so that when a user 
+		// submits a comment, the comment text gets inserted
+		//
+		$(document).ready(function() {
 
-		// Get the toggler and the comment widget
-		var toggler = widgets['toggle_hidden_comment_{{ comments_section.id_prefix }}'].widget;
-		var comment_widget = widgets['{{ comments_section.comment_form.form_class }}'
-	   		+ '_' + '{{ comments_section.comment_form.id_prefix }}'].widget;
+			// Get the toggler and the comment widget
+			var toggler = widgets['toggle_hidden_comment_{{ comments_section.id_prefix }}'].widget;
+			var comment_widget = widgets['{{ comments_section.comment_form.form_class }}'
+				+ '_' + '{{ comments_section.comment_form.id_prefix }}'].widget;
 
-		// Define a callback: shows the comment on the page and hides the form
-		var show_comment = function(data) {
-			$('#comments_{{ comments_section.id_prefix }}').append(data.html);
-			$(COMMENT_TEXTAREA_ID).val('');
-			toggler.toggle();
-		};
+			// Define a callback: shows the comment on the page and hides the form
+			var show_comment = function(data) {
+				$('#comments_{{ comments_section.id_prefix }}').append(data.html);
+				$(COMMENT_TEXTAREA_ID).val('');
+				toggler.toggle();
+			};
 
-		// bind the callback to the comment form
-		comment_widget.hook('success', show_comment);
-	});
-
+			// bind the callback to the comment form
+			comment_widget.hook('success', show_comment);
+		});
+	}
 }());
 
 </script>

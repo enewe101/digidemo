@@ -11,10 +11,14 @@
 
 			{% include "digidemo/_i_main_nav_bar.html" %}
 
-			<!-- logged in user hardcoded temporarily -->
-			<div id="user"></div> &nbsp;
-			<div class="clear"></div>
+			<div id="search_bar">
+				<form type="get" action="{% url "search" %}">  
+					<input type="text" name="q" />
+					<input class="search_submit" type="submit" value="" />
+				</form>
+			</div>
 
+			{% include "digidemo/_w_login_user.html" %}
 
 		</div>
 	</div>

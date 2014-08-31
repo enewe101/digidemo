@@ -11,7 +11,7 @@ from digidemo.utils import get_or_none
 from digidemo.views import get_vote_form, AnswerSection, ReplySection
 from django.utils import timezone
 from django.views.decorators.csrf import csrf_exempt
-from django.contrib.auth import authenticate
+from django.contrib.auth import authenticate, login, logout
 
 # json responders should return a python dict
 _json_responders = {}
@@ -25,6 +25,89 @@ class AjaxError(Exception):
 def ajax_endpoint(f):
 	_json_responders[f.__name__] = f
 	return f
+
+
+def ajax_endpoint_login_required(error_msg=None, form_class=None):
+	'''
+	Use this decorator for ajax functions that should only honour requests
+	from a logged in user.  When a request is made without an authenticated
+	user, a sytem-level error message as well as a user-facing error message
+	are returned to the client.
+
+	If the ajax request came from a widget based on `_w_ajax_form.html`,
+	then the system error message will appear in an alert box (if the 
+	site is in DEBUG mode), and the user-facing message will get inserted
+	into the widget's form_errors div.
+
+	You can change the default user-facing error message by passing a string
+	to the decorator as the `error_msg` argument.
+
+	Any form that has a user field in it needs an extra step of validation.
+	Although the user has been authenticated, we need to make sure that the
+	user in the form is the same as the authenticated user.  Otherwise a 
+	user could impersonate another by altering the user field.  we cannot 
+	rely on the field (alone) therefore, but it is implicitly used when 
+	form.save() is called.
+
+	To validate that the user in the user field is the same as the logged in
+	user, simply pass the class of the form to the decorator, as the second
+	argument.  E.g. if you are processing a QuestionCommentForm, then pass
+	`QuestionCommentForm` to the decorator, and it will perform this extra 
+	check.  
+
+	You *MUST* do this if the form has a user field!
+
+	Note: This decorator must be called with parens following its name:
+		like this --> @ajax_endpoint_login_required()
+	'''
+
+	# if no error_msg was given, use this default
+	if error_msg is None:
+		error_msg = 'You must login first!'
+
+	# This function performs the act of decorating
+	def decorate(original_func):
+
+		# this function wraps the original endpoint function.  
+		# It fires instead when the original function is called
+		def wrapped(request):
+
+			# check that the user is logged in
+			if not request.user.is_authenticated():
+				return {
+					'success':False,
+					'msg': 'user did not authenticate',
+					'errors': {'__all__': 
+						[error_msg]}
+				}
+
+			# if the decoration was passed a form, then verify that the 
+			# logged in user, and the user who requested the form are the same
+			if form_class is not None:
+				form = form_class(request.POST)
+				form.is_valid()
+				form_user = form.cleaned_data['user']
+				if form_user != request.user:
+					force_logout(request) # this is not implemented yet!
+					return {
+						'success':False,
+						'msg': 'authenticated user did not match the user ' \
+							'that requested the form',
+						'errors':{'__all__':
+							['Sorry, your session has expired...']}
+					}
+
+			# Finally, do whatever the original function does
+			return original_func(request)
+
+		# register the wrapped version as an ajax endpoint
+		_json_responders[original_func.__name__] = wrapped
+
+		# return the wrapped version to this module's namepsace
+		return wrapped
+
+	# The error message and form class (if any) were bound the custom decorator
+	return decorate
 
 
 # entry point handling all incomming ajax requests, 
@@ -234,14 +317,35 @@ def reply(request):
 	}
 
 
-@ajax_endpoint
+# TODO: implement logging as described below
+def force_logout(request):
+
+	# logout the user
+	logout(request)
+
+	# log a record of this event.  This shouldn't be able to happen, and it
+	# probably indicates an attempt to spoof a POST (csrf attack).
+	# we should at least log the user and ip.
+
+
+# ensures that the user in the form is the same as the logged in user
+# in the request.  Note, this does *not* also authenticate the user
+def verify_user_in_form(form, request):
+	form_user = form.cleaned_data['user']
+	if(form_user != request.user):
+		force_logout(request) # this is not implemented yet!
+		return {
+			'success':False,
+			'errors':{'__all__':
+				[form_user.username + ' : ' + request.user.username]}
+		}
+
+
+@ajax_endpoint_login_required('Please login to post your answer!', AnswerForm)
+# @ajax_endpoint
 def answer(request):
 
-	# ** Hardcoded the logged in user to be enewe101 **
-	logged_in_user = User.objects.get(pk=1)
-	 
 	answer_form = AnswerForm(request.POST)
-
 
 	if answer_form.is_valid():
 
@@ -249,7 +353,7 @@ def answer(request):
 		answer = answer_form.save()
 
 		# make an answer section
-		answer_section = AnswerSection(answer, logged_in_user)
+		answer_section = AnswerSection(answer, answer_form.cleaned_data['user'])
 
 		# render the answer section, and send it back for inclusion on page
 		template = get_template('digidemo/_i_post_with_comments.html')
@@ -350,46 +454,62 @@ def get_factor_form(request):
 	return {'success':True, 'html': reply_html}
 
 
+@ajax_endpoint
+def ajax_login(request):
 
-#@ajax_endpoint
-#def reply(request):
-#	reply_form = ReplyForm(request.POST)
-#	
-#	if reply_form.is_valid():
-#		reply = reply_form.save()
-#		
-#		template = get_template('digidemo/_i_discussion_reply.html')
-#		context = Context({'reply': reply})
-#		reply_html = template.render(context)
-#		return {'success': True, 'html': reply_html}
-#
-#	return {
-#		'success': False,
-#		'msg':'ajax.py: reply(): ReplyForm was not valid'
-#	}
+	# attempt to authenticate the user
+	username = request.POST['username']
+	password = request.POST['password']
+	user = authenticate(username=username, password=password)
+
+	# if authenticated, log the user in, and return a success message
+	if user is not None:
+		login(request, user)
+		return {'success':True, 'username':username}
+
+	# otherwise return a failure message
+	else:
+		return {'success':False}
 
 
 @ajax_endpoint
+def ajax_logout(request):
+	logout(request)
+	return {'success':True}
+
+
+#
+# all of the comment forms are processed very similarly, but we actually
+# use different models for different comments, because they are tied to 
+# different targets (e.g. comment on an Answer vs comment on a Letter).
+# all comments are ultimately processed by `process_comment`, which abstracts
+# the differences.  Here we bind separate endpoints for each kind of comment
+#
+@ajax_endpoint_login_required(form_class=AnswerCommentForm)
 def answer_comment(request):
 	return process_comment(request, AnswerCommentForm)
 
-@ajax_endpoint
+@ajax_endpoint_login_required(form_class=QuestionCommentForm)
 def question_comment(request):
 	return process_comment(request, QuestionCommentForm)
 
-@ajax_endpoint
+@ajax_endpoint_login_required(form_class=LetterCommentForm)
 def comment(request):
 	return process_comment(request, LetterCommentForm)
 
-@ajax_endpoint
+@ajax_endpoint_login_required(form_class=ReplyCommentForm)
 def reply_comment(request):
 	return process_comment(request, ReplyCommentForm)
 
-@ajax_endpoint
+@ajax_endpoint_login_required(form_class=DiscussionCommentForm)
 def discussion_comment(request):
 	return process_comment(request, DiscussionCommentForm)
 
 
+#
+# All comments end up getting processed here.  
+# At this point user has been authenticated.
+#
 def process_comment(request, comment_form_class):
 	comment_form = comment_form_class(request.POST)
 	
@@ -467,24 +587,27 @@ def checkValidUserName(request):
                 return 'available';
 
 
+
 def handle_ajax_login(request):
-        username_pass = request.GET['username']
-        password_pass = request.GET['password']
-        user = authenticate(username=username_pass, password=password_pass)
-        data = 0;
-        if user is not None:
-                data = "accepted";
-                request.session['user']=username_pass;
-        else :
-                data = "denied";
-        #data = test(request)
-        return render(request, 'digidemo/ajax.html', {'json_data':data})
+	username_pass = request.GET['username']
+	password_pass = request.GET['password']
+	user = authenticate(username=username_pass, password=password_pass)
+	data = 0;
+	if user is not None:
+		login(request, user)
+		data = "accepted";
+		request.session['user']=username_pass;
+	else:
+		data = "denied";
+
+	return render(request, 'digidemo/ajax.html', {'json_data':data})
 
 
 def handle_ajax_logout(request):
-        request.session.pop("user",None)
-        data = test(request)
-        return render(request, 'digidemo/ajax.html', {'json_data':data})
+	request.session.pop("user",None)
+	data = test(request)
+	logout(request)
+	return render(request, 'digidemo/ajax.html', {'json_data':data})
 
 
 @ajax_endpoint

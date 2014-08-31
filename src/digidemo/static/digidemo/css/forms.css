@@ -101,7 +101,7 @@ textarea.error, .field_wrapper_error .tagit {
 	background: rgb(255,250,250);
 }
 
-.field_errors {
+.field_errors, .form_errors {
 	color: brown;
 	font-style: italic;
 }

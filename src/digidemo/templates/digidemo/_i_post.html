@@ -8,7 +8,7 @@
 	<!-- start reply main area -->
 	<div class="subpost_main_area">
 		<div class="subpost_user">
-			{% include "digidemo/_i_user_id.html" with user=post_section.user %}
+			{% include "digidemo/_i_user_id.html" with user=post_section.post.user %}
 		</div>
 		<div class="subpost_body">{{ post_section.post.text }}</div>
 		<div class="clear"></div>

@@ -2,94 +2,118 @@
 {% load apptags %}
 
 {% if request|getLoggedInUser != "false" %}
-<div id="login-div">
-<nav>
-  <ul>
-    <li id="login-trigger"> Welcome {{request|getLoggedInUser}}
-    </li> 
-	<li id="login-trigger">
-		<a href="{% url "userProfile" request|getLoggedInUser %}" > User Profile </a>
-	</li>
-    <li id ="login-trigger"><input type="button" id="logout" value="logout">
-   </li>
-  </ul>
-</nav>
-</div>
+
+	<!-- if user logged in, show greeting, profile link, and logout button -->
+	<div id="login-div">
+		<nav>
+			<ul>
+				<li id="login-trigger"> 
+					Welcome {{request|getLoggedInUser}}
+				</li> 
+				<li id="login-trigger">
+					<a href="{% url "userProfile" request|getLoggedInUser %}"> 
+						User Profile 
+					</a>
+				</li>
+				<li id="login-trigger">
+					<input type="button" id="logout" value="logout" />
+				</li>
+			</ul>
+		</nav>
+	</div>
+	<!-- end of greeting, profile link, and logout button -->
 
 {% else %}
-<div id="login-div">
-<nav>
-  <ul>
-    <li id="login">
-      <a id="login-trigger" href="#">
-        Log in <span>?</span>
-      </a>
-      <div id="login-content">
-          <fieldset id="inputs">
-            <input id="username" type="email" name="Email" placeholder="Your email address" required>   
-            <input id="password" type="password" name="Password" placeholder="Password" required>
-          </fieldset>
-          <fieldset id="actions">
-            <input type="button" id="submit" value="Log in">
-            <label><input type="checkbox" checked="checked"> Keep me signed in</label>
-          </fieldset>
-      </div>                     
-    </li>
-    <li id="signup">
-      <a href="{% url "userRegistration" %}">Sign up FREE</a>
-    </li>
-  </ul>
-</nav>
-</div>
+
+	<!-- otherwise, show login form and register link -->
+	<div id="login-div">
+		<nav>
+			<ul>
+				<li id="login">
+					<a id="login-trigger" href="#">
+						login
+					</a>
+					<div id="login-content">
+						<form id="login_form">
+							<fieldset id="inputs">
+								<input id="username" type="text" 
+									name="username" placeholder="username" 
+									required />   
+								<input id="password" type="password" 
+									name="password" placeholder="password" 
+									required />
+							</fieldset>
+
+							<fieldset id="actions">
+								<input type="button" id="submit_login" value="Log in" />
+								<label>
+									<input type="checkbox" checked="checked" /> 
+									Keep me signed in
+								</label>
+							</fieldset>
+						</form>
+					</div>
+				</li>
+				<li id="signup">
+					<a href="{% url "userRegistration" %}">register</a>
+				</li>
+			</ul>
+		</nav>
+	</div>
+	<!-- end of login form and register link -->
+
 {% endif %}
 <script>
+(function(){
 
-$(document).ready(function(){
+
+	// arm the login triger to slide open / closed the login form
 	$('#login-trigger').click(function(){
 		$(this).next('#login-content').slideToggle();
 		$(this).toggleClass('active');          
 		
-		if ($(this).hasClass('active')) $(this).find('span').html('&#x25B2;')
-		  else $(this).find('span').html('&#x25BC;')
+		if ($(this).hasClass('active')) {
+			$(this).find('span').html('&#x25B2;')
+
+		} else {
+			$(this).find('span').html('&#x25BC;')
+		}
 	})
-});
 
-$( "#submit" ).click(function( event ) {
-var URL = {% url "handle_ajax_login" %};
-  	  $.ajax({
-   	   url:URL,
-	   type: 'GET',
-   	   async: false,
-           data: {
-               username: document.getElementById('username').value,
-           	password: document.getElementById('password').value,
-               csrfmiddlewaretoken: '{{ csrf_token }}'
-                },  
-      	   success:function(data) {
-		data=data.replace(/(\r\n|\n|\r)/gm,"");
-		if(data=="accepted"){
-		$("#login-div").html("<nav><ul><li id=\"login-trigger\">Welcome   "+  document.getElementById('username').value+"</li></ul></nav>");
-		 location.reload();
-		}
- 	}
-   });
-});
+	// register the login as an ajax form widget
+	register_form('login_form', 'ajax_login', 'login_form', 'submit_login')
 
-$( "#logout" ).click(function( event ) {
-var URL = {% url "handle_ajax_logout" %};
-  	  $.ajax({
-   	   url:URL,
-	   type: 'GET',
-   	   async: false,
-           data: {
-               csrfmiddlewaretoken: '{{ csrf_token }}'
-                },  
-      	   success:function(data) {
-		 location.reload();
-		}
- 	
-   });
-});
+	// define a callback to be executed after a successful login
+	var login_success_callback = function(data) {
+		$("#login-div").html(
+			"<nav><ul><li id=\"login-trigger\">Welcome "
+			+ document.getElementById('username').value
+			+ "</li></ul></nav>"
+		);
+		location.reload();
+	}
+
+	// define a callback to be executed when login fails
+	var login_error_callback = function(data) {
+		alert('could not log in');
+	}
+
+	// bind the callbacks to the login widget
+	$(document).ready(function(){
+		widgets['login_form'].widget.hook('success', login_success_callback);
+		widgets['login_form'].widget.hook('error', login_error_callback);
+	});
+
+	// make clicking the logout cause a logout and reload the page
+	$( "#logout" ).click(function( event ) {
+		ajax('ajax_logout', {}, {
+			'success': function(){location.reload()},
+			'error': function(){alert('error')}
+		})
+	});
+
+}());
+
 
 
 

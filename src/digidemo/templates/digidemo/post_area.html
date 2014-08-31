@@ -44,12 +44,18 @@
 
 	{% include "digidemo/_i_hr_flourish.html" %}
 
-	<!-- this element toggles the display of the answer form
-		it's only visible after the form has been submitted though 
+	<!-- 
+		this <a> element toggles the display of the answer form.
+		it's only visible after the form has been submitted though, becuase
+		untill then, it has no text in it.  (The form is shown by default.)
 	-->
 	<a id="_w_toggle_hidden_subpost_form_switch" class="pointer"></a>
 
-	<div id="_w_toggle_hidden_subpost_form_content">
+	<div {% if user.is_authenticated %}
+		{% else %}
+			title="You must login to post an asnswer!"
+		{% endif %}
+		id="_w_toggle_hidden_subpost_form_content">
 		<h2>Your {% block subpost_type %}Answer{% endblock %}</h2>
 		{% include "digidemo/_w_ajax_form.html" with form=subpost_form %}
 	</div>

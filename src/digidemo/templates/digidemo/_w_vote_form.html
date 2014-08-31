@@ -20,7 +20,8 @@
 		'votes_widget',
 		{{ form.valence.value|default_if_none:0 }},
 		{{ form.cur_score|default_if_none:0 }},
-		'{{ form.endpoint }}'
+		'{{ form.endpoint }}',
+		django.IS_USER_AUTHENTICATED
 	);
 
 	// register this widget to the page

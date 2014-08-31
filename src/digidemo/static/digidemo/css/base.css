@@ -194,6 +194,11 @@ a.create_navitem {
 	background: white;
 }
 
+#search_bar .search_submit {
+	background: no-repeat -2px -2px white url('../images/search.png');
+	width: 20px;
+}
+
 .outer_center {
 	text-align: center;
 }
@@ -283,3 +288,4 @@ div.tags  {
 h1, h2, h3 {
 	margin: 0;
 }
+

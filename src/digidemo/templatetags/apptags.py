@@ -19,6 +19,7 @@ def getSummary(proposal):
     returnText+= '......';
     return returnText
 
+
 @register.filter(name='getTags')
 def getTags(proposal):
     if(proposal is None):
@@ -33,12 +34,14 @@ def getTags(proposal):
         returnString = returnString[:-1]
     return returnString
 
+
 @register.filter(name='getLoggedInUser')
 def getLoggedInUser(request):
     
-    if(request.session.has_key("user")):
-        return(request.session['user'])
+    if(request.user.is_authenticated()):
+        return(request.user)
     return "false"
+
 
 @register.filter(name='getFollowPostStatus')
 def getFollowPostStatus(request,proposalID):

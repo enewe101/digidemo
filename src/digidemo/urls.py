@@ -18,9 +18,12 @@ admin.autodiscover()
 
 
 urlpatterns = patterns('',
+
 	# front page urls
 	url(r'^mainPage/$',mainPage, name='mainPage'),
-	url(r'^mainPage/sort=(?P<sort_type>\w+)/$',mainPage,name='mainPage'),
+
+	# login page
+	url(r'^login_required/(?P<next>.+)', Login().view, name='login_required'),
 
 	# main tabs
 	url(r'^petition_list', petition_list, name="petition_list"),
@@ -35,14 +38,14 @@ urlpatterns = patterns('',
 	#Search results
 	url(r'^search/$',search,name='search'),
 
-        #AllUserDisplay
-        url(r'^users/$',users,name='users'),
+	#AllUserDisplay
+	url(r'^users/$',users,name='users'),
         
 	#userProfiles
-        #Seeing the user Profile - Basic information and followed Posts
-        
-        url(r'^userProfile/(?P<userName>\w+)/$', userProfile,name='userProfile'),
-        url(r'^userProfile/(?P<userName>\w+)/edit$',userProfileEdit,name='userProfileEdit'),
+	#Seeing the user Profile - Basic information and followed Posts
+	
+	url(r'^userProfile/(?P<userName>\w+)/$', userProfile,name='userProfile'),
+	url(r'^userProfile/(?P<userName>\w+)/edit$',userProfileEdit,name='userProfileEdit'),
 
 	# Registration
 	url(r'^userRegistration/$', userRegistration,name='userRegistration'),
@@ -50,7 +53,7 @@ urlpatterns = patterns('',
 	# test url
 	url(r'^$', test, name='test'),
 
-	# proposal-specific urls
+	# proposal-centric urls
 	url(r'^add_proposal/$', AddProposalView().view, name='add_proposal'),
 	url(r'^overview/(?P<proposal_id>\w+)/.*$', IssueOverview().view,
 		name='proposal'),
@@ -78,7 +81,8 @@ urlpatterns = patterns('',
 	url(r'^ajaxJson/(?P<view>\w+)/$', handle_ajax_json, 
 		name='handle_ajax_json'),
 	url(r'^ajaxJson/$', handle_ajax_json, name='ajax_json_test'),
-        url(r'^ajaxLogin/$', handle_ajax_login,name = 'handle_ajax_login'),
-        url(r'^ajaxLogout/$', handle_ajax_logout,name = 'handle_ajax_logout'),
+	url(r'^ajaxLogin/$', handle_ajax_login,name = 'handle_ajax_login'),
+	url(r'^ajaxLogout/$', handle_ajax_logout,name = 'handle_ajax_logout'),
+
 ) + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 

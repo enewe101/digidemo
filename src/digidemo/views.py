@@ -1,24 +1,28 @@
 import difflib
 import collections as c
-from django.core.urlresolvers import reverse
+
 from django.core import serializers
+from django.core.files.storage import default_storage
+from django.core.files.base import ContentFile
+from django.core.urlresolvers import reverse
 from django.shortcuts import render, get_object_or_404, redirect
 from django.template import Context, RequestContext
 from django.template.loader import get_template
 from django.http import HttpResponse, HttpResponseRedirect
-from digidemo.models import *
-from forms import ProposalSearchForm
+from django.contrib.auth import authenticate, login, logout
 from django.forms.formsets import formset_factory
-from digidemo.forms import *
-from digidemo import utils
-from settings import DEBUG, SITE_NAME
-import json
-import sys
 from django import http
 from django.views.debug import ExceptionReporter
-from django.core.files.storage import default_storage
-from django.core.files.base import ContentFile
 from django.conf import settings
+
+from digidemo.models import *
+from digidemo.forms import *
+from digidemo import utils
+from forms import ProposalSearchForm
+from settings import DEBUG, SITE_NAME
+
+import json
+import sys
 from choices import *;
 
 
@@ -143,15 +147,6 @@ def get_globals():
 		'DEBUG': DEBUG
 	}
 
-def get_django_vars(additional_vars={}):
-	django_vars = {
-		'DEBUG': DEBUG
-	}
-
-	django_vars.update(additional_vars)
-
-	return django_vars
-
 
 def show_server_error(request):
     """
@@ -167,8 +162,20 @@ def show_server_error(request):
     return http.HttpResponseServerError(error.get_traceback_html())
 
 
-def get_django_vars_JSON(additional_vars={}):
-	return json.dumps(get_django_vars(additional_vars))
+def get_django_vars_JSON(additional_vars={}, request=None):
+	return json.dumps(get_django_vars(
+		request, additional_vars=additional_vars))
+
+
+def get_django_vars(request, additional_vars={}):
+	django_vars = {
+		'DEBUG': DEBUG,
+		'IS_USER_AUTHENTICATED': request.user.is_authenticated()
+	}
+
+	django_vars.update(additional_vars)
+
+	return django_vars
 
 
 
@@ -307,7 +314,8 @@ def history(request, proposal_id):
 
 
 def get_vote_form(VoteModel, VoteForm, user, target, id_prefix=''):
-	existing_vote = utils.get_or_none(VoteModel, user=user, target=target)
+
+	existing_vote = utils.get_or_none(VoteModel, user=user.pk, target=target)
 
 	if existing_vote:
 		vote_form = VoteForm(
@@ -366,7 +374,7 @@ class PostSection(object):
 	def __init__(
 			self,
 			post,
-			logged_in_user,
+			user,
 			id_prefix=None
 		):
 
@@ -382,10 +390,9 @@ class PostSection(object):
 			self.id_prefix = id_prefix
 
 		# get the associated object models for the post's widgetery
-		self.user = logged_in_user
 		self.comments = self.post.comment_set.all()
 		self.comment_form = self.CommentForm(
-			initial={'user':logged_in_user, 'target': self.post},
+			initial={'user':user, 'target': self.post},
 			id_prefix=self.id_prefix
 		)
 
@@ -393,7 +400,7 @@ class PostSection(object):
 		self.vote_form = get_vote_form(
 			self.Vote, 
 			self.VoteForm,
-			logged_in_user, 
+			user, 
 			post,
 			id_prefix=self.id_prefix
 		)
@@ -519,10 +526,8 @@ class AbstractView(object):
 
 		return {
 			'globals': get_globals(),
-			'django_vars_js': get_django_vars_JSON(
-				{'user': utils.obj_to_dict(
-				logged_in_user, exclude=['password'])}),
-			'logged_in_user': logged_in_user
+			'django_vars_js': get_django_vars_JSON(request=self.request),
+			'user': self.request.user
 		}
 
 
@@ -563,6 +568,57 @@ class AbstractView(object):
 	# This default makes POST requests handled like GET, unless overriden.
 	def get_post_context_data(self):
 		return self.get_context_data()
+
+
+
+class AbstractLoginRequiredView(AbstractView):
+
+	def view(self, request, *args, **kwargs):
+
+		if not request.user.is_authenticated():
+			return redirect(
+				reverse('login_required', kwargs={'next':request.path})
+			)
+
+		return super(AbstractLoginRequiredView, self).view(
+			request, *args, **kwargs)
+
+
+class Login(AbstractView):
+	template = 'digidemo/login_page.html'
+	error = ''
+
+	# Unauthenticated users get this page when accessing a login-required view
+	def get_context_data(self):
+
+		# Note, the request.path contains this login page url concatenated
+		# with the original url they were trying to access
+		login_form = LoginForm(endpoint=self.request.path)
+
+		return {
+			'login_form': login_form,
+			'error': self.error
+		}
+
+	# This handles the users login attempt
+	def handle_post(self):
+
+		# try to authenticate the user
+		user = authenticate(
+			username=self.request.POST['username'],
+			password=self.request.POST['password']
+		)
+
+		# If successful, get the original login-required url, which was
+		# concatenated onto the login-required url, as the 'next' kwarg.
+		if user:
+			login(self.request, user)
+			return redirect(self.kwargs['next'])
+
+		# Otherwise, show login form, but with an error message
+		else:
+			self.error = 'Oops, try again...'
+			return self.handle_get()
 
 
 def edit(request, issue_id):
@@ -619,7 +675,7 @@ def edit(request, issue_id):
 
 
 
-class AddProposalView(AbstractView):
+class AddProposalView(AbstractLoginRequiredView):
 
 	template = 'digidemo/add_proposal.html'
 
@@ -810,7 +866,7 @@ class AllQuestionsListView(AbstractView):
 
 
 
-class AskQuestionView(AbstractView):
+class AskQuestionView(AbstractLoginRequiredView):
 
 	template = 'digidemo/ask_question.html'
 
@@ -934,22 +990,19 @@ class PostAreaView(AbstractView):
 		post = self.Post.objects.get(pk=self.kwargs['post_id'])
 		target = post.target
 
-		# ** Hardcoded the logged in user to be enewe101 **
-		logged_in_user = User.objects.get(pk=1)
-
 		# make a section for the question
 		post_section = self.PostSection(
-			post, logged_in_user, id_prefix='q')
+			post, self.request.user, id_prefix='q')
 
 		# make sections for subposts 
 		subpost_sections = []
 		for subpost in self.Subpost.objects.filter(target=post):
-			subsection = self.SubpostSection(subpost, logged_in_user)
+			subsection = self.SubpostSection(subpost, self.request.user)
 			subpost_sections.append(subsection)
 
 		# make a form for submitting new answers
 		subpost_form = self.SubpostForm(
-			initial={'user':logged_in_user, 'target':post})
+			initial={'user':self.request.user, 'target':post})
 
 		return {
 			'post_section': post_section,
@@ -1131,7 +1184,7 @@ def test(request):
 	return render(request, 'digidemo/test.html', {})
 
 
-def login(request, provider_name):
+def _login(request, provider_name):
 
 	authomatic = Authomatic(CONFIG, 'a super secret random string')
 	response = HttpResponse();

@@ -212,7 +212,7 @@ function FormWidget(form_id, endpoint, submit_id) {
 function render_errors(data, form_id) {
 
 	// Since errors were returned, iterate over the fields, and mark
-	// those with errors using styling and errorr text
+	// those with errors using styling and error text
 	for(field_id in data.errors) {
 
 		// the special field "__all__" represents errors with the form
@@ -300,7 +300,8 @@ $(document).ready(function() {
 //  					//
 //////////////////////////
 
-function VoteForm(form_id, form_class, start_state, score, endpoint) {
+function VoteForm(form_id, form_class, start_state, score, endpoint, 
+	is_enabled) {
 
 	// do some validation
 	if(!(typeof form_id == 'string')) {
@@ -327,6 +328,12 @@ function VoteForm(form_id, form_class, start_state, score, endpoint) {
 	this.html.downvote = $(
 		'<div id="'+form_id+'_downvote" class="downvote" />');
 
+	// Add a tooltip that tells unauthenticated users they can't vote :(
+	if(!is_enabled) {
+		this.html.upvote.attr('title', 'You must login to vote!');
+		this.html.downvote.attr('title', 'You must login to vote!');
+	}
+
 	this.html.wrapper = $('<div id="'+form_id+'_wrapper" class="vote_form" />')
 		.append([this.html.upvote, this.html.score, this.html.downvote]);
 
@@ -335,7 +342,12 @@ function VoteForm(form_id, form_class, start_state, score, endpoint) {
 	this.html.upvote.click( $.proxy(
 		function() {
 
-			if(this.state == -1) {
+			// do nothing if not enabled!
+			if(!is_enabled) {
+				return
+
+			// otherwise, perform the right state transition in the UI
+			} else if(this.state == -1) {
 				this.enter_state_1();
 
 			} else if(this.state == 0) {
@@ -348,7 +360,9 @@ function VoteForm(form_id, form_class, start_state, score, endpoint) {
 				js_error('VoteForm: unexpected state: ' + this.state);
 			}
 
+			// and then send the vote off to the server
 			this.send_vote();
+
 		}, this)
 	);
 
@@ -357,7 +371,12 @@ function VoteForm(form_id, form_class, start_state, score, endpoint) {
 	this.html.downvote.click( $.proxy(
 		function() {
 
-			if (this.state == -1) {
+			// do nothing if not enabled!
+			if(!is_enabled) {
+				return
+
+			// otherwise, perform the right state transition in the UI
+			} else if (this.state == -1) {
 				this.enter_state_0();
 
 			} else if (this.state == 0) {
@@ -370,7 +389,9 @@ function VoteForm(form_id, form_class, start_state, score, endpoint) {
 				js_error('VoteForm: unexpected state: ' + this.state);
 			}
 
+			// and then send the vote off to the server
 			this.send_vote();
+
 		}, this)
 	);
 

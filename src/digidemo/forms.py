@@ -15,9 +15,8 @@ from digidemo import utils
 from digidemo import widgets as app_widgets
 import os
 
-#log_fname = os.path.join(PROJECT_DIR, 'media/~log.txt')
-#logging.basicConfig(filename=log_fname, level=logging.DEBUG)
-
+USERNAME_MAX_LENGTH = 32
+PASSWORD_MAX_LENGTH = USERNAME_MAX_LENGTH
 
 class AugmentedFormMixin(object):
 
@@ -537,6 +536,20 @@ class DiscussionVoteForm(VoteForm):
 class ReplyVoteForm(VoteForm):
 	class Meta(VoteForm.Meta):
 		model = ReplyVote
+
+
+class LoginForm(AugmentedFormMixin, Form):
+	endpoint = 'ajax_login'
+	username = forms.CharField(max_length=USERNAME_MAX_LENGTH)
+	password = forms.CharField(
+		widget=forms.PasswordInput(), max_length=PASSWORD_MAX_LENGTH)
+
+	class Meta:
+		fields = ['username', 'password']
+		widgets = {
+			'password': forms.PasswordInput()
+		}
+
 
 
 class NameForm(forms.Form):

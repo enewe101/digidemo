@@ -2,7 +2,6 @@
 
 <!-- The login template exists on the navigation bar , existed in the "__tabbed.html" previously , now moved to the new location -->
 
-{% include "digidemo/_w_login_user.html" %}
 
 <div id="navbar">
 	<a class="{% if active_navitem == "issues" %}navitem_active{% else %}navitem{% endif %}"
@@ -37,10 +36,4 @@
 
 </div>
 
-<div id="search_bar">
-	<form type="get" action="{% url "search" %}">  
-		<input type="text" name="q" />
-		<input type="submit" value="Go" />
-	</form>
-</div>
 <!-- end the left navigation bar -->
