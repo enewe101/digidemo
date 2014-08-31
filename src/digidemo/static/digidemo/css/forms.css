@@ -11,7 +11,8 @@
 .ProposalVersionForm_title,
 .QuestionForm_title,
 .QuestionForm_text,
-.AnswerForm_text {
+.AnswerForm_text,
+#proposal_tags {
 	width: 704px;
 }
 
@@ -94,7 +95,8 @@
 	font-weight: bold;
 }
 
-.field_wrapper_error textarea, .field_wrapper_error input, textarea.error {
+.field_wrapper_error textarea, .field_wrapper_error input, 
+textarea.error, .field_wrapper_error .tagit {
 	border: solid 1px brown;
 	background: rgb(255,250,250);
 }
@@ -122,3 +124,4 @@
 #ProposalVersionForm__sectors li input {
 	float: left;
 }
+

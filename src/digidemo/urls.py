@@ -51,7 +51,7 @@ urlpatterns = patterns('',
 	url(r'^$', test, name='test'),
 
 	# proposal-specific urls
-	url(r'^add_proposal/$', add_proposal, name='add_proposal'),
+	url(r'^add_proposal/$', AddProposalView().view, name='add_proposal'),
 	url(r'^overview/(?P<proposal_id>\w+)/.*$', IssueOverview().view,
 		name='proposal'),
 	url(r'^questions/(?P<proposal_id>\w+)/.*$', QuestionListView().view, 

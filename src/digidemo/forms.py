@@ -366,42 +366,44 @@ class ProposalVersionForm(AugmentedFormMixin, ModelForm):
 			# In proposal, we also have a field called original user
 			proposal_init['original_user'] = proposal_init['user']
 
-			# now make the proposal
+			# now make the proposal and save it
 			self.proposal = Proposal(**proposal_init)
-
-			# copy over sectors manually
-			for sector in self.cleaned_data['sectors']:
-				self.proposal.sectors.add(sector)
-
-			# and save
 			self.proposal.save()
 
-			# Now, save the proposal_version, and bind it to the proposal
+			# now save the proposal version, then bind the proposal and 
+			# then save the bound proposal_version
 			new_proposal_version = super(ProposalVersionForm, self).save(
 				commit=False)
 			new_proposal_version.proposal = self.proposal
 			new_proposal_version.save()
-			new_proposal_version.save_m2m()
+
+			# Finally copy the sectors to the saved proposal and 
+			# proposal_version
+			for sector in self.cleaned_data['sectors']:
+				new_proposal_version.sectors.add(sector)
+				self.proposal.sectors.add(sector)
 
 		# Otherwise, we are not making a new proposal, only saving a new
 		# proposal version
 		else:
 
 			# Update the values in the Proposal which mirror the 
-			# ProposalVersion
+			# ProposalVersion.  Since this is an edit, there is already
+			# a proposal bound to the form, get it, then update values.
 			self.proposal = self.cleaned_data['proposal']
 			for field in ['title', 'summary', 'text', 'user']:
 				setattr(self.proposal, field, self.cleaned_data[field])
 
+			# Save a new proposal version based on the contents of this form
+			new_proposal_version = super(ProposalVersionForm, self).save()
+
 			# We also need to manually copy over the sectors.
-			# But first, clear them, which makes deletion possible
+			# First, clear any existing ones from the proposal (this makes
+			# deletion of sectors possible)
 			self.proposal.sectors.clear()
 			for sector in self.cleaned_data['sectors']:
+				new_proposal_version.sectors.add(sector)
 				self.proposal.sectors.add(sector)
-			self.proposal.save()
-
-			# and of course, save the ProposalVersion
-			new_proposal_version = super(ProposalVersionForm, self).save()
 
 		# Finally, return a reference to the proposal
 		return new_proposal_version
@@ -409,8 +411,8 @@ class ProposalVersionForm(AugmentedFormMixin, ModelForm):
 
 class TaggedProposalForm(object):
 
-	# tags can consist of letters, numbers, hyphens, and underscores
-	# a valid list of tags is at least one tag (containing at least one
+	# tags can consist of letters, numbers, and hyphens
+	# a valid list of tags has at least one tag (containing at least one
 	# of the above characters, followed by any number of tags separated by
 	# commas
 	valid_tags_re = re.compile(r'^[-a-zA-Z0-9]+(,[-a-zA-Z0-9]+)*$')
@@ -419,9 +421,11 @@ class TaggedProposalForm(object):
 
 		self.tag_errors = ''
 		self.taggit = {
+			'id': 'proposal_tags',
 			'tags': '',
 			'label': 'tags',
-			'name': 'tags'
+			'name': 'tags',
+			'errors': []
 		}
 
 		if data is not None:
@@ -446,8 +450,14 @@ class TaggedProposalForm(object):
 		valid = self.proposal_version_form.is_valid()
 
 		if self.valid_tags_re.match(self.taggit['tags']) is None:
-			self.tag_errors = 'Tags can only contain letters, numbers and '\
-				 'hyphens'
+
+			if self.taggit['tags'].strip() == '':
+				self.taggit['errors'].append(
+					'Please include at least one tag.')
+
+			else: 
+				self.taggit['errors'].append('Tags should contain only '\
+					'letters, numbers and hyphens.')
 			
 			valid = False
 
@@ -468,13 +478,11 @@ class TaggedProposalForm(object):
 		proposal.tags.clear()
 
 		for tag_name in self.tags:
+
 			tag, created = Tag.objects.get_or_create(name=tag_name)
 
 			proposal_version.tags.add(tag)
 			proposal.tags.add(tag)
-
-		proposal_version.save()
-		proposal.save()
 
 		return proposal_version
 	

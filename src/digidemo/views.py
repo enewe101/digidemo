@@ -184,53 +184,6 @@ def proposal(request, proposal_id):
 	)
 
 
-def add_proposal(request):
-
-	# ** Hardcoded the logged in user to be enewe101 **
-	logged_in_user = User.objects.get(pk=1)
-
-
-	if request.POST:
-
-		edit_proposal_form = ProposalVersionForm(
-			data=request.POST,
-			endpoint=reverse('add_proposal')
-		)
-                print "Form retrieved"
-		if edit_proposal_form.is_valid():
-			proposal_version = edit_proposal_form.save()
-			proposal = proposal_version.proposal
-			return redirect(proposal.get_url('proposal'))
-
-	else:
-		edit_proposal_form = ProposalVersionForm(
-			endpoint=reverse('add_proposal'),
-			initial={'user': logged_in_user}
-		)
-
-	cancel_url = reverse('mainPage')
-	if 'HTTP_REFERER' in request.META:
-		cancel_url = request.META['HTTP_REFERER']
-
-	return render(
-		request,
-		'digidemo/add_proposal.html', 
-		{
-			'django_vars_js': get_django_vars_JSON(
-				{'user': utils.obj_to_dict(
-				logged_in_user, exclude=['password'])}),
-			'proposal': None,
-			'proposal_vote_form': None,
-			'headline': 'new proposal',
-			'edit_proposal_form': edit_proposal_form,
-			'logged_in_user': logged_in_user,
-			'tabs': None,
-			'active_navitem': 'create',
-			'cancel_url': cancel_url
-		}
-	)
-
-
 def flatten(list_2d):
 	return [item for sublist in list_2d for item in sublist]
 
@@ -350,58 +303,6 @@ def history(request, proposal_id):
 		}
 	)
 
-
-def edit(request, issue_id):
-
-	# ** Hardcoded the logged in user to be enewe101 **
-	logged_in_user = User.objects.get(pk=1)
-
-	proposal = Proposal.objects.get(pk=issue_id)
-
-	if request.POST:
-
-		proposal_form = TaggedProposalForm(
-			data=request.POST,
-			endpoint=proposal.get_edit_url()
-		)
-
-		if proposal_form.is_valid():
-			proposal_version = proposal_form.save()
-			redirect_url = proposal_version.proposal.get_proposal_url()
-			return redirect(redirect_url)
-
-	else:
-		initial = {
-			'proposal': proposal,
-			'title': proposal.title,
-			'summary': proposal.summary,
-			'text': proposal.text,
-			'user': logged_in_user,
-			'tags': ','.join([t.name for t in proposal.tags.all()]),
-			'sectors': proposal.sectors.all()
-		}
-
-		proposal_form = TaggedProposalForm(
-			initial=initial,
-			endpoint=proposal.get_edit_url()
-		)
-		
-
-	return render(
-		request,
-		'digidemo/edit.html', 
-		{
-			'django_vars_js': get_django_vars_JSON(
-				{'user': utils.obj_to_dict(
-				logged_in_user, exclude=['password'])}),
-			'proposal': proposal,
-			'headline': proposal.title,
-			'proposal_form': proposal_form,
-			'logged_in_user': logged_in_user,
-			'tabs': get_edit_tabs('edit', proposal),
-			'active_navitem': 'create'
-		}
-	)
 
 
 
@@ -572,10 +473,12 @@ class LetterSection(PostSection):
 
 class AbstractView(object):
 
-	# override these 
+	# override this with desired template 
 	template = 'digidemo/__base.html'
 
 
+	# Top-level request handler. 
+	# Give this function to the url resolver in urls.py.
 	def view(self, request, *args, **kwargs):
 
 		# Register the views arguments for easy access
@@ -583,6 +486,7 @@ class AbstractView(object):
 		self.args = args
 		self.kwargs = kwargs
 
+		# Delegate to a response handler
 		if self.request.POST:
 			return self.handle_post()
 
@@ -590,8 +494,9 @@ class AbstractView(object):
 			return self.handle_get()
 
 
+	# handles get requests.  Usually you don't need to override this.
+	# Instead override to which it delegates
 	def handle_get(self):
-
 		# Create the response
 		template = self.get_template()
 		context = self.get_context()
@@ -601,16 +506,18 @@ class AbstractView(object):
 		return reply
 
 
+	# This is hook makes it possible to do fancy template relolution.
+	# But usually, a view should just override the `template` attribute.
 	def get_template(self):
 		return get_template(self.template)
 
 
-	def get_context(self):
-		# This is a hack until I put in proper authentication
+	# Preloads the context with stuff that pretty much every view should have
+	def get_default_context(self):
+
 		logged_in_user = User.objects.get(pk=1)
 
-		# First put some basic stuff that we always want
-		context_data = {
+		return {
 			'globals': get_globals(),
 			'django_vars_js': get_django_vars_JSON(
 				{'user': utils.obj_to_dict(
@@ -618,22 +525,164 @@ class AbstractView(object):
 			'logged_in_user': logged_in_user
 		}
 
-		# Now let the implementation of handle_get override / add
-		# to the context
-		context_data.update(self.get_context_data())
 
-		# Return as a proper RequestContext
+	# Usually you should override get_context_data instead of this,
+	# Which let's you keep the default context in tact.
+	def get_context(self):
+		context_data = self.get_default_context()
+		context_data.update(self.get_context_data())
 		return RequestContext(self.request, context_data) 
 
 
+	# Usually this is the only function to override.
 	def get_context_data(self):
-		return {'msg':'this is the AbstractView'}
+		raise NotImplementedError('Subclasses of AbstractView must override'
+				+ ' get_context_data')
 
-
+	
+	# handles post requests.  Usually you'll want to override the functions 
+	# to which it delegates, rather than this itself.
 	def handle_post(self):
-		# providing handle_post is optional: 
-		# unless it is overriden, a post request will just call handle_get
-		return self.handle_get()
+		# Create the response
+		template = self.get_template()
+		context = self.get_post_context()
+		reply = HttpResponse(template.render(context))
+
+		# Return the response
+		return reply
+
+
+	# Usually you should override get_post_context_data instead of this,
+	# which let's you keep the default context in tact.
+	def get_post_context(self):
+		context_data = self.get_default_context()
+		context_data.update(self.get_post_context_data())
+		return RequestContext(self.request, context_data)
+
+
+	# This default makes POST requests handled like GET, unless overriden.
+	def get_post_context_data(self):
+		return self.get_context_data()
+
+
+def edit(request, issue_id):
+
+	# ** Hardcoded the logged in user to be enewe101 **
+	logged_in_user = User.objects.get(pk=1)
+
+	proposal = Proposal.objects.get(pk=issue_id)
+
+	if request.POST:
+
+		proposal_form = TaggedProposalForm(
+			data=request.POST,
+			endpoint=proposal.get_edit_url()
+		)
+
+		if proposal_form.is_valid():
+			proposal_version = proposal_form.save()
+			redirect_url = proposal_version.proposal.get_proposal_url()
+			return redirect(redirect_url)
+
+	else:
+		initial = {
+			'proposal': proposal,
+			'title': proposal.title,
+			'summary': proposal.summary,
+			'text': proposal.text,
+			'user': logged_in_user,
+			'tags': ','.join([t.name for t in proposal.tags.all()]),
+			'sectors': proposal.sectors.all()
+		}
+
+		proposal_form = TaggedProposalForm(
+			initial=initial,
+			endpoint=proposal.get_edit_url()
+		)
+		
+
+	return render(
+		request,
+		'digidemo/edit.html', 
+		{
+			'django_vars_js': get_django_vars_JSON(
+				{'user': utils.obj_to_dict(
+				logged_in_user, exclude=['password'])}),
+			'proposal': proposal,
+			'headline': proposal.title,
+			'proposal_form': proposal_form,
+			'logged_in_user': logged_in_user,
+			'tabs': get_edit_tabs('edit', proposal),
+			'active_navitem': 'create'
+		}
+	)
+
+
+
+class AddProposalView(AbstractView):
+
+	template = 'digidemo/add_proposal.html'
+
+	# We need to override handl_post, because a successful form post should
+	# cause a rediret
+	def handle_post(self):
+
+		proposal_form = TaggedProposalForm(
+			data=self.request.POST,
+			endpoint=reverse('add_proposal')
+		)
+
+		# If the form is correctly filled out, save it and redirect
+		# to the issue page
+		if proposal_form.is_valid():
+			proposal_version = proposal_form.save()
+			proposal = proposal_version.proposal
+			return redirect(proposal.get_url('proposal'))
+
+		# Otherwise, make the context to dislpay the form
+
+		# Work out where the cancel button should point
+		cancel_url = reverse('mainPage')
+		if 'HTTP_REFERER' in self.request.META:
+			cancel_url = self.request.META['HTTP_REFERER']
+
+		# Assemble the context data on top of default context
+		context_data = self.get_default_context()
+		context_data.update({
+			'headline': 'new issue',
+			'proposal_form': proposal_form,
+			'tabs': None,
+			'active_navitem': 'create',
+			'cancel_url': cancel_url
+		})
+
+		# Build a request context
+		context = RequestContext(self.request, context_data)
+
+		# Render the response
+		return HttpResponse(self.get_template().render(context))
+
+
+	def get_context_data(self):
+
+		logged_in_user = User.objects.get(pk=1)
+		proposal_form = TaggedProposalForm(
+			endpoint=reverse('add_proposal'),
+			initial={'user': logged_in_user}
+		)
+
+		cancel_url = reverse('mainPage')
+		if 'HTTP_REFERER' in self.request.META:
+			cancel_url = self.request.META['HTTP_REFERER']
+
+		return {
+			'headline': 'new issue',
+			'proposal_form': proposal_form,
+			'tabs': None,
+			'active_navitem': 'create',
+			'cancel_url': cancel_url
+		}
+
 
 
 class TagListView(AbstractView):

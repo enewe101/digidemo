@@ -13,11 +13,11 @@
 
  var sampleTags = ['c++', 'java' ];
     $(document).ready(function() {
-		$("#tagsField").tagit({
+		$("#{{taggit.id}}").tagit({
 			caseSensitive : false,
 			availableTags: sampleTags,
 			singleField: true,
-			singleFieldNode: $('#tagsFieldInput'),
+			singleFieldNode: $('#{{taggit.id}}_hidden_input'),
 		});
 
 		//$("#sectorsField").tagit({
@@ -32,18 +32,22 @@
 
 </script>
 
-<label for="tagsFieldInput" />{{ taggit.label|capfirst }}:</label>
-<ul id="tagsField">
-    <!-- Existing list items will be pre-added to the tags -->
-</ul>
+<div class="form_line">
+	<div class="field_label_wrapper">
+		<span class="field_errors" id="{{taggit.id}}_errors">
+			{% for error in taggit.errors %}
+				{{ error }}
+			{% endfor %}
+		</span>
+		<label for="{{ taggit.id }}" />{{ taggit.label|capfirst }}:</label>
+	</div>
 
-<input type="hidden" id="tagsFieldInput" 
-	value="{{ taggit.tags }}" name="{{ taggit.name }}" /> 
+	<div class="field_wrapper{% if taggit.errors %}_error{% endif %}">
+		<ul class="taggit" id="{{ taggit.id }}">
+			<!-- Existing list items will be pre-added to the tags -->
+		</ul>
+	</div>
 
-<br /> <br />
-Sectors 
-<ul id="sectorsField">
-</ul>
-<input name="sectorsFieldInput" id="sectorsFieldInput" disabled="true">
-
-<br /> <br />
+	<input type="hidden" id="{{taggit.id}}_hidden_input" 
+		value="{{ taggit.tags }}" name="{{ taggit.name }}" /> 
+</div>
