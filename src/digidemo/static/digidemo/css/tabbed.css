@@ -1,14 +1,15 @@
 #headline {
-	background: white;
+	padding: 60px 0 0 0;
+	background: rgb(250,250,250);
 }
 
 #tab_bottom {
-	border-bottom: solid 1px rgb(170, 0, 212);
+	border-bottom: solid 1px rgb(180,180,180);
 	height: 24px;
 }
 
 .tabs {
-	margin: 0 0 20px 0;
+	margin: 0 0 0 0;
 	height: 24px;
 	font-family: ubuntu;
 }
@@ -19,9 +20,9 @@
 
 .tab, .tab_active {
 	padding: 0px 4px 0 4px;
-	border-left: solid 1px rgb(170, 0, 212);
-	border-top: solid 1px rgb(170, 0, 212);
-	border-right: solid 1px rgb(170, 0, 212);
+	border-left: solid 1px rgb(180,180,180);
+	border-top: solid 1px rgb(180,180,180);
+	border-right: solid 1px rgb(180,180,180);
 	background: white;
 }
 
@@ -29,7 +30,7 @@
 	margin-top: 3px;
 	height: 20px;
 	font-size: 14px;
-	background: repeat-x 100% 100% url('../images/bot_shade.png');
+	background: white repeat-x 100% 100% url('../images/bot_shade.png');
 }
 
 .tab_active {
@@ -45,7 +46,7 @@
 
 .tab_pre_space {
 	height: 24px;
-	width: 10px;
+	width: 0px;
 }
 
 
@@ -67,6 +68,6 @@
 h1.headline_title {
 	font-size: 36px;
 	font-family: computerModern;
-	margin: 0;
-	padding: 18px 0 16px 0;
+	margin: 0 0 0 -40px;
+	padding: 18px 0 12px 0;
 }

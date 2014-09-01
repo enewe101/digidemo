@@ -143,7 +143,7 @@ hr {
 
 .go_button, .go_button_highlighted {
 	float: left;
-	margin: 0 0px 10px 0px;
+	margin: 0 0px 11px 0px;
 }
 
 .go_button_inline, .go_button_inline_highlighted {
@@ -196,7 +196,7 @@ hr {
 }
 
 .section {
-	margin: 0 0 10px 0;
+	margin: 0 0 0px 0;
 }
 
 .section_buttons_right {

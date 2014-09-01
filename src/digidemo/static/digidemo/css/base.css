@@ -132,11 +132,11 @@ body {
 	margin: 0;
 	padding: 0;
 	color: rgb(80,80,80);
+	background: rgb(230,230,230);
 }
 
 #footer {
 	clear: both;
-	margin-top: 20px;
 	padding: 20px;
 	height: 100px;
 	border-top: solid 1px rgb(200,200,200);
@@ -148,7 +148,6 @@ body {
 	padding: 4px;
 	border-bottom: solid 1px rgb(200,200,200);
 	background: rgb(230,230,230);
-	margin-bottom: 40px;
 	z-index: 999;
 	width: 100%;
 }
@@ -219,8 +218,9 @@ a.create_navitem {
 }
 
 #middle {
-	padding-top: 80px;
+	padding: 40px 0 40px 0;
 	clear: both;
+	background: white;
 }
 
 div.tags  {

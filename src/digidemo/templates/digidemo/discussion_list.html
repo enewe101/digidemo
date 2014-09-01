@@ -68,6 +68,12 @@
 
 {% block rightcol %}
 
+	<div class="section">
+		<a class="go_button" href="{{issue.get_edit_url}}">
+			start editing
+		</a>
+		<div class="clear"></div>
+	</div>
 
 	<div class="take_note">
 		<img src="{% static "digidemo/images/icon_info.png" %}" 

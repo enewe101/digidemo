@@ -63,45 +63,45 @@
 	</head>
 	<body>
 
-		<!-- start of header -->
 		{% block body %}
+
+			<!-- start of header -->
 			{% include "digidemo/_i_header.html" %}
-		{% endblock body %}
-		<div class="clear"></div>
-		<!-- end of header -->
-
-		<!-- content in the middle (vertical middle) of the page -->
-		<div id="middle">
-
-			<!-- centering device for the middle of the page layout -->
-			<div class="outer_center">
-				<div class="inner_center">
-
-					{% block middle %}
-					{% endblock middle %}
-
-					<div class="clear"></div>
-				</div>
-			</div>
-			<!-- end of centering device for the middle of the page layout -->
-
 			<div class="clear"></div>
+			<!-- end of header -->
 
-		</div>
-		<!-- end of the (vertical) middle of the page layout -->
+			<!-- content in the middle (vertical middle) of the page -->
+			<div id="middle">
 
-		<!-- start of page footer -->
-		<div id="footer">
-			<div class="outer_center">
-				<div class="inner_center">
-					{% block footer %}
-						footer
-					{% endblock footer %}
+				<!-- centering device for the middle of the page layout -->
+				<div class="outer_center">
+					<div class="inner_center">
+
+						{% block middle %}
+						{% endblock middle %}
+
+						<div class="clear"></div>
+					</div>
+				</div>
+				<!-- end of centering device for the middle of the page layout -->
+
+				<div class="clear"></div>
+
+			</div>
+			<!-- end of the (vertical) middle of the page layout -->
+
+			<!-- start of page footer -->
+			<div id="footer">
+				<div class="outer_center">
+					<div class="inner_center">
+						{% block footer %}
+						{% endblock footer %}
+					</div>
 				</div>
 			</div>
-		</div>
-		<!-- end of page footer -->
+			<!-- end of page footer -->
 
+		{% endblock body %}
 	</body>
 </html>
 

@@ -31,6 +31,7 @@ from choices import *;
 OVERVIEW_TAB_NAME = 'issue'
 QUESTIONS_TAB_NAME = 'questions'
 OPINION_TAB_NAME = 'petitions'
+EDIT_TAB_NAME = 'editing room'
 
 # Names we use for the top level "button" navigation
 ISSUE_NAV_NAME = 'issues'
@@ -48,6 +49,7 @@ def get_proposal_tabs(proposal, active_tab):
 		{'name': OVERVIEW_TAB_NAME,'url': proposal.get_proposal_url()},
 		{'name': QUESTIONS_TAB_NAME,'url': proposal.get_question_list_url()},
 		{'name': OPINION_TAB_NAME,'url': proposal.get_petitions_url()},
+		{'name': EDIT_TAB_NAME,'url': proposal.get_open_discussions_url()},
 	]
 
 	# mark the active tab as active
@@ -100,6 +102,38 @@ def get_issue_list_tabs(active_tab):
 		{
 			'name': 'location',
 			'url': reverse('issue_list', kwargs={'order_by':'location'})
+		},
+	]
+
+	# mark the active tab as active
+	active_index = [t['name'] for t in tabs].index(active_tab)
+	tabs[active_index]['active'] = True
+
+	return tabs
+
+
+def get_petition_list_tabs(active_tab):
+
+	# This is the basic tabs definition for the proposal views
+	tabs = [
+		{
+			'name': 'interesting',
+			'url': reverse('all_petitions_list', 
+				kwargs={'order_by':'interesting'})
+		},
+		{
+			'name': 'activity',
+			'url': reverse('all_petitions_list', 
+				kwargs={'order_by':'activity'})
+		},
+		{
+			'name': 'newest',
+			'url': reverse('all_petitions_list', kwargs={'order_by':'newest'})
+		},
+		{
+			'name': 'location',
+			'url': reverse('all_petitions_list', 
+				kwargs={'order_by':'location'})
 		},
 	]
 
@@ -659,7 +693,7 @@ class EditProposalView(AbstractLoginRequiredView):
 			'headline': proposal.title,
 			'proposal': proposal,
 			'proposal_form': proposal_form,
-			'tabs': get_edit_tabs('edit', proposal),
+			'tabs': get_proposal_tabs(proposal, EDIT_TAB_NAME),
 			'active_navitem': 'create',
 			'cancel_url': cancel_url
 		}
@@ -850,7 +884,7 @@ class AllPetitionsListView(AbstractView):
 			petitions = Letter.objects.filter(parent_letter=None).order_by('-creation_date')
 
 		# build the tabs, and show the right tab as active
-		tabs = get_question_list_tabs(order_by)
+		tabs = get_petition_list_tabs(order_by)
 
 		return {
 			'letters': petitions,
@@ -994,7 +1028,7 @@ class StartDiscussionView(MakePost):
 		return static('digidemo/images/comment_icon_med.png')
 
 	def get_tabs(self):
-		return get_edit_tabs('discuss', self.target)
+		return get_proposal_tabs(self.target, EDIT_TAB_NAME)
 
 	def get_form_endpoint(self):
 		return self.target.get_start_discussion_url()
@@ -1167,7 +1201,7 @@ class DiscussionListView(AbstractView):
 			'items': self.get_discussions_to_show(),
 			'open_items': self.open_discussions,
 			'closed_items': self.closed_discussions,
-			'tabs': get_edit_tabs('discuss', proposal),
+			'tabs': get_proposal_tabs(proposal, EDIT_TAB_NAME),
 			'active_navitem': 'create',
 			'highlighted': highlighted
 		}

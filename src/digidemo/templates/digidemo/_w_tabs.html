@@ -1,19 +1,23 @@
 <!-- start tabs at the top of the proposal -->
 <div id="tabs_{{include_id}}" class="tabs">
 
-	<div class="tab_pre_space"></div>
+	<div class="outer_center">
+		<div class="inner_center">
+			<div class="tab_pre_space"></div>
 
-	{% for tab in tabs %}
+			{% for tab in tabs %}
 
-		<a href="{{ tab.url }}"
-		class="{% if tab.active %}tab_active{% else %}tab{% endif %}">
-			{{ tab.name }}
-		</a>
+				<a href="{{ tab.url }}"
+				class="{% if tab.active %}tab_active{% else %}tab{% endif %}">
+					{{ tab.name }}
+				</a>
 
-		<div class="tab_thin_space"></div>
+				<div class="tab_thin_space"></div>
 
-	{% endfor %}
-	
+			{% endfor %}
+			
+		</div>
+	</div>
 	<div id="tab_bottom"></div>
 </div>
 

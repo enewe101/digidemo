@@ -7,28 +7,67 @@
 		href="{% static "digidemo/css/tabbed.css" %}" />
 {% endblock css %}
 
-{% block middle %}
+{% block body %}
+
+	<!-- start of header -->
+	{% include "digidemo/_i_header.html" %}
+	<div class="clear"></div>
+	<!-- end of header -->
 
 	<!-- start of headline -->
 	<div id="headline">
 		{% block headline %}
-			<h1 class="headline_title">
-				{% block  headline_title %}
-					{{ headline }}
-				{% endblock headline_title %}
-			</h1>
+			<div class="outer_center">
+				<div class="inner_center">
+					<h1 class="headline_title">
+						{% block  headline_title %}
+							{{ headline }}
+						{% endblock headline_title %}
+					</h1>
+				</div>
+			</div>
 		{% endblock headline %}
 
 		<!-- tabs -->
 		{% include "digidemo/_w_tabs.html" with tabs=tabs include_id="main_tabs" %}
+		<!-- tabs -->
+
 	</div>
 	<!-- end of headline -->
 
 
-	<!-- main page content goes here -->
-	{% block maincontent %}
-	{% endblock maincontent %}
-	<!-- end of main page content -->
+	<!-- content in the middle (vertical middle) of the page -->
+	<div id="middle">
 
-	<div class="clear"></div>
-{% endblock middle %}
+		<!-- centering device for the middle of the page layout -->
+		<div class="outer_center">
+			<div class="inner_center">
+
+				<!-- main page content goes here -->
+				{% block maincontent %}
+				{% endblock maincontent %}
+				<!-- end of main page content -->
+
+				<div class="clear"></div>
+			</div>
+		</div>
+		<!-- end of centering device for the middle of the page layout -->
+
+		<div class="clear"></div>
+
+	</div>
+	<!-- end of the (vertical) middle of the page layout -->
+
+	<!-- start of page footer -->
+	<div id="footer">
+		<div class="outer_center">
+			<div class="inner_center">
+				{% block footer %}
+					footer
+				{% endblock footer %}
+			</div>
+		</div>
+	</div>
+	<!-- end of page footer -->
+
+{% endblock body %}
