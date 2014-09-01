@@ -286,8 +286,8 @@ hr {
 	font-weight: bold;
 }
 
-.Q_icon {
-	margin-bottom: -4px;
+.headline_icon {
+	vertical-align: text-bottom;
 }
 
 .marquee_heading,

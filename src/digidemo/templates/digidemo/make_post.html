@@ -2,17 +2,15 @@
 {% load staticfiles %}
 
 {% block title %}
-	{{ proposal.title }} | {{ block.super }} 
+	{{ target.title }} | {{ block.super }} 
 {% endblock title %}
 
 {% block  headline_title %}
-	<img class="Q_icon" 
-		src="{% static "digidemo/images/question_icon.png" %}" />
-	{{ proposal.get_latest.title }}
+	<img class="headline_icon"
+	src="{{ headline_icon_url }}" />
+	{{ target.title }}
 {% endblock headline_title %}
 
 {% block maincol %}
-
 		{% include "digidemo/_w_simple_form_wrapped.html" with form=form %}
-
 {% endblock maincol %}

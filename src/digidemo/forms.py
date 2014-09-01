@@ -233,6 +233,19 @@ class QuestionForm(ModelForm):
 		}
 
 
+@bound_form()
+class DiscussionForm(ModelForm):
+	class Meta:
+		model = Discussion
+		fields = ['target', 'user', 'title', 'text']
+		widgets = {
+			'target': forms.HiddenInput(),
+			'user': forms.HiddenInput(),
+			'title': forms.TextInput(),
+			'text': forms.Textarea()
+		}
+
+
 @bound_form('reply')
 class ReplyForm(ModelForm):
 	class Meta:

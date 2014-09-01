@@ -1,5 +1,5 @@
 from django.conf.urls import patterns, include, url
-from django.conf.urls.static import static
+from django.conf.urls.static import static as static_url
 from django.conf import settings
 
 from django.contrib import admin
@@ -59,10 +59,12 @@ urlpatterns = patterns('',
 		name='proposal'),
 	url(r'^questions/(?P<proposal_id>\w+)/.*$', QuestionListView().view, 
 		name='questions'),
-	url(r'^ask-question/(?P<proposal_id>\w+)/.*$', AskQuestionView().view, 
+	url(r'^ask-question/(?P<target_id>\w+)/.*$', AskQuestionView().view, 
 		name='ask_question'),
-	url(r'^editors_area/(?P<issue_id>\w+)/.*$', DiscussionListView().view, 
-		name='editors_area'),
+	url(r'^editors-area/(?P<issue_id>[0-9]+)/(?P<open_status>\w+)/.*$', 
+		DiscussionListView().view, name='editors_area'),
+	url(r'^start-discussion/(?P<target_id>[0-9]+)/.*$', 
+		StartDiscussionView().view, name='start_discussion'),
 	url(r'^petitions/(?P<proposal_id>\w+)/.*$', 
 		PetitionListView().view, name='petitions'),
 	url(r'^view-discussion/(?P<post_id>\w+)/.*$', 
@@ -84,5 +86,5 @@ urlpatterns = patterns('',
 	url(r'^ajaxLogin/$', handle_ajax_login,name = 'handle_ajax_login'),
 	url(r'^ajaxLogout/$', handle_ajax_logout,name = 'handle_ajax_logout'),
 
-) + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+) + static_url(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 

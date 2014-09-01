@@ -111,18 +111,25 @@ class Proposal(TimeStamped):
 		return url_stub + slugify(self.title)
 
 	def get_question_url(self):
-		return self.get_url('ask_question')
+		url_stub = reverse('ask_question', kwargs={'target_id': self.pk})
+		return url_stub + slugify(self.title)
 
 	def get_question_list_url(self):
 		url_stub = reverse('questions', kwargs={'proposal_id': self.pk})
 		return url_stub + slugify(self.title)
 
 	def get_open_discussions_url(self):
-		url_stub = reverse('editors_area', kwargs={'issue_id': self.pk})
+		url_stub = reverse('editors_area', 
+			kwargs={'issue_id': self.pk, 'open_status': 'open'})
 		return url_stub + slugify(self.title)
 
 	def get_closed_discussions_url(self):
-		url_stub = reverse('editors_area', kwargs={'target_id': self.pk})
+		url_stub = reverse('editors_area', 
+			kwargs={'issue_id': self.pk, 'open_status': 'closed'})
+		return url_stub + slugify(self.title)
+
+	def get_start_discussion_url(self):
+		url_stub = reverse('start_discussion', kwargs={'target_id': self.pk})
 		return url_stub + slugify(self.title)
 
 	def get_petitions_url(self):

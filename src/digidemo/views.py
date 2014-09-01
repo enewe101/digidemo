@@ -8,8 +8,9 @@ from django.core.urlresolvers import reverse
 from django.shortcuts import render, get_object_or_404, redirect
 from django.template import Context, RequestContext
 from django.template.loader import get_template
-from django.http import HttpResponse, HttpResponseRedirect
+from django.http import Http404, HttpResponse, HttpResponseRedirect
 from django.contrib.auth import authenticate, login, logout
+from django.contrib.staticfiles.templatetags.staticfiles import static
 from django.forms.formsets import formset_factory
 from django import http
 from django.views.debug import ExceptionReporter
@@ -62,7 +63,7 @@ def get_edit_tabs(active_tab, issue):
 	tabs = [
 		{
 			'name': 'discuss',
-			'url': reverse('editors_area', kwargs={'issue_id':issue.pk})
+			'url': issue.get_open_discussions_url()
 		},
 		{
 			'name': 'edit',
@@ -903,56 +904,72 @@ class AllQuestionsListView(AbstractView):
 
 
 
-class AskQuestionView(AbstractLoginRequiredView):
+class MakePost(AbstractLoginRequiredView):
 
-	template = 'digidemo/ask_question.html'
+	template = 'digidemo/make_post.html'
+	form_class = None
+	target_class = None
+	active_navitem = None
+
+	def get_headline_icon_url(self):
+		raise NotImplementedError
+
+	def get_form_endpoint(self):
+		raise NotImplementedError
+
+	def get_tags(self):
+		raise NotImplementedError
+
 
 	def get_context_data(self):
 
-		proposal = Proposal.objects.get(pk=self.kwargs['proposal_id'])
+		self.target = self.target_class.objects.get(
+			pk=self.kwargs['target_id'])
 
-		# ** Hardcoded the logged in user to be enewe101 **
-		logged_in_user = User.objects.get(pk=1)
-
-		form = QuestionForm(
-			initial={'user':logged_in_user, 'target':proposal},
-			endpoint=proposal.get_question_url()
+		form = self.form_class(
+			initial={'user':self.request.user, 'target':self.target},
+			endpoint=self.get_form_endpoint()
 		)
 
 		return 	{
-			'headline': proposal.title,
-			'proposal': proposal,
-			'tabs': get_proposal_tabs(proposal, 'questions'),
+			'headline': self.target.title,
+			'target': self.target,
+			'tabs': self.get_tabs(),
 			'form': form,
-			'active_navitem': QUESTIONS_NAV_NAME
+			'active_navitem': self.active_navitem,
+			'headline_icon_url': self.get_headline_icon_url()
 		}
 
 
 	def handle_post(self):
-		proposal = Proposal.objects.get(pk=self.kwargs['proposal_id'])
 
-		form = QuestionForm(
-			self.request.POST, endpoint=proposal.get_question_url())
+		self.target = self.target_class.objects.get(
+			pk=self.kwargs['target_id'])
+
+		form = self.form_class(
+			self.request.POST, 
+			endpoint=self.get_form_endpoint()
+		)
 
 		# If the form is valid, save question and redirect to the 
 		# question view page
 		if form.is_valid():
-			question = form.save()
-			return redirect(question.get_url())
+			post = form.save()
+			return redirect(post.get_url())
 
 		# If the form wasn't valid, we don't redirect.  
 		# build the context
-		logged_in_user = User.objects.get(pk=1)
 		context_data = {
 			'globals': get_globals(),
 			'django_vars_js': get_django_vars_JSON(request=self.request),
-			'logged_in_user': logged_in_user,
-			'headline': proposal.title,
-			'proposal': proposal,
-			'tabs': get_proposal_tabs(proposal, 'questions'),
+			'headline': self.target.title,
+			'target': self.target,
+			'tabs': self.get_tabs(),
 			'form': form,
-			'active_navitem': 'questions'
+			'active_navitem': self.active_navitem,
+			'headline_icon_url': self.get_headline_icon_url()
 		}
+
 		context = RequestContext(self.request, context_data) 
 
 		# get the template
@@ -960,6 +977,37 @@ class AskQuestionView(AbstractLoginRequiredView):
 
 		# return the reply
 		return HttpResponse(template.render(context))
+
+
+class AskQuestionView(MakePost):
+	form_class = QuestionForm
+	target_class = Proposal
+	active_navitem = QUESTIONS_NAV_NAME
+
+	def get_headline_icon_url(self):
+		return static('digidemo/images/question_icon.png')
+
+	def get_tabs(self):
+		return get_proposal_tabs(self.target, 'questions')
+
+	def get_form_endpoint(self):
+		return self.target.get_question_url()
+
+
+class StartDiscussionView(MakePost):
+	form_class = DiscussionForm
+	target_class = Proposal
+	active_navitem = ISSUE_NAV_NAME
+
+	def get_headline_icon_url(self):
+		return static('digidemo/images/comment_icon_med.png')
+
+	def get_tabs(self):
+		return get_edit_tabs('discuss', self.target)
+
+	def get_form_endpoint(self):
+		return self.target.get_start_discussion_url()
+
 
 
 class IssueOverview(AbstractView):
@@ -1089,26 +1137,57 @@ class PetitionListView(AbstractView):
 class DiscussionListView(AbstractView):
 	template = 'digidemo/discussion_list.html'
 
+	def get_discussions_to_show(self):
+		if self.kwargs['open_status'] == 'open':
+			return self.open_discussions
+
+		elif self.kwargs['open_status'] == 'closed':
+			return self.closed_discussions
+
+		else:
+			raise Http404
+
+
 	def get_context_data(self):
+
+		# Decide which button will be highlighted, and catch the case
+		# where a nonsense open_status was given in the url
+		if self.kwargs['open_status'] == 'open':
+			highlighted = 'open'
+		elif self.kwargs['open_status'] == 'closed':
+			highlighted = 'closed'
+		else:
+			raise Http404
+
 		proposal = Proposal.objects.get(pk=self.kwargs['issue_id'])
-		discussions_open = Discussion.objects.filter(
+
+		self.open_discussions = Discussion.objects.filter(
 			target=proposal,
 			is_open=True)
-		discussions_closed = Discussion.objects.filter(
+
+		self.closed_discussions = Discussion.objects.filter(
 			target=proposal,
 			is_open=False)
-		logged_in_user = User.objects.get(pk=1)
 
 		return {
 			'section_title': 'Welcome to the editor\'s area',
 			'issue': proposal,
 			'headline': proposal.title,
-			'items': discussions_open,
-			'closed_items': discussions_closed,
-			'logged_in_user': logged_in_user,
+			'items': self.get_discussions_to_show(),
+			'open_items': self.open_discussions,
+			'closed_items': self.closed_discussions,
 			'tabs': get_edit_tabs('discuss', proposal),
-			'active_navitem': 'create'
+			'active_navitem': 'create',
+			'highlighted': highlighted
 		}
+
+
+# The only differences with the closed discussion list is that we show
+# the closed discussions, and we highlight the closed discussions button
+class ClosedDiscussionListView(DiscussionListView):
+	highlighted = 'closed'
+	def get_discussions_to_show(self):
+		return self.closed_discussions
 
 
 class QuestionListView(AbstractView):
