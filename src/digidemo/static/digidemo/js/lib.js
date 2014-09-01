@@ -301,7 +301,7 @@ $(document).ready(function() {
 //////////////////////////
 
 function VoteForm(form_id, form_class, start_state, score, endpoint, 
-	is_enabled) {
+	is_enabled, tooltip) {
 
 	// do some validation
 	if(!(typeof form_id == 'string')) {
@@ -316,11 +316,11 @@ function VoteForm(form_id, form_class, start_state, score, endpoint,
 			"In vote_form, start_state must be -1, 0, or 1; found: "
 			+ start_state);
 	}
-	
+
 	// register the html form
 	this.form = $('#' + form_id);
 	this.valence = $('#' + form_id + ' input[name=valence]'); 
-	
+
 	// build the html elements for this widget
 	this.html = {};
 	this.html.upvote = $('<div id="'+form_id+'_upvote" class="upvote" />');
@@ -330,13 +330,12 @@ function VoteForm(form_id, form_class, start_state, score, endpoint,
 
 	// Add a tooltip that tells unauthenticated users they can't vote :(
 	if(!is_enabled) {
-		this.html.upvote.attr('title', 'You must login to vote!');
-		this.html.downvote.attr('title', 'You must login to vote!');
+		this.html.upvote.attr('title', tooltip);
+		this.html.downvote.attr('title', tooltip);
 	}
 
 	this.html.wrapper = $('<div id="'+form_id+'_wrapper" class="vote_form" />')
 		.append([this.html.upvote, this.html.score, this.html.downvote]);
-
 
 	// arm the upvote button.  Proxy makes the event handler use this context.
 	this.html.upvote.click( $.proxy(
@@ -446,7 +445,6 @@ function VoteForm(form_id, form_class, start_state, score, endpoint,
 						if(data.success) {
 							hooks.success(data, textStatus, jqXHR);
 						} else {
-							alert(data.toSource());
 							hooks.error(data, textStatus, jqXHR);
 						}
 					}, 

@@ -493,6 +493,9 @@ class TaggedProposalForm(object):
 class VoteForm(ModelForm):
 	def __init__(self, *args, **kwargs):
 		self.cur_score = kwargs.pop('cur_score', 0)
+		self.is_enabled = kwargs.pop('is_enabled', False)
+		self.tooltip = kwargs.pop('tooltip', 'You must login to vote!')
+
 		super(VoteForm, self).__init__(*args, **kwargs)
 
 	class Meta:

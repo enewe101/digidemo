@@ -298,9 +298,7 @@ def history(request, proposal_id):
 		request,
 		'digidemo/history.html',
 		{
-			'django_vars_js': get_django_vars_JSON(
-				{'user': utils.obj_to_dict(
-				logged_in_user, exclude=['password'])}),
+			'django_vars_js': get_django_vars_JSON(request=request),
 			'proposal': proposal,
 			'proposal_vote_form': proposal_vote_form,
 			'logged_in_user': logged_in_user,
@@ -316,17 +314,34 @@ def history(request, proposal_id):
 def get_vote_form(VoteModel, VoteForm, user, target, id_prefix=''):
 
 	existing_vote = utils.get_or_none(VoteModel, user=user.pk, target=target)
+	
+	# Only enable the form if the user is authenticated
+	is_enabled = False
+	tooltip = "You must login to vote!"
+	if user.is_authenticated():
+		is_enabled = True
+
+		# Also, don't enable the form if the user is the author of the post!
+		if (target.user == user):
+			is_enabled = False
+			tooltip = r"You can\'t vote on your own post!"
+
 
 	if existing_vote:
 		vote_form = VoteForm(
 			instance=existing_vote,
 			cur_score=target.score,
+			is_enabled=is_enabled,
+			tooltip=tooltip,
 			id_prefix=id_prefix
 		)
+
 	else:
 		vote_form = VoteForm(
 			initial={'user':user.pk, 'target':target.pk},
 			cur_score=target.score,
+			is_enabled=is_enabled,
+			tooltip=tooltip,
 			id_prefix=id_prefix
 		)
 
@@ -416,7 +431,7 @@ class QuestionSection(PostSection):
 	CommentForm = QuestionCommentForm
 	Vote = QuestionVote
 	VoteForm = QuestionVoteForm
-	
+
 class DiscussionSection(PostSection):
 	CommentForm = DiscussionCommentForm
 	Vote = DiscussionVote
@@ -573,12 +588,13 @@ class AbstractView(object):
 
 class AbstractLoginRequiredView(AbstractView):
 
+	def get_login_url(self, request):
+		return reverse('login_required', kwargs={'next':request.path})
+
 	def view(self, request, *args, **kwargs):
 
 		if not request.user.is_authenticated():
-			return redirect(
-				reverse('login_required', kwargs={'next':request.path})
-			)
+			return redirect(self.get_login_url(request))
 
 		return super(AbstractLoginRequiredView, self).view(
 			request, *args, **kwargs)
@@ -621,32 +637,24 @@ class Login(AbstractView):
 			return self.handle_get()
 
 
-def edit(request, issue_id):
+# TODO: the cancel button won't work after an invalid form post
+class EditProposalView(AbstractLoginRequiredView):
 
-	# ** Hardcoded the logged in user to be enewe101 **
-	logged_in_user = User.objects.get(pk=1)
+	template = 'digidemo/edit.html'
 
-	proposal = Proposal.objects.get(pk=issue_id)
+	def get_context_data(self):
 
-	if request.POST:
+		proposal = Proposal.objects.get(pk=self.kwargs['issue_id'])
 
-		proposal_form = TaggedProposalForm(
-			data=request.POST,
-			endpoint=proposal.get_edit_url()
-		)
+		# Work out where the cancel button should point
+		cancel_url = proposal.get_open_discussions_url()
 
-		if proposal_form.is_valid():
-			proposal_version = proposal_form.save()
-			redirect_url = proposal_version.proposal.get_proposal_url()
-			return redirect(redirect_url)
-
-	else:
 		initial = {
 			'proposal': proposal,
 			'title': proposal.title,
 			'summary': proposal.summary,
 			'text': proposal.text,
-			'user': logged_in_user,
+			'user': self.request.user,
 			'tags': ','.join([t.name for t in proposal.tags.all()]),
 			'sectors': proposal.sectors.all()
 		}
@@ -657,21 +665,50 @@ def edit(request, issue_id):
 		)
 		
 
-	return render(
-		request,
-		'digidemo/edit.html', 
-		{
-			'django_vars_js': get_django_vars_JSON(
-				{'user': utils.obj_to_dict(
-				logged_in_user, exclude=['password'])}),
+		return {
+			'headline': proposal.title,
+			'proposal': proposal,
+			'proposal_form': proposal_form,
+			'tabs': get_edit_tabs('edit', proposal),
+			'active_navitem': 'create',
+			'cancel_url': cancel_url
+		}
+
+
+	def handle_post(self):
+
+		proposal = Proposal.objects.get(pk=self.kwargs['issue_id'])
+
+		proposal_form = TaggedProposalForm(
+			data=request.POST,
+			endpoint=proposal.get_edit_url()
+		)
+
+		if proposal_form.is_valid():
+			proposal_version = proposal_form.save()
+			return redirect(proposal.get_proposal_url())
+
+		# Otherwise, make the context to dislpay the form
+
+		# Work out where the cancel button should point
+		cancel_url = proposal.get_open_discussions_url()
+
+		# Assemble the context data on top of default context
+		context_data = self.get_default_context()
+		context_data.update({
 			'proposal': proposal,
 			'headline': proposal.title,
 			'proposal_form': proposal_form,
-			'logged_in_user': logged_in_user,
 			'tabs': get_edit_tabs('edit', proposal),
-			'active_navitem': 'create'
-		}
-	)
+			'active_navitem': 'create',
+			'cancel_url': cancel_url
+		})
+
+		# Build a request context
+		context = RequestContext(self.request, context_data)
+
+		# Render the response
+		return HttpResponse(self.get_template().render(context))
 
 
 
@@ -679,7 +716,7 @@ class AddProposalView(AbstractLoginRequiredView):
 
 	template = 'digidemo/add_proposal.html'
 
-	# We need to override handl_post, because a successful form post should
+	# We need to override handle_post, because a successful form post should
 	# cause a rediret
 	def handle_post(self):
 
@@ -908,9 +945,7 @@ class AskQuestionView(AbstractLoginRequiredView):
 		logged_in_user = User.objects.get(pk=1)
 		context_data = {
 			'globals': get_globals(),
-			'django_vars_js': get_django_vars_JSON(
-				{'user': utils.obj_to_dict(
-				logged_in_user, exclude=['password'])}),
+			'django_vars_js': get_django_vars_JSON(request=self.request),
 			'logged_in_user': logged_in_user,
 			'headline': proposal.title,
 			'proposal': proposal,
@@ -946,9 +981,7 @@ class IssueOverview(AbstractView):
 			letter_sections.append(letter_section)
 
 		return {
-			'django_vars_js': get_django_vars_JSON(
-				{'user': utils.obj_to_dict(
-				logged_in_user, exclude=['password'])}),
+			'django_vars_js': get_django_vars_JSON(request=self.request),
 			'proposal': proposal,
 			'num_questions': questions.count,
 			'questions': questions[0:5],
@@ -1165,9 +1198,7 @@ def make_proposal_context(proposal):
 	})
 
 	context = {
-		'django_vars_js': get_django_vars_JSON(
-			{'user': utils.obj_to_dict(
-			logged_in_user, exclude=['password'])}),
+		'django_vars_js': get_django_vars_JSON(),
 		'proposal': proposal,
 		'letter_form': add_letter_form,
 		'letter_sections': letter_sections,
@@ -1257,7 +1288,7 @@ def mainPage(request,sort_type='most_recent'):
 		request,
 		'digidemo/proposal_index.html',
 		{
-			'django_vars_js': get_django_vars_JSON(),
+			'django_vars_js': get_django_vars_JSON(request=request),
 			'users': users,
 			'active_issues': active_issues,
 			'featured_post': featured_post,
@@ -1313,7 +1344,7 @@ def userRegistration(request):
 		'digidemo/User_registration.html',
 		{ 
 			'form' : registrationForm,
-			'django_vars_js': get_django_vars_JSON()
+			'django_vars_js': get_django_vars_JSON(request=request)
 		}
 	)
 
@@ -1336,29 +1367,28 @@ def search(request):
 
 def users(request):
 
-        listToReturn = []
+	listToReturn = []
+	
+	if request.POST:
+		print request.POST['userName'];
+		dictionary ={};
+		
+		for user in UserProfile.objects.all():
+			dictionary[user] = lev(
+				user.user.username,request.POST['userName'])
+		
+		# Use this for descending order 
+		# for w in sorted(dictionary,key=dictionary.get,reverse=True)
+		
+		for user in sorted(dictionary, key=dictionary.get):
+			listToReturn.append(user);
         
-        if request.POST:
-                print request.POST['userName'];
-                dictionary ={};
-        
-                for user in UserProfile.objects.all():
-                        dictionary[user] = lev(user.user.username,request.POST['userName'])
-
-                # Use this for descending order 
-                # for w in sorted(dictionary,key=dictionary.get,reverse=True)
-        
-                for user in sorted(dictionary, key=dictionary.get):
-                        listToReturn.append(user);
-
-                
-        
-        return render(request,'digidemo/users.html',
-                      {
-                              'django_vars_js': get_django_vars_JSON(),
-                              'usersList' : listToReturn,
-                              }
-                      )
+	return render(request,'digidemo/users.html',
+		{
+			'django_vars_js': get_django_vars_JSON(request=request),
+			'usersList' : listToReturn,
+		}
+	)
 
 # A dry view for displaying the userProfile
 # Every profile is public
@@ -1366,14 +1396,14 @@ def users(request):
 # TO - DO : Establish the distinction of making the user profile public or private
 
 def userProfile(request, userName) :
-        userLoggedIn = User.objects.get(username = userName);
-        userProfile = UserProfile.objects.get(user = userLoggedIn); 
-        return render (request, 'digidemo/userProfile.html', 
-			{
-				'django_vars_js': get_django_vars_JSON(),
-                                'user' : userProfile,
-			}
-		)
+	userLoggedIn = User.objects.get(username = userName);
+	userProfile = UserProfile.objects.get(user = userLoggedIn); 
+	return render (request, 'digidemo/userProfile.html', 
+		{
+			'django_vars_js': get_django_vars_JSON(request=request),
+			'user' : userProfile,
+		}
+	)
 
 
 # View used for editing the userProfile
@@ -1386,59 +1416,73 @@ def userProfile(request, userName) :
 
 def userProfileEdit(request,userName) :
 
-        userLoggedIn = User.objects.get(username = userName);
-        userProfileLoggedIn = UserProfile.objects.get(user = userLoggedIn);
+	userLoggedIn = User.objects.get(username = userName);
+	userProfileLoggedIn = UserProfile.objects.get(user = userLoggedIn);
 
-        if request.method == 'POST':
+	if request.method == 'POST':
 
-                userLoggedIn.first_name = request.POST['fname'];
-                userLoggedIn.last_name = request.POST['lname'];
-                userLoggedIn.email = request.POST['email'];
+		userLoggedIn.first_name = request.POST['fname'];
+		userLoggedIn.last_name = request.POST['lname'];
+		userLoggedIn.email = request.POST['email'];
 
-                userLoggedIn.save();
+		userLoggedIn.save();
 
-                userProfileLoggedIn.street = request.POST['street'];
-                userProfileLoggedIn.zip_code = request.POST['zip_code']
-                userProfileLoggedIn.country = request.POST['country']
-                userProfileLoggedIn.province = request.POST['province']
+		userProfileLoggedIn.street = request.POST['street'];
+		userProfileLoggedIn.zip_code = request.POST['zip_code']
+		userProfileLoggedIn.country = request.POST['country']
+		userProfileLoggedIn.province = request.POST['province']
 
-                if 'image' in request.FILES:
-                        uploadedImage = request.FILES['image'];
-                        uploadedImage.name = userName;
-                        userProfileLoggedIn.avatar_img = uploadedImage;               
+		if 'image' in request.FILES:
+			uploadedImage = request.FILES['image'];
+			uploadedImage.name = userName;
+			userProfileLoggedIn.avatar_img = uploadedImage;               
 
-                userProfileLoggedIn.save();
-                
-                return (userProfile(request,userName))
-                
-        else :
-                
-                try :
-                        if (request.session['user'] != userName):
-                                return(errorPage(request,"No Necessary Permissions"));
-                except :
-                        return(errorPage(request,"You have not been authorised to access the page"));
-                
-                return render (request, 'digidemo/userProfileEdit.html', 
-                                {
-                                        'django_vars_js': get_django_vars_JSON(),
-                                        'user' : userProfileLoggedIn,
-                                        'country':COUNTRIES,
-                                }
-                        )
+		userProfileLoggedIn.save();
+   	
+		return (userProfile(request,userName))
+        
+	else :
+        
+		try :
+			if (request.session['user'] != userName):
+				return(errorPage(request,"No Necessary Permissions"));
+
+		except :
+			return(errorPage(
+				request,"You have not been authorised to access the page"));
+		
+		return render(
+			request, 
+			'digidemo/userProfileEdit.html', 
+			{
+				'django_vars_js': get_django_vars_JSON(request=request),
+				'user' : userProfileLoggedIn,
+				'country':COUNTRIES,
+			}
+		)
 
 
 def errorPage(request, error):
-        return render(request,'digidemo/errorPage.html',
-                      {
-                 	'django_vars_js': get_django_vars_JSON(),
-                        'error' : error,
-                        }
-                      )
+	return render(
+		request,
+		'digidemo/errorPage.html',
+		{
+			'django_vars_js': get_django_vars_JSON(request=request),
+			'error' : error,
+		}
+	)
 
 
+#        ,------,
+#   o O <` WAT? | 
+#    ^   \______,
+#    
 def lev(a, b):
-        if not a: return len(b)
-        if not b: return len(a)
-        return min(lev(a[1:], b[1:])+(a[0] != b[0]), lev(a[1:], b)+1, lev(a, b[1:])+1)
+	if not a: return len(b)
+	if not b: return len(a)
+	return min(
+		lev(a[1:], b[1:]) + (a[0] != b[0]), 
+		lev(a[1:], b) + 1,
+		lev(a, b[1:])+1
+	)
 

@@ -21,7 +21,8 @@
 		{{ form.valence.value|default_if_none:0 }},
 		{{ form.cur_score|default_if_none:0 }},
 		'{{ form.endpoint }}',
-		django.IS_USER_AUTHENTICATED
+		{% if form.is_enabled %} true {% else %} false {% endif %},
+		'{{ form.tooltip|safe }}'
 	);
 
 	// register this widget to the page

@@ -163,6 +163,16 @@ def vote(vote_spec, request):
 
 	if vote_form.is_valid():
 
+		# make sure that the vote is not being cast by a user on her own
+		# content!
+		content_author = vote_form.cleaned_data['target'].user
+		if(request.user == content_author):
+			return {
+				'success':False, 
+				'msg': 'user cannot vote on own content',
+				'errors': ["You can't vote on your own post!"]
+			}
+
 		# record that the user has voted on this target
 		vote_form.save()
 
@@ -204,7 +214,9 @@ def vote(vote_spec, request):
 #					#
 #####################
 
-@ajax_endpoint
+UNAUTHORIZED_VOTE_MESSAGE = 'You must login to vote!'
+
+@ajax_endpoint_login_required(UNAUTHORIZED_VOTE_MESSAGE, AnswerVoteForm)
 def vote_answer(request):
 	
 	vote_spec = {
@@ -216,7 +228,7 @@ def vote_answer(request):
 
 	return vote(vote_spec, request)
 
-@ajax_endpoint
+@ajax_endpoint_login_required(UNAUTHORIZED_VOTE_MESSAGE, QuestionVoteForm)
 def vote_question(request):
 	
 	vote_spec = {
@@ -228,7 +240,7 @@ def vote_question(request):
 
 	return vote(vote_spec, request)
 
-@ajax_endpoint
+@ajax_endpoint_login_required(UNAUTHORIZED_VOTE_MESSAGE, DiscussionVoteForm)
 def vote_discussion(request):
 	
 	vote_spec = {
@@ -241,7 +253,7 @@ def vote_discussion(request):
 	return vote(vote_spec, request)
 
 
-@ajax_endpoint
+@ajax_endpoint_login_required(UNAUTHORIZED_VOTE_MESSAGE, ProposalVoteForm)
 def vote_proposal(request):
 
 	vote_spec = {
@@ -254,7 +266,7 @@ def vote_proposal(request):
 	return vote(vote_spec, request)
 
 
-@ajax_endpoint
+@ajax_endpoint_login_required(UNAUTHORIZED_VOTE_MESSAGE, LetterVoteForm)
 def vote_letter(request):
 
 	vote_spec = {
@@ -267,7 +279,7 @@ def vote_letter(request):
 	return vote(vote_spec, request)
 
 
-@ajax_endpoint
+@ajax_endpoint_login_required(UNAUTHORIZED_VOTE_MESSAGE, ReplyVoteForm)
 def vote_reply(request):
 
 	vote_spec = {
@@ -281,33 +293,30 @@ def vote_reply(request):
 
 
 
-@ajax_endpoint
+@ajax_endpoint_login_required('You must login to post a reply!', ReplyForm)
 def reply(request):
 
-	# ** Hardcoded the logged in user to be enewe101 **
-	logged_in_user = User.objects.get(pk=1)
-	 
 	reply_form = ReplyForm(request.POST)
-
 
 	if reply_form.is_valid():
 
 		# add the new (re)sent letter to the database
 		reply = reply_form.save()
 
-		# make an reply section
-		reply_section = ReplySection(reply, logged_in_user)
+		# make a reply section
+		reply_section = ReplySection(reply, request.user)
 
-		# render the reply section, and send it back for inclusion on page
+		# render the reply section, send it back to be put on the page
 		template = get_template('digidemo/_i_post_with_comments.html')
-		context = RequestContext(request,{'post_section': reply_section})
+		context = RequestContext(request, {
+			'post_section': reply_section,
+			'user': request.user})
 		reply_html = template.render(context)
-
 
 		return {
 			'success':True,
 			'html':reply_html, 
-			'errors': reply_form.json_errors()	# this will be empty
+			'errors': reply_form.json_errors()	# this should be empty
 		}
 
 	return {
@@ -328,21 +337,9 @@ def force_logout(request):
 	# we should at least log the user and ip.
 
 
-# ensures that the user in the form is the same as the logged in user
-# in the request.  Note, this does *not* also authenticate the user
-def verify_user_in_form(form, request):
-	form_user = form.cleaned_data['user']
-	if(form_user != request.user):
-		force_logout(request) # this is not implemented yet!
-		return {
-			'success':False,
-			'errors':{'__all__':
-				[form_user.username + ' : ' + request.user.username]}
-		}
 
 
 @ajax_endpoint_login_required('Please login to post your answer!', AnswerForm)
-# @ajax_endpoint
 def answer(request):
 
 	answer_form = AnswerForm(request.POST)
@@ -426,32 +423,32 @@ def get_resender_avatar(request):
 	return {'success': True, 'html': reply_html}
 
 
-@ajax_endpoint
-def get_factor_form(request):
-
-	# unpack expected data
-	valence = request.POST['valence']
-	include_id = request.POST['include_id']
-
-	# make the factor form
-	prefix = valence + '-' + include_id 
-	valence_val = 1 if valence=='pos' else -1
-	factor_form = FactorVersionForm(
-		initial={'valence':valence_val},
-		prefix=prefix
-	)
-
-	# get the template and assemble the context, and render the html
-	template = get_template('digidemo/_w_factor_form.html')
-	context = Context({
-		'valence':valence,
-		'include_id':include_id,
-		'form':factor_form
-	})
-	reply_html = template.render(context)
-
-	# send back a json reply
-	return {'success':True, 'html': reply_html}
+#@ajax_endpoint
+#def get_factor_form(request):
+#
+#	# unpack expected data
+#	valence = request.POST['valence']
+#	include_id = request.POST['include_id']
+#
+#	# make the factor form
+#	prefix = valence + '-' + include_id 
+#	valence_val = 1 if valence=='pos' else -1
+#	factor_form = FactorVersionForm(
+#		initial={'valence':valence_val},
+#		prefix=prefix
+#	)
+#
+#	# get the template and assemble the context, and render the html
+#	template = get_template('digidemo/_w_factor_form.html')
+#	context = Context({
+#		'valence':valence,
+#		'include_id':include_id,
+#		'form':factor_form
+#	})
+#	reply_html = template.render(context)
+#
+#	# send back a json reply
+#	return {'success':True, 'html': reply_html}
 
 
 @ajax_endpoint
