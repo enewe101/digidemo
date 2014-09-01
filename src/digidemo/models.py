@@ -132,6 +132,10 @@ class Proposal(TimeStamped):
 		url_stub = reverse('start_discussion', kwargs={'target_id': self.pk})
 		return url_stub + slugify(self.title)
 
+	def get_start_petition_url(self):
+		url_stub = reverse('start_petition', kwargs={'target_id': self.pk})
+		return url_stub + slugify(self.title)
+
 	def get_petitions_url(self):
 		url_stub = reverse('petitions', kwargs={'proposal_id': self.pk})
 		return url_stub + slugify(self.title)
@@ -264,13 +268,13 @@ class Position(TimeStamped):
 class Letter(TimeStamped):
 	parent_letter = models.ForeignKey('self', blank=True, null=True, 
 		related_name='resent_letters')
-	proposal = models.ForeignKey(Proposal)
+	target = models.ForeignKey(Proposal)
 	valence = models.SmallIntegerField(choices=VALENCE_CHOICES)
 	user = models.ForeignKey(User)
-	body = models.TextField()
-	recipients = models.ManyToManyField(Position, related_name='letters')
 	score = models.SmallIntegerField(default=1)
 	title = models.CharField(max_length=TITLE_LENGTH)
+	recipients = models.ManyToManyField(Position, related_name='letters')
+	text = models.TextField()
 
 	def __unicode__(self):
 		return "%s-%s" %(
@@ -280,6 +284,11 @@ class Letter(TimeStamped):
 	def get_url(self):
 		url = reverse('view_petition', kwargs={'petition_id': self.pk})
 		return url + slugify(self.title)
+
+	def increment_score(self):
+		self.score += 1
+		self.save()
+
 
 class Discussion(ScoredPost):
 	target = models.ForeignKey(Proposal, null=True)

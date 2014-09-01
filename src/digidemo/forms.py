@@ -294,32 +294,34 @@ class ReplyCommentForm(CommentForm):
 	class Meta(CommentForm.Meta):
 		model= ReplyComment
 
-@bound_form('send_letter')
-class LetterForm(ModelForm):
+class LetterForm(AugmentedFormMixin, ModelForm):
+
+	endpoint = 'send_letter'
 
 	recipients = forms.ModelMultipleChoiceField(
+		widget=forms.CheckboxSelectMultiple(), 
 		queryset=Position.objects.all())
 		
-
 	class Meta:
 		model = Letter
 		fields = [
-			'parent_letter', 'proposal', 'user', 'valence', 'recipients', 
-			'body'
+			'parent_letter', 'target', 'user', 'valence', 'title', 
+			'recipients', 'text'
 		]
 		widgets = {
 			'parent_letter': forms.HiddenInput(),
-			'proposal': forms.HiddenInput(),
+			'target': forms.HiddenInput(),
 			'user': forms.HiddenInput(),
-			'body': forms.Textarea(attrs={'class':'letter_body_textarea'})
+			'title': forms.TextInput(),
+			'recipients': forms.CheckboxSelectMultiple(),
+			'text': forms.Textarea(attrs={'class':'letter_body_textarea'})
 		}
 
 
 # Note: don't decorate -- inherits from LetterForm which was already decorated
 class ResendLetterForm(LetterForm):
 
-	recipients = forms.ModelMultipleChoiceField(
-		queryset=Position.objects.all())
+	endpoint = 'resend_letter'
 
 	def clean(self):
 
@@ -337,10 +339,12 @@ class ResendLetterForm(LetterForm):
 		widgets = {
 			'valence': forms.HiddenInput(),
 			'parent_letter': forms.HiddenInput(),
-			'proposal': forms.HiddenInput(),
+			'target': forms.HiddenInput(),
 			'user': forms.HiddenInput(),
 			'sender': forms.HiddenInput(),
-			'body': forms.Textarea(attrs={'class':'letter_body_textarea'})
+			'title': forms.TextInput(),
+			'recipients': forms.CheckboxSelectMultiple(),
+			'text': forms.Textarea(attrs={'class':'letter_body_textarea'})
 		}
 	
 

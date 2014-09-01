@@ -45,29 +45,37 @@
 
 		<div class="physical_letter">
 
-			<h2 class="petition_title">
-				letter title
-			</h2>
+			<div id="_w_hidden_content_1">
+				<h2 class="petition_title">
+					{{ letter_section.post.title }}
+				</h2>
 
-			<div class="recipients">
-				Attention:
-				{% for recipient in letter_section.post.recipients.all %}
-				<br \><span class="recipient_title">
-					{{ recipient.name }}</span>,
-				<span class="recipient_name">
-					{{ recipient.person.fname|capfirst }}
-					{{ recipient.person.lname|capfirst }}
-				</span>
-				{% endfor %}
+				<div class="recipients">
+					Attention:
+					{% for recipient in letter_section.post.recipients.all %}
+					<br \><span class="recipient_title">
+						{{ recipient.name }}</span>,
+					<span class="recipient_name">
+						{{ recipient.person.fname|capfirst }}
+						{{ recipient.person.lname|capfirst }}
+					</span>
+					{% endfor %}
+				</div>
+
+				<div class="clear"></div>
+
+				<div class="letter_body">
+					{{ letter_section.post.text|truncatewords:100 }}
+					{% if letter_section.post.text|wordcount > 100 %}
+						<a href="#">view full letter</a>
+					{% endif %}
+				</div>
+
 			</div>
 
-			<div class="clear"></div>
-
-			<div class="letter_body">
-				{{ letter_section.post.body|truncatewords:100 }}
-				{% if letter_section.post.body|wordcount > 100 %}
-					<a href="#">view full letter</a>
-				{% endif %}
+			<div id="_w_toggle_hidden_content_{{letter_section.id_prefix}}" 
+				class="resend_letter_form_area">
+				{% include "digidemo/_w_ajax_form.html" with form=letter_section.resend_form %}
 			</div>
 
 			<!-- start the list of senders -->
@@ -89,7 +97,7 @@
 				</div>
 
 				<div class="sign_petition">
-					<a><img 
+					<a id="_w_toggle_hidden_{{ letter_section.id_prefix }}"><img 
 						src="{% static "digidemo/images/feather_sign.png" %}" 
 						/> sign the petition
 					</a>
@@ -102,10 +110,6 @@
 
 			<div class="clear"></div>
 
-			<div id="_w_toggle_hidden_content_{{letter_section.id_prefix}}" 
-				class="resend_letter_form_area">
-				{% include "digidemo/_w_ajax_form.html" with form=letter_section.resend_form %}
-			</div>
 
 			<div class="clear"></div>
 
@@ -152,8 +156,16 @@
 	// Create a toggler to show / hide the resend letter form
 	//
 	var toggle_div = $('#_w_toggle_hidden_{{ letter_section.id_prefix }}');
-	var content = $('#_w_toggle_hidden_content_{{ letter_section.id_prefix }}');
-	var toggler = new ToggleHidden(toggle_div, content);
+	var content_1 = $('#_w_hidden_content_1');
+	var content_2 = $('#_w_toggle_hidden_content_{{ letter_section.id_prefix }}');
+	var message_1 = (
+		'<img src="{% static "digidemo/images/feather_sign.png" %}" />'
+		+ ' sign the petition'
+	);
+	var message_2 = 'x Cancel';
+
+	var toggler = new ToggleHidden(toggle_div, content_1, content_2, 
+		message_1, message_2);
 	register_widget('toggle_hidden_{{ letter_section.id_prefix }}', 
 		toggler, 'toggle_hidden');
 

@@ -19,11 +19,11 @@
 			</h1>
 		{% endblock headline %}
 
+		<!-- tabs -->
+		{% include "digidemo/_w_tabs.html" with tabs=tabs include_id="main_tabs" %}
 	</div>
 	<!-- end of headline -->
 
-	<!-- tabs -->
-	{% include "digidemo/_w_tabs.html" with tabs=tabs include_id="main_tabs" %}
 
 	<!-- main page content goes here -->
 	{% block maincontent %}

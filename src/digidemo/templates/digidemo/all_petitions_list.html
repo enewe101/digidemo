@@ -19,12 +19,12 @@
 {% block maincol %}
 	<!-- start the section title and section-specific buttons -->
 	<div class="section_header">
-		<h2 class="subtitle float_left">{{letters.count}} Question{{letters.count|pluralize}}</h2>
+		<h2 class="subtitle float_left">{{letters.count}} Petition{{letters.count|pluralize}}</h2>
 
 
 		<div class="section_buttons_right">
-			<a class="go_button_inline" href="#">
-				ask a question
+			<a class="go_button_inline" title="not implemented" href="#">
+				Start a petition
 			</a>
 		</div>
 
@@ -65,7 +65,7 @@
 
 
 						<div class="letter_body_abbreviated">
-							{{ letter.body|truncatewords:100 }}
+							{{ letter.text|truncatewords:100 }}
 							<br />
 							<a href="{{letter.get_url}}">
 								go to petition...
@@ -128,7 +128,8 @@
 			Petition admonition goes here...
 		</p>
 		<p>
-			Make sure to read the <a href="#">writing a good petition</a> 
+			Make sure to read the 
+			<a title="not implemented" href="#">writing a good petition</a> 
 			guideline before contributing :)
 		</p>
 	</div>

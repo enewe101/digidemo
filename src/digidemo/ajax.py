@@ -391,14 +391,18 @@ def send_letter(request):
 	}
 
 
-@ajax_endpoint
+@ajax_endpoint_login_required(
+'You must log in to sign a petition!', ResendLetterForm)
 def resend_letter(request):
 	letter_form = ResendLetterForm(request.POST)
 
 	if letter_form.is_valid():
 
 		# add the new (re)sent letter to the database
-		letter_form.save()
+		letter = letter_form.save()
+
+		# increment the score of the parent letter
+		letter.parent_letter.increment_score()
 		return {'success':True}
 
 	return {

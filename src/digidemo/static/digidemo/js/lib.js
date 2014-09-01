@@ -655,27 +655,76 @@ function get_flourish() {
 //  					//
 //////////////////////////
 
-function ToggleHidden(toggle_div, content) {
+function ToggleHidden(toggle_div, content_1, content_2, message_1, message_2) {
 
-	// determine initial state of the content: is it already displayed?
-	var state = 'hidden';
-	if(content.css('display') == 'block') {
-		state = 'shown';
+	// content_2, message_2, and message_1 are optional.  Coerce to null if 
+	// they weren't provided
+	if(typeof content_2 == 'undefined') {
+		content_2 = null;
+	} 
+	if(typeof message_1 == 'undefined') {
+		message_1 = null;
+	}
+	if(typeof message_2 == 'undefined') {
+		message_2 = null;
+	}
+
+	// we need to provide two messages for the toggle_text to get changed
+	var has_messages = (message_2 != null);
+
+	// Private function to hide content_2. Prevents us having to keep checking
+	// if content 2 exists
+	var hide_2 = function() {
+		if(content_2 != null) {
+			content_2.css('display', 'none')
+		}
+	};
+
+	// Private function to show content_2. Prevents us having to keep checking
+	// if content 2 exists
+	var show_2 = function() {
+		if(content_2 != null) {
+			content_2.css('display', 'block')
+		}
+	};
+
+	// INITIALIZE STATE
+	//
+	// determine whether content_1 is already displayed.  
+	// This determines the starting state of the toggler.
+	// Note: if content_1 is hidden, we force the display of content_2,
+	// and if content_1 is shown, we force the display of content_2
+	var state = null;
+	if(content_1.css('display') == 'block') {
+		state = 'showing_1';
+		hide_2();
+
+	} else {
+		state = 'hiding_1';
+		show_2();
 	}
 
 	// create hooks support
 	var hooks = make_page_hooks(this, ['on_show', 'on_hide']);
 
-	// public
+	// note, this is public
 	this.toggle = function() {
-		if(state == 'shown') {
-			content.css('display', 'none');
-			state = 'hidden';
+		if(state == 'showing_1') {
+			content_1.css('display', 'none');
+			show_2();
+			if(has_messages) {
+				toggle_div.html(message_2);
+			}
+			state = 'hiding_1';
 			hooks.on_hide();
 
-		} else if(state == 'hidden') {
-			content.css('display', 'block');
-			state = 'shown';
+		} else if(state == 'hiding_1') {
+			content_1.css('display', 'block');
+			hide_2();
+			if(has_messages) {
+				toggle_div.html(message_1);
+			}
+			state = 'showing_1';
 			hooks.on_show();
 
 		} else {

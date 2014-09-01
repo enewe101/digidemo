@@ -17,7 +17,7 @@
 
 {% block  headline_title %}
 	<img src="{% static "digidemo/images/compas_icon.png" %}" />
-	{{ proposal.get_latest.title }}
+	{{ proposal.title }}
 
 	<div id="follow">
 		{% include "digidemo/_w_follow_post.html" %}
@@ -30,7 +30,7 @@
 <div id="previews">
 	<div>
 		<a href="{% url "editors_area" issue_id=proposal.id open_status="open" %}" class="go_button">
-			edit
+			go to editing room
 		</a>
 	</div>
 
@@ -75,7 +75,7 @@
 
 
 						<span class="overview_letter_body">
-							{{ letter_section.post.body|truncatechars:100 }}
+							{{ letter_section.post.text|truncatechars:100 }}
 						</span>
 						<span class="username">~{{user}}</span>
 

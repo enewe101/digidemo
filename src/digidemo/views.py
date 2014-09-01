@@ -180,18 +180,6 @@ def get_django_vars(request, additional_vars={}):
 
 
 
-def proposal(request, proposal_id):
-	proposal = Proposal.objects.get(pk=proposal_id)
-	context = make_proposal_context(proposal)
-	context['tabs'] = get_proposal_tabs(proposal, OVERVIEW_TAB_NAME)
-
-	return render(
-		request,
-		'digidemo/proposal.html',
-		context
-	)
-
-
 def flatten(list_2d):
 	return [item for sublist in list_2d for item in sublist]
 
@@ -456,7 +444,7 @@ class LetterSection(PostSection):
 
 	def __init__(self, 
 			post, 
-			logged_in_user, 
+			user, 
 			id_prefix=None, 
 			*args, 
 			**kwargs
@@ -465,7 +453,7 @@ class LetterSection(PostSection):
 		# In addition to all of the equipment for a standard post...
 		super(LetterSection, self).__init__(
 			post,
-			logged_in_user,
+			user,
 			*args,
 			id_prefix=id_prefix,
 			**kwargs
@@ -483,11 +471,12 @@ class LetterSection(PostSection):
 		self.resend_form = ResendLetterForm(
 			initial={
 				'parent_letter': self.post,
-				'proposal': self.post.proposal,
-				'body': self.post.body,
+				'target': self.post.target,
+				'user': user,
+				'valence': self.post.valence,
+				'title': self.post.title,
 				'recipients': self.post.recipients.all(),
-				'user': logged_in_user,
-				'valence': self.post.valence
+				'text': self.post.text
 			}, 
 			id_prefix=self.id_prefix
 		)
@@ -917,7 +906,7 @@ class MakePost(AbstractLoginRequiredView):
 	def get_form_endpoint(self):
 		raise NotImplementedError
 
-	def get_tags(self):
+	def get_tabs(self):
 		raise NotImplementedError
 
 
@@ -942,6 +931,8 @@ class MakePost(AbstractLoginRequiredView):
 
 
 	def handle_post(self):
+
+		print 'handling'
 
 		self.target = self.target_class.objects.get(
 			pk=self.kwargs['target_id'])
@@ -1009,6 +1000,21 @@ class StartDiscussionView(MakePost):
 		return self.target.get_start_discussion_url()
 
 
+class StartPetitionView(MakePost):
+	form_class = LetterForm
+	target_class = Proposal
+	active_navitem = OPINION_NAV_NAME
+
+	def get_headline_icon_url(self):
+		return static('digidemo/images/petition_icon.png')
+
+	def get_tabs(self):
+		return get_proposal_tabs(self.target, OPINION_TAB_NAME)
+
+	def get_form_endpoint(self):
+		return self.target.get_start_petition_url()
+
+
 
 class IssueOverview(AbstractView):
 	template = 'digidemo/overview.html'
@@ -1017,24 +1023,19 @@ class IssueOverview(AbstractView):
 		proposal = Proposal.objects.get(pk=self.kwargs['proposal_id'])
 		questions = Question.objects.filter(target=proposal)
 
-		# ** Hardcoded the logged in user to be enewe101 **
-		logged_in_user = User.objects.get(pk=1)
-
 		# Get all of the letters which are associated with this proposal
 		# and which are 'original letters'
 		letter_sections = []
-		letters = Letter.objects.filter(parent_letter=None, proposal=proposal)
+		letters = Letter.objects.filter(parent_letter=None, target=proposal)
 		for letter in letters:
-			letter_section = LetterSection(letter, logged_in_user)
+			letter_section = LetterSection(letter, self.request.user)
 			letter_sections.append(letter_section)
 
 		return {
-			'django_vars_js': get_django_vars_JSON(request=self.request),
 			'proposal': proposal,
 			'num_questions': questions.count,
 			'questions': questions[0:5],
 			'letter_sections': letter_sections,
-			'user': logged_in_user,
 			'tabs': get_proposal_tabs(proposal, OVERVIEW_TAB_NAME),
 			'active_navitem': ISSUE_NAV_NAME
 		}
@@ -1102,32 +1103,22 @@ class PetitionListView(AbstractView):
 
 	def get_context_data(self):
 
-		# hack! remove this when we start using proper authentication
-		logged_in_user = User.objects.get(pk=1)
-
 		# get the current proposal
 		proposal = Proposal.objects.get(pk=self.kwargs['proposal_id'])
 
 		# Get all of the letters which are associated with this proposal
 		# and which are 'original letters'
 		letter_sections = []
-		letters = Letter.objects.filter(parent_letter=None, proposal=proposal)
+		letters = Letter.objects.filter(parent_letter=None, target=proposal)
 		for letter in letters:
-			letter_section = LetterSection(letter, logged_in_user)
+			letter_section = LetterSection(letter, self.request.user)
 			letter_sections.append(letter_section)
-
-		add_letter_form = LetterForm(initial={
-			'proposal': proposal,
-			'user': logged_in_user,
-		})
 
 		return {
 			'section_title': '%d Petitions' % letters.count(),
 			'proposal': proposal,
-			'letter_form': add_letter_form,
 			'letter_sections': letter_sections,
 			'headline': proposal.title,
-			'logged_in_user': logged_in_user,
 			'tabs': get_proposal_tabs(proposal, OPINION_TAB_NAME),
 			'active_navitem': OPINION_NAV_NAME
 		}
@@ -1214,16 +1205,14 @@ class PetitionView(AbstractView):
 	template = 'digidemo/view_petition.html'
 
 	def get_context_data(self):
-		logged_in_user = User.objects.get(pk=1)
 		letter = Letter.objects.get(pk=self.kwargs['petition_id'])
-		proposal = letter.proposal
-		letter_section = LetterSection(letter, logged_in_user)
+		proposal = letter.target
+		letter_section = LetterSection(letter, self.request.user)
 
 		return {
-			'headline': 'proposal.title',
+			'headline': proposal.title,
 			'proposal': proposal,
 			'letter_section': letter_section,
-			'logged_in_user': logged_in_user,
 			'tabs': get_proposal_tabs(proposal, OPINION_TAB_NAME),
 			'active_navitem': OPINION_TAB_NAME
 		}
@@ -1251,104 +1240,64 @@ class DiscussionAreaView(PostAreaView):
 	active_navitem = ISSUE_NAV_NAME
 
 
-def make_proposal_context(proposal):
-
-	proposal_version = proposal.get_latest()
-
-	# ** Hardcoded the logged in user to be enewe101 **
-	logged_in_user = User.objects.get(pk=1)
-
-	proposal_vote_form = get_vote_form(
-		ProposalVote, ProposalVoteForm, logged_in_user, proposal,
-		id_prefix='p'
-	)
-
-	# Get all of the letters which are associated with this proposal
-	# and which are 'original letters'
-	letter_sections = []
-	letters = Letter.objects.filter(parent_letter=None, proposal=proposal)
-	for letter in letters:
-		letter_section = LetterSection(letter, logged_in_user)
-		letter_sections.append(letter_section)
-
-	add_letter_form = LetterForm(initial={
-		'proposal': proposal,
-		'user': logged_in_user,
-	})
-
-	context = {
-		'django_vars_js': get_django_vars_JSON(),
-		'proposal': proposal,
-		'letter_form': add_letter_form,
-		'letter_sections': letter_sections,
-		'logged_in_user': logged_in_user,
-		'proposal_vote_form': proposal_vote_form,
-		'tabs': get_proposal_tabs(proposal, 'overview'),
-		'active_navitem': 'issues'
-	}
-
-	return context
-
-
 def test(request):
 	return render(request, 'digidemo/test.html', {})
 
 
-def _login(request, provider_name):
+#def login(request, provider_name):
+#
+#	authomatic = Authomatic(CONFIG, 'a super secret random string')
+#	response = HttpResponse();
+#	result = authomatic.login(DjangoAdapter(request, response), provider_name)
+#
+#	if result:
+#		# If there is result, the login procedure is over and we can write to 
+#		# response.
+#		response.write('<a href="..">Home</a>')
+#		if not (result.user.name and result.user.id):
+#		   result.user.update()
+#			
+#		# Welcome the user.
+#		response.write(u'<h1>Hi {0}</h1>'.format(result.user.name))
+#		response.write(u'<h2>Your id is: {0}</h2>'.format(result.user.id))
+#		response.write(
+#			u'<h2>Your email is: {0}</h2>'.format(result.user.email))
+#		url = 'https://graph.facebook.com/{0}/picture?type=large'
+#		url = url.format(result.user.id)
+#		response.write(url)
+#		access_response = result.provider.access(url)
+#		response.write(access_response.data.keys())
+#		urllib.urlretrieve(url, "../"+result.user.name+".jpg")
+#
+#		logged_in_user = User.objects.filter(fname=result.user.name)
+#		count = len(logged_in_user);
+#		if count == 0:
+#			logged_in_user = None;
+#			logged_in_user = User(
+#				email='test@test.com',
+#				email_validated=1,
+#				avatar_img=result.user.name+'.jpg',
+#				avatar_name=result.user.name,
+#				fname=result.user.name,
+#				lname='test',
+#				rep=10,
+#				zip_code='h2x1x3',
+#				country='india',
+#				province='kar',
+#				street='1'
+#			)
+#			logged_in_user.save();
+#
+#		request.session['member_id'] = result.user.name;
+#		response.write(
+#			'Login with <a href="../proposals/keystone_xl">check</a>.<br />')
+#
+#	return response;
 
-	authomatic = Authomatic(CONFIG, 'a super secret random string')
-	response = HttpResponse();
-	result = authomatic.login(DjangoAdapter(request, response), provider_name)
+class AllPetitionListView(object):
+	def view(self, request):
+		return mainPage(request)
 
-	if result:
-		# If there is result, the login procedure is over and we can write to 
-		# response.
-		response.write('<a href="..">Home</a>')
-		if not (result.user.name and result.user.id):
-		   result.user.update()
-			
-		# Welcome the user.
-		response.write(u'<h1>Hi {0}</h1>'.format(result.user.name))
-		response.write(u'<h2>Your id is: {0}</h2>'.format(result.user.id))
-		response.write(
-			u'<h2>Your email is: {0}</h2>'.format(result.user.email))
-		url = 'https://graph.facebook.com/{0}/picture?type=large'
-		url = url.format(result.user.id)
-		response.write(url)
-		access_response = result.provider.access(url)
-		response.write(access_response.data.keys())
-		urllib.urlretrieve(url, "../"+result.user.name+".jpg")
-
-		logged_in_user = User.objects.filter(fname=result.user.name)
-		count = len(logged_in_user);
-		if count == 0:
-			logged_in_user = None;
-			logged_in_user = User(
-				email='test@test.com',
-				email_validated=1,
-				avatar_img=result.user.name+'.jpg',
-				avatar_name=result.user.name,
-				fname=result.user.name,
-				lname='test',
-				rep=10,
-				zip_code='h2x1x3',
-				country='india',
-				province='kar',
-				street='1'
-			)
-			logged_in_user.save();
-
-		request.session['member_id'] = result.user.name;
-		response.write(
-			'Login with <a href="../proposals/keystone_xl">check</a>.<br />')
-
-	return response;
-
-def petition_list(request):
-	return mainPage(request)
-
-def issue_list(request):
-	return mainPage(request)
 
 def mainPage(request,sort_type='most_recent'):
 

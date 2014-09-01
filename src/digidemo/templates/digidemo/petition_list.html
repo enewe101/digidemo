@@ -18,7 +18,12 @@
 
 {% block  headline_title %}
 	<img src="{% static "digidemo/images/petition_icon.png" %}" />
-	{{ proposal.get_latest.title }}
+	{{ proposal.title }}
+
+	<div id="follow">
+		{% include "digidemo/_w_follow_post.html" %}
+	</div>
+
 {% endblock headline_title %}
 
 {% block maincol %}
@@ -63,7 +68,7 @@
 
 
 					<div class="letter_body_abbreviated">
-						{{ letter_section.post.body|truncatewords:100 }}
+						{{ letter_section.post.text|truncatewords:100 }}
 						<br />
 						<a href="{{letter_section.post.get_url}}">
 							go to petition...
@@ -116,15 +121,6 @@
 			<div class="flourish"></div>
 		</div>
 
-		<!-- start form for adding new letters -->
-		<h1>Your Letter</h1>
-		<div id="add_letter_div">
-
-		{% include "digidemo/_w_ajax_form.html" with form=letter_form include_id="add" %}
-
-		</div>
-		<!-- end form for adding new letters -->
-
 	</div>
 	<!-- end of letters area -->
 {% endblock maincol %}
@@ -132,48 +128,9 @@
 {% block rightcol %}
 
 	<div class="section">
-		{% include "digidemo/_w_follow_post.html" %}
+		<a class="go_button" href="{{ proposal.get_start_petition_url }}">
+			start a petition
+		</a>
 	</div>
-
-	<!-- start of proposal sectors -->
-	<div class="section tags">
-		Sectors
-		<ul>
-			<li>
-				<div class="economy_sector_tag">
-					Economy
-				</div>
-			</li>
-			<li>
-				<div class="environment_sector_tag">
-					Environment
-				</div>
-			</li>
-		</ul>
-		<div class="clear"></div>
-	</div>
-	<!-- end of proposal sectors -->
-
-	<!-- start of tags -->
-	<div class="section tags">
-		Tags
-		<ul>
-			<li>
-				<div class="tag">
-					Tar-sands
-				</div>
-			</li>
-			<li>
-				<div class="tag">
-					CO2
-				</div>
-				<div class="tag">
-					Fossil-fuel
-				</div>
-			</li>
-		</ul>
-		<div class="clear"></div>
-	</div>
-	<!-- end of tags -->
 
 {% endblock rightcol %}
