@@ -7,7 +7,7 @@ from django.template.loader import get_template
 from digidemo.models import *
 from digidemo.forms import *
 from digidemo.settings import DEBUG
-from digidemo.utils import get_or_none
+from digidemo.utils import get_or_none, force_logout
 from digidemo.views import get_vote_form, AnswerSection, ReplySection
 from django.utils import timezone
 from django.views.decorators.csrf import csrf_exempt
@@ -325,16 +325,6 @@ def reply(request):
 		'errors': reply_form.json_errors()
 	}
 
-
-# TODO: implement logging as described below
-def force_logout(request):
-
-	# logout the user
-	logout(request)
-
-	# log a record of this event.  This shouldn't be able to happen, and it
-	# probably indicates an attempt to spoof a POST (csrf attack).
-	# we should at least log the user and ip.
 
 
 

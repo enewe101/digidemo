@@ -1,3 +1,5 @@
+# TODO: remove classmethod decorators from SeleniumTestCase
+
 import time
 import copy
 import unittest
@@ -15,6 +17,8 @@ from selenium.webdriver.support.select import Select
 from selenium.webdriver.common.by import By
 import filecmp
 import os
+
+REG_USERNAME = 'regularuser'
 
 def pyWait(predicate, timeout=3, period=0.15):
 
@@ -49,6 +53,8 @@ def createUser():
 	return user
 
 
+
+
 def text_is_similar(text_1, text_2):
 	'''
 		checks for equality in strings, ignoring any white space.
@@ -60,6 +66,7 @@ def text_is_similar(text_1, text_2):
 
 
 
+
 class SeleniumTestCase(LiveServerTestCase):
 	'''
 		This is an abstract test class.  It provides derived classes with
@@ -68,6 +75,8 @@ class SeleniumTestCase(LiveServerTestCase):
 		inheret from this class.  See the wiki for an explanation of 
 		how to use WebDriver and WebDriverWait
 	'''
+
+	LIVE_SERVER_URL = 'localhost:8081'
 
 	@classmethod
 	def setUpClass(cls):
@@ -107,6 +116,11 @@ class SeleniumTestCase(LiveServerTestCase):
 		else: return True
 
 
+	# Check if the elements identified by their id's contain the given text
+	# By default this matches the actual html found in the element, but it
+	# can match based on the rendered text too (what you'd be able to 
+	# copy/paste).
+	#
 	def elements_contain(self, contents_spec, use_html=True):
 		'''
 			returns a boolean value indicating whether each of the indicated 
@@ -124,51 +138,119 @@ class SeleniumTestCase(LiveServerTestCase):
 
 		return valid
 
-	def click(self, element_id):
-		self.driver.find_element('id', element_id).click()
+
+	# Click the element. Just a convinience method. 
+	#
+	@classmethod
+	def click(cls, element_id):
+		cls.driver.find_element('id', element_id).click()
 
 
-class QuestionRenderTest(SeleniumTestCase):
-	'''
-		tests that the test question in the database renders correctly
-	'''
+	# fill out the text (form) input with the string
+	# 
+	@classmethod
+	def put(cls, text_input_id, string):
+		cls.driver.find_element('id', text_input_id).send_keys(string)
 
-	def test_render(self):
-		question = Question.objects.get(pk=1)
-		self.driver.get(self.live_server_url + question.get_url())
 
-		# Make sure the voting widget showed up properly
-		self.driver.find_element_by_id('QuestionVoteForm_q_upvote')
-		self.driver.find_element_by_id('QuestionVoteForm_q_score')
-		self.driver.find_element_by_id('QuestionVoteForm_q_downvote')
+	# Fill several text inputs with the provided text.  
+	# (Uses html ids to find the inputs.)
+	# 
+	@classmethod
+	def puts(cls, put_spec):
+		'''
+			Put spec is a dictionary -- keys are the html ids for text inputs
+			and the values are the text to place in the inputs
+			e.g. 
+				{'some_input_id': 'some_text', 'another_input': 'more_text'}
+		'''
+		for text_input_id, text in put_spec.items():
+			cls.put(text_input_id, text)
 
-		# make sure the question contents displayed correctly
-		title = self.driver.find_element_by_class_name('post_title')
-		self.assertEqual(title.text, question.title)
-		body = self.driver.find_element_by_class_name('post_body')
-		self.assertEqual(body.text, question.text)
 
-		# make sure that all the answers showed up
-		answers = Answer.objects.filter(target=question)
-		answer_divs = self.driver.find_elements_by_class_name('subpost_body')
-		self.assertEqual(len(answer_divs), answers.count())
-		space_match = re.compile(r'\s')
-		for i in range(len(answer_divs)):
-			a, a_div = answers[i], answer_divs[i]
-			self.assertEqual(
-				space_match.sub('', a_div.text), 
-				space_match.sub('', a.text)
-			)
-			self.driver.find_element('id', 'AnswerVoteForm_%d_upvote'%(i+1))
-			self.driver.find_element('id', 'AnswerVoteForm_%d_score'%(i+1))
-			self.driver.find_element('id', 'AnswerVoteForm_%d_downvote'%(i+1))
+	# login as a regular user
+	# 
+	@classmethod
+	def login_regularuser(cls):
+		cls.login('regularuser', 'regularuser')
+
+
+	# login as a super user (actually same as regular user right now)
+	#
+	@classmethod
+	def login_superuser(cls):
+		cls.login('superuser', 'superuser')
+
+
+	# This should only be used to access the live server url inside class
+	# methods.  Otherwise, just use self.live_server_url itself
+	# 
+	@classmethod
+	def get_live_server_url(cls):
+		return cls.LIVE_SERVER_URL
+
+
+	# Go to login page and login using provided credentials
+	# 
+	@classmethod
+	def login(cls, username, password):
+
+
+		# Go to the login page
+		LOGIN_URL = '/login_required/'
+		cls.driver.get(cls.get_live_server_url() + LOGIN_URL)
+
+		# login with the credentials
+		cls.puts({
+			'LoginForm__username': username,
+			'LoginForm__password': password
+		})
+
+		cls.click('LoginForm__submit')
 		
 
 
+## Useful if you have a few tests one class that need to login. 
+## it logs in the user once when the test class is first made.
+## Make sure to put it *after* SeleniumTestCase!! 
+## 
+## e.g.
+##	MyTetClass(SeleniumTestCase, RegularuserMixin): ...
+##
+## of regular user at the start of a test class's execution.  
+##
+#class RegularuserMixin(object):
+#	@classmethod
+#	def setUpClass(cls):
+#		super(RegularuserMixin, cls).setUpClass()
+#		print 'doing mixin'
+#		cls.login_regularuser()
 
+
+
+# Tests the leaving comments.  Tests the comment forms for all the various
+# types of comments and places they occur.  Tests that submitting an empty
+# comment generates an error message for the user.  
+#
 class CommentTest(SeleniumTestCase):
 
-	def test_petition_comment(self):
+	def test_comments(self):
+
+		# login the regular user
+		self.login_regularuser()
+
+		# try out all the comment forms
+		self.petition_comment()
+		self.blank_petition_comment()
+		self.question_comment()
+		self.blank_question_comment()
+		self.answer_comment()
+		self.blank_answer_comment()
+		self.answer_comment_2()
+		self.blank_answer_comment_2()
+
+
+	def petition_comment(self):
 		# choose a petition, go to its page
 		letter = Letter.objects.get(pk=1)
 		comment_form_spec = {
@@ -176,16 +258,16 @@ class CommentTest(SeleniumTestCase):
 			'comment_class': Comment,
 			'comment_textarea_id': 'LetterCommentForm_1_text',
 			'toggler_id': '_w_toggle_hidden_comment_1',
-			'comment_text': 'Test comment!',
+			'comment_text': 'Test comment 1!',
 			'comments_wrapper_id': 'comments_1',
 			'comments_class': 'letter_comment',
-			'username': User.objects.get(pk=1).username,
+			'username': REG_USERNAME,
 			'submit_id': 'LetterCommentForm_1_submit'
 		}
 		self.submit_comment(**comment_form_spec)
 
 
-	def test_blank_petition_comment(self):
+	def blank_petition_comment(self):
 		# choose a petition, go to its page
 		letter = Letter.objects.get(pk=1)
 		comment_form_spec = {
@@ -193,17 +275,17 @@ class CommentTest(SeleniumTestCase):
 			'comment_class': Comment,
 			'comment_textarea_id': 'LetterCommentForm_1_text',
 			'toggler_id': '_w_toggle_hidden_comment_1',
-			'comment_text': 'Test comment!',
+			'comment_text': 'Test comment 2!',
 			'comments_wrapper_id': 'comments_1',
 			'comments_class': 'letter_comment',
-			'username': User.objects.get(pk=1).username,
+			'username': REG_USERNAME,
 			'submit_id': 'LetterCommentForm_1_submit',
 			'error_div_id': 'LetterCommentForm_1_text_errors',
 			'error_text': 'This field is required.'
 		}
 		self.submit_blank_comment(**comment_form_spec)
 
-	def test_question_comment(self):
+	def question_comment(self):
 		# choose a petition, go to its page
 		question = Question.objects.get(pk=1)
 		comment_form_spec = {
@@ -211,15 +293,15 @@ class CommentTest(SeleniumTestCase):
 			'comment_class': QuestionComment,
 			'comment_textarea_id': 'QuestionCommentForm_q_text',
 			'toggler_id': '_w_toggle_hidden_comment_q',
-			'comment_text': 'Test comment!',
+			'comment_text': 'Test comment 3!',
 			'comments_wrapper_id': 'comments_q',
 			'comments_class': 'letter_comment',
-			'username': User.objects.get(pk=1).username,
+			'username': REG_USERNAME,
 			'submit_id': 'QuestionCommentForm_q_submit'
 		}
 		self.submit_comment(**comment_form_spec)
 
-	def test_blank_question_comment(self):
+	def blank_question_comment(self):
 		# choose a petition, go to its page
 		question = Question.objects.get(pk=1)
 		comment_form_spec = {
@@ -227,17 +309,17 @@ class CommentTest(SeleniumTestCase):
 			'comment_class': QuestionComment,
 			'comment_textarea_id': 'QuestionCommentForm_q_text',
 			'toggler_id': '_w_toggle_hidden_comment_q',
-			'comment_text': 'Test comment!',
+			'comment_text': 'Test comment 3.5!',
 			'comments_wrapper_id': 'comments_q',
 			'comments_class': 'letter_comment',
-			'username': User.objects.get(pk=1).username,
+			'username': REG_USERNAME,
 			'submit_id': 'QuestionCommentForm_q_submit',
 			'error_div_id': 'QuestionCommentForm_q_text_errors',
 			'error_text': 'This field is required.'
 		}
 		self.submit_blank_comment(**comment_form_spec)
 
-	def test_answer_comment(self):
+	def answer_comment(self):
 		# choose a petition, go to its page
 		question = Question.objects.get(pk=1)
 		comment_form_spec = {
@@ -245,15 +327,15 @@ class CommentTest(SeleniumTestCase):
 			'comment_class': AnswerComment,
 			'comment_textarea_id': 'AnswerCommentForm_1_text',
 			'toggler_id': '_w_toggle_hidden_comment_1',
-			'comment_text': 'Test comment!',
+			'comment_text': 'Test comment 4!',
 			'comments_wrapper_id': 'comments_1',
 			'comments_class': 'letter_comment',
-			'username': User.objects.get(pk=1).username,
+			'username': REG_USERNAME,
 			'submit_id': 'AnswerCommentForm_1_submit'
 		}
 		self.submit_comment(**comment_form_spec)
 
-	def test_blank_answer_comment(self):
+	def blank_answer_comment(self):
 		# choose a petition, go to its page
 		question = Question.objects.get(pk=1)
 		comment_form_spec = {
@@ -261,17 +343,17 @@ class CommentTest(SeleniumTestCase):
 			'comment_class': AnswerComment,
 			'comment_textarea_id': 'AnswerCommentForm_1_text',
 			'toggler_id': '_w_toggle_hidden_comment_1',
-			'comment_text': 'Test comment!',
+			'comment_text': 'Test comment 5!',
 			'comments_wrapper_id': 'comments_1',
 			'comments_class': 'letter_comment',
-			'username': User.objects.get(pk=1).username,
+			'username': REG_USERNAME,
 			'submit_id': 'AnswerCommentForm_1_submit',
 			'error_div_id': 'AnswerCommentForm_1_text_errors',
 			'error_text': 'This field is required.'
 		}
 		self.submit_blank_comment(**comment_form_spec)
 
-	def test_answer_comment_2(self):
+	def answer_comment_2(self):
 		# choose a petition, go to its page
 		question = Question.objects.get(pk=1)
 		comment_form_spec = {
@@ -279,15 +361,15 @@ class CommentTest(SeleniumTestCase):
 			'comment_class': AnswerComment,
 			'comment_textarea_id': 'AnswerCommentForm_2_text',
 			'toggler_id': '_w_toggle_hidden_comment_2',
-			'comment_text': 'Test comment!',
+			'comment_text': 'Test comment 6!',
 			'comments_wrapper_id': 'comments_2',
 			'comments_class': 'letter_comment',
-			'username': User.objects.get(pk=1).username,
+			'username': REG_USERNAME,
 			'submit_id': 'AnswerCommentForm_2_submit'
 		}
 		self.submit_comment(**comment_form_spec)
 
-	def test_blank_answer_comment_2(self):
+	def blank_answer_comment_2(self):
 		# choose a petition, go to its page
 		question = Question.objects.get(pk=1)
 		comment_form_spec = {
@@ -295,10 +377,10 @@ class CommentTest(SeleniumTestCase):
 			'comment_class': AnswerComment,
 			'comment_textarea_id': 'AnswerCommentForm_2_text',
 			'toggler_id': '_w_toggle_hidden_comment_2',
-			'comment_text': 'Test comment!',
+			'comment_text': 'Test comment 7!',
 			'comments_wrapper_id': 'comments_2',
 			'comments_class': 'letter_comment',
-			'username': User.objects.get(pk=1).username,
+			'username': REG_USERNAME,
 			'submit_id': 'AnswerCommentForm_2_submit',
 			'error_div_id': 'AnswerCommentForm_2_text_errors',
 			'error_text': 'This field is required.'
@@ -409,10 +491,59 @@ class CommentTest(SeleniumTestCase):
 		comment_form_toggler.click()
 
 		
+class QuestionRenderTest(SeleniumTestCase):
+	'''
+		tests that the test question in the database renders correctly
+	'''
 
+	def test_render(self):
+		question = Question.objects.get(pk=1)
+		self.driver.get(self.live_server_url + question.get_url())
+
+		# Make sure the voting widget showed up properly
+		self.driver.find_element_by_id('QuestionVoteForm_q_upvote')
+		self.driver.find_element_by_id('QuestionVoteForm_q_score')
+		self.driver.find_element_by_id('QuestionVoteForm_q_downvote')
+
+		# make sure the question contents displayed correctly
+		title = self.driver.find_element_by_class_name('post_title')
+		self.assertEqual(title.text, question.title)
+		body = self.driver.find_element_by_class_name('post_body')
+		self.assertEqual(body.text, question.text)
+
+		# make sure that all the answers showed up
+		answers = Answer.objects.filter(target=question)
+		answer_divs = self.driver.find_elements_by_class_name('subpost_body')
+		self.assertEqual(len(answer_divs), answers.count())
+		space_match = re.compile(r'\s')
+		for i in range(len(answer_divs)):
+			a, a_div = answers[i], answer_divs[i]
+			self.assertEqual(
+				space_match.sub('', a_div.text), 
+				space_match.sub('', a.text)
+			)
+			self.driver.find_element('id', 'AnswerVoteForm_%d_upvote'%(i+1))
+			self.driver.find_element('id', 'AnswerVoteForm_%d_score'%(i+1))
+			self.driver.find_element('id', 'AnswerVoteForm_%d_downvote'%(i+1))
+		
+
+
+# Test submitting an answer using the answer form, and ensure that submitting
+# a blank answer causes an error message to be shown.
+#
 class AnswerFormTest(SeleniumTestCase):
 
-	def test_submit_answer(self):
+	def test_answer_form(self):
+
+		# login regular user
+		self.login_regularuser()
+
+		# try submitting an answer.  Test that you can't submit blank answer
+		self.submit_answer_subtest()
+		self.submit_blank_answer_subtest()
+
+
+	def submit_answer_subtest(self):
 		question = Question.objects.get(pk=1)
 		submit_answer_spec = {
 			'url': self.live_server_url + question.get_url(),
@@ -426,7 +557,7 @@ class AnswerFormTest(SeleniumTestCase):
 
 		self.submit_answer(**submit_answer_spec)
 
-	def test_submit_blank_answer(self):
+	def submit_blank_answer_subtest(self):
 		question = Question.objects.get(pk=1)
 		submit_answer_spec = {
 			'url': self.live_server_url + question.get_url(),
@@ -519,6 +650,10 @@ class AnswerFormTest(SeleniumTestCase):
 		self.assertEqual(textarea.get_attribute('value'), '')
 
 
+
+# Test adding a question.  Make sure that submitting an incomplete form causes
+# an error message to be displayed.
+#
 class QuestionFormTest(SeleniumTestCase):
 	'''
 		Tests adding a question using the QuestionForm
@@ -537,8 +672,17 @@ class QuestionFormTest(SeleniumTestCase):
 
 	submit_id = 'QuestionForm__submit'
 
+	def test_question_form(self):
 
-	def test_submit_question(self):
+		# login a regular user
+		self.login_regularuser()
+
+		# test valid answer and incomplete answer submission
+		self.submit_incomplete_question()
+		self.submit_question()
+
+
+	def submit_question(self):
 
 		# go to the submit question page 
 		proposal = Proposal.objects.get(pk=1)
@@ -566,7 +710,7 @@ class QuestionFormTest(SeleniumTestCase):
 			target=proposal, title=self.title_text, text=self.question_text)
 
 
-	def test_submit_incomplete_question(self):
+	def submit_incomplete_question(self):
 		FIELD_WRAPPER_ERROR_CLASS = 'field_wrapper_error'	
 
 		# go to the submit question page 
@@ -600,6 +744,7 @@ class QuestionFormTest(SeleniumTestCase):
 		body = self.driver.find_element('id', self.texts[1][0])
 		error_class = body.find_element_by_xpath('..').get_attribute('class')
 		self.assertEqual(error_class, FIELD_WRAPPER_ERROR_CLASS)
+
 
 
 class FormTest(SeleniumTestCase):
@@ -658,6 +803,10 @@ class FormTest(SeleniumTestCase):
 				'None')
 
 
+# Test editing proposals with the ProposalVersionForm.  Ensure that 
+# incomplete forms cause an error to be shown, and that html special 
+# characters get escaped.
+#
 class ProposalFormTest(FormTest):
 
 	values = ['Test Proposal Title', 'This is only a test summary.',
@@ -685,33 +834,48 @@ class ProposalFormTest(FormTest):
 			'expect': md.markdown('This is only a test body.')
 
 		}
+		
 	}
 
 	submit_id = 'ProposalVersionForm__submit'
 	escape_text = '<&>'
 	error_msg = 'This field is required.'
 	error_class = 'field_wrapper_error'
-	username = 'superuser'	# TODO: test proper login
+	username = REG_USERNAME
 	expect_proposal_id = 1
 
-	def get_url(self):
-		return (self.live_server_url 
-			+ Proposal.objects.get(pk=self.expect_proposal_id).get_edit_url())
+	TEST_TAGS = 'tag1 tag2'
+	PROPOSAL_TAGS_ID = 'proposal_tags'
+	PROPOSAL_TAGS_CLASS = 'ui-widget-content'
+	TAGS_ERROR_ID = 'proposal_tags_errors'
+	TAGS_ERROR_MSG = 'Please include at least one tag.'
+	def test_edit_proposal_form(self):
+
+		# login a regularuser
+		self.login_regularuser()
+
+		# test the edit form.  Ensure that incomplete forms cause an error to
+		# be shown, and that html special characters get escaped.
+		self.edit_proposal()
+		self.edit_proposal_incomplete()
+		self.edit_proposal_ensure_escape()
 
 
-	def expect_proposal_id(self):
-		return 1
-
-
-	def test_edit_proposal(self):
+	def edit_proposal(self):
 
 		expected_id = self.expect_proposal_id()
 
 		# Go to the edit page for a test proposal
 		self.driver.get(self.get_url())
 
+
 		# Fill and submit the form with valid data
 		self.fill_form(self.form_data)
+		self.driver.find_element(
+			'id', 'proposal_tags_input').find_element_by_class_name(
+			self.PROPOSAL_TAGS_CLASS).send_keys(self.TEST_TAGS)
+		self.click('ProposalVersionForm__sectors_0')
+		self.click('ProposalVersionForm__sectors_4')
 		self.driver.find_element('id', self.submit_id).click()
 
 		# check that the proposal was correctly loaded
@@ -724,7 +888,8 @@ class ProposalFormTest(FormTest):
 		self.check_db(expected_id, *self.values, username=self.username)
 
 
-	def test_edit_proposal_incomplete(self):
+	# TODO: This should check the case where user has not entered any tags
+	def edit_proposal_incomplete(self):
 
 		# Go to the edit page for a test proposal
 		self.driver.get(self.get_url())
@@ -736,6 +901,14 @@ class ProposalFormTest(FormTest):
 			error_id = spec['error_id']
 
 			self.fill_form(self.form_data, clear=ommitted_id)
+
+			# clear existing tags, and insert specified ones
+			self.driver.find_element(
+				'id', 'proposal_tags_input').find_element_by_class_name(
+				self.PROPOSAL_TAGS_CLASS).send_keys('\b'*5 + self.TEST_TAGS)
+
+			self.click('ProposalVersionForm__sectors_0')
+			self.click('ProposalVersionForm__sectors_4')
 			self.click(self.submit_id)
 
 			# Check for the error message
@@ -749,7 +922,30 @@ class ProposalFormTest(FormTest):
 				self.error_class in wrapper.get_attribute('class'))
 
 
-	def test_edit_proposal_ensure_escape(self):
+		# Now Check that not submitting tags raises a user-facing error
+		# Fill out the form, but omit tags.
+		self.fill_form(self.form_data, clear=ommitted_id)
+
+		self.driver.find_element(
+			'id', 'proposal_tags_input').find_element_by_class_name(
+			self.PROPOSAL_TAGS_CLASS).send_keys('\b'*5)
+
+		self.click('ProposalVersionForm__sectors_0')
+		self.click('ProposalVersionForm__sectors_4')
+		self.click(self.submit_id)
+
+		# check for the user-facing error
+		self.assertTrue(
+			self.element_contains(self.TAGS_ERROR_ID, self.TAGS_ERROR_MSG))
+
+		# Check that the tagit elment got styled up with error class
+		ommitted_elm = self.driver.find_element('id', self.PROPOSAL_TAGS_ID)
+		wrapper = ommitted_elm.find_element_by_xpath('..')
+		self.assertTrue(
+			self.error_class in wrapper.get_attribute('class'))
+
+
+	def edit_proposal_ensure_escape(self):
 		expected_id = self.expect_proposal_id()
 
 		form_data_needs_escape = dict([
@@ -766,6 +962,11 @@ class ProposalFormTest(FormTest):
 
 		# Fill and submit the form with data that should get escaped
 		self.fill_form(form_data_needs_escape)
+		self.driver.find_element(
+			'id', self.PROPOSAL_TAGS_ID).find_element_by_class_name(
+			self.PROPOSAL_TAGS_CLASS).send_keys(self.TEST_TAGS)
+		self.click('ProposalVersionForm__sectors_0')
+		self.click('ProposalVersionForm__sectors_4')
 		self.driver.find_element('id', self.submit_id).click()
 
 		# check that the proposal was correctly loaded
@@ -776,7 +977,17 @@ class ProposalFormTest(FormTest):
 			self.escape_text, self.escape_text, self.username)
 
 
+	def get_url(self):
+		return (self.live_server_url 
+			+ Proposal.objects.get(pk=self.expect_proposal_id).get_edit_url())
+
+
+	def expect_proposal_id(self):
+		return 1
+
+
 	def check_db(self, expected_id, title, summary, text, username):
+
 		proposal = Proposal.objects.get(title=title)
 
 		self.assertEqual(expected_id, proposal.pk)
@@ -792,7 +1003,6 @@ class ProposalFormTest(FormTest):
 
 			
 
-
 class AddProposalTest(ProposalFormTest):
 
 	def get_url(self):
@@ -803,6 +1013,7 @@ class AddProposalTest(ProposalFormTest):
 
 
 
+# LEFT OFF HERE
 
 class VoteTest(SeleniumTestCase):
 
@@ -810,7 +1021,18 @@ class VoteTest(SeleniumTestCase):
 	down_on_class = 'downvote_on'
 
 
-	def test_QuestionVote(self):
+	def test_all_votes(self):
+		self.login_regularuser()
+
+		self.QuestionVote()
+		self.AnswerVote()
+		self.NewAnswerVote()
+		self.DiscussionVote()
+		self.ReplyVote()
+		self.NewReplyVote()
+
+
+	def QuestionVote(self):
 		url = self.live_server_url + Question.objects.get(pk=1).get_url()
 		vote_spec = {
 			'up_id': 'QuestionVoteForm_q_upvote',
@@ -822,7 +1044,7 @@ class VoteTest(SeleniumTestCase):
 		self.vote_test(**vote_spec)
 
 
-	def test_AnswerVote(self):
+	def AnswerVote(self):
 		url = self.live_server_url + Question.objects.get(pk=1).get_url()
 		vote_spec = {
 			'up_id': 'AnswerVoteForm_1_upvote',
@@ -834,7 +1056,7 @@ class VoteTest(SeleniumTestCase):
 		self.vote_test(**vote_spec)
 
 
-	def test_NewAnswerVote(self):
+	def NewAnswerVote(self):
 		url = self.live_server_url + Question.objects.get(pk=1).get_url()
 		self.driver.get(url)
 
@@ -853,7 +1075,7 @@ class VoteTest(SeleniumTestCase):
 		self.vote_test(**vote_spec)
 
 
-	def test_DiscussionVote(self):
+	def DiscussionVote(self):
 		url = self.live_server_url + Discussion.objects.get(pk=1).get_url()
 		vote_spec = {
 			'up_id': 'DiscussionVoteForm_q_upvote',
@@ -865,7 +1087,7 @@ class VoteTest(SeleniumTestCase):
 		self.vote_test(**vote_spec)
 
 
-	def test_ReplyVote(self):
+	def ReplyVote(self):
 		url = self.live_server_url + Discussion.objects.get(pk=1).get_url()
 		vote_spec = {
 			'up_id': 'ReplyVoteForm_26_upvote',
@@ -877,7 +1099,7 @@ class VoteTest(SeleniumTestCase):
 		self.vote_test(**vote_spec)
 
 
-	def test_NewReplyVote(self):
+	def NewReplyVote(self):
 		# figure out what the next post id will be
 		user = User.objects.get(pk=1)
 		post_id = 1 + Reply.objects.filter(user=user).order_by('-pk')[0].pk
@@ -896,6 +1118,7 @@ class VoteTest(SeleniumTestCase):
 		}
 
 		self.vote_test(**vote_spec)
+
 	def get_elements(self):
 		self.up_elm = self.driver.find_element('id', self.up_id)
 		self.score_elm = self.driver.find_element('id', self.score_id)

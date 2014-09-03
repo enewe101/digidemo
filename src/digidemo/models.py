@@ -5,6 +5,7 @@ from django.utils import timezone
 from django.core.urlresolvers import reverse
 from django.template.defaultfilters import slugify
 from django.utils.safestring import mark_safe
+from django.contrib.staticfiles.templatetags.staticfiles import static
 import re
 
 NAME_LENGTH = 48
@@ -232,6 +233,16 @@ class UserProfile(TimeStamped):
 	def get_user_url(self):
                 url_stub = reverse('userProfile', kwargs={'userName': self.user.username})
                 return url_stub;
+	
+
+	def get_avatar_img_url(self):
+
+		if self.avatar_img:
+			return self.avatar_img.url
+
+		else:
+			return static('digidemo/images/avatar_not_found.png')
+			
 
 class Person(TimeStamped):
 	fname = models.CharField(max_length=NAME_LENGTH)

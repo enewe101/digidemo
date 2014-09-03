@@ -17,7 +17,7 @@
 
 {% block  headline_title %}
 	<img src="{% static "digidemo/images/compas_icon.png" %}" />
-	{{ proposal.title }}
+	<span id="proposal_title">{{ proposal.title }}</span>
 
 	<div id="follow">
 		{% include "digidemo/_w_follow_post.html" %}
@@ -26,7 +26,7 @@
 {% endblock headline_title %}
 
 {% block maincontent %}
-<!-- start the proposal -->
+<!-- start the previews -->
 <div id="previews">
 	<div>
 		<a href="{% url "editors_area" issue_id=proposal.id open_status="open" %}" class="go_button">
@@ -134,16 +134,20 @@
 		</div>
 	</div>
 </div>
+<!-- end preview area -->
 
+<!-- start the proposal -->
 <div id="article">
-	<div class="inbrief">
+	<div id="inbrief" class="inbrief">
 		<h1>In brief</h1>
-		{{ proposal.summary|markdown }}
+		<span id="proposal_summary">
+			{{ proposal.summary|markdown }}
+		</span>
 	</div>
 
 
 	<!-- start of proposal sectors -->
-	<div class='tags'>
+	<div id="tags" class="tags">
 		{% for tag in proposal.tags.all %}
 			<div class="tag">
 				{{ tag.name }}
@@ -152,7 +156,11 @@
 	</div>
 	<!-- end of proposal sectors -->
 
-	{{ proposal.text|markdown }}
+	<!-- start the proposal text (body) -->
+	<div id="proposal_text">
+		{{ proposal.text|markdown }}
+	</div>
+	<!-- end the proposal text (body) -->
 
 </div>
 

@@ -19,6 +19,7 @@ from django.conf import settings
 from digidemo.models import *
 from digidemo.forms import *
 from digidemo import utils
+from digidemo.utils import force_logout
 from forms import ProposalSearchForm
 from settings import DEBUG, SITE_NAME
 
@@ -610,15 +611,50 @@ class AbstractView(object):
 
 
 
+# This provides a base for creating views which only logged in users 
+# should be able to access.  
+# 
+# As an additional, optional protection, if this is a view which handles
+# post data from a form that contains a `user` field, a check can be
+# performed to ensure that the user indicated in the form is the same as the
+# logged in user.  To perform this check, provide the class of the form
+# in which a field called `user` occurs as the value for form_class.
+# To opt out of this verification, set check_form_user = False.
+#
 class AbstractLoginRequiredView(AbstractView):
 
+	form_class = None
+	check_form_user = True
+
 	def get_login_url(self, request):
-		return reverse('login_required', kwargs={'next':request.path})
+		return reverse('login_required', kwargs={'next_url':request.path})
 
 	def view(self, request, *args, **kwargs):
 
 		if not request.user.is_authenticated():
 			return redirect(self.get_login_url(request))
+
+		# if the form_class is set, we'll do an extra check when form data
+		# has been posted, to make sure that the logged in user is the same
+		# as the user in the form's user field.  If not, force a logout
+		if request.POST and self.check_form_user is not None:
+
+			# Make sure that we haven't just forgotten to set up the user
+			# form validation.  This requires that check_user_form is 
+			# explicitly set to False in order to opt out of the check.
+			if self.form_class is None:
+				raise NotImplementedError(
+					'AbstractLoginRequiredView could '\
+					'not verify the form user field, because form_class was '\
+					'None. Either provide a proper form_class, or set '\
+					'check_form_user = False.'
+				)
+
+			form = self.form_class(request.POST)
+			form.is_valid()
+			if form.cleaned_data['user'] != request.user:
+				force_logout(request)
+				return redirect(self.get_login_url(request))
 
 		return super(AbstractLoginRequiredView, self).view(
 			request, *args, **kwargs)
@@ -627,6 +663,15 @@ class AbstractLoginRequiredView(AbstractView):
 class Login(AbstractView):
 	template = 'digidemo/login_page.html'
 	error = ''
+
+
+	# By default (if `next_url` is not set), send the user to the front page.
+	#
+	def view(self, *args, **kwargs):
+		next_url = kwargs.pop('next_url', reverse('mainPage'))
+		return super(Login, self).view(*args, next_url=next_url, **kwargs)
+
+
 
 	# Unauthenticated users get this page when accessing a login-required view
 	def get_context_data(self):
@@ -653,7 +698,7 @@ class Login(AbstractView):
 		# concatenated onto the login-required url, as the 'next' kwarg.
 		if user:
 			login(self.request, user)
-			return redirect(self.kwargs['next'])
+			return redirect(self.kwargs['next_url'])
 
 		# Otherwise, show login form, but with an error message
 		else:
@@ -665,6 +710,7 @@ class Login(AbstractView):
 class EditProposalView(AbstractLoginRequiredView):
 
 	template = 'digidemo/edit.html'
+	form_class = ProposalVersionForm
 
 	def get_context_data(self):
 
@@ -704,7 +750,7 @@ class EditProposalView(AbstractLoginRequiredView):
 		proposal = Proposal.objects.get(pk=self.kwargs['issue_id'])
 
 		proposal_form = TaggedProposalForm(
-			data=request.POST,
+			data=self.request.POST,
 			endpoint=proposal.get_edit_url()
 		)
 
@@ -739,6 +785,7 @@ class EditProposalView(AbstractLoginRequiredView):
 class AddProposalView(AbstractLoginRequiredView):
 
 	template = 'digidemo/add_proposal.html'
+	form_class = ProposalVersionForm
 
 	# We need to override handle_post, because a successful form post should
 	# cause a rediret
@@ -782,10 +829,9 @@ class AddProposalView(AbstractLoginRequiredView):
 
 	def get_context_data(self):
 
-		logged_in_user = User.objects.get(pk=1)
 		proposal_form = TaggedProposalForm(
 			endpoint=reverse('add_proposal'),
-			initial={'user': logged_in_user}
+			initial={'user': self.request.user}
 		)
 
 		cancel_url = reverse('mainPage')
@@ -965,8 +1011,6 @@ class MakePost(AbstractLoginRequiredView):
 
 
 	def handle_post(self):
-
-		print 'handling'
 
 		self.target = self.target_class.objects.get(
 			pk=self.kwargs['target_id'])
@@ -1411,41 +1455,56 @@ def userRegistration(request):
 	)
 
 
+def get_default_context(request):
+
+	logged_in_user = User.objects.get(pk=1)
+
+	return {
+		'globals': get_globals(),
+		'django_vars_js': get_django_vars_JSON(request=request),
+		'user': request.user
+	}
+
+
 def search(request):
-    """
-    Search > Root
-    """
+	"""
+		Search > Root
+	"""
 
-    # we retrieve the query to display it in the template
-    form =ProposalSearchForm(request.GET)
+	# we retrieve the query to display it in the template
+	form =ProposalSearchForm(request.GET)
 
-    # we call the search method from the NotesSearchForm. Haystack do the work!
-    results = form.search()
+	# we call the search method from the NotesSearchForm. Haystack do the work!
+	results = form.search()
 
-    return render(request, 'search/search.html', {
-      #  'search_query' : search_query,
-        'notes' : results,
-    })
+	# get the default context
+	context = get_default_context(request)
+	context.update({'notes':results})
+	return render(
+		request, 
+		'search/search.html',
+		context
+	)
 
 def users(request):
 
 	listToReturn = []
 	
 	if request.POST:
-		print request.POST['userName'];
 		dictionary ={};
-		
+
 		for user in UserProfile.objects.all():
 			dictionary[user] = lev(
 				user.user.username,request.POST['userName'])
-		
+
 		# Use this for descending order 
 		# for w in sorted(dictionary,key=dictionary.get,reverse=True)
-		
+
 		for user in sorted(dictionary, key=dictionary.get):
 			listToReturn.append(user);
-        
-	return render(request,'digidemo/users.html',
+
+	return render(
+		request,'digidemo/users.html',
 		{
 			'django_vars_js': get_django_vars_JSON(request=request),
 			'usersList' : listToReturn,

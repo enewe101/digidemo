@@ -1,5 +1,19 @@
 from django.core import serializers
+from django.contrib.auth import logout
 import json
+
+
+# TODO: implement logging as described below
+def force_logout(request):
+
+	# log a record of this event.  This shouldn't be able to happen, and it
+	# probably indicates an attempt to spoof a POST (csrf attack).
+	# we should at least log the user and ip.
+
+	# logout the user
+	logout(request)
+
+
 
 def get_or_none(model, **kwargs):
 	'''

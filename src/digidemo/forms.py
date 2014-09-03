@@ -220,8 +220,7 @@ class AnswerForm(ModelForm):
 		}
 
 
-@bound_form()
-class QuestionForm(ModelForm):
+class QuestionForm(AugmentedFormMixin, ModelForm):
 	class Meta:
 		model = Question
 		fields = ['target', 'user', 'title', 'text']
@@ -399,7 +398,7 @@ class ProposalVersionForm(AugmentedFormMixin, ModelForm):
 				new_proposal_version.sectors.add(sector)
 				self.proposal.sectors.add(sector)
 
-		# Otherwise, we are not making a new proposal, only saving a new
+		# Otherwise, we editing an existing proposal proposal, by saving a new
 		# proposal version
 		else:
 
@@ -409,6 +408,8 @@ class ProposalVersionForm(AugmentedFormMixin, ModelForm):
 			self.proposal = self.cleaned_data['proposal']
 			for field in ['title', 'summary', 'text', 'user']:
 				setattr(self.proposal, field, self.cleaned_data[field])
+
+			self.proposal.save()
 
 			# Save a new proposal version based on the contents of this form
 			new_proposal_version = super(ProposalVersionForm, self).save()
