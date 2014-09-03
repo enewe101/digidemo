@@ -1026,10 +1026,10 @@ class VoteTest(SeleniumTestCase):
 
 		self.QuestionVote()
 		self.AnswerVote()
-		self.NewAnswerVote()
+		# self.NewAnswerVote()
 		self.DiscussionVote()
 		self.ReplyVote()
-		self.NewReplyVote()
+		# self.NewReplyVote()
 
 
 	def QuestionVote(self):
@@ -1056,6 +1056,9 @@ class VoteTest(SeleniumTestCase):
 		self.vote_test(**vote_spec)
 
 
+	# Can't do new-answer vote, because a user cannot vote on their own
+	# answer.  However, this used to work before user authentication
+	# was added.
 	def NewAnswerVote(self):
 		url = self.live_server_url + Question.objects.get(pk=1).get_url()
 		self.driver.get(url)
@@ -1099,6 +1102,9 @@ class VoteTest(SeleniumTestCase):
 		self.vote_test(**vote_spec)
 
 
+	# Can't do new-reply vote, because a user cannot vote on their own
+	# answer.  However, this used to work before user authentication
+	# was added.
 	def NewReplyVote(self):
 		# figure out what the next post id will be
 		user = User.objects.get(pk=1)
