@@ -608,8 +608,12 @@ class AnswerFormTest(SeleniumTestCase):
 		self.driver.find_element('id', submit_id).click()
 
 		# An error message should be displayed
-		error_text = self.driver.find_element('id', answer_error_id).text
-		self.assertEqual(error_text, error_message)
+		self.assertTrue(
+			self.wait.until(lambda driver:
+				self.driver.find_element('id', answer_error_id).text
+				== error_message
+			)
+		)
 
 		# And the textarea should be styled with the class error
 		self.assertTrue('error' in textarea.get_attribute('class'))
