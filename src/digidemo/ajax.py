@@ -137,6 +137,7 @@ def handle_ajax_json(request, view='test', *args, **kwargs):
 
 
 def screen_ajax_error(e):
+
 	if DEBUG:
 		err_msg = "%s: %s" %(type(e).__name__, e)
 
@@ -364,7 +365,8 @@ def answer(request):
 
 
 
-@ajax_endpoint
+@ajax_endpoint_login_required(
+'You must log in to create a petition!', LetterForm)
 def send_letter(request):
 	letter_form = LetterForm(request.POST)
 
@@ -397,11 +399,12 @@ def resend_letter(request):
 
 	return {
 		'success':False,
-		'msg': 'ajax.py: send_letter(): LetterForm was not valid'
+		'msg': 'ajax.py: send_letter(): ResendLetterForm was not valid'
 	}
 
 
 
+# TODO: is this still being used?  User is hardcoded...
 @ajax_endpoint
 def get_resender_avatar(request):
 
@@ -417,34 +420,8 @@ def get_resender_avatar(request):
 	return {'success': True, 'html': reply_html}
 
 
-#@ajax_endpoint
-#def get_factor_form(request):
-#
-#	# unpack expected data
-#	valence = request.POST['valence']
-#	include_id = request.POST['include_id']
-#
-#	# make the factor form
-#	prefix = valence + '-' + include_id 
-#	valence_val = 1 if valence=='pos' else -1
-#	factor_form = FactorVersionForm(
-#		initial={'valence':valence_val},
-#		prefix=prefix
-#	)
-#
-#	# get the template and assemble the context, and render the html
-#	template = get_template('digidemo/_w_factor_form.html')
-#	context = Context({
-#		'valence':valence,
-#		'include_id':include_id,
-#		'form':factor_form
-#	})
-#	reply_html = template.render(context)
-#
-#	# send back a json reply
-#	return {'success':True, 'html': reply_html}
 
-
+# TODO: replace this with a post login
 @ajax_endpoint
 def ajax_login(request):
 
@@ -463,6 +440,7 @@ def ajax_login(request):
 		return {'success':False}
 
 
+# TODO: replace this with a post login
 @ajax_endpoint
 def ajax_logout(request):
 	logout(request)
@@ -522,21 +500,6 @@ def process_comment(request, comment_form_class):
 		'errors': comment_form.json_errors()
 	}
 
-
-@ajax_endpoint
-def editProposal(request):
-        pName = request.GET['name']
-        title = request.GET['title']
-        text = request.GET['text']
-        goodFactors = request.GET['goodFactors']
-        badFactors = request.GET['badFactors']
-        proposal = Proposal.objects.get(name=pName)
-        proposal.title = title
-        proposal.text= text
-        proposal.last_modified = timezone.now()
-        
-        proposal.save()
-	return {'test':'success!'}
 
 
 
