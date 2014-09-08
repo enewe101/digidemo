@@ -12,7 +12,6 @@ from digidemo.choices import *
 from digidemo.models import *
 from digidemo.settings import PROJECT_DIR
 from digidemo import utils
-from digidemo import widgets as app_widgets
 import os
 
 USERNAME_MAX_LENGTH = 32

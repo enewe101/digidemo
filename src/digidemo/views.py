@@ -21,7 +21,7 @@ from digidemo.forms import *
 from digidemo import utils
 from digidemo.utils import force_logout
 from forms import ProposalSearchForm
-from settings import DEBUG, SITE_NAME
+from settings import DEBUG 
 
 import json
 import sys
@@ -179,7 +179,6 @@ def get_question_list_tabs(active_tab):
 	
 def get_globals():
 	return {
-		'SITE_NAME': SITE_NAME,
 		'DEBUG': DEBUG
 	}
 
@@ -1319,11 +1318,7 @@ class DiscussionAreaView(PostAreaView):
 
 
 def show_test_page(request):
-	template = get_template('digidemo/test.html')
-	context = RequestContext(request, {'somekey', 'someval'}) 
-	reply = HttpResponse(template.render(context))
-
-	return reply
+	return render(request, 'digidemo/test.html', {})
 
 
 #def login(request, provider_name):
