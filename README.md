@@ -1,66 +1,256 @@
 ## Installation
 
-### Part 1 -- install dependencies
-1. Install Apache httpd webserver.
+When you install the Digidemo webapp, you have two options for how it will
+be served, and this choice impacts what dependencies you install and how much
+configuration you need to do.  If you are installing Digidemo for development
+purposes, on your local machine, then you can use the webserver that comes
+with Django.  This makes installation a bit easier :)
 
-2. Install mod\_wsgi, and configure apache webserver to use it.  Verify that
+If you are deploying Digidemo on a remote server, or if you just want to do 
+full-stack testing, then you will need to install apache and mod\_wsgi to play 
+the role of webserver.
+
+
+### Part 1 -- install dependencies
+
+1. Install git
+
+		see http://git-scm.com/book/en/Getting-Started-Installing-Git
+
+*If you are deploying perform steps 1 and 2, otherwise skip ahead to step 3.*
+
+2. Install Apache httpd webserver.
+
+		see http://http://httpd.apache.org/download.cgi
+
+3. Install mod\_wsgi, and configure apache webserver to use it.  Verify that
 	you can serve a simple wsgi test application on localhost
 
-3. Install MySQL
+		see https://code.google.com/p/modwsgi/
 
-4. Install Django
-	- requires Pillow 
+*Start here if you are getting set up for development!*
+4. Install MySQL
 
-5. Install Selenium (package for python)
+		see http://dev.mysql.com/downloads/installer/
 
-6. Install difflib (package for python)
+	You'll need to do some config here.  Use the MySQL documentation to get 
+	through it!  Once it's installed and configured, you can test to make sure
+	by running:
+		
+		`$ mysql -u <username> -p<password>` 
 
-Note: you should test all of those installations and convince yourself that,
-at least separately, each is working.  Refer to the software's specific
+	That should take you to the mysql command-line tool (You'll see `mysql>`).
+
+5. Install python
+
+		see https://www.python.org/download
+
+6. Install pip
+
+		see http://pip.readthedocs.org/en/latest/installing.html
+
+7. Install Django
+	(may require Pillow; `$ pip install Pillow`)
+	Run this in the terminal:
+		
+		$ pip install Django
+
+8. Install Selenium (package for python)
+
+		$ pip install selenium
+
+9. Install difflib (package for python)
+
+		(Actually, I didn't have to install it, check if you already have it).
+
+10. Install haystack (package for python)
+
+		$ pip install django-haystack==2.0.0 
+		$ pip install whoosh==2.4
+
+Note: you should do a quick test to make sure your MySQL and (if deploying) 
+Apache installations are set up correctly.  Refer to the software's specific 
 documentation and user communities to get set up help!
 
 
 ### Part 2 -- install digidemo, and wire things up
-6. Download digidemo.
+11. Download digidemo.  Go to wherever you want to want the digidemo project
+	folder to be placed, and run
 
-7. Configure Apache / mod\_wsgi to load the digidemo app.  Copy the following 
-	configuration files in place, removing the '.template' part, and filling 
-	the holes with your machine-specific details
+		$ git clone https://github.com/enewe101/digidemo.git
+
+7. Configure the digidemo webapp.  You need to make a couple configurations
+	which lets Digidemo run from whatever directory you just installed it 
+	to.  Find the settings file, and copy it in place, but remove the 
+	`.template` extension.  You will find it here, relative to your 
+	installation location.
+
+		<proj-root:digidemo>/src/digidemo/settings.py.template
+
+	There's one spot you need to edit in there.  Look for "#<>#", and put
+	the absolute path to the location of the digidemo folder that was created
+	when you cloned.
+
+
+8. *If you are deploying, skip this step*
+	Now see if digidemo was configured correctly.  Go to 
+
+		`<proj-root:digidemo>/src/`
+
+	and run the command 
+
+		`python manage.py runserver`
+
+	Then open a browser, and go to 
+
+		`localhost:8000/test`
+
+	You should see the test page.  If you got import errors (probably when you 
+	tried to run `runserver`, then go into 
+
+		`<proj-root:digidemo>/src/digidemo/wsgi.py`
+
+	and you will see that there are two commented-out lines that should be
+	uncommented in that case.
+
+7. *If you are installing for dev purposes, skip this step*. 
+	Configure Apache and mod\_wsgi to load the digidemo app.  
+	
+	a. Copy the following in place, removing the `.template` extension.
+
+		<proj-root>/src/digidemo/wsgi.py.template
+	
+		You shouldn't need to make any changes to it, unless you find that
+		you get import errors later when you try to test.  If that happens,
+		have a look inside the file, there are a few lines to uncomment which
+		might resolve the problem.
+
+	b. Move the following file to the place where apache conf files go.
 
 		<proj-root>/src/digidemo/httpd.conf.template
-		<proj-root>/src/digidemo/settings.py.template
-		<proj-root>/src/digidemo/wsgi.py.template
 
-	Test your configuration by going to localhost/test_web in a browser
+		Normally apache conf files go in `/etc/apache2/`, but it depends on
+		your apache installation.  Be careful not to overwrite the `httpd.conf`
+		file that is already there, unless that's what you want to do.
 
-	Troubleshoot your problems using the apache error log. Normally you can 
-	find it at /var/log/apache2/error_log
+		A better idea is to copy the contents of the `httpd.conf.template`
+		into the existing `httpd.conf` file, and then make machine-specific
+		edits to the copied part.
+
+		You will need to indicate absolute paths to various subfolders of 
+		your digidemo installation, so that apache knows where to look when
+		serving your website. 
+
+		I didn't mark the lines to edit here, because you basically need
+		to edit them all.  You just need to fill in the absolute file paths
+		to various locations in the project, as well as the server name, and
+		an administrator contact email (it's displayed in the default apache 
+		500 error message).
+
+	c. Test your configuration by going to <host>/test/ in a browser
+		on your local machine.  Sub in the actual host name that is registered
+		for your machine's public IP address for <host>.  
+
+		Troubleshoot your problems using the apache error log. Normally you 
+		can find it at /var/log/apache2/error.log
+
 
 8. Configure digidemo to work with your database.  Copy this file in place, 
-	removing the '.template', and adding your database specifics:
+	removing the '.template' extension: 
 
 		<proj-root>/src/digidemo/me.cnf.template
 
-	In that file, you will need to indicate a user and password for digidemo
-	to use when connecting to mysql.  The default user is digidemo.  Use
-	whatever you want, but you will need to actually 
+	That file tells the digidemo app how to connect to your MySQL database.
+	Among other things, it specifies the username and password that the app
+	uses when making that connection.  You'll can leave almost everything as-is
+	but you'll need to provide a password: put it where you see "<pwd>".
 
-	- create a database called 'digidemo'
-	- add the digidemo user to your mysql server, and give it write 
-		privileges to the digidemo database
+	Now you need to go into MySQL do the following:
+	a. create a database called 'digidemo'
 
-	test your database by directly logging into it in the terminal using
-	the mysql client.  Log in as the user you created for digidemo to make
-	sure that it works and that you have the needed permissions. 
+		mysql> CREATE DATABASE digidemo character set utf8;
 
-	in <proj-root>/src, run the commands 
+	b. create a user called 'digidemo' (give that user the same password you
+		entered into `my.cnf`)
+
+		mysql> CREATE USER 'digidemo'@'localhost' IDENTIFIED BY '<pwd>';
+
+	c. give user `digidemo` full privileges for database `digidemo`.
+
+		mysql> GRANT ALL ON digidemo.* TO 'digidemo'@'localhost';
 		
-		$ python manage.py migrate digidemo
-	
-	Test your database configuration by going to localhost/test_db.
-	
-	If you got errors during this process, you'll need to look for errors in
-	your mysql installation, your my.cnf configuration, and you might also
-	check your apache error log.
+	Try logging in as `digidemo` user in the terminal to make sure its working.
 
-9. Add test data to the database.  See `<proj-root>/data/README.md`.
+9.  Go to your home folder, and open either `.bashrc` or `.bash_profile`, 
+	whichever one is there already. (Note that file names starting with a `.`
+	are hidden by default.  Use `$ ls -a` to be able to see all files.)
+
+	Put these line at the end of the file:
+
+		`export PYTHONPATH=/path/to/digidemo/src:$PYTHONPATH`
+		`export DJANGO_SETTINGS_MODULE=digidemo.settings`
+
+	Note that you need to replace the `/path/to/digidemo/` part with the 
+	path to the folder where you cloned digidemo.  Make sure you keep `/src`
+	at the end.
+
+	While still in your home folder, run
+
+		$ source .bashrc
+
+	Or use `.bash_profile`, depending on which file you edited.
+
+	Now, make sure that the mysql server is running (run `$ mysqld`), and
+	head back to `<proj-root:digidemo>/src`, and run:
+		
+		$ python manage.py syncdb
+
+	You will be prompted to create a user at that time, say `no`. (some users
+	get created for testing purposes automatically).
+
+	If you get an error at this point that says 
+
+		django.db.utils.OperationalError: (2002, "Can't connect to local MySQL 
+		server through socket '/tmp/mysql.sock' (2)")
+
+	Then either you forgot to startup the MySQL server (just run `$ mysqld`)
+	or, it means that mysql didn't put its socket in the expected place.
+	When the MySQL starts up, it makes a file-like object that other programs
+	use to make connections.  You'll need to read the MySQL docs to figure
+	out where it is putting that socket.  In my experience, if it isn't in 
+	the default location specified in my.cnf.template, then check in 
+	`/var/run/mysqld/mysqld.sock`.
+
+	Once you figuer out where the socket is, go into 
+
+		<proj-root:digidemo>/src/my.cnf
+
+	and look for the line with #<>#, and put the absolute path to the socket.
+	Now you can try running `$ python manage.py syncdb` again.
+
+	Next, run:
+		
+		$ python manage.py collectstatic
+
+	If prompted, say `yes`. You should see a bunch of files get copied over.
+
+	Now, Go to `<proj-root:digidemo>/data` and run `$ ./load.sh`.
+
+
+9. Test the app by going to:
+	
+		localhost:8000/mainPage
+
+	if you are deploying, replace `localhost:8000` with the registered host
+	name for your machines public IP address.
+
+	With some luck, you should see the main digidemo page
+
+10. Lastly, you can run the search indexer to make search functionality 
+	available.  Go to `<proj-root:digidemo>/src` and run
+
+		$ python manage.py rebuild_index
+		$ python manage.py update_index
+
+11. Congratulations, you're done!
+

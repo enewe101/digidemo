@@ -20,7 +20,7 @@ host		= localhost
 user		= digidemo
 password	= <pwd>
 port		= 3306
-socket		= /tmp/mysql.sock
+socket		= /tmp/mysql.sock #<>#  You might need to change this
 default-character-set=utf8
 
 # Here follows entries for some specific programs

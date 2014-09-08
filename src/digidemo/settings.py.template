@@ -18,18 +18,11 @@ TEMPLATE_DEBUG = True
 import os
 
 # path to the root of the project, i.e. what is created during git clone
-PROJECT_DIR = '/path/to/digidemo'	
+PROJECT_DIR = '/path/to/digidemo'	#<>#
 BASE_DIR = PROJECT_DIR + '/src'
-
-SITE_NAME = 'polis'
-
-# Quick-start development settings - unsuitable for production
-# See https://docs.djangoproject.com/en/1.6/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = 't7665_02)%3ujsq0m6!_rsg3i3%o^ti)odqry33bn3q$n_&7i8'
-
-
 
 ALLOWED_HOSTS = []
 TEMPLATE_CONTEXT_PROCESSORS = (
@@ -37,7 +30,6 @@ TEMPLATE_CONTEXT_PROCESSORS = (
 )
 
 # Application definition
-
 INSTALLED_APPS = (
     'django.contrib.admin',
     'django.contrib.auth',
@@ -58,27 +50,37 @@ MIDDLEWARE_CLASSES = (
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 )
 
-ROOT_URLCONF = 'digidemo.urls'
 
+ROOT_URLCONF = 'digidemo.urls'
 WSGI_APPLICATION = 'digidemo.wsgi.application'
 
 
-# Database
+# DATABASE STUFF
+#
+# You do not necessarily need to change the settings below, provided that you
+# create a MySQL user named `digidemo` and a mysql database named `digidemo`
+# and that you give the user full priveleges on that database, and put that
+# user's password in the project's my.cnf file, which can be found at:
+#
+# 			<proj-root:digidemo>/src/digidemo/my.cnf
+# 
+# If you don't want to use the default settings, you can make changes below.
+# See this page for details:
 # https://docs.djangoproject.com/en/1.6/ref/settings/#databases
 
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
 		'OPTIONS': {
-			'read_default_file': BASE_DIR + '/digidemo/my.cnf'
+			'read_default_file': BASE_DIR + '/digidemo/my.cnf'	#<>#
 		},
-        'NAME': 'digidemo',
+        'NAME': 'digidemo',										#<>#
     }
 }
 
+
 # Internationalization
 # https://docs.djangoproject.com/en/1.6/topics/i18n/
-
 LANGUAGE_CODE = 'en-us'
 TIME_ZONE = 'UTC'
 USE_I18N = True
@@ -86,14 +88,11 @@ USE_L10N = True
 USE_TZ = True
 
 
-# Static files (CSS, JavaScript, Images)
+# Define more paths within the project
 # https://docs.djangoproject.com/en/1.6/howto/static-files/
-
 STATIC_URL = '/static/'
 STATICFILES_DIRS = (BASE_DIR + '/digidemo/static',)
-
-FIXTURE_DIRS = os.path.join(PROJECT_DIR, 'data/fixtures')
+FIXTURE_DIRS = (os.path.join(PROJECT_DIR, 'data/fixtures'),)
 STATIC_ROOT = PROJECT_DIR + '/static'
-
 MEDIA_URL = '/media/'
 MEDIA_ROOT = PROJECT_DIR + '/media/'

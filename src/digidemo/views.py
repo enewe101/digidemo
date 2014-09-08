@@ -1318,8 +1318,12 @@ class DiscussionAreaView(PostAreaView):
 	active_navitem = ISSUE_NAV_NAME
 
 
-def test(request):
-	return render(request, 'digidemo/test.html', {})
+def show_test_page(request):
+	template = get_template('digidemo/test.html')
+	context = RequestContext(request, {'somekey', 'someval'}) 
+	reply = HttpResponse(template.render(context))
+
+	return reply
 
 
 #def login(request, provider_name):

@@ -19,6 +19,9 @@ admin.autodiscover()
 
 urlpatterns = patterns('',
 
+	# test url
+	url(r'^test/$', show_test_page, name='test'),
+
 	# front page urls
 	url(r'^mainPage/$',mainPage, name='mainPage'),
 
@@ -51,8 +54,6 @@ urlpatterns = patterns('',
 	# Registration
 	url(r'^userRegistration/$', userRegistration,name='userRegistration'),
 
-	# test url
-	url(r'^$', test, name='test'),
 
 	# proposal-centric urls
 	url(r'^add_proposal/$', AddProposalView().view, name='add_proposal'),
