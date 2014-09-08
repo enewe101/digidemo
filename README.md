@@ -28,8 +28,12 @@ the role of webserver.
 
 		see https://code.google.com/p/modwsgi/
 
+4. Install the X Virtual frame buffer, Xvfb:
+
+		sudo apt-get install xvfb
+
 *Start here if you are getting set up for development!*
-4. Install MySQL
+5. Install MySQL
 
 		see http://dev.mysql.com/downloads/installer/
 
@@ -41,29 +45,29 @@ the role of webserver.
 
 	That should take you to the mysql command-line tool (You'll see `mysql>`).
 
-5. Install python
+6. Install python
 
 		see https://www.python.org/download
 
-6. Install pip
+7. Install pip
 
 		see http://pip.readthedocs.org/en/latest/installing.html
 
-7. Install Django
+8. Install Django
 	(may require Pillow; `$ pip install Pillow`)
 	Run this in the terminal:
 		
 		$ pip install Django
 
-8. Install Selenium (package for python)
+9. Install Selenium (package for python)
 
 		$ pip install selenium
 
-9. Install difflib (package for python)
+10. Install difflib (package for python)
 
 		(Actually, I didn't have to install it, check if you already have it).
 
-10. Install haystack (package for python)
+11. Install haystack (package for python)
 
 		$ pip install django-haystack==2.0.0 
 		$ pip install whoosh==2.4
@@ -74,7 +78,7 @@ documentation and user communities to get set up help!
 
 
 ### Part 2 -- install digidemo, and wire things up
-11. Download digidemo.  Go to wherever you want to want the digidemo project
+12. Download digidemo.  Go to wherever you want to want the digidemo project
 	folder to be placed, and run
 
 		$ git clone https://github.com/enewe101/digidemo.git
@@ -237,20 +241,56 @@ documentation and user communities to get set up help!
 	Now, Go to `<proj-root:digidemo>/data` and run `$ ./load.sh`.
 
 
-9. Test the app by going to:
+9. Quickly test to see if the app is running properly:
+	If you've installed for development, go to `<proj-root:digidemo>/src`
+	and run `$ python manage.py runserver` to start the development server,
+	then go to:
 	
 		localhost:8000/mainPage
 
-	if you are deploying, replace `localhost:8000` with the registered host
-	name for your machines public IP address.
+	if you are deploying, make sure that apache is running.  From any location
+	run 
 
-	With some luck, you should see the main digidemo page
+		sudo apachectl start
 
-10. Lastly, you can run the search indexer to make search functionality 
-	available.  Go to `<proj-root:digidemo>/src` and run
+	or if it was running already, make sure its running with all your latest
+	edits to confguration by restarting:
+
+		sudo apachectl -k graceful
+
+	Then, try to go to the mainPage using a browser on a local machine.  Go
+	to `http://<host>/mainPage`, and of course replace <host> with the domain
+	name that is registered for that server's public IP address.  Leave off
+	the port number (but technically it should be :80, not :8000 which is 
+	for the development server.)
+
+	With some luck, you should see the main digidemo page!
+
+10. You might want to run the search indexer to make search functionality 
+	available.  Go to `<proj-root:digidemo>/src` and run:
 
 		$ python manage.py rebuild_index
 		$ python manage.py update_index
 
-11. Congratulations, you're done!
+11. Now to make sure everything is completely installed correctly, run the
+	testing suite.  
+
+	*If you are running this on the deployment server*, you first need to
+	start up the virtual framebuffer.
+
+		sudo Xvfb :10 -ac
+
+	Unfortunately it doesn't seem to be possible to run that in the background
+	so, you'll need to ssh from another terminal to run the tests.
+
+	Now, *whether you are installing for development or deployment*, 
+	Go to `<proj-root:digidemo>/src`, and run 
+	`$ python manage.py test`.  The tests take 1 - 2min to run at the moment.
+	If you see any `broken pipe` errors, this is nothing to worry about, that
+	is normal behavior of the browser, which drops connections when it sees
+	that a certain page hasn't changed from the last request.  The number 
+	of errors / failures will be printed at the very end.  If you see 'OK'
+	it means there were no errors / failures.
+
+12. Congratulations, you're done!
 
