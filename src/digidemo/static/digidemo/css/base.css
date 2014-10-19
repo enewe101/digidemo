@@ -154,14 +154,14 @@ body {
 
 #colophon {
 	float: left;
-	margin: 0 0 0 60px;
+	margin: 0 0 0 0px;
 }
 
 div#navbar {
 	display: block;
 	list-style-type: none;
 	padding: 0;
-	margin: 0px 0 0 60px;
+	margin: 0px 0 0 30px;
 	float: left;
 }
 
@@ -190,7 +190,7 @@ a.create_navitem {
 
 #search_bar {
 	float: left;
-	margin: 9px 0 0 60px;
+	margin: 10px 0 0 30px;
 }
 
 #search_bar input {
@@ -201,6 +201,11 @@ a.create_navitem {
 #search_bar .search_submit {
 	background: no-repeat -2px -2px white url('../images/search.png');
 	width: 20px;
+}
+
+#login_row {
+	float: left;
+	margin: 10px 0 0 0;
 }
 
 .outer_center {

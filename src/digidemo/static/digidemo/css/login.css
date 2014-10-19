@@ -1,68 +1,46 @@
-nav ul {
-  margin: 0;
-  padding: 0;
-  list-style: none;
-  position: fixed;
-	top: 0px;
-    right: 5px;
-  background: #eee;
-  border-bottom: 1px solid #fff;
-  border-radius: 3px;    
+#login_div {
 }
 
-nav li {
-  float: left;          
+.login_elm_right {
+	float:right;
+	margin-left: 6px;
 }
 
-nav #login {
-  border-right: 1px solid #ddd;
-  box-shadow: 1px 0 0 #fff;  
+.login_elm {
+	float:right;
+	margin-left: 6px;
 }
 
-nav #login-trigger,
-nav #signup a {
-  display: inline-block;
-  *display: inline;
-  *zoom: 1;
-  height: 25px;
-  line-height: 25px;
-  font-weight: bold;
-  padding: 0 8px;
-  text-decoration: none;
-  color: #444;
-  text-shadow: 0 1px 0 #fff; 
+#login {
 }
 
-nav #signup a {
-  border-radius: 0 3px 3px 0;
+#login-trigger,
+.login_elm {
+	display: inline-block;
+	position: relative;
+	font-weight: bold;
+	padding: 4px;
+	text-decoration: none;
+	color: #444;
+	text-shadow: 0 1px 0 #fff; 
+	border-radius: 0 3px 3px 0;
 }
 
-nav #login-trigger {
-  border-radius: 3px 0 0 3px;
-}
-
-nav #login-trigger:hover,
-nav #login .active,
-nav #signup a:hover {
+#login .active {
   background: #fff;
 }
 
-nav #login-content {
+#login-content {
   display: none;
   position: absolute;
   top: 24px;
-  right: 0;
+  right: -64px;
   z-index: 999;    
   background: #fff;
   background-image: linear-gradient(top, #fff, #eee);  
   padding: 15px;
   box-shadow: 0 2px 2px -1px rgba(0,0,0,.9);
   border-radius: 3px 0 3px 3px;
-}
-
-nav li #login-content {
-  right: 0;
-  width: 250px;  
 }
 
 /*--------------------*/

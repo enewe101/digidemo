@@ -12,13 +12,17 @@
 			{% include "digidemo/_i_main_nav_bar.html" %}
 
 			<div id="search_bar">
-				<form type="get" action="{% url "search" %}">  
-					<input type="text" name="q" />
-					<input class="search_submit" type="submit" value="" />
-				</form>
+				<div id="search_row">
+					<form type="get" action="{% url "search" %}">  
+						<input type="text" name="q" />
+						<input class="search_submit" type="submit" value="" />
+					</form>
+				</div>
 			</div>
 
-			{% include "digidemo/_w_login_user.html" %}
+			<div id="login_row">
+				{% include "digidemo/_w_login_user.html" %}
+			</div>
 
 		</div>
 	</div>
