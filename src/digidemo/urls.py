@@ -28,6 +28,7 @@ urlpatterns = patterns('',
 	# login page
 	url(r'^login_required/', Login().view, name='login_required'),
 	url(r'^login_required/(?P<next_url>.+)', Login().view, name='login_required'),
+	url(r'^do_reload/', do_reload, name='do_reload'),
 
 	# main tabs
 	url(r'^petition_list', AllPetitionListView().view, name="petition_list"),

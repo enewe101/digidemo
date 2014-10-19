@@ -30,7 +30,7 @@
 		<nav>
 			<ul>
 				<li id="login">
-					<a id="login-trigger" href="#">
+					<a id="login-trigger" >
 						login
 					</a>
 					<div id="login-content">
@@ -66,6 +66,7 @@
 <script>
 (function(){
 
+	RELOAD_URL = '{% url "do_reload" %}';
 
 	// arm the login triger to slide open / closed the login form
 	$('#login-trigger').click(function(){
@@ -90,7 +91,7 @@
 			+ document.getElementById('username').value
 			+ "</li></ul></nav>"
 		);
-		location.reload();
+		window.location = RELOAD_URL;
 	}
 
 	// define a callback to be executed when login fails
@@ -107,7 +108,9 @@
 	// make clicking the logout cause a logout and reload the page
 	$( "#logout" ).click(function( event ) {
 		ajax('ajax_logout', {}, {
-			'success': function(){location.reload()},
+			'success': function(){
+				window.location = RELOAD_URL;
+			},
 			'error': function(){alert('error')}
 		})
 	});

@@ -1321,55 +1321,11 @@ def show_test_page(request):
 	return render(request, 'digidemo/test.html', {})
 
 
-#def login(request, provider_name):
-#
-#	authomatic = Authomatic(CONFIG, 'a super secret random string')
-#	response = HttpResponse();
-#	result = authomatic.login(DjangoAdapter(request, response), provider_name)
-#
-#	if result:
-#		# If there is result, the login procedure is over and we can write to 
-#		# response.
-#		response.write('<a href="..">Home</a>')
-#		if not (result.user.name and result.user.id):
-#		   result.user.update()
-#			
-#		# Welcome the user.
-#		response.write(u'<h1>Hi {0}</h1>'.format(result.user.name))
-#		response.write(u'<h2>Your id is: {0}</h2>'.format(result.user.id))
-#		response.write(
-#			u'<h2>Your email is: {0}</h2>'.format(result.user.email))
-#		url = 'https://graph.facebook.com/{0}/picture?type=large'
-#		url = url.format(result.user.id)
-#		response.write(url)
-#		access_response = result.provider.access(url)
-#		response.write(access_response.data.keys())
-#		urllib.urlretrieve(url, "../"+result.user.name+".jpg")
-#
-#		logged_in_user = User.objects.filter(fname=result.user.name)
-#		count = len(logged_in_user);
-#		if count == 0:
-#			logged_in_user = None;
-#			logged_in_user = User(
-#				email='test@test.com',
-#				email_validated=1,
-#				avatar_img=result.user.name+'.jpg',
-#				avatar_name=result.user.name,
-#				fname=result.user.name,
-#				lname='test',
-#				rep=10,
-#				zip_code='h2x1x3',
-#				country='india',
-#				province='kar',
-#				street='1'
-#			)
-#			logged_in_user.save();
-#
-#		request.session['member_id'] = result.user.name;
-#		response.write(
-#			'Login with <a href="../proposals/keystone_xl">check</a>.<br />')
-#
-#	return response;
+# A simple way to force reload from the server.  
+# This allows one to trigger a reload without the risk of re-posting form data
+def do_reload(request):
+	return redirect(request.META['HTTP_REFERER'])
+	
 
 class AllPetitionListView(object):
 	def view(self, request):
@@ -1443,7 +1399,7 @@ def userRegistration(request):
 		return redirect('../mainPage')
 	
 	registrationForm = NameForm();
-	       
+ 
 	return render(
 		request,
 		'digidemo/User_registration.html',
