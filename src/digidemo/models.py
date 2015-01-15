@@ -14,6 +14,18 @@ URL_LENGTH = 256
 TITLE_LENGTH = 256
 DEFAULT_COMMENT_LENGTH = 512
 DEFAULT_TEXT_LENGTH = 8192
+EVENT_TYPE_CHOICES = (
+	('EDIT_ISSUE', 'edit issue'),
+	('QUESTION', 'question'),
+	('ANSWER', 'answer'),
+	('DISCUSSION', 'discussion'),
+	('REPLY', 'reply'),
+	('COMMENT', 'comment'),
+	('LETTER', 'letter'),
+	('SIGN_LETTER','sign letter'),
+	('SYSTEM', 'system'),
+)
+
 
 
 # *** Abstract Models *** #
@@ -63,7 +75,8 @@ class Subscribable(TimeStamped):
 		they generated.
 	'''
 		
-	subscription_id = models.ForeignKey('SubscriptionId', editable=False, null=True)
+	subscription_id = models.ForeignKey('SubscriptionId', editable=False)
+
 
 	def _get_subscription_id(self):
 		s = SubscriptionId()
@@ -81,20 +94,6 @@ class Subscribable(TimeStamped):
 
 
 # *** Concrete Models *** # 
-
-class SubscriptionId(TimeStamped):
-	'''
-		this is a list of all the subscribable ids ever assigned.  It may seems
-		strange to have a table that stores only primary keys!  But it 
-		provides a linkage point between subscribable objects, like proposals,
-		questions, discussions, etc, and user's subscriptions.
-			2) By linking to the SubscriptionId, rather than the subscribable
-				directly, we don't have an issue with the fact that the 
-				subscribables are of heterogeneous types.
-			1) We rely on the db's autoincrement to give out unique 
-				subscription id's.
-	'''
-	subscription_id = models.AutoField(primary_key=True)
 
 
 class Sector(TimeStamped):
@@ -440,4 +439,76 @@ class CommentVote(Vote):
 
 	class Meta:
 		unique_together = ('user', 'target')
+
+
+# *** Models for handling Notifications ***#
+
+class SubscriptionId(TimeStamped):
+	'''
+		this is a list of all the subscribable ids ever assigned.  It may seems
+		strange to have a table that stores only primary keys!  But it 
+		provides a linkage point between subscribable objects, like proposals,
+		questions, discussions, etc, and user's subscriptions.
+			2) By linking to the SubscriptionId, rather than the subscribable
+				directly, we don't have an issue with the fact that the 
+				subscribables are of heterogeneous types.
+			1) We rely on the db's autoincrement to give out unique 
+				subscription id's.
+	'''
+	subscription_id = models.AutoField(primary_key=True)
+	
+	
+class Publication(TimeStamped):
+	'''
+		This logs events that should trigger notifications.  An asyncronous
+		process periodically looks for unposted publications, checks which
+		users are subscribed, and makes a notification entry for the 
+		publication for each subscribed user.  One event makes only one
+		Publication, but the publication leads to many Notifications.
+	'''
+
+	source_user = models.ForeignKey(
+		User, related_name='publications', null=True)
+	subscription_id = models.ForeignKey('SubscriptionId', 
+		related_name='publications')
+	event_type = models.CharField(
+		max_length=20, choices=EVENT_TYPE_CHOICES)
+	was_posted = models.BooleanField(default=False)
+	event_data = models.CharField(max_length=2048)
+	link_back = models.URLField(max_length=512, null=True)
+
+
+class Notifications(TimeStamped):
+	'''
+		A list of notifications to be delivered (or recently delivered)
+		to users.  Existing notifications can also lead to email being sent
+		to users, depending on the user's settings, and how much time has
+		passed since the notification was first inserted.
+	'''
+	source_user = models.ForeignKey(
+		User, related_name='triggered_notifications', null=True)
+	target_user = models.ForeignKey(
+		User, related_name='received_notifications', null=True)
+	event_type = models.CharField(
+			max_length=20, choices=EVENT_TYPE_CHOICES)
+	event_data = models.CharField(max_length=2048)
+	link_back = models.URLField(max_length=512, null=True)
+	was_seen = models.BooleanField(default=False)
+	was_mailed = models.BooleanField(default=False)
+
+
+class Subscriptions(TimeStamped):
+	'''
+		Lists the objects that users are subscribed to.
+	'''
+	REASON_CHOICES = (
+		('AUTHOR', 'author'),
+		('COMMENTER', 'commenter'),
+		('SUBSCRIBED', 'actively subscribed'),
+	)
+	user_id = models.ForeignKey(User, related_name='subscriptions')
+	reason = models.CharField(max_length=20, choices=REASON_CHOICES)
+	subscription_id = models.ForeignKey('SubscriptionId', 
+		related_name='subscriptions')
+
 
