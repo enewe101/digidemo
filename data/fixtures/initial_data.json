@@ -2014,14 +2014,18 @@
         "fields": {
             "email_validated": true, 
             "province": "Karnatka", 
+            "do_email_petitions": true, 
+            "do_email_responses": true, 
             "country": "India", 
             "rep": 130, 
             "creation_date": "2014-07-13T17:04:58Z", 
             "followedProposals": [], 
+            "do_email_watched": true, 
             "street": "Somewhere", 
             "user": 1, 
             "last_modified": "2014-09-04T05:47:19Z", 
             "avatar_img": "avatars/superuser.jpg", 
+            "do_email_news": true, 
             "zip_code": "560072"
         }
     }, 
@@ -2031,14 +2035,18 @@
         "fields": {
             "email_validated": true, 
             "province": "QC", 
+            "do_email_petitions": true, 
+            "do_email_responses": true, 
             "country": "CAN", 
             "rep": 34, 
             "creation_date": "2014-07-13T17:04:58Z", 
             "followedProposals": [], 
+            "do_email_watched": true, 
             "street": "56 Long Ave.", 
             "user": 2, 
             "last_modified": "2014-09-01T00:03:48Z", 
             "avatar_img": "avatars/regularuser.jpg", 
+            "do_email_news": true, 
             "zip_code": "51515"
         }
     }, 
@@ -2048,14 +2056,18 @@
         "fields": {
             "email_validated": false, 
             "province": "", 
+            "do_email_petitions": true, 
+            "do_email_responses": true, 
             "country": "", 
             "rep": 0, 
             "creation_date": "2014-08-22T16:40:26Z", 
             "followedProposals": [], 
+            "do_email_watched": true, 
             "street": "", 
             "user": 3, 
             "last_modified": "2014-08-22T16:45:16Z", 
             "avatar_img": "", 
+            "do_email_news": true, 
             "zip_code": ""
         }
     }, 

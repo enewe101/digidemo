@@ -1305,6 +1305,10 @@ CREATE TABLE `digidemo_userprofile` (
   `zip_code` varchar(10) NOT NULL,
   `country` varchar(64) NOT NULL,
   `province` varchar(32) NOT NULL,
+  `do_email_news` tinyint(1) NOT NULL,
+  `do_email_responses` tinyint(1) NOT NULL,
+  `do_email_petitions` tinyint(1) NOT NULL,
+  `do_email_watched` tinyint(1) NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `user_id` (`user_id`),
   CONSTRAINT `user_id_refs_id_7d86ea27` FOREIGN KEY (`user_id`) REFERENCES `auth_user` (`id`)
@@ -1317,7 +1321,7 @@ CREATE TABLE `digidemo_userprofile` (
 
 LOCK TABLES `digidemo_userprofile` WRITE;
 /*!40000 ALTER TABLE `digidemo_userprofile` DISABLE KEYS */;
-REPLACE INTO `digidemo_userprofile` (`id`, `creation_date`, `last_modified`, `user_id`, `email_validated`, `avatar_img`, `rep`, `street`, `zip_code`, `country`, `province`) VALUES (1,'2014-07-13 17:04:58','2014-09-04 05:47:19',1,1,'avatars/superuser.jpg',130,'Somewhere','560072','India','Karnatka'),(2,'2014-07-13 17:04:58','2014-09-01 00:03:48',2,1,'avatars/regularuser.jpg',34,'56 Long Ave.','51515','CAN','QC'),(3,'2014-08-22 16:40:26','2014-08-22 16:45:16',3,0,'',0,'','','','');
+REPLACE INTO `digidemo_userprofile` (`id`, `creation_date`, `last_modified`, `user_id`, `email_validated`, `avatar_img`, `rep`, `street`, `zip_code`, `country`, `province`, `do_email_news`, `do_email_responses`, `do_email_petitions`, `do_email_watched`) VALUES (1,'2014-07-13 17:04:58','2014-09-04 05:47:19',1,1,'avatars/superuser.jpg',130,'Somewhere','560072','India','Karnatka',1,1,1,1),(2,'2014-07-13 17:04:58','2014-09-01 00:03:48',2,1,'avatars/regularuser.jpg',34,'56 Long Ave.','51515','CAN','QC',1,1,1,1),(3,'2014-08-22 16:40:26','2014-08-22 16:45:16',3,0,'',0,'','','','',1,1,1,1);
 /*!40000 ALTER TABLE `digidemo_userprofile` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -1444,4 +1448,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2015-01-15 15:33:19
+-- Dump completed on 2015-01-15 16:04:45

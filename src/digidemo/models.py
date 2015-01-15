@@ -225,6 +225,10 @@ class UserProfile(TimeStamped):
 	country = models.CharField(max_length=64, choices=COUNTRIES)
 	province = models.CharField(max_length=32, choices=PROVINCES, blank=True)
         followedProposals = models.ManyToManyField(Proposal,null=True)
+	do_email_news = models.BooleanField(default=True)
+	do_email_responses = models.BooleanField(default=True)
+	do_email_petitions = models.BooleanField(default=True)
+	do_email_watched = models.BooleanField(default=True)
 	
 	# non-field class attributes
 	rep_events = {
