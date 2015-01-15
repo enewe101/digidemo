@@ -55,6 +55,774 @@
     }, 
     {
         "pk": 1, 
+        "model": "digidemo.subscriptionid", 
+        "fields": {
+            "last_modified": "2015-01-15T18:57:19Z", 
+            "creation_date": "2015-01-15T18:57:19Z"
+        }
+    }, 
+    {
+        "pk": 2, 
+        "model": "digidemo.subscriptionid", 
+        "fields": {
+            "last_modified": "2015-01-15T18:57:19Z", 
+            "creation_date": "2015-01-15T18:57:19Z"
+        }
+    }, 
+    {
+        "pk": 3, 
+        "model": "digidemo.subscriptionid", 
+        "fields": {
+            "last_modified": "2015-01-15T18:57:19Z", 
+            "creation_date": "2015-01-15T18:57:19Z"
+        }
+    }, 
+    {
+        "pk": 4, 
+        "model": "digidemo.subscriptionid", 
+        "fields": {
+            "last_modified": "2015-01-15T18:57:19Z", 
+            "creation_date": "2015-01-15T18:57:19Z"
+        }
+    }, 
+    {
+        "pk": 5, 
+        "model": "digidemo.subscriptionid", 
+        "fields": {
+            "last_modified": "2015-01-15T18:57:19Z", 
+            "creation_date": "2015-01-15T18:57:19Z"
+        }
+    }, 
+    {
+        "pk": 6, 
+        "model": "digidemo.subscriptionid", 
+        "fields": {
+            "last_modified": "2015-01-15T18:57:19Z", 
+            "creation_date": "2015-01-15T18:57:19Z"
+        }
+    }, 
+    {
+        "pk": 7, 
+        "model": "digidemo.subscriptionid", 
+        "fields": {
+            "last_modified": "2015-01-15T18:57:19Z", 
+            "creation_date": "2015-01-15T18:57:19Z"
+        }
+    }, 
+    {
+        "pk": 8, 
+        "model": "digidemo.subscriptionid", 
+        "fields": {
+            "last_modified": "2015-01-15T18:57:19Z", 
+            "creation_date": "2015-01-15T18:57:19Z"
+        }
+    }, 
+    {
+        "pk": 9, 
+        "model": "digidemo.subscriptionid", 
+        "fields": {
+            "last_modified": "2015-01-15T18:57:19Z", 
+            "creation_date": "2015-01-15T18:57:19Z"
+        }
+    }, 
+    {
+        "pk": 10, 
+        "model": "digidemo.subscriptionid", 
+        "fields": {
+            "last_modified": "2015-01-15T18:57:19Z", 
+            "creation_date": "2015-01-15T18:57:19Z"
+        }
+    }, 
+    {
+        "pk": 11, 
+        "model": "digidemo.subscriptionid", 
+        "fields": {
+            "last_modified": "2015-01-15T18:57:19Z", 
+            "creation_date": "2015-01-15T18:57:19Z"
+        }
+    }, 
+    {
+        "pk": 12, 
+        "model": "digidemo.subscriptionid", 
+        "fields": {
+            "last_modified": "2015-01-15T18:57:19Z", 
+            "creation_date": "2015-01-15T18:57:19Z"
+        }
+    }, 
+    {
+        "pk": 13, 
+        "model": "digidemo.subscriptionid", 
+        "fields": {
+            "last_modified": "2015-01-15T18:57:19Z", 
+            "creation_date": "2015-01-15T18:57:19Z"
+        }
+    }, 
+    {
+        "pk": 14, 
+        "model": "digidemo.subscriptionid", 
+        "fields": {
+            "last_modified": "2015-01-15T18:57:19Z", 
+            "creation_date": "2015-01-15T18:57:19Z"
+        }
+    }, 
+    {
+        "pk": 15, 
+        "model": "digidemo.subscriptionid", 
+        "fields": {
+            "last_modified": "2015-01-15T18:57:37Z", 
+            "creation_date": "2015-01-15T18:57:37Z"
+        }
+    }, 
+    {
+        "pk": 16, 
+        "model": "digidemo.subscriptionid", 
+        "fields": {
+            "last_modified": "2015-01-15T18:57:37Z", 
+            "creation_date": "2015-01-15T18:57:37Z"
+        }
+    }, 
+    {
+        "pk": 17, 
+        "model": "digidemo.subscriptionid", 
+        "fields": {
+            "last_modified": "2015-01-15T18:57:37Z", 
+            "creation_date": "2015-01-15T18:57:37Z"
+        }
+    }, 
+    {
+        "pk": 18, 
+        "model": "digidemo.subscriptionid", 
+        "fields": {
+            "last_modified": "2015-01-15T18:57:37Z", 
+            "creation_date": "2015-01-15T18:57:37Z"
+        }
+    }, 
+    {
+        "pk": 19, 
+        "model": "digidemo.subscriptionid", 
+        "fields": {
+            "last_modified": "2015-01-15T18:57:37Z", 
+            "creation_date": "2015-01-15T18:57:37Z"
+        }
+    }, 
+    {
+        "pk": 20, 
+        "model": "digidemo.subscriptionid", 
+        "fields": {
+            "last_modified": "2015-01-15T18:57:37Z", 
+            "creation_date": "2015-01-15T18:57:37Z"
+        }
+    }, 
+    {
+        "pk": 21, 
+        "model": "digidemo.subscriptionid", 
+        "fields": {
+            "last_modified": "2015-01-15T18:57:37Z", 
+            "creation_date": "2015-01-15T18:57:37Z"
+        }
+    }, 
+    {
+        "pk": 22, 
+        "model": "digidemo.subscriptionid", 
+        "fields": {
+            "last_modified": "2015-01-15T18:57:37Z", 
+            "creation_date": "2015-01-15T18:57:37Z"
+        }
+    }, 
+    {
+        "pk": 23, 
+        "model": "digidemo.subscriptionid", 
+        "fields": {
+            "last_modified": "2015-01-15T18:57:37Z", 
+            "creation_date": "2015-01-15T18:57:37Z"
+        }
+    }, 
+    {
+        "pk": 24, 
+        "model": "digidemo.subscriptionid", 
+        "fields": {
+            "last_modified": "2015-01-15T18:57:37Z", 
+            "creation_date": "2015-01-15T18:57:37Z"
+        }
+    }, 
+    {
+        "pk": 25, 
+        "model": "digidemo.subscriptionid", 
+        "fields": {
+            "last_modified": "2015-01-15T18:57:37Z", 
+            "creation_date": "2015-01-15T18:57:37Z"
+        }
+    }, 
+    {
+        "pk": 26, 
+        "model": "digidemo.subscriptionid", 
+        "fields": {
+            "last_modified": "2015-01-15T18:57:37Z", 
+            "creation_date": "2015-01-15T18:57:37Z"
+        }
+    }, 
+    {
+        "pk": 27, 
+        "model": "digidemo.subscriptionid", 
+        "fields": {
+            "last_modified": "2015-01-15T18:57:37Z", 
+            "creation_date": "2015-01-15T18:57:37Z"
+        }
+    }, 
+    {
+        "pk": 28, 
+        "model": "digidemo.subscriptionid", 
+        "fields": {
+            "last_modified": "2015-01-15T18:57:44Z", 
+            "creation_date": "2015-01-15T18:57:44Z"
+        }
+    }, 
+    {
+        "pk": 29, 
+        "model": "digidemo.subscriptionid", 
+        "fields": {
+            "last_modified": "2015-01-15T18:57:44Z", 
+            "creation_date": "2015-01-15T18:57:44Z"
+        }
+    }, 
+    {
+        "pk": 30, 
+        "model": "digidemo.subscriptionid", 
+        "fields": {
+            "last_modified": "2015-01-15T18:57:44Z", 
+            "creation_date": "2015-01-15T18:57:44Z"
+        }
+    }, 
+    {
+        "pk": 31, 
+        "model": "digidemo.subscriptionid", 
+        "fields": {
+            "last_modified": "2015-01-15T18:57:50Z", 
+            "creation_date": "2015-01-15T18:57:50Z"
+        }
+    }, 
+    {
+        "pk": 32, 
+        "model": "digidemo.subscriptionid", 
+        "fields": {
+            "last_modified": "2015-01-15T18:57:50Z", 
+            "creation_date": "2015-01-15T18:57:50Z"
+        }
+    }, 
+    {
+        "pk": 33, 
+        "model": "digidemo.subscriptionid", 
+        "fields": {
+            "last_modified": "2015-01-15T18:57:50Z", 
+            "creation_date": "2015-01-15T18:57:50Z"
+        }
+    }, 
+    {
+        "pk": 34, 
+        "model": "digidemo.subscriptionid", 
+        "fields": {
+            "last_modified": "2015-01-15T18:57:50Z", 
+            "creation_date": "2015-01-15T18:57:50Z"
+        }
+    }, 
+    {
+        "pk": 35, 
+        "model": "digidemo.subscriptionid", 
+        "fields": {
+            "last_modified": "2015-01-15T18:57:50Z", 
+            "creation_date": "2015-01-15T18:57:50Z"
+        }
+    }, 
+    {
+        "pk": 36, 
+        "model": "digidemo.subscriptionid", 
+        "fields": {
+            "last_modified": "2015-01-15T18:57:50Z", 
+            "creation_date": "2015-01-15T18:57:50Z"
+        }
+    }, 
+    {
+        "pk": 37, 
+        "model": "digidemo.subscriptionid", 
+        "fields": {
+            "last_modified": "2015-01-15T18:57:50Z", 
+            "creation_date": "2015-01-15T18:57:50Z"
+        }
+    }, 
+    {
+        "pk": 38, 
+        "model": "digidemo.subscriptionid", 
+        "fields": {
+            "last_modified": "2015-01-15T18:57:51Z", 
+            "creation_date": "2015-01-15T18:57:51Z"
+        }
+    }, 
+    {
+        "pk": 39, 
+        "model": "digidemo.subscriptionid", 
+        "fields": {
+            "last_modified": "2015-01-15T18:57:51Z", 
+            "creation_date": "2015-01-15T18:57:51Z"
+        }
+    }, 
+    {
+        "pk": 40, 
+        "model": "digidemo.subscriptionid", 
+        "fields": {
+            "last_modified": "2015-01-15T18:57:51Z", 
+            "creation_date": "2015-01-15T18:57:51Z"
+        }
+    }, 
+    {
+        "pk": 41, 
+        "model": "digidemo.subscriptionid", 
+        "fields": {
+            "last_modified": "2015-01-15T18:57:51Z", 
+            "creation_date": "2015-01-15T18:57:51Z"
+        }
+    }, 
+    {
+        "pk": 42, 
+        "model": "digidemo.subscriptionid", 
+        "fields": {
+            "last_modified": "2015-01-15T18:57:51Z", 
+            "creation_date": "2015-01-15T18:57:51Z"
+        }
+    }, 
+    {
+        "pk": 43, 
+        "model": "digidemo.subscriptionid", 
+        "fields": {
+            "last_modified": "2015-01-15T18:57:51Z", 
+            "creation_date": "2015-01-15T18:57:51Z"
+        }
+    }, 
+    {
+        "pk": 44, 
+        "model": "digidemo.subscriptionid", 
+        "fields": {
+            "last_modified": "2015-01-15T18:57:51Z", 
+            "creation_date": "2015-01-15T18:57:51Z"
+        }
+    }, 
+    {
+        "pk": 45, 
+        "model": "digidemo.subscriptionid", 
+        "fields": {
+            "last_modified": "2015-01-15T18:57:51Z", 
+            "creation_date": "2015-01-15T18:57:51Z"
+        }
+    }, 
+    {
+        "pk": 46, 
+        "model": "digidemo.subscriptionid", 
+        "fields": {
+            "last_modified": "2015-01-15T18:57:51Z", 
+            "creation_date": "2015-01-15T18:57:51Z"
+        }
+    }, 
+    {
+        "pk": 47, 
+        "model": "digidemo.subscriptionid", 
+        "fields": {
+            "last_modified": "2015-01-15T18:57:51Z", 
+            "creation_date": "2015-01-15T18:57:51Z"
+        }
+    }, 
+    {
+        "pk": 48, 
+        "model": "digidemo.subscriptionid", 
+        "fields": {
+            "last_modified": "2015-01-15T18:57:51Z", 
+            "creation_date": "2015-01-15T18:57:51Z"
+        }
+    }, 
+    {
+        "pk": 49, 
+        "model": "digidemo.subscriptionid", 
+        "fields": {
+            "last_modified": "2015-01-15T18:57:59Z", 
+            "creation_date": "2015-01-15T18:57:59Z"
+        }
+    }, 
+    {
+        "pk": 50, 
+        "model": "digidemo.subscriptionid", 
+        "fields": {
+            "last_modified": "2015-01-15T18:57:59Z", 
+            "creation_date": "2015-01-15T18:57:59Z"
+        }
+    }, 
+    {
+        "pk": 51, 
+        "model": "digidemo.subscriptionid", 
+        "fields": {
+            "last_modified": "2015-01-15T18:57:59Z", 
+            "creation_date": "2015-01-15T18:57:59Z"
+        }
+    }, 
+    {
+        "pk": 52, 
+        "model": "digidemo.subscriptionid", 
+        "fields": {
+            "last_modified": "2015-01-15T18:57:59Z", 
+            "creation_date": "2015-01-15T18:57:59Z"
+        }
+    }, 
+    {
+        "pk": 53, 
+        "model": "digidemo.subscriptionid", 
+        "fields": {
+            "last_modified": "2015-01-15T18:57:59Z", 
+            "creation_date": "2015-01-15T18:57:59Z"
+        }
+    }, 
+    {
+        "pk": 54, 
+        "model": "digidemo.subscriptionid", 
+        "fields": {
+            "last_modified": "2015-01-15T18:58:07Z", 
+            "creation_date": "2015-01-15T18:58:07Z"
+        }
+    }, 
+    {
+        "pk": 55, 
+        "model": "digidemo.subscriptionid", 
+        "fields": {
+            "last_modified": "2015-01-15T18:58:07Z", 
+            "creation_date": "2015-01-15T18:58:07Z"
+        }
+    }, 
+    {
+        "pk": 56, 
+        "model": "digidemo.subscriptionid", 
+        "fields": {
+            "last_modified": "2015-01-15T18:58:07Z", 
+            "creation_date": "2015-01-15T18:58:07Z"
+        }
+    }, 
+    {
+        "pk": 57, 
+        "model": "digidemo.subscriptionid", 
+        "fields": {
+            "last_modified": "2015-01-15T18:58:07Z", 
+            "creation_date": "2015-01-15T18:58:07Z"
+        }
+    }, 
+    {
+        "pk": 58, 
+        "model": "digidemo.subscriptionid", 
+        "fields": {
+            "last_modified": "2015-01-15T18:58:07Z", 
+            "creation_date": "2015-01-15T18:58:07Z"
+        }
+    }, 
+    {
+        "pk": 59, 
+        "model": "digidemo.subscriptionid", 
+        "fields": {
+            "last_modified": "2015-01-15T18:58:07Z", 
+            "creation_date": "2015-01-15T18:58:07Z"
+        }
+    }, 
+    {
+        "pk": 60, 
+        "model": "digidemo.subscriptionid", 
+        "fields": {
+            "last_modified": "2015-01-15T18:58:07Z", 
+            "creation_date": "2015-01-15T18:58:07Z"
+        }
+    }, 
+    {
+        "pk": 61, 
+        "model": "digidemo.subscriptionid", 
+        "fields": {
+            "last_modified": "2015-01-15T18:58:07Z", 
+            "creation_date": "2015-01-15T18:58:07Z"
+        }
+    }, 
+    {
+        "pk": 62, 
+        "model": "digidemo.subscriptionid", 
+        "fields": {
+            "last_modified": "2015-01-15T18:58:07Z", 
+            "creation_date": "2015-01-15T18:58:07Z"
+        }
+    }, 
+    {
+        "pk": 63, 
+        "model": "digidemo.subscriptionid", 
+        "fields": {
+            "last_modified": "2015-01-15T18:58:07Z", 
+            "creation_date": "2015-01-15T18:58:07Z"
+        }
+    }, 
+    {
+        "pk": 64, 
+        "model": "digidemo.subscriptionid", 
+        "fields": {
+            "last_modified": "2015-01-15T18:58:07Z", 
+            "creation_date": "2015-01-15T18:58:07Z"
+        }
+    }, 
+    {
+        "pk": 65, 
+        "model": "digidemo.subscriptionid", 
+        "fields": {
+            "last_modified": "2015-01-15T18:58:07Z", 
+            "creation_date": "2015-01-15T18:58:07Z"
+        }
+    }, 
+    {
+        "pk": 66, 
+        "model": "digidemo.subscriptionid", 
+        "fields": {
+            "last_modified": "2015-01-15T18:58:07Z", 
+            "creation_date": "2015-01-15T18:58:07Z"
+        }
+    }, 
+    {
+        "pk": 67, 
+        "model": "digidemo.subscriptionid", 
+        "fields": {
+            "last_modified": "2015-01-15T18:58:07Z", 
+            "creation_date": "2015-01-15T18:58:07Z"
+        }
+    }, 
+    {
+        "pk": 68, 
+        "model": "digidemo.subscriptionid", 
+        "fields": {
+            "last_modified": "2015-01-15T18:58:07Z", 
+            "creation_date": "2015-01-15T18:58:07Z"
+        }
+    }, 
+    {
+        "pk": 69, 
+        "model": "digidemo.subscriptionid", 
+        "fields": {
+            "last_modified": "2015-01-15T18:58:07Z", 
+            "creation_date": "2015-01-15T18:58:07Z"
+        }
+    }, 
+    {
+        "pk": 70, 
+        "model": "digidemo.subscriptionid", 
+        "fields": {
+            "last_modified": "2015-01-15T18:58:07Z", 
+            "creation_date": "2015-01-15T18:58:07Z"
+        }
+    }, 
+    {
+        "pk": 71, 
+        "model": "digidemo.subscriptionid", 
+        "fields": {
+            "last_modified": "2015-01-15T18:58:07Z", 
+            "creation_date": "2015-01-15T18:58:07Z"
+        }
+    }, 
+    {
+        "pk": 72, 
+        "model": "digidemo.subscriptionid", 
+        "fields": {
+            "last_modified": "2015-01-15T18:58:07Z", 
+            "creation_date": "2015-01-15T18:58:07Z"
+        }
+    }, 
+    {
+        "pk": 73, 
+        "model": "digidemo.subscriptionid", 
+        "fields": {
+            "last_modified": "2015-01-15T18:58:07Z", 
+            "creation_date": "2015-01-15T18:58:07Z"
+        }
+    }, 
+    {
+        "pk": 74, 
+        "model": "digidemo.subscriptionid", 
+        "fields": {
+            "last_modified": "2015-01-15T18:58:07Z", 
+            "creation_date": "2015-01-15T18:58:07Z"
+        }
+    }, 
+    {
+        "pk": 75, 
+        "model": "digidemo.subscriptionid", 
+        "fields": {
+            "last_modified": "2015-01-15T18:58:07Z", 
+            "creation_date": "2015-01-15T18:58:07Z"
+        }
+    }, 
+    {
+        "pk": 76, 
+        "model": "digidemo.subscriptionid", 
+        "fields": {
+            "last_modified": "2015-01-15T18:58:07Z", 
+            "creation_date": "2015-01-15T18:58:07Z"
+        }
+    }, 
+    {
+        "pk": 77, 
+        "model": "digidemo.subscriptionid", 
+        "fields": {
+            "last_modified": "2015-01-15T18:58:07Z", 
+            "creation_date": "2015-01-15T18:58:07Z"
+        }
+    }, 
+    {
+        "pk": 78, 
+        "model": "digidemo.subscriptionid", 
+        "fields": {
+            "last_modified": "2015-01-15T18:58:07Z", 
+            "creation_date": "2015-01-15T18:58:07Z"
+        }
+    }, 
+    {
+        "pk": 79, 
+        "model": "digidemo.subscriptionid", 
+        "fields": {
+            "last_modified": "2015-01-15T18:58:07Z", 
+            "creation_date": "2015-01-15T18:58:07Z"
+        }
+    }, 
+    {
+        "pk": 80, 
+        "model": "digidemo.subscriptionid", 
+        "fields": {
+            "last_modified": "2015-01-15T18:58:07Z", 
+            "creation_date": "2015-01-15T18:58:07Z"
+        }
+    }, 
+    {
+        "pk": 81, 
+        "model": "digidemo.subscriptionid", 
+        "fields": {
+            "last_modified": "2015-01-15T18:58:07Z", 
+            "creation_date": "2015-01-15T18:58:07Z"
+        }
+    }, 
+    {
+        "pk": 82, 
+        "model": "digidemo.subscriptionid", 
+        "fields": {
+            "last_modified": "2015-01-15T18:58:07Z", 
+            "creation_date": "2015-01-15T18:58:07Z"
+        }
+    }, 
+    {
+        "pk": 83, 
+        "model": "digidemo.subscriptionid", 
+        "fields": {
+            "last_modified": "2015-01-15T18:58:07Z", 
+            "creation_date": "2015-01-15T18:58:07Z"
+        }
+    }, 
+    {
+        "pk": 84, 
+        "model": "digidemo.subscriptionid", 
+        "fields": {
+            "last_modified": "2015-01-15T18:58:07Z", 
+            "creation_date": "2015-01-15T18:58:07Z"
+        }
+    }, 
+    {
+        "pk": 85, 
+        "model": "digidemo.subscriptionid", 
+        "fields": {
+            "last_modified": "2015-01-15T18:58:07Z", 
+            "creation_date": "2015-01-15T18:58:07Z"
+        }
+    }, 
+    {
+        "pk": 86, 
+        "model": "digidemo.subscriptionid", 
+        "fields": {
+            "last_modified": "2015-01-15T18:58:07Z", 
+            "creation_date": "2015-01-15T18:58:07Z"
+        }
+    }, 
+    {
+        "pk": 87, 
+        "model": "digidemo.subscriptionid", 
+        "fields": {
+            "last_modified": "2015-01-15T18:58:07Z", 
+            "creation_date": "2015-01-15T18:58:07Z"
+        }
+    }, 
+    {
+        "pk": 88, 
+        "model": "digidemo.subscriptionid", 
+        "fields": {
+            "last_modified": "2015-01-15T18:58:07Z", 
+            "creation_date": "2015-01-15T18:58:07Z"
+        }
+    }, 
+    {
+        "pk": 89, 
+        "model": "digidemo.subscriptionid", 
+        "fields": {
+            "last_modified": "2015-01-15T18:58:07Z", 
+            "creation_date": "2015-01-15T18:58:07Z"
+        }
+    }, 
+    {
+        "pk": 90, 
+        "model": "digidemo.subscriptionid", 
+        "fields": {
+            "last_modified": "2015-01-15T18:58:07Z", 
+            "creation_date": "2015-01-15T18:58:07Z"
+        }
+    }, 
+    {
+        "pk": 91, 
+        "model": "digidemo.subscriptionid", 
+        "fields": {
+            "last_modified": "2015-01-15T18:58:07Z", 
+            "creation_date": "2015-01-15T18:58:07Z"
+        }
+    }, 
+    {
+        "pk": 92, 
+        "model": "digidemo.subscriptionid", 
+        "fields": {
+            "last_modified": "2015-01-15T18:58:07Z", 
+            "creation_date": "2015-01-15T18:58:07Z"
+        }
+    }, 
+    {
+        "pk": 93, 
+        "model": "digidemo.subscriptionid", 
+        "fields": {
+            "last_modified": "2015-01-15T18:58:07Z", 
+            "creation_date": "2015-01-15T18:58:07Z"
+        }
+    }, 
+    {
+        "pk": 94, 
+        "model": "digidemo.subscriptionid", 
+        "fields": {
+            "last_modified": "2015-01-15T18:58:07Z", 
+            "creation_date": "2015-01-15T18:58:07Z"
+        }
+    }, 
+    {
+        "pk": 95, 
+        "model": "digidemo.subscriptionid", 
+        "fields": {
+            "last_modified": "2015-01-15T18:58:07Z", 
+            "creation_date": "2015-01-15T18:58:07Z"
+        }
+    }, 
+    {
+        "pk": 96, 
+        "model": "digidemo.subscriptionid", 
+        "fields": {
+            "last_modified": "2015-01-15T18:58:07Z", 
+            "creation_date": "2015-01-15T18:58:07Z"
+        }
+    }, 
+    {
+        "pk": 1, 
         "model": "digidemo.sector", 
         "fields": {
             "last_modified": "2014-07-13T17:04:46Z", 
@@ -975,11 +1743,12 @@
             "text": "#Background#\r\nThe Keystone XL pipeline project is a contentious political issue, owing to probable environmental, economic, and social impacts. Environmentally, the pipeline might present a risk of contaminating groundwater and disturbing sensitive ecosystems, but it might also be a better alternative than ground transport by train or truck. Economically, the pipeline might produce jobs temporarily during its construction, and permanently in additional refinement activities in the US. It would also lead to a redistribution of crude supply, emphasizing export and raising the price of oil in the Midwestern US. Socially, the construction of the pipeline would disturb landowners currently in its path, and would disturb heritage sites of cultural significance.\r\n\r\n# Actors #\r\n - **TransCanada**: Corporation that owns the existing Keysone Pipeline System, and which has put forward the proposal to state and federal authorities for the Keystone XL extension.\r\n - **ConocoPhillips**: Corporation that was part-owner of the Keystone Pipeline System, bought out by TransCanada.\r\n - **Cardno Entrix**: Environmental Assessment Consultancy, contracted by TransCanada to produce an environmental assessment of the Keystone XL proposal.\r\n- **US Government**:\r\n        - **President Obama**: Can approve or reject the application for a Presidential Permit, legally needed to proceed with the construction project. \r\n         - **Environmental Protection Agency**: Oversees the environmental assessment of the project, and approves or rejects the application for an environmental permit, legally needed to proceed with the construction project.\r\n         - **US State Governments**: Each US state through which the proposed pipeline would pass can approve or reject the construction activities within its borders.\r\n     - **Canadian Government**:\r\n             - **National Energy Board of Canada** (NEB): Responsible for approving or rejecting the construction activities within Canada.\r\n- WorleyParsons: Corporation acting as the general contractor for the pipeline construction.\r\n        \r\n# Impacts #\r\n## Environmental Impacts ##\r\n**Hazards relating to oil spills**. The originally proposed route traversed the Sand Hills region and the Ogallala aquifer.  The Sand Hills region is a sensitive wetland ecosystem in Nebraska.  The Ogallala aquifer is one of the largest reserves of fresh water in the world, spans eight states, provides drinking water for two million people, and supports a US$20 billion worth of agricultural activity.\r\n        \r\nThe path of the pipeline has been revised by TransCanada to avoid the Sand Hills region, and reduce the length of piping running over the Ogallala aquifer.  The actual risks of a spill in the region of the aquifer are unclear, and the severity of impact is debated.  The pipeline, with a normal depth of 4 feet would be separated from the aquifer by a layer of fine clay, which might drastically reduce the actual effects on drinking water.  Thousands of miles of existing pipelines carrying crude oil and refined liquid hydrocarbons have crossed over the Ogallala Aquifer for years, so the severity of risk could be evaluated empirically.  The pipeline will be newly constructed, which should be considered when comparing to existing pipelines which do not benefit from technological advances or were converted from natural gas pipelines.\r\n        \r\n**Greenhouse Gas Emissions**.  The Keystone XL pipeline would carry crude oil to refineries for conversion into fuels, among other products.  The activities of extracting, refining, and burning petroleum-derived fuels is a major contributor to CO2 accumulation in the atmosphere and climate change.  By providing access to US and global markets, the Keystone XL pipeline would facilitate further extraction in the oilsands of Alberta.  \r\n\r\nIf the Keystone XL pipeline is not built, crude from the Albertan tarsands might be refined and exported from Canada, based on alternative Canadian pipeline  construction projects which would bring the crude to tidewater.  Additionally, ground transport of crude, by train and tanker, might be used instead, which adds to greenhouse gas emissions and poses its own safety hazards.\r\n        \r\n## Economic Impacts ##\r\n**Employment**.  Construction of the pipeline would provide temporary employment for about 2 years.  Estimates of the amount of employment vary widely.  A report by Perryman Group, a financial analysis firm that was hired by TransCanada, estimates construction would employ 20,000 US workers and spend US$7 billion.  A study conducted by Cornell ILR Global Labor Institute estimated construction would employ 2500 to 4650 US workers.  The US State Department estimated 5000 to 6000 temporary construction jobs.  It's Supplemenntal Environmental Impact Statement estimated 3900 US workers directly employed and 42000 US workers indirectly employed by construction activities. \r\n        \r\n**Risk of impact due to spills**.  The original route proposed for the Keystone XL pipeline passed over the Ogallala aquifer.  The aquifer supports about US$20 billion in agricultural activity.  If a spill contaminated the water, it could have serious economic impact.  The amended proposal has reduced the length of piping that crosses the aquifer.  The 2010 Enbridge oil spill along the Kalamazoo river in Michigan showed that spills can result in significant economic costs beyond environmental ones.\r\n        \r\n# Social Impacts #\r\n**Displacement of people**.  Land owners in the path of the pipeline would be displaced.  Landowners have already complained about threats by TransCanada to confiscate private land and some have faced lawsuits.  As of October 17, 2011 Transcanada had 34 eminent domain actions against landowners in Texas and 22 in South Dakota.\r\n        \r\n**Damage to public goods (excluding the environment)**.  Various sacred sites, and prehistoric or historic archeological sites, and sites with traditional cultural value to Native Americans and other groups might be disturbed, removed or demolished.  TransCanada made a major donation to the University of Toronto to promote education and research in the health of the Aboriginal population.\r\n        \r\n**Safety**.  Ground transport by tanker truck and rail is less safe.  As an example, the derailment of a train transporting crude oil at Lac-M\u00e9gantic in 2013 kiled 50 people.  Increased production in North Dakota has exceeded pipeline capacity since 2010, leading to increasing volumes of crude being shipped by truck or rail to refineries.  Alberta is expected to running up against a pipeline capacity limit around 2016.\r\n        \r\n# In Perspective #\r\n- The Alberta oil sands account for a quantity of GHG emissions equal to \r\n             - the coal-fired power plants in the State of Wisconsin \r\n             - 2.5% of total GHG emissions from the coal-fired power plants of the US\r\n             - 0.1% of global GHG emissions from all sources\r\n- The Enbridge \"Alberta Clipper\" expansion has continued during late 2013, adding approximately the same cross-border capacity.\r\n- The Keystone XL expansion is Phase 4 in the Keystone Pipeline system.\r\n             - it corresponds to between 1897 km, later revised to 1408 km of piping or 28% revised to 23% of the Keystone system by length.\r\n             - it will account for about 40% of the Keystone system's capacity if built.\r\n- There are currently about 320,000 km of similar oil pipelines in the US.\r\n- Alternative projects are being considered:\r\n                 - An all-Canadian pipeline north to the Arctic coast for shipping to markets in Europe and Asia\r\n                 - An all-Canadian pipeline (\"Energy East\") that would extend to Saint John, New Brunswick for export, while also supplying Montreal, Quebec City, and Saint John refineries.", 
             "title": "Keystone XL Pipeline Extension", 
             "proposal_image": "/digidemo/proposal-images/", 
-            "summary": "The Keystone XL Pipeline is a proposed extension to the existing Keystone Pipeline System, put forward by TransCanada, the corporation that owns the Keystone System. The pipeline would cross the Canada/US border, importing crude oil sourced from the Albertan oil sands, into the United States. The proposal is currently awaiting government approval. The pipeline would be newly constructed, and is similar to existing pipelines in North America.", 
+            "creation_date": "2014-07-13T17:03:48Z", 
             "score": 0, 
             "user": 2, 
-            "last_modified": "2014-09-04T02:24:14Z", 
-            "creation_date": "2014-07-13T17:03:48Z", 
+            "last_modified": "2015-01-15T19:05:03Z", 
+            "subscription_id": null, 
+            "summary": "The Keystone XL Pipeline is a proposed extension to the existing Keystone Pipeline System, put forward by TransCanada, the corporation that owns the Keystone System. The pipeline would cross the Canada/US border, importing crude oil sourced from the Albertan oil sands, into the United States. The proposal is currently awaiting government approval. The pipeline would be newly constructed, and is similar to existing pipelines in North America.", 
             "original_user": 1, 
             "is_published": true
         }
@@ -993,11 +1762,12 @@
             "text": "Test proposal text.", 
             "title": "Test Proposal", 
             "proposal_image": "/digidemo/proposal-images/", 
-            "summary": "Test proposal summary.", 
+            "creation_date": "2014-07-22T14:29:18Z", 
             "score": 0, 
             "user": 1, 
-            "last_modified": "2014-07-22T14:29:18Z", 
-            "creation_date": "2014-07-22T14:29:18Z", 
+            "last_modified": "2015-01-15T19:05:03Z", 
+            "subscription_id": null, 
+            "summary": "Test proposal summary.", 
             "original_user": 1, 
             "is_published": false
         }
@@ -1011,11 +1781,12 @@
             "text": "eaeua", 
             "title": "Test 2", 
             "proposal_image": "/digidemo/proposal-images/", 
-            "summary": "test2", 
+            "creation_date": "2014-07-22T14:53:28Z", 
             "score": 0, 
             "user": 1, 
-            "last_modified": "2014-07-22T14:53:28Z", 
-            "creation_date": "2014-07-22T14:53:28Z", 
+            "last_modified": "2015-01-15T19:05:03Z", 
+            "subscription_id": null, 
+            "summary": "test2", 
             "original_user": 1, 
             "is_published": false
         }
@@ -1031,11 +1802,12 @@
             "text": "Yo", 
             "title": "Yo", 
             "proposal_image": "/digidemo/proposal-images/", 
-            "summary": "y", 
+            "creation_date": "2014-08-29T23:38:57Z", 
             "score": 0, 
             "user": 1, 
-            "last_modified": "2014-08-29T23:38:57Z", 
-            "creation_date": "2014-08-29T23:38:57Z", 
+            "last_modified": "2015-01-15T19:05:03Z", 
+            "subscription_id": null, 
+            "summary": "y", 
             "original_user": 1, 
             "is_published": false
         }
@@ -1052,11 +1824,12 @@
             "text": "ghi", 
             "title": "abc", 
             "proposal_image": "/digidemo/proposal-images/", 
-            "summary": "def", 
+            "creation_date": "2014-08-30T23:31:18Z", 
             "score": 0, 
             "user": 1, 
-            "last_modified": "2014-08-30T23:31:18Z", 
-            "creation_date": "2014-08-30T23:31:18Z", 
+            "last_modified": "2015-01-15T19:05:03Z", 
+            "subscription_id": null, 
+            "summary": "def", 
             "original_user": 1, 
             "is_published": false
         }
@@ -1070,11 +1843,12 @@
             "text": "ghi", 
             "title": "abc", 
             "proposal_image": "/digidemo/proposal-images/", 
-            "summary": "def", 
+            "creation_date": "2014-08-30T23:35:34Z", 
             "score": 0, 
             "user": 1, 
-            "last_modified": "2014-08-30T23:35:34Z", 
-            "creation_date": "2014-08-30T23:35:34Z", 
+            "last_modified": "2015-01-15T19:05:03Z", 
+            "subscription_id": null, 
+            "summary": "def", 
             "original_user": 1, 
             "is_published": false
         }
@@ -1093,11 +1867,12 @@
             "text": "ghi", 
             "title": "abc", 
             "proposal_image": "/digidemo/proposal-images/", 
-            "summary": "def", 
+            "creation_date": "2014-08-30T23:36:09Z", 
             "score": 0, 
             "user": 1, 
-            "last_modified": "2014-08-30T23:36:09Z", 
-            "creation_date": "2014-08-30T23:36:09Z", 
+            "last_modified": "2015-01-15T19:05:03Z", 
+            "subscription_id": null, 
+            "summary": "def", 
             "original_user": 1, 
             "is_published": false
         }
@@ -1113,11 +1888,12 @@
             "text": "tesnt", 
             "title": "test", 
             "proposal_image": "/digidemo/proposal-images/", 
-            "summary": "test", 
+            "creation_date": "2014-08-31T00:11:21Z", 
             "score": 0, 
             "user": 1, 
-            "last_modified": "2014-08-31T00:11:21Z", 
-            "creation_date": "2014-08-31T00:11:21Z", 
+            "last_modified": "2015-01-15T19:05:03Z", 
+            "subscription_id": null, 
+            "summary": "test", 
             "original_user": 1, 
             "is_published": false
         }
@@ -1136,11 +1912,12 @@
             "text": "aeou", 
             "title": "aeou", 
             "proposal_image": "/digidemo/proposal-images/", 
-            "summary": "aeou", 
+            "creation_date": "2014-08-31T01:00:42Z", 
             "score": 0, 
             "user": 1, 
-            "last_modified": "2014-08-31T01:00:42Z", 
-            "creation_date": "2014-08-31T01:00:42Z", 
+            "last_modified": "2015-01-15T19:05:03Z", 
+            "subscription_id": null, 
+            "summary": "aeou", 
             "original_user": 1, 
             "is_published": false
         }
@@ -1160,11 +1937,12 @@
             "text": "oeo", 
             "title": "oe", 
             "proposal_image": "/digidemo/proposal-images/", 
-            "summary": "oe", 
+            "creation_date": "2014-09-03T02:39:57Z", 
             "score": 0, 
             "user": 1, 
-            "last_modified": "2014-09-03T02:39:57Z", 
-            "creation_date": "2014-09-03T02:39:57Z", 
+            "last_modified": "2015-01-15T19:05:03Z", 
+            "subscription_id": null, 
+            "summary": "oe", 
             "original_user": 1, 
             "is_published": false
         }
@@ -1184,11 +1962,12 @@
             "text": "test", 
             "title": "New Issue", 
             "proposal_image": "/digidemo/proposal-images/", 
-            "summary": "test", 
+            "creation_date": "2014-09-03T04:35:05Z", 
             "score": 0, 
             "user": 1, 
-            "last_modified": "2014-09-03T04:35:05Z", 
-            "creation_date": "2014-09-03T04:35:05Z", 
+            "last_modified": "2015-01-15T19:05:03Z", 
+            "subscription_id": null, 
+            "summary": "test", 
             "original_user": 1, 
             "is_published": false
         }
@@ -1206,11 +1985,12 @@
             "text": "e", 
             "title": "e", 
             "proposal_image": "/digidemo/proposal-images/", 
-            "summary": "e", 
+            "creation_date": "2014-09-03T05:13:56Z", 
             "score": 0, 
             "user": 1, 
-            "last_modified": "2014-09-03T05:13:56Z", 
-            "creation_date": "2014-09-03T05:13:56Z", 
+            "last_modified": "2015-01-15T19:05:03Z", 
+            "subscription_id": null, 
+            "summary": "e", 
             "original_user": 1, 
             "is_published": false
         }
@@ -1228,11 +2008,12 @@
             "text": "e", 
             "title": "e", 
             "proposal_image": "/digidemo/proposal-images/", 
-            "summary": "e", 
+            "creation_date": "2014-09-03T05:42:16Z", 
             "score": 0, 
             "user": 3, 
-            "last_modified": "2014-09-03T05:42:16Z", 
-            "creation_date": "2014-09-03T05:42:16Z", 
+            "last_modified": "2015-01-15T19:05:03Z", 
+            "subscription_id": null, 
+            "summary": "e", 
             "original_user": 3, 
             "is_published": false
         }
@@ -1251,11 +2032,12 @@
             "text": "e", 
             "title": "e", 
             "proposal_image": "/digidemo/proposal-images/", 
-            "summary": "e", 
+            "creation_date": "2014-09-03T16:14:09Z", 
             "score": 0, 
             "user": 3, 
-            "last_modified": "2014-09-03T16:14:09Z", 
-            "creation_date": "2014-09-03T16:14:09Z", 
+            "last_modified": "2015-01-15T19:05:03Z", 
+            "subscription_id": null, 
+            "summary": "e", 
             "original_user": 3, 
             "is_published": false
         }
@@ -2099,8 +2881,9 @@
             "text": "I do not support the project to expand the Keystone Pipeline System.  This proposal generates serious and certain  environmental losses, which do not justify the economic gains.  Furthermore, the development will bring wealth mainly to foreign shareholders, so that the actual economic gains will be much less than they should  be.", 
             "parent_letter": null, 
             "creation_date": "2014-07-13T17:02:17Z", 
-            "last_modified": "2014-08-29T18:05:03Z", 
+            "last_modified": "2015-01-15T19:05:22Z", 
             "user": 2, 
+            "subscription_id": null, 
             "score": 6
         }
     }, 
@@ -2117,8 +2900,9 @@
             "text": "A new letter!", 
             "parent_letter": null, 
             "creation_date": "2014-07-13T17:02:17Z", 
-            "last_modified": "2014-08-29T18:03:16Z", 
+            "last_modified": "2015-01-15T19:05:22Z", 
             "user": 2, 
+            "subscription_id": null, 
             "score": 2
         }
     }, 
@@ -2135,8 +2919,9 @@
             "text": "aoeu", 
             "parent_letter": null, 
             "creation_date": "2014-07-13T17:02:17Z", 
-            "last_modified": "2014-08-29T18:06:43Z", 
+            "last_modified": "2015-01-15T19:05:22Z", 
             "user": 2, 
+            "subscription_id": null, 
             "score": 2
         }
     }, 
@@ -2153,8 +2938,9 @@
             "text": "A new letter!", 
             "parent_letter": 14, 
             "creation_date": "2014-07-13T17:02:17Z", 
-            "last_modified": "2014-08-29T18:03:16Z", 
+            "last_modified": "2015-01-15T19:05:22Z", 
             "user": 1, 
+            "subscription_id": null, 
             "score": 1
         }
     }, 
@@ -2171,8 +2957,9 @@
             "text": "I do not support the project to expand the Keystone Pipeline System.  This proposal generates serious and certain  environmental losses, which do not justify the economic gains.  Furthermore, the development will bring wealth mainly to foreign shareholders, so that the actual economic gains will be much less than they should  be.", 
             "parent_letter": 1, 
             "creation_date": "2014-07-13T17:02:17Z", 
-            "last_modified": "2014-08-29T18:03:16Z", 
+            "last_modified": "2015-01-15T19:05:22Z", 
             "user": 1, 
+            "subscription_id": null, 
             "score": 1
         }
     }, 
@@ -2189,8 +2976,9 @@
             "text": "Wadatay", 
             "parent_letter": null, 
             "creation_date": "2014-07-13T17:02:17Z", 
-            "last_modified": "2014-09-01T04:47:27Z", 
+            "last_modified": "2015-01-15T19:05:22Z", 
             "user": 1, 
+            "subscription_id": null, 
             "score": 2
         }
     }, 
@@ -2207,8 +2995,9 @@
             "text": "I do not support the project to expand the Keystone Pipeline System.  This proposal generates serious and certain  environmental losses, which do not justify the economic gains.  Furthermore, the development will bring wealth mainly to foreign shareholders, so that the actual economic gains will be much less than they should  be.", 
             "parent_letter": 1, 
             "creation_date": "2014-07-13T17:02:17Z", 
-            "last_modified": "2014-08-29T18:03:17Z", 
+            "last_modified": "2015-01-15T19:05:22Z", 
             "user": 1, 
+            "subscription_id": null, 
             "score": 1
         }
     }, 
@@ -2225,8 +3014,9 @@
             "text": "I do not support the project to expand the Keystone Pipeline System.  This proposal generates serious and certain  environmental losses, which do not justify the economic gains.  Furthermore, the development will bring wealth mainly to foreign shareholders, so that the actual economic gains will be much less than they should  be.", 
             "parent_letter": 1, 
             "creation_date": "2014-07-13T17:02:17Z", 
-            "last_modified": "2014-08-29T18:03:17Z", 
+            "last_modified": "2015-01-15T19:05:22Z", 
             "user": 1, 
+            "subscription_id": null, 
             "score": 1
         }
     }, 
@@ -2243,8 +3033,9 @@
             "text": "I do not support the project to expand the Keystone Pipeline System.  This proposal generates serious and certain  environmental losses, which do not justify the economic gains.  Furthermore, the development will bring wealth mainly to foreign shareholders, so that the actual economic gains will be much less than they should  be.", 
             "parent_letter": 1, 
             "creation_date": "2014-07-13T17:02:17Z", 
-            "last_modified": "2014-08-29T18:03:17Z", 
+            "last_modified": "2015-01-15T19:05:22Z", 
             "user": 1, 
+            "subscription_id": null, 
             "score": 1
         }
     }, 
@@ -2261,8 +3052,9 @@
             "text": "aoeu", 
             "parent_letter": 16, 
             "creation_date": "2014-07-13T17:02:17Z", 
-            "last_modified": "2014-08-29T18:03:17Z", 
+            "last_modified": "2015-01-15T19:05:22Z", 
             "user": 1, 
+            "subscription_id": null, 
             "score": 1
         }
     }, 
@@ -2279,8 +3071,9 @@
             "text": "I do not support the project to expand the Keystone Pipeline System.  This proposal generates serious and certain  environmental losses, which do not justify the economic gains.  Furthermore, the development will bring wealth mainly to foreign shareholders, so that the actual economic gains will be much less than they should  be.", 
             "parent_letter": 1, 
             "creation_date": "2014-07-13T17:02:17Z", 
-            "last_modified": "2014-08-29T18:03:17Z", 
+            "last_modified": "2015-01-15T19:05:22Z", 
             "user": 1, 
+            "subscription_id": null, 
             "score": 1
         }
     }, 
@@ -2297,8 +3090,9 @@
             "text": "Wadatay", 
             "parent_letter": 40, 
             "creation_date": "2014-09-01T04:45:05Z", 
-            "last_modified": "2014-09-01T04:45:05Z", 
+            "last_modified": "2015-01-15T19:05:22Z", 
             "user": 1, 
+            "subscription_id": null, 
             "score": 1
         }
     }, 
@@ -2315,8 +3109,9 @@
             "text": "Wadatay", 
             "parent_letter": 40, 
             "creation_date": "2014-09-01T04:47:27Z", 
-            "last_modified": "2014-09-01T04:47:27Z", 
+            "last_modified": "2015-01-15T19:05:22Z", 
             "user": 1, 
+            "subscription_id": null, 
             "score": 1
         }
     }, 
@@ -2331,7 +3126,8 @@
             "score": 3, 
             "is_open": true, 
             "user": 2, 
-            "last_modified": "2014-09-04T02:23:39Z"
+            "last_modified": "2015-01-15T19:05:28Z", 
+            "subscription_id": null
         }
     }, 
     {
@@ -2345,7 +3141,8 @@
             "score": 1, 
             "is_open": true, 
             "user": 1, 
-            "last_modified": "2014-09-04T05:47:19Z"
+            "last_modified": "2015-01-15T19:05:28Z", 
+            "subscription_id": null
         }
     }, 
     {
@@ -2359,7 +3156,8 @@
             "score": 0, 
             "is_open": true, 
             "user": 2, 
-            "last_modified": "2014-09-01T01:08:49Z"
+            "last_modified": "2015-01-15T19:05:28Z", 
+            "subscription_id": null
         }
     }, 
     {
@@ -2372,7 +3170,8 @@
             "score": 0, 
             "is_open": false, 
             "user": 1, 
-            "last_modified": "2014-08-10T02:09:25Z"
+            "last_modified": "2015-01-15T19:05:37Z", 
+            "subscription_id": null
         }
     }, 
     {
@@ -2385,7 +3184,8 @@
             "score": 0, 
             "is_open": false, 
             "user": 1, 
-            "last_modified": "2014-08-10T02:09:25Z"
+            "last_modified": "2015-01-15T19:05:37Z", 
+            "subscription_id": null
         }
     }, 
     {
@@ -2398,7 +3198,8 @@
             "score": 0, 
             "is_open": false, 
             "user": 1, 
-            "last_modified": "2014-08-10T02:09:25Z"
+            "last_modified": "2015-01-15T19:05:37Z", 
+            "subscription_id": null
         }
     }, 
     {
@@ -2411,7 +3212,8 @@
             "score": 1, 
             "is_open": false, 
             "user": 1, 
-            "last_modified": "2014-09-01T00:12:25Z"
+            "last_modified": "2015-01-15T19:05:37Z", 
+            "subscription_id": null
         }
     }, 
     {
@@ -2424,7 +3226,8 @@
             "score": 0, 
             "is_open": false, 
             "user": 1, 
-            "last_modified": "2014-08-10T02:53:52Z"
+            "last_modified": "2015-01-15T19:05:37Z", 
+            "subscription_id": null
         }
     }, 
     {
@@ -2437,7 +3240,8 @@
             "score": 0, 
             "is_open": false, 
             "user": 1, 
-            "last_modified": "2014-08-10T02:58:35Z"
+            "last_modified": "2015-01-15T19:05:37Z", 
+            "subscription_id": null
         }
     }, 
     {
@@ -2450,7 +3254,8 @@
             "score": 0, 
             "is_open": false, 
             "user": 1, 
-            "last_modified": "2014-08-10T02:58:56Z"
+            "last_modified": "2015-01-15T19:05:37Z", 
+            "subscription_id": null
         }
     }, 
     {
@@ -2463,7 +3268,8 @@
             "score": 0, 
             "is_open": false, 
             "user": 1, 
-            "last_modified": "2014-08-10T06:22:00Z"
+            "last_modified": "2015-01-15T19:05:37Z", 
+            "subscription_id": null
         }
     }, 
     {
@@ -2476,7 +3282,8 @@
             "score": 0, 
             "is_open": false, 
             "user": 1, 
-            "last_modified": "2014-08-10T06:28:05Z"
+            "last_modified": "2015-01-15T19:05:37Z", 
+            "subscription_id": null
         }
     }, 
     {
@@ -2489,7 +3296,8 @@
             "score": 0, 
             "is_open": false, 
             "user": 1, 
-            "last_modified": "2014-08-10T06:32:05Z"
+            "last_modified": "2015-01-15T19:05:37Z", 
+            "subscription_id": null
         }
     }, 
     {
@@ -2502,7 +3310,8 @@
             "score": 0, 
             "is_open": false, 
             "user": 1, 
-            "last_modified": "2014-08-10T06:33:54Z"
+            "last_modified": "2015-01-15T19:05:37Z", 
+            "subscription_id": null
         }
     }, 
     {
@@ -2515,7 +3324,8 @@
             "score": 0, 
             "is_open": false, 
             "user": 1, 
-            "last_modified": "2014-08-10T06:40:58Z"
+            "last_modified": "2015-01-15T19:05:37Z", 
+            "subscription_id": null
         }
     }, 
     {
@@ -2528,7 +3338,8 @@
             "score": 0, 
             "is_open": false, 
             "user": 1, 
-            "last_modified": "2014-08-10T06:41:16Z"
+            "last_modified": "2015-01-15T19:05:37Z", 
+            "subscription_id": null
         }
     }, 
     {
@@ -2541,7 +3352,8 @@
             "score": 0, 
             "is_open": false, 
             "user": 1, 
-            "last_modified": "2014-08-10T06:43:10Z"
+            "last_modified": "2015-01-15T19:05:37Z", 
+            "subscription_id": null
         }
     }, 
     {
@@ -2554,7 +3366,8 @@
             "score": -1, 
             "is_open": false, 
             "user": 1, 
-            "last_modified": "2014-09-01T00:44:46Z"
+            "last_modified": "2015-01-15T19:05:37Z", 
+            "subscription_id": null
         }
     }, 
     {
@@ -2567,7 +3380,8 @@
             "score": 0, 
             "is_open": false, 
             "user": 2, 
-            "last_modified": "2014-08-31T23:58:01Z"
+            "last_modified": "2015-01-15T19:05:37Z", 
+            "subscription_id": null
         }
     }, 
     {
@@ -2580,7 +3394,8 @@
             "score": 0, 
             "is_open": false, 
             "user": 2, 
-            "last_modified": "2014-09-01T00:03:48Z"
+            "last_modified": "2015-01-15T19:05:37Z", 
+            "subscription_id": null
         }
     }, 
     {
@@ -2593,7 +3408,8 @@
             "score": 0, 
             "is_open": false, 
             "user": 2, 
-            "last_modified": "2014-09-01T00:45:04Z"
+            "last_modified": "2015-01-15T19:05:37Z", 
+            "subscription_id": null
         }
     }, 
     {
@@ -2606,7 +3422,8 @@
             "creation_date": "2014-07-25T21:25:57Z", 
             "score": 2, 
             "user": 2, 
-            "last_modified": "2014-09-04T02:23:07Z"
+            "last_modified": "2015-01-15T19:05:44Z", 
+            "subscription_id": null
         }
     }, 
     {
@@ -2619,7 +3436,8 @@
             "creation_date": "2014-08-25T05:13:50Z", 
             "score": 0, 
             "user": 1, 
-            "last_modified": "2014-08-25T05:13:50Z"
+            "last_modified": "2015-01-15T19:05:44Z", 
+            "subscription_id": null
         }
     }, 
     {
@@ -2632,7 +3450,8 @@
             "creation_date": "2014-08-25T05:20:49Z", 
             "score": 0, 
             "user": 1, 
-            "last_modified": "2014-08-25T05:20:49Z"
+            "last_modified": "2015-01-15T19:05:44Z", 
+            "subscription_id": null
         }
     }, 
     {
@@ -2645,7 +3464,8 @@
             "creation_date": "2014-08-25T05:31:24Z", 
             "score": 0, 
             "user": 1, 
-            "last_modified": "2014-08-25T05:31:24Z"
+            "last_modified": "2015-01-15T19:05:44Z", 
+            "subscription_id": null
         }
     }, 
     {
@@ -2658,7 +3478,8 @@
             "creation_date": "2014-08-25T06:54:46Z", 
             "score": 0, 
             "user": 1, 
-            "last_modified": "2014-08-25T06:54:46Z"
+            "last_modified": "2015-01-15T19:05:44Z", 
+            "subscription_id": null
         }
     }, 
     {
@@ -2670,7 +3491,8 @@
             "creation_date": "2014-08-06T05:19:13Z", 
             "score": 2, 
             "user": 2, 
-            "last_modified": "2014-09-04T02:03:49Z"
+            "last_modified": "2015-01-15T19:05:55Z", 
+            "subscription_id": null
         }
     }, 
     {
@@ -2682,7 +3504,8 @@
             "creation_date": "2014-08-10T03:41:07Z", 
             "score": 1, 
             "user": 1, 
-            "last_modified": "2014-08-20T21:23:35Z"
+            "last_modified": "2015-01-15T19:05:55Z", 
+            "subscription_id": null
         }
     }, 
     {
@@ -2694,7 +3517,8 @@
             "creation_date": "2014-08-10T03:42:49Z", 
             "score": 0, 
             "user": 1, 
-            "last_modified": "2014-08-10T03:42:49Z"
+            "last_modified": "2015-01-15T19:05:55Z", 
+            "subscription_id": null
         }
     }, 
     {
@@ -2706,7 +3530,8 @@
             "creation_date": "2014-08-10T04:39:32Z", 
             "score": 1, 
             "user": 1, 
-            "last_modified": "2014-08-21T17:12:08Z"
+            "last_modified": "2015-01-15T19:05:55Z", 
+            "subscription_id": null
         }
     }, 
     {
@@ -2718,7 +3543,8 @@
             "creation_date": "2014-08-10T04:40:47Z", 
             "score": 1, 
             "user": 1, 
-            "last_modified": "2014-08-20T21:23:40Z"
+            "last_modified": "2015-01-15T19:05:55Z", 
+            "subscription_id": null
         }
     }, 
     {
@@ -2730,7 +3556,8 @@
             "creation_date": "2014-08-10T04:43:18Z", 
             "score": 0, 
             "user": 1, 
-            "last_modified": "2014-08-10T04:43:18Z"
+            "last_modified": "2015-01-15T19:05:55Z", 
+            "subscription_id": null
         }
     }, 
     {
@@ -2742,7 +3569,8 @@
             "creation_date": "2014-08-10T04:45:55Z", 
             "score": 0, 
             "user": 1, 
-            "last_modified": "2014-08-10T04:45:55Z"
+            "last_modified": "2015-01-15T19:05:55Z", 
+            "subscription_id": null
         }
     }, 
     {
@@ -2754,7 +3582,8 @@
             "creation_date": "2014-08-10T04:47:57Z", 
             "score": 0, 
             "user": 1, 
-            "last_modified": "2014-08-10T04:47:57Z"
+            "last_modified": "2015-01-15T19:05:55Z", 
+            "subscription_id": null
         }
     }, 
     {
@@ -2766,7 +3595,8 @@
             "creation_date": "2014-08-10T04:49:05Z", 
             "score": 0, 
             "user": 1, 
-            "last_modified": "2014-08-10T04:49:05Z"
+            "last_modified": "2015-01-15T19:05:55Z", 
+            "subscription_id": null
         }
     }, 
     {
@@ -2778,7 +3608,8 @@
             "creation_date": "2014-08-10T04:50:02Z", 
             "score": 0, 
             "user": 1, 
-            "last_modified": "2014-08-10T04:50:02Z"
+            "last_modified": "2015-01-15T19:05:55Z", 
+            "subscription_id": null
         }
     }, 
     {
@@ -2790,7 +3621,8 @@
             "creation_date": "2014-08-10T04:51:14Z", 
             "score": 0, 
             "user": 1, 
-            "last_modified": "2014-08-10T04:51:14Z"
+            "last_modified": "2015-01-15T19:05:55Z", 
+            "subscription_id": null
         }
     }, 
     {
@@ -2802,7 +3634,8 @@
             "creation_date": "2014-08-10T04:51:56Z", 
             "score": 0, 
             "user": 1, 
-            "last_modified": "2014-08-10T04:51:56Z"
+            "last_modified": "2015-01-15T19:05:55Z", 
+            "subscription_id": null
         }
     }, 
     {
@@ -2814,7 +3647,8 @@
             "creation_date": "2014-08-10T04:52:52Z", 
             "score": 0, 
             "user": 1, 
-            "last_modified": "2014-08-10T04:52:52Z"
+            "last_modified": "2015-01-15T19:05:55Z", 
+            "subscription_id": null
         }
     }, 
     {
@@ -2826,7 +3660,8 @@
             "creation_date": "2014-08-10T04:54:56Z", 
             "score": 0, 
             "user": 1, 
-            "last_modified": "2014-08-10T04:54:56Z"
+            "last_modified": "2015-01-15T19:05:55Z", 
+            "subscription_id": null
         }
     }, 
     {
@@ -2838,7 +3673,8 @@
             "creation_date": "2014-08-10T05:01:07Z", 
             "score": 0, 
             "user": 1, 
-            "last_modified": "2014-08-10T05:01:07Z"
+            "last_modified": "2015-01-15T19:05:55Z", 
+            "subscription_id": null
         }
     }, 
     {
@@ -2850,7 +3686,8 @@
             "creation_date": "2014-08-10T05:04:50Z", 
             "score": 0, 
             "user": 1, 
-            "last_modified": "2014-08-10T05:04:50Z"
+            "last_modified": "2015-01-15T19:05:55Z", 
+            "subscription_id": null
         }
     }, 
     {
@@ -2862,7 +3699,8 @@
             "creation_date": "2014-08-10T05:06:21Z", 
             "score": 0, 
             "user": 1, 
-            "last_modified": "2014-08-10T05:06:21Z"
+            "last_modified": "2015-01-15T19:05:55Z", 
+            "subscription_id": null
         }
     }, 
     {
@@ -2874,7 +3712,8 @@
             "creation_date": "2014-08-10T05:08:09Z", 
             "score": 0, 
             "user": 1, 
-            "last_modified": "2014-08-10T05:08:09Z"
+            "last_modified": "2015-01-15T19:05:55Z", 
+            "subscription_id": null
         }
     }, 
     {
@@ -2886,7 +3725,8 @@
             "creation_date": "2014-08-10T05:13:15Z", 
             "score": 0, 
             "user": 1, 
-            "last_modified": "2014-08-10T05:13:15Z"
+            "last_modified": "2015-01-15T19:05:55Z", 
+            "subscription_id": null
         }
     }, 
     {
@@ -2898,7 +3738,8 @@
             "creation_date": "2014-08-10T05:15:46Z", 
             "score": 0, 
             "user": 1, 
-            "last_modified": "2014-08-10T05:15:46Z"
+            "last_modified": "2015-01-15T19:05:55Z", 
+            "subscription_id": null
         }
     }, 
     {
@@ -2910,7 +3751,8 @@
             "creation_date": "2014-08-10T05:16:05Z", 
             "score": 0, 
             "user": 1, 
-            "last_modified": "2014-08-10T05:16:05Z"
+            "last_modified": "2015-01-15T19:05:55Z", 
+            "subscription_id": null
         }
     }, 
     {
@@ -2922,7 +3764,8 @@
             "creation_date": "2014-08-10T06:18:45Z", 
             "score": 0, 
             "user": 1, 
-            "last_modified": "2014-08-10T06:18:45Z"
+            "last_modified": "2015-01-15T19:05:55Z", 
+            "subscription_id": null
         }
     }, 
     {
@@ -2934,7 +3777,8 @@
             "creation_date": "2014-08-10T08:50:35Z", 
             "score": 0, 
             "user": 1, 
-            "last_modified": "2014-08-10T08:50:35Z"
+            "last_modified": "2015-01-15T19:05:55Z", 
+            "subscription_id": null
         }
     }, 
     {
@@ -2946,7 +3790,8 @@
             "creation_date": "2014-08-17T13:31:48Z", 
             "score": 0, 
             "user": 1, 
-            "last_modified": "2014-08-17T13:31:48Z"
+            "last_modified": "2015-01-15T19:05:55Z", 
+            "subscription_id": null
         }
     }, 
     {
@@ -2958,7 +3803,8 @@
             "creation_date": "2014-08-25T03:45:57Z", 
             "score": 0, 
             "user": 1, 
-            "last_modified": "2014-08-25T03:45:57Z"
+            "last_modified": "2015-01-15T19:05:55Z", 
+            "subscription_id": null
         }
     }, 
     {
@@ -2970,7 +3816,8 @@
             "creation_date": "2014-08-27T20:06:31Z", 
             "score": 0, 
             "user": 1, 
-            "last_modified": "2014-08-27T20:06:31Z"
+            "last_modified": "2015-01-15T19:05:55Z", 
+            "subscription_id": null
         }
     }, 
     {
@@ -2982,7 +3829,8 @@
             "creation_date": "2014-08-27T20:34:08Z", 
             "score": 0, 
             "user": 1, 
-            "last_modified": "2014-08-27T20:34:08Z"
+            "last_modified": "2015-01-15T19:05:55Z", 
+            "subscription_id": null
         }
     }, 
     {
@@ -2994,7 +3842,8 @@
             "creation_date": "2014-08-27T20:34:49Z", 
             "score": 0, 
             "user": 1, 
-            "last_modified": "2014-08-27T20:34:49Z"
+            "last_modified": "2015-01-15T19:05:55Z", 
+            "subscription_id": null
         }
     }, 
     {
@@ -3006,7 +3855,8 @@
             "creation_date": "2014-08-27T20:35:09Z", 
             "score": -1, 
             "user": 1, 
-            "last_modified": "2014-08-27T20:35:27Z"
+            "last_modified": "2015-01-15T19:05:55Z", 
+            "subscription_id": null
         }
     }, 
     {
@@ -3018,7 +3868,8 @@
             "creation_date": "2014-08-31T17:58:28Z", 
             "score": 0, 
             "user": 1, 
-            "last_modified": "2014-08-31T17:58:28Z"
+            "last_modified": "2015-01-15T19:05:55Z", 
+            "subscription_id": null
         }
     }, 
     {
@@ -3030,7 +3881,8 @@
             "creation_date": "2014-08-31T18:48:19Z", 
             "score": 0, 
             "user": 1, 
-            "last_modified": "2014-08-31T18:48:19Z"
+            "last_modified": "2015-01-15T19:05:55Z", 
+            "subscription_id": null
         }
     }, 
     {
@@ -3042,7 +3894,8 @@
             "creation_date": "2014-08-31T18:49:50Z", 
             "score": 0, 
             "user": 1, 
-            "last_modified": "2014-08-31T18:49:50Z"
+            "last_modified": "2015-01-15T19:05:55Z", 
+            "subscription_id": null
         }
     }, 
     {
@@ -3054,7 +3907,8 @@
             "creation_date": "2014-08-31T18:50:19Z", 
             "score": 0, 
             "user": 1, 
-            "last_modified": "2014-08-31T18:50:19Z"
+            "last_modified": "2015-01-15T19:05:55Z", 
+            "subscription_id": null
         }
     }, 
     {
@@ -3066,7 +3920,8 @@
             "creation_date": "2014-08-31T18:53:01Z", 
             "score": 0, 
             "user": 1, 
-            "last_modified": "2014-08-31T18:53:01Z"
+            "last_modified": "2015-01-15T19:05:55Z", 
+            "subscription_id": null
         }
     }, 
     {
@@ -3078,7 +3933,8 @@
             "creation_date": "2014-08-31T18:53:46Z", 
             "score": 0, 
             "user": 1, 
-            "last_modified": "2014-08-31T18:53:46Z"
+            "last_modified": "2015-01-15T19:05:55Z", 
+            "subscription_id": null
         }
     }, 
     {
@@ -3090,7 +3946,8 @@
             "creation_date": "2014-08-31T18:55:21Z", 
             "score": 0, 
             "user": 1, 
-            "last_modified": "2014-08-31T18:55:21Z"
+            "last_modified": "2015-01-15T19:05:55Z", 
+            "subscription_id": null
         }
     }, 
     {
@@ -3102,7 +3959,8 @@
             "creation_date": "2014-08-31T18:55:28Z", 
             "score": 0, 
             "user": 1, 
-            "last_modified": "2014-08-31T18:55:28Z"
+            "last_modified": "2015-01-15T19:05:55Z", 
+            "subscription_id": null
         }
     }, 
     {
@@ -3114,7 +3972,8 @@
             "creation_date": "2014-08-31T18:56:13Z", 
             "score": 0, 
             "user": 1, 
-            "last_modified": "2014-08-31T18:56:13Z"
+            "last_modified": "2015-01-15T19:05:55Z", 
+            "subscription_id": null
         }
     }, 
     {
@@ -3126,7 +3985,8 @@
             "creation_date": "2014-08-31T19:03:45Z", 
             "score": 0, 
             "user": 1, 
-            "last_modified": "2014-08-31T19:03:45Z"
+            "last_modified": "2015-01-15T19:05:55Z", 
+            "subscription_id": null
         }
     }, 
     {
@@ -3138,7 +3998,8 @@
             "creation_date": "2014-08-31T19:44:22Z", 
             "score": 0, 
             "user": 2, 
-            "last_modified": "2014-08-31T19:44:22Z"
+            "last_modified": "2015-01-15T19:05:55Z", 
+            "subscription_id": null
         }
     }, 
     {
@@ -3150,7 +4011,8 @@
             "creation_date": "2014-09-01T03:51:20Z", 
             "score": 0, 
             "user": 2, 
-            "last_modified": "2014-09-01T03:51:20Z"
+            "last_modified": "2015-01-15T19:05:55Z", 
+            "subscription_id": null
         }
     }, 
     {
@@ -3162,7 +4024,8 @@
             "creation_date": "2014-09-03T16:43:31Z", 
             "score": 0, 
             "user": 3, 
-            "last_modified": "2014-09-03T16:43:31Z"
+            "last_modified": "2015-01-15T19:05:55Z", 
+            "subscription_id": null
         }
     }, 
     {
@@ -3174,7 +4037,8 @@
             "creation_date": "2014-09-03T22:52:13Z", 
             "score": 0, 
             "user": 3, 
-            "last_modified": "2014-09-03T22:52:13Z"
+            "last_modified": "2015-01-15T19:05:55Z", 
+            "subscription_id": null
         }
     }, 
     {

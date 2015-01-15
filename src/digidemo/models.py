@@ -7,6 +7,7 @@ from django.template.defaultfilters import slugify
 from django.utils.safestring import mark_safe
 from django.contrib.staticfiles.templatetags.staticfiles import static
 import re
+import os
 
 NAME_LENGTH = 48
 URL_LENGTH = 256
@@ -32,7 +33,7 @@ class TimeStamped(models.Model):
 		abstract = True
 
 
-class ScoredPost(TimeStamped):
+class ScoredPost(models.Model):
 	user = models.ForeignKey(User)
 	score = models.SmallIntegerField(default=0, editable=False)
 	text = models.CharField(max_length=DEFAULT_TEXT_LENGTH)
@@ -52,7 +53,49 @@ class Vote(TimeStamped):
 		abstract=True
 
 
+class Subscribable(TimeStamped):
+	'''
+		models that inheret subscribable get assigned a globally unique 
+		subscription_id the first time that they are saved.  Within the app,
+		the subscription_id acts as an identifier accross different kinds
+		of objects (proposals, questions, petitions...) which users can
+		be subscribed to.  Users are always auto-subscribed to content
+		they generated.
+	'''
+		
+	subscription_id = models.ForeignKey('SubscriptionId', editable=False, null=True)
+
+	def _get_subscription_id(self):
+		s = SubscriptionId()
+		s.save()
+		return s
+
+	def save(self, *args, **kwargs):
+		if self.subscription_id is None:
+			self.subscription_id = self._get_subscription_id()
+		
+		return super(Subscribable, self).save(*args, **kwargs)
+
+	class Meta:
+		abstract = True
+
+
 # *** Concrete Models *** # 
+
+class SubscriptionId(TimeStamped):
+	'''
+		this is a list of all the subscribable ids ever assigned.  It may seems
+		strange to have a table that stores only primary keys!  But it 
+		provides a linkage point between subscribable objects, like proposals,
+		questions, discussions, etc, and user's subscriptions.
+			2) By linking to the SubscriptionId, rather than the subscribable
+				directly, we don't have an issue with the fact that the 
+				subscribables are of heterogeneous types.
+			1) We rely on the db's autoincrement to give out unique 
+				subscription id's.
+	'''
+	subscription_id = models.AutoField(primary_key=True)
+
 
 class Sector(TimeStamped):
 	short_name = models.CharField(max_length=3)
@@ -80,7 +123,7 @@ class Tag(TimeStamped):
 		return self.name
 
 
-class Proposal(TimeStamped):
+class Proposal(Subscribable):
 	is_published = models.BooleanField(default=False)
 	score = models.SmallIntegerField(default=0)
 	title = models.CharField(max_length=256)
@@ -276,7 +319,7 @@ class Position(TimeStamped):
 			self.person.lname)
 
 
-class Letter(TimeStamped):
+class Letter(Subscribable):
 	parent_letter = models.ForeignKey('self', blank=True, null=True, 
 		related_name='resent_letters')
 	target = models.ForeignKey(Proposal)
@@ -301,7 +344,7 @@ class Letter(TimeStamped):
 		self.save()
 
 
-class Discussion(ScoredPost):
+class Discussion(ScoredPost, Subscribable):
 	target = models.ForeignKey(Proposal, null=True)
 	title = models.CharField(max_length=TITLE_LENGTH)
 	is_open = models.BooleanField(default=False)
@@ -314,7 +357,7 @@ class Discussion(ScoredPost):
 		return url + slugify(self.title)
 
 
-class Reply(ScoredPost):
+class Reply(ScoredPost, Subscribable):
 	target = models.ForeignKey(Discussion, null=True, related_name='replies')
 	is_open = models.BooleanField(default=False)
 
@@ -322,7 +365,7 @@ class Reply(ScoredPost):
 		return self.user.username
 
 
-class Question(ScoredPost):
+class Question(ScoredPost, Subscribable):
 	title = models.CharField('question title', max_length=TITLE_LENGTH)
 	target = models.ForeignKey(Proposal)
 
@@ -331,28 +374,28 @@ class Question(ScoredPost):
 		return url + slugify(self.title)
 
 
-class Answer(ScoredPost):
+class Answer(ScoredPost, Subscribable):
 	target = models.ForeignKey(Question, related_name='replies')
 
 
 # This should be renamed "LetterComment"
-class Comment(ScoredPost):
+class Comment(ScoredPost, TimeStamped):
 	target = models.ForeignKey(Letter, related_name='comment_set')
 
 
-class QuestionComment(ScoredPost):
+class QuestionComment(ScoredPost, TimeStamped):
 	target = models.ForeignKey(Question, related_name='comment_set')
 	
 
-class AnswerComment(ScoredPost):
+class AnswerComment(ScoredPost, TimeStamped):
 	target = models.ForeignKey(Answer, related_name='comment_set')
 
 
-class DiscussionComment(ScoredPost):
+class DiscussionComment(ScoredPost, TimeStamped):
 	target = models.ForeignKey(Discussion, related_name='comment_set')
 
 
-class ReplyComment(ScoredPost):
+class ReplyComment(ScoredPost, TimeStamped):
 	target = models.ForeignKey(Reply, related_name='comment_set')
 
 
