@@ -280,6 +280,29 @@ def chop_string(s, max_len=40):
 	return lines
 
 
+def land(request):
+
+	thank_you = False
+	email_form = EmailSignupForm()
+	email_form.id_prefix=0
+	email_form.endpoint='/'
+
+	if request.POST:
+		sent_email_form = EmailSignupForm(request.POST)
+		if sent_email_form.is_valid():
+			sent_email_form.save()
+			thank_you = True;
+
+		else:
+			email_form = sent_email_form
+			email_form.id_prefix = 0
+			email_form.endpoint = '/'
+
+	return render(request, 'digidemo/land.html', {
+		'thank_you': thank_you,
+		'email_form': email_form
+	})
+
 
 def history(request, proposal_id):
 

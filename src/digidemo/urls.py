@@ -23,6 +23,7 @@ urlpatterns = patterns('',
 	url(r'^test/$', show_test_page, name='test'),
 
 	# front page urls
+	url(r'^$', land, name='land'),
 	url(r'^mainPage/$',mainPage, name='mainPage'),
 
 	# login page

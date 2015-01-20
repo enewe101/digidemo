@@ -55,6 +55,46 @@
     }, 
     {
         "pk": 1, 
+        "model": "digidemo.emailrecipient", 
+        "fields": {
+            "active": true, 
+            "last_modified": "2015-01-20T04:44:28Z", 
+            "email": "edward.newell@gmail.com", 
+            "creation_date": "2015-01-20T04:44:28Z"
+        }
+    }, 
+    {
+        "pk": 2, 
+        "model": "digidemo.emailrecipient", 
+        "fields": {
+            "active": true, 
+            "last_modified": "2015-01-20T04:46:38Z", 
+            "email": "edward.newell@gmail.com", 
+            "creation_date": "2015-01-20T04:46:38Z"
+        }
+    }, 
+    {
+        "pk": 3, 
+        "model": "digidemo.emailrecipient", 
+        "fields": {
+            "active": true, 
+            "last_modified": "2015-01-20T04:47:43Z", 
+            "email": "edward.newell@gmail.com", 
+            "creation_date": "2015-01-20T04:47:43Z"
+        }
+    }, 
+    {
+        "pk": 4, 
+        "model": "digidemo.emailrecipient", 
+        "fields": {
+            "active": true, 
+            "last_modified": "2015-01-20T04:48:17Z", 
+            "email": "edward.newell@gmail.com", 
+            "creation_date": "2015-01-20T04:48:17Z"
+        }
+    }, 
+    {
+        "pk": 1, 
         "model": "digidemo.subscriptionid", 
         "fields": {
             "last_modified": "2015-01-15T18:57:19Z", 

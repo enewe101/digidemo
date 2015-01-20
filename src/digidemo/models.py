@@ -82,6 +82,15 @@ class Subscribable(TimeStamped):
 
 # *** Concrete Models *** # 
 
+class EmailRecipient(TimeStamped):
+	'''
+		This is for people that sign up for to receive emails on our landing
+		page.
+	'''
+	email = models.EmailField(max_length=254)
+	active = models.BooleanField(default=True)
+
+
 class SubscriptionId(TimeStamped):
 	'''
 		this is a list of all the subscribable ids ever assigned.  It may seems

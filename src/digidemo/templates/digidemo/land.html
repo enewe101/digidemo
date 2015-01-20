@@ -1,0 +1,81 @@
+{% load staticfiles %}
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>
+			Welcome to luminocracy
+		</title>
+
+		<link rel="stylesheet" type="text/css" 
+			href="{% static "digidemo/css/land.css" %}" />
+		<link rel="stylesheet" type="text/css" 
+			href="{% static "digidemo/css/forms.css" %}" />
+		<link rel="stylesheet" type="text/css" 
+			href="{% static "digidemo/css/base.css" %}" />
+
+	</head>
+	<body id="landing_bg">
+
+			<!-- centering device for the middle of the page layout -->
+			<div class="outer_center">
+				<div class="land_inner_center">
+
+					<div class="vert100"></div>
+					<img class="land_banner" 
+						src="{% static "digidemo/images/land_banner.png" %}" />
+
+					<div class="vert60"></div>
+					<div id="land_info">
+						<div id="land_who_we_are">
+							We are programmers, users, activists, 
+							conservatives, anarchists, institutionalists,
+							engineers, artists, ...
+						</div>
+						<div id="land_notify">
+							Alpha testing begins<strong> 5 February 2015</strong>!
+							Join our email list and become one of our alpha 
+							testers!
+							<div class="land_form">
+								{% if thank_you %}
+									<div class="land_green">Thank you!</div>
+								{% endif %}
+								{% include "digidemo/_w_simple_form_wrapped.html" with form=email_form id_prefix=0 %}
+							</div>
+						</div>
+						<div id="land_attend">
+							<h1 class="land_h1">Join us!</h1>
+							<img id="warning_img"
+							src="{% static "digidemo/images/warning.png" %}" />
+							Come to the inaugural meeting and 
+							info-session for the Student's Society for Digital
+							Democracy, during which we will show off our 
+							flagship project, luminocracy.org
+							<ul>
+								<li>
+									<strong><em>when:</em></strong>
+									&nbsp;&nbsp;Thursday 5 February, 4PM 
+								</li>
+								<li>
+									<strong><em>where:</em></strong>
+									&nbsp;&nbsp;
+									McConnel Engineering Building, Room 103
+								</li>
+								<li>
+									<strong><em>directions:</em></strong>
+									&nbsp;&nbsp;
+									<a target="_blank" href="https://www.google.ca/maps/place/McConnell+Engineering+Bldg,+McGill+University,+3480+University+St,+Montreal,+QC+H3A+2A7/@45.5049621,-73.5785149,17z/data=!4m2!3m1!1s0x4cc91a47f27f34b5:0x10145cffeb84edae">google map</a>
+								</li>
+							</ul>
+						</div>
+					</div>
+					<div class="clear"></div>
+				</div>
+			</div>
+			<!-- end of centering device for the middle of the page layout -->
+
+
+			<div class="clear"></div>
+
+	</body>
+</html>
+
