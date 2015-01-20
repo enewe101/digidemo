@@ -95,6 +95,7 @@
 
 			<div class="clear"></div>
 
+
 		{% endfor %} <!-- loop over all letters for the proposal -->
 			
 		</div>
@@ -147,12 +148,20 @@
 
 
 	<!-- start of proposal sectors -->
+
 	<div id="tags" class="tags">
+		{% for sector in proposal.sectors.all %}
+			 
+				{{ sector.render }}
+			
+		{% endfor %}
+
 		{% for tag in proposal.tags.all %}
 			<div class="tag">
 				{{ tag.name }}
 			</div>
 		{% endfor %}
+		
 	</div>
 	<!-- end of proposal sectors -->
 
