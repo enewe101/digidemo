@@ -1,4 +1,5 @@
 import logging
+from django.contrib.auth.models import User
 from django.http import HttpResponse, HttpResponseRedirect
 from django.template import Context
 from django.template.loader import get_template
@@ -14,8 +15,10 @@ from digidemo.settings import PROJECT_DIR
 from digidemo import utils
 import os
 
+
 USERNAME_MAX_LENGTH = 32
 PASSWORD_MAX_LENGTH = USERNAME_MAX_LENGTH
+PASSWORD_MIN_LENGTH = 8
 
 class AugmentedFormMixin(object):
 
@@ -581,17 +584,49 @@ class LoginForm(AugmentedFormMixin, Form):
 		}
 
 
+class UserRegisterForm(AugmentedFormMixin, ModelForm):
+	confirm_password = forms.CharField(
+			widget=forms.PasswordInput(), max_length=PASSWORD_MAX_LENGTH)
 
-class NameForm(forms.Form):
-        userName = forms.CharField(label='UserName', max_length=16)
-        password = forms.CharField(label='Password',widget=forms.PasswordInput())
-        email = forms.EmailField(label='Email')
-        firstName =  forms.CharField(max_length = 16)
-        lastName = forms.CharField(max_length = 32)
-#        street = forms.CharField(max_length = 32)
-#        zipCode = forms.CharField(max_length = 8)
-#        country = forms.CharField(max_length = 20)
-#        province = forms.CharField(max_length = 30)
+	class Meta:
+		model = User
+		fields = [
+				'first_name', 'last_name', 'username', 'email', 'password',
+				'confirm_password'
+			]
+		widgets = {
+			'first_name': forms.TextInput(),
+			'last_name': forms.TextInput(),
+			'username': forms.TextInput(),
+			'email': forms.EmailInput(),
+			'password': forms.PasswordInput(),
+		}
+
+
+	def clean(self):
+		cleaned = super(UserRegisterForm, self).clean()
+		pwd1 = cleaned['password']
+		pwd2 = cleaned['confirm_password']
+
+		pwd_too_short = len(pwd1) < PASSWORD_MIN_LENGTH
+		pwd_no_match = pwd1 != pwd2
+
+		if pwd_too_short:
+			self._errors['password'] = self.error_class(
+				["Password too short"])
+
+		if pwd_no_match:
+			if 'password' in self._errors:
+				self._errors['password'].append("Passwords didn't match!")
+			else:
+				self._errors['password'] = self.error_class(
+					["Passwords didn't match!"])
+
+		if pwd_no_match or pwd_too_short:
+			del cleaned['password']
+			del cleaned['confirm_password']
+
+		return cleaned
 
 
 from haystack.forms import SearchForm
