@@ -385,13 +385,13 @@ class ProposalVersionForm(AugmentedFormMixin, ModelForm):
 
 			# Copy data from the proposal_version, 
 			# which is used to make the proposal itself
-			proposal_init = utils.extract_dict(
-				self.cleaned_data,
-				['title', 'summary', 'text', 'user']
-			)
-
-			# In proposal, we also have a field called original user
-			proposal_init['original_user'] = proposal_init['user']
+			proposal_init = {
+				'title': self.cleaned_data['title'],
+				'summary': self.cleaned_data['summary'],
+				'text': self.cleaned_data['text'],
+				'user': self.cleaned_data['user'],
+				'original_user': self.cleaned_data['user']
+			}
 
 			# now make the proposal and save it
 			self.proposal = Proposal(**proposal_init)
