@@ -84,7 +84,7 @@ class Subscribable(TimeStamped):
 		return s
 
 	def save(self, *args, **kwargs):
-		if self.subscription_id is None:
+		if not hasattr(self, 'subscription_id'):
 			self.subscription_id = self._get_subscription_id()
 		
 		return super(Subscribable, self).save(*args, **kwargs)
