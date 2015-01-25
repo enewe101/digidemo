@@ -202,7 +202,6 @@ class Subscribable(TriggersNotification):
 		if first_save:
 			author = self.get_author()
 			if author is not None:
-				print 'making subscription'
 				sub = Subscription(
 					user = self.get_author(),
 					reason = 'AUTHOR',

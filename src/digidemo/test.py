@@ -1561,9 +1561,28 @@ class PublishSubscribeTest(TestCase):
 			a Publication shoulid be issued for that Proposal, so that
 			any users subscribed to the Proposal will be notified of the 
 			new Question
+
+		For most kinds of subsrcibable objects, the tests that need to
+		be run are pretty formulaic.  So, a helper function, 
+		do_subscribable_test, is used.  The tests that match this formula
+		can be defined by a few args passed into do_subscribable_test.
+		That goes for testing questions, comments, letters, etc.
+
+		But testing Proposals is a bit more complex so it is done in its
+		own test routine, different from do_subscribable_test.
 	'''
 
-	def test_question(self):
+	# TODO: implement these three tests
+	def test_proposal_edit(self):
+		pass
+
+	def test_sign_letter(self):
+		pass
+
+	def test_all_votes(self):
+		pass
+
+	def test_proposal(self):
 
 		# get a few ingredients together so we can make a proposal
 		proposal_author = User.objects.get(username='regularuser')
@@ -1601,9 +1620,165 @@ class PublishSubscribeTest(TestCase):
 		s = Subscription.objects.get(subscription_id=sub_id)
 		self.assertEqual(s.user, proposal_author)
 
-		# Check if a Publication was made against the tag 
+		# Check if a Publication was made against the tag
 		p = Publication.objects.get(subscription_id=tag.subscription_id)
-		
+		self.assertEqual(p.source_user, proposal_author)
+		self.assertEqual(p.event_type, 'ISSUE')
+		self.assertEqual(p.was_posted, False)
+		self.assertEqual(p.event_data, proposal.text[:100])
+		self.assertEqual(p.link_back, 
+			proposal.get_url_by_view_name('proposal'))
+
+		# Check if a Publication was made against the sector
+		p = Publication.objects.get(subscription_id=sector.subscription_id)
+		self.assertEqual(p.source_user, proposal_author)
+		self.assertEqual(p.event_type, 'ISSUE')
+		self.assertEqual(p.was_posted, False)
+		self.assertEqual(p.event_data, proposal.text[:100])
+		self.assertEqual(p.link_back, 
+			proposal.get_url_by_view_name('proposal'))
+
+
+	def test_question(self):
+		proposal = Proposal.objects.get(pk=1)
+		question_author = User.objects.get(username='superuser')
+		title = 'Question about publications'
+		text = 'Hey, will this trigger a publication like it should?'
+		self.do_subscribable_test(
+			proposal,
+			Question,
+			{
+				'title': title,
+				'text': text,
+			},
+			question_author,
+			'QUESTION',
+			text[:100]
+		)
+
+
+	def test_letter(self):
+		author = User.objects.get(username='superuser')
+		title = 'A tesnt post'
+		text = 'Hey, will this trigger a publication like it should?'
+		valence = '1'
+		proposal = Proposal.objects.get(pk=1)
+		self.do_subscribable_test(
+			proposal,
+			Letter,
+			{
+				'title': title,
+				'text': text,
+				'valence': valence
+			},
+			author,
+			'LETTER',
+			text[:100]
+		)
+
+
+	def test_untitled_posts(self):
+		classes = [
+			(Question, Answer, 'ANSWER'),
+			(Discussion, Reply, 'REPLY')
+		]
+
+		author = User.objects.get(username='superuser')
+		text = 'Hey, will this trigger a publication like it should?'
+		for target_class, notifier_class, event_type in classes:
+			target = target_class.objects.get(pk=1)
+			self.do_subscribable_test(
+				target,
+				notifier_class,
+				{
+					'text': text,
+				},
+				author,
+				event_type,
+				text[:100]
+			)
+				
+
+	def test_titled_posts(self):
+		classes = [
+			(Proposal, Question, 'QUESTION'),
+			(Proposal, Discussion, 'DISCUSSION')
+		]
+
+		author = User.objects.get(username='superuser')
+		title = 'A tesnt post'
+		text = 'Hey, will this trigger a publication like it should?'
+		for target_class, notifier_class, event_type in classes:
+			target = target_class.objects.get(pk=1)
+			self.do_subscribable_test(
+				target,
+				notifier_class,
+				{
+					'title': title,
+					'text': text,
+				},
+				author,
+				event_type,
+				text[:100]
+			)
+
+
+	def test_all_comments(self):
+		classes = [
+			(Question, QuestionComment),
+			(Answer, AnswerComment),
+			(Discussion, DiscussionComment),
+			(Reply, ReplyComment),
+			(Letter, Comment)
+		]
+
+		comment_author = User.objects.get(username='regularuser')
+		for target_class, comment_class in classes:
+			target = target_class.objects.get(pk=1)
+			text = 'Yo this is a test comment!'
+			self.do_subscribable_test(
+				target,
+				comment_class,
+				{
+					'text':text,
+				},
+				comment_author,
+				'COMMENT',
+				text[:100]
+			)
+
+
+	def do_subscribable_test(
+			self, 
+			target, 
+			subscribable_class, 
+			subscribable_constructor_args,
+			subscribable_author,
+			event_type,
+			event_data,
+		):
+
+		# Now create a subscribable associated to the target
+		subscribable_constructor_args['target'] = target
+		subscribable_constructor_args['user'] = subscribable_author
+		subscribable = subscribable_class(**subscribable_constructor_args)
+		subscribable.save()
+
+		# Check if a Subscription was made
+		sub_id = subscribable.subscription_id
+		s = Subscription.objects.get(subscription_id=sub_id)
+		self.assertEqual(s.user, subscribable_author)
+
+		# Check for a Publication of the Subscribable against the Target
+		p = Publication.objects.get(
+			subscription_id=target.subscription_id,
+			source_user=subscribable_author,
+			event_type=event_type,
+			was_posted=False,
+			event_data=event_data,
+			link_back=subscribable.get_url()
+		)
+
 
 
 

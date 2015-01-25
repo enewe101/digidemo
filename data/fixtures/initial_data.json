@@ -45,12 +45,67 @@
             "is_active": true, 
             "is_superuser": false, 
             "is_staff": false, 
-            "last_login": "2014-09-03T20:37:53Z", 
+            "last_login": "2015-01-25T02:22:32Z", 
             "groups": [], 
             "user_permissions": [], 
             "password": "pbkdf2_sha256$12000$JYHkpHNEry2X$z4MA5nWH/0KwgDm1CWcGzA3MEuPC7m/LBZ7UAxrfR4Y=", 
             "email": "e@e.com", 
             "date_joined": "2014-08-22T16:40:26Z"
+        }
+    }, 
+    {
+        "pk": 1, 
+        "model": "digidemo.subscription", 
+        "fields": {
+            "subscription_id": 301, 
+            "last_modified": "2015-01-25T02:22:40Z", 
+            "creation_date": "2015-01-25T02:22:40Z", 
+            "reason": "AUTHOR", 
+            "user": 3
+        }
+    }, 
+    {
+        "pk": 2, 
+        "model": "digidemo.subscription", 
+        "fields": {
+            "subscription_id": 302, 
+            "last_modified": "2015-01-25T02:22:54Z", 
+            "creation_date": "2015-01-25T02:22:54Z", 
+            "reason": "AUTHOR", 
+            "user": 3
+        }
+    }, 
+    {
+        "pk": 3, 
+        "model": "digidemo.subscription", 
+        "fields": {
+            "subscription_id": 304, 
+            "last_modified": "2015-01-25T02:25:41Z", 
+            "creation_date": "2015-01-25T02:25:41Z", 
+            "reason": "AUTHOR", 
+            "user": 3
+        }
+    }, 
+    {
+        "pk": 4, 
+        "model": "digidemo.subscription", 
+        "fields": {
+            "subscription_id": 305, 
+            "last_modified": "2015-01-25T02:25:47Z", 
+            "creation_date": "2015-01-25T02:25:47Z", 
+            "reason": "AUTHOR", 
+            "user": 3
+        }
+    }, 
+    {
+        "pk": 5, 
+        "model": "digidemo.subscription", 
+        "fields": {
+            "subscription_id": 306, 
+            "last_modified": "2015-01-25T17:43:23Z", 
+            "creation_date": "2015-01-25T17:43:23Z", 
+            "reason": "AUTHOR", 
+            "user": 2
         }
     }, 
     {
@@ -2454,6 +2509,110 @@
         }
     }, 
     {
+        "pk": 301, 
+        "model": "digidemo.subscriptionid", 
+        "fields": {
+            "last_modified": "2015-01-25T02:22:40Z", 
+            "creation_date": "2015-01-25T02:22:40Z"
+        }
+    }, 
+    {
+        "pk": 302, 
+        "model": "digidemo.subscriptionid", 
+        "fields": {
+            "last_modified": "2015-01-25T02:22:54Z", 
+            "creation_date": "2015-01-25T02:22:54Z"
+        }
+    }, 
+    {
+        "pk": 303, 
+        "model": "digidemo.subscriptionid", 
+        "fields": {
+            "last_modified": "2015-01-25T02:22:59Z", 
+            "creation_date": "2015-01-25T02:22:59Z"
+        }
+    }, 
+    {
+        "pk": 304, 
+        "model": "digidemo.subscriptionid", 
+        "fields": {
+            "last_modified": "2015-01-25T02:25:41Z", 
+            "creation_date": "2015-01-25T02:25:41Z"
+        }
+    }, 
+    {
+        "pk": 305, 
+        "model": "digidemo.subscriptionid", 
+        "fields": {
+            "last_modified": "2015-01-25T02:25:47Z", 
+            "creation_date": "2015-01-25T02:25:47Z"
+        }
+    }, 
+    {
+        "pk": 306, 
+        "model": "digidemo.subscriptionid", 
+        "fields": {
+            "last_modified": "2015-01-25T17:43:23Z", 
+            "creation_date": "2015-01-25T17:43:23Z"
+        }
+    }, 
+    {
+        "pk": 1, 
+        "model": "digidemo.publication", 
+        "fields": {
+            "event_type": "DISCUSSION", 
+            "creation_date": "2015-01-25T02:22:54Z", 
+            "source_user": 3, 
+            "last_modified": "2015-01-25T02:22:54Z", 
+            "link_back": "/view-discussion/4/e", 
+            "was_posted": false, 
+            "subscription_id": 301, 
+            "event_data": "e"
+        }
+    }, 
+    {
+        "pk": 2, 
+        "model": "digidemo.publication", 
+        "fields": {
+            "event_type": "COMMENT", 
+            "creation_date": "2015-01-25T02:25:41Z", 
+            "source_user": 3, 
+            "last_modified": "2015-01-25T02:25:41Z", 
+            "link_back": null, 
+            "was_posted": false, 
+            "subscription_id": 302, 
+            "event_data": "e"
+        }
+    }, 
+    {
+        "pk": 3, 
+        "model": "digidemo.publication", 
+        "fields": {
+            "event_type": "REPLY", 
+            "creation_date": "2015-01-25T02:25:47Z", 
+            "source_user": 3, 
+            "last_modified": "2015-01-25T02:25:47Z", 
+            "link_back": null, 
+            "was_posted": false, 
+            "subscription_id": 302, 
+            "event_data": "bip"
+        }
+    }, 
+    {
+        "pk": 4, 
+        "model": "digidemo.publication", 
+        "fields": {
+            "event_type": "REPLY", 
+            "creation_date": "2015-01-25T17:43:23Z", 
+            "source_user": 2, 
+            "last_modified": "2015-01-25T17:43:23Z", 
+            "link_back": null, 
+            "was_posted": false, 
+            "subscription_id": 207, 
+            "event_data": "A test reply"
+        }
+    }, 
+    {
         "pk": 1, 
         "model": "digidemo.emailrecipient", 
         "fields": {
@@ -3798,6 +3957,29 @@
         }
     }, 
     {
+        "pk": 15, 
+        "model": "digidemo.proposal", 
+        "fields": {
+            "sectors": [
+                1
+            ], 
+            "tags": [
+                73
+            ], 
+            "text": "e", 
+            "title": "e", 
+            "proposal_image": "/digidemo/proposal-images/", 
+            "creation_date": "2015-01-25T02:22:40Z", 
+            "score": 0, 
+            "user": 3, 
+            "last_modified": "2015-01-25T02:22:40Z", 
+            "subscription_id": 301, 
+            "summary": "e", 
+            "original_user": 3, 
+            "is_published": false
+        }
+    }, 
+    {
         "pk": 1, 
         "model": "digidemo.proposalversion", 
         "fields": {
@@ -4532,6 +4714,25 @@
         }
     }, 
     {
+        "pk": 63, 
+        "model": "digidemo.proposalversion", 
+        "fields": {
+            "sectors": [
+                1
+            ], 
+            "tags": [
+                73
+            ], 
+            "text": "e", 
+            "title": "e", 
+            "summary": "e", 
+            "last_modified": "2015-01-25T02:22:40Z", 
+            "user": 3, 
+            "proposal": 15, 
+            "creation_date": "2015-01-25T02:22:40Z"
+        }
+    }, 
+    {
         "pk": 1, 
         "model": "digidemo.userprofile", 
         "fields": {
@@ -4928,6 +5129,35 @@
         }
     }, 
     {
+        "pk": 4, 
+        "model": "digidemo.discussion", 
+        "fields": {
+            "target": 15, 
+            "title": "e", 
+            "text": "e", 
+            "creation_date": "2015-01-25T02:22:54Z", 
+            "score": 0, 
+            "is_open": false, 
+            "user": 3, 
+            "last_modified": "2015-01-25T02:22:54Z", 
+            "subscription_id": 302
+        }
+    }, 
+    {
+        "pk": 1, 
+        "model": "digidemo.reply", 
+        "fields": {
+            "target": 1, 
+            "text": "A test reply", 
+            "creation_date": "2015-01-25T17:43:23Z", 
+            "score": 0, 
+            "is_open": false, 
+            "user": 2, 
+            "last_modified": "2015-01-25T17:45:46Z", 
+            "subscription_id": 306
+        }
+    }, 
+    {
         "pk": 24, 
         "model": "digidemo.reply", 
         "fields": {
@@ -5177,6 +5407,34 @@
             "user": 2, 
             "last_modified": "2015-01-25T01:50:28Z", 
             "subscription_id": 227
+        }
+    }, 
+    {
+        "pk": 42, 
+        "model": "digidemo.reply", 
+        "fields": {
+            "target": 4, 
+            "text": "bip", 
+            "creation_date": "2015-01-25T02:25:47Z", 
+            "score": 0, 
+            "is_open": false, 
+            "user": 3, 
+            "last_modified": "2015-01-25T02:25:47Z", 
+            "subscription_id": 305
+        }
+    }, 
+    {
+        "pk": 43, 
+        "model": "digidemo.reply", 
+        "fields": {
+            "target": 1, 
+            "text": "A test reply", 
+            "creation_date": "2015-01-25T17:43:23Z", 
+            "score": 0, 
+            "is_open": false, 
+            "user": 2, 
+            "last_modified": "2015-01-25T17:43:23Z", 
+            "subscription_id": 306
         }
     }, 
     {
@@ -6040,6 +6298,32 @@
             "user": 2, 
             "last_modified": "2015-01-25T01:50:28Z", 
             "subscription_id": 293
+        }
+    }, 
+    {
+        "pk": 9, 
+        "model": "digidemo.discussioncomment", 
+        "fields": {
+            "target": 4, 
+            "text": "e", 
+            "creation_date": "2015-01-25T02:22:59Z", 
+            "score": 0, 
+            "user": 3, 
+            "last_modified": "2015-01-25T02:22:59Z", 
+            "subscription_id": 303
+        }
+    }, 
+    {
+        "pk": 10, 
+        "model": "digidemo.discussioncomment", 
+        "fields": {
+            "target": 4, 
+            "text": "e", 
+            "creation_date": "2015-01-25T02:25:41Z", 
+            "score": 0, 
+            "user": 3, 
+            "last_modified": "2015-01-25T02:25:41Z", 
+            "subscription_id": 304
         }
     }, 
     {
