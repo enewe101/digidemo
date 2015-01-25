@@ -1,0 +1,91 @@
+{% extends "digidemo/__base.html" %}
+{% load staticfiles %}
+{% load apptags %}
+
+{% block css %}
+	{{ block.super }}
+{% endblock css %}
+
+{% block js %}
+	{{ block.super }}
+{% endblock js %}
+
+{% block middle %}
+
+{% include "digidemo/_w_simple_form_wrapped.html" with form=form %}
+
+<script> 
+
+	// The id for some form elements, defined in template, are passed to js:
+	var USERNAME_INPUT_ID = "{{form.form_class}}_{{form.id_prefix}}_username";
+	var PASSWORD1_INPUT_ID = "{{form.form_class}}_{{form.id_prefix}}_password";
+	var PASSWORD2_INPUT_ID = "{{form.form_class}}_{{form.id_prefix}}_confirm_password";
+
+	// Get those form elements
+	var username_input = $('#'+USERNAME_INPUT_ID);
+	var password1_input = $('#'+PASSWORD1_INPUT_ID);
+	var password2_input = $('#'+PASSWORD2_INPUT_ID);
+
+	// Add a notification element beside the username input
+	var username_status = $('<span id="username_notification_target"></span>');
+	username_input.after(username_status);
+
+	// Add notifications element beside password inputs
+	var pwd_length_status = $('<span id="pwd1_notification_target"></span>');
+	password1_input.after(pwd_length_status);
+	var pwd_match_status = $('<span id="pwd2_notification_target"></span>');
+	password2_input.after(pwd_match_status);
+
+	// Enable username verification on the username field
+	username_input.keyup(check_username_available);
+
+	// Enable verification that passwords match on password fields
+	password1_input.keyup(check_passwords);
+	password2_input.keyup(check_passwords);
+
+	// A callback function that updates the status indicator for password2
+	function check_passwords() {
+
+		// check what the passwords look like
+		is_pwd1_blank = password1_input.val() == '';
+		is_pwd2_blank = password2_input.val() == '';
+		do_pwds_match = password1_input.val() == password2_input.val();
+		pwd1_length = password1_input.val().length;
+
+		// if pwd1 is too short, but not blank, notify "too short".
+		if(pwd1_length < 8 && !is_pwd1_blank) {
+			pwd_length_status.text('too short!');
+		} else {
+			pwd_length_status.text('');
+		}
+
+		// if pwd1 and pwd2 don't match, and pwd2 isn't blank, notify
+		if(!do_pwds_match && !is_pwd2_blank) {
+			pwd_match_status.text("Passwords don't match!");
+		} else {
+			pwd_match_status.text("");
+		}
+	}
+
+	// A callback function that updates the status indicator for username.
+	function success_func(data) {
+		if(data['available']) {
+			username_status.text("available!");
+		} else {
+			username_status.text("sorry... it's taken");
+		}
+	}
+
+	// A callback function that uses ajax to check if the username is taken
+	function check_username_available() {
+		var username = $(this).val()
+		ajax( 
+			'checkValidUserName', 
+			{ username: username },
+			{ success: success_func }
+		);
+	};
+
+</script>
+
+{% endblock middle %}

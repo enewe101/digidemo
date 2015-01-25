@@ -22,7 +22,11 @@ urlpatterns = patterns('',
 	# test url
 	url(r'^test/$', show_test_page, name='test'),
 
+	# admin pages
+	url('^admin/', include(admin.site.urls)),
+
 	# front page urls
+	url(r'^$', land, name='land'),
 	url(r'^mainPage/$',mainPage, name='mainPage'),
 
 	# login page

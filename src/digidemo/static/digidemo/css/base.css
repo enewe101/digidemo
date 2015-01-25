@@ -208,6 +208,10 @@ a.create_navitem {
 	margin: 10px 0 0 0;
 }
 
+#header_spacer {
+	height: 52px;
+}
+
 .outer_center {
 	text-align: center;
 }

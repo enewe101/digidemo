@@ -528,17 +528,16 @@ def follow_post(request):
 
 @ajax_endpoint
 def checkValidUserName(request):
-        username_pass = request.GET['username'];
-        #print username_pass;
-        try :
-               name =  User.objects.get(username=username_pass);
-        except:
-                name = None
-        #print name
-        if name:
-                return 'unavailable';
-        else:
-                return 'available';
+		username_pass = request.POST['username'];
+		try :
+			available = User.objects.get(username=username_pass);
+			available = False;
+
+		except:
+			available = True;
+
+		return {'success':True, 'available': available}
+
 
 
 

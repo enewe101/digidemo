@@ -28,16 +28,16 @@
 			<link rel="stylesheet" type="text/css" 
 				href="{% static "digidemo/css/jquery.switchButton.css" %}" />
 			<link rel="stylesheet" type="text/css" 
-				href="http://ajax.googleapis.com/ajax/libs/jqueryui/1/themes/flick/jquery-ui.css" />
+				href="//ajax.googleapis.com/ajax/libs/jqueryui/1/themes/flick/jquery-ui.css" />
 		{% endblock css %}
 
 		{% block js %}
 
 			<script type="text/javascript"
-				src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
+				src="//code.jquery.com/jquery-2.1.1.min.js"></script>
 
 			<script 
-				src="http://code.jquery.com/ui/1.11.0/jquery-ui.min.js">
+				src="//code.jquery.com/ui/1.11.0/jquery-ui.min.js">
 			</script>
 
 			<script type="text/javascript">
@@ -68,6 +68,10 @@
 			<!-- start of header -->
 			{% include "digidemo/_i_header.html" %}
 			<div class="clear"></div>
+
+			<div id="header_spacer">
+				<!-- spacer needed because header is positioned absolutely -->
+			</div>
 			<!-- end of header -->
 
 			<!-- content in the middle (vertical middle) of the page -->

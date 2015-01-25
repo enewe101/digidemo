@@ -1,0 +1,86 @@
+#landing_bg {
+	background: 500px 1000px white url('../images/leaves.png');
+}
+
+#rsvp {
+	float:  left;
+	margin: 2px 6px 0 0;
+}
+
+#land_fb_icon {
+	float: left;
+	margin: 0 6px 0 0;
+}
+
+#land_fb_link {
+	float: left;
+	margin: 2px 0 0 0;
+		
+}
+
+#land_banner {
+	margin: auto;
+	margin-top: 100px;
+}
+
+.vert100 {
+	width: 1000px;
+	height:100px;
+}
+
+#land_info{
+	position: relative;
+}
+
+.land_green {
+	font-style: italic;
+	color: rgb(0,128,0);
+}
+
+#land_who_we_are {
+	text-align: justify;
+	width: 300px;
+	padding: 16px;
+	border: dashed 2px rgb(0, 220, 0);
+	background: white;
+	position: absolute;
+	top:20px;
+	left:410px;
+}
+
+#warning_img {
+	float:right;
+	margin-left: 20px;
+}
+
+.land_form{
+	margin: 10px 0 10px 0;
+}
+
+#land_attend {
+	text-align: justify;
+	width: 500px;
+	padding: 16px;
+	border: dashed 2px rgb(0, 180, 255);
+	background: white;
+	position: absolute;
+	top: 100px;
+	left: 350px;
+}
+
+#land_notify {
+	text-align: justify;
+	width: 260px;
+	padding: 16px;
+	background: white;
+	border: dashed 2px rgb(255,75,0);
+	position: absolute;
+	top:0px;
+	left: 120px;
+}
+
+.land_inner_center {
+	text-align: center;
+	margin: auto;
+	width: 1024px;
+}

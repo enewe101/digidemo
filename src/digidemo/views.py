@@ -280,6 +280,29 @@ def chop_string(s, max_len=40):
 	return lines
 
 
+def land(request):
+
+	thank_you = False
+	email_form = EmailSignupForm()
+	email_form.id_prefix=0
+	email_form.endpoint='/'
+
+	if request.POST:
+		sent_email_form = EmailSignupForm(request.POST)
+		if sent_email_form.is_valid():
+			sent_email_form.save()
+			thank_you = True;
+
+		else:
+			email_form = sent_email_form
+			email_form.id_prefix = 0
+			email_form.endpoint = '/'
+
+	return render(request, 'digidemo/land.html', {
+		'thank_you': thank_you,
+		'email_form': email_form
+	})
+
 
 def history(request, proposal_id):
 
@@ -1347,7 +1370,7 @@ def mainPage(request,sort_type='most_recent'):
         
 	return render(
 		request,
-		'digidemo/proposal_index.html',
+		'digidemo/index.html',
 		{
 			'django_vars_js': get_django_vars_JSON(request=request),
 			'users': users,
@@ -1360,51 +1383,36 @@ def mainPage(request,sort_type='most_recent'):
 
 def userRegistration(request):
 	if(request.method == 'POST'):
-		user = NameForm(request.POST)
+		reg_form = UserRegisterForm(
+			request.POST, 
+			endpoint=reverse('userRegistration')
+		)
 		
-		if user.is_valid():
+		if reg_form.is_valid():
 
-			passwordPass = user.cleaned_data['password']
-			userNamePass = user.cleaned_data['userName']
-			emailPass = user.cleaned_data['email']
-			firstNamePass = user.cleaned_data['firstName']
-			lastNamePass = user.cleaned_data['lastName']
-
-			userCreate = User.objects.create_user(
-				username=userNamePass,
-				email= emailPass,
-				password = passwordPass,
-				first_name = firstNamePass,
-				last_name = lastNamePass
+			new_user = User.objects.create_user(
+				password = reg_form.cleaned_data['password'],
+				username = reg_form.cleaned_data['username'],
+				email = reg_form.cleaned_data['email'],
+				first_name = reg_form.cleaned_data['first_name'],
+				last_name = reg_form.cleaned_data['last_name']
 			)
 
-			userCreate.save();
-			streetPass = "";
-			zipCodePass = "";
-			countryPass =   "";
-			provincePass =  "";
+			user_profile = UserProfile(user=new_user)
+			user_profile.save()
 
-			userProfile = UserProfile(
-				user=userCreate,
-				email_validated = 0,
-				rep=0,
-				street = streetPass,
-				country = countryPass,
-				zip_code = zipCodePass,
-				province = provincePass
-			)
+			return redirect('../mainPage')
 
-			userProfile.save();
+	else: 
+		reg_form = UserRegisterForm(
+		endpoint=reverse('userRegistration'))
 
-		return redirect('../mainPage')
-	
-	registrationForm = NameForm();
  
 	return render(
 		request,
-		'digidemo/User_registration.html',
+		'digidemo/register.html',
 		{ 
-			'form' : registrationForm,
+			'form' : reg_form,
 			'django_vars_js': get_django_vars_JSON(request=request)
 		}
 	)
