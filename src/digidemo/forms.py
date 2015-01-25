@@ -5,10 +5,11 @@ from django.template import Context
 from django.template.loader import get_template
 from django.utils.translation import ugettext as _
 from django.db import models
-from django.forms import Form, ModelForm 
+from django.forms import Form, ModelForm
 from django import forms
 from django.forms.formsets import formset_factory
 from django.forms.models import modelformset_factory
+from django.core.exceptions import ObjectDoesNotExist
 from digidemo.choices import *
 from digidemo.models import *
 from digidemo.settings import PROJECT_DIR
@@ -41,7 +42,7 @@ class AugmentedFormMixin(object):
 
 		default_auto_id = self.form_class + '_' + str(self.id_prefix)
 
-		# Customize the forms auto_id 
+		# Customize the forms auto_id
 		auto_id = kwargs.pop('auto_id', default_auto_id + '_%s')
 
 		# The form's fields automatically get classes too, based on
@@ -84,12 +85,12 @@ class AugmentedFormMixin(object):
 
 def bound_form(endpoint=None, class_name=None):
 	'''
-	A class decorator for turning SomeFormClass into an ajax-ready form.  
+	A class decorator for turning SomeFormClass into an ajax-ready form.
 
-	`endpoint` should be a string corresponding to an ajax handler in the 
+	`endpoint` should be a string corresponding to an ajax handler in the
 	namespace of the ajax.py module.
 
-	An ajax_form can be rendered in a page by including the 
+	An ajax_form can be rendered in a page by including the
 	_w_ajax_form.html template.  This template needs the template variables
 	`form` to be set to an ajax_form instance.  It also needs a variable
 	`include_id` to provide a unique string or number.  The include_id only
@@ -103,14 +104,14 @@ def bound_form(endpoint=None, class_name=None):
 	click event on the submit button to an ajax POST of the form to endpoint.
 
 	The ajax form gets registered as a widget with the widgets manager.
-	It's widget_class is the name of the form class (e.g. SomeFormClass), and 
+	It's widget_class is the name of the form class (e.g. SomeFormClass), and
 	the widget_id is the class plus an underscore and the include_id
-	(e.g. SomeFormClass_4).  
+	(e.g. SomeFormClass_4).
 
-	Note: if the include_id was ommitted, the widget id would be 
+	Note: if the include_id was ommitted, the widget id would be
 		`SomeFormClass_`.
 
-	The endpoint and the form_class can be overridden for instances, assigning 
+	The endpoint and the form_class can be overridden for instances, assigning
 	to the keywords `endpoint` or `form_class` when constructing the form.
 	'''
 
@@ -134,7 +135,7 @@ def bound_form(endpoint=None, class_name=None):
 
 				default_auto_id = self.form_class + '_' + str(self.id_prefix)
 
-				# Customize the forms auto_id 
+				# Customize the forms auto_id
 				auto_id = kwargs.pop('auto_id', default_auto_id + '_%s')
 
 				# The form's fields automatically get classes too, based on
@@ -181,7 +182,7 @@ def bound_form(endpoint=None, class_name=None):
 
 def auto_add_input_class(form_class_name, form_instance):
 	'''
-	Add an html class to the widget html for all the widgets listed in a 
+	Add an html class to the widget html for all the widgets listed in a
 	form's Meta.widgets dictionary.
 
 	The html class is made from the form's class and the widget's field name
@@ -264,7 +265,7 @@ class ReplyForm(ModelForm):
 		fields = ['text', 'user', 'target']
 		widgets = {
 			'text': forms.Textarea(attrs={'class':'reply_input'}),
-			'user': forms.HiddenInput(), 
+			'user': forms.HiddenInput(),
 			'target': forms.HiddenInput(),
 		}
 	
@@ -274,7 +275,7 @@ class CommentForm(ModelForm):
 		fields = ['text', 'user', 'target']
 		widgets = {
 			'text': forms.Textarea(attrs={'class':'letter_comment_input'}),
-			'user': forms.HiddenInput(), 
+			'user': forms.HiddenInput(),
 			'target': forms.HiddenInput(),
 		}
 
@@ -310,13 +311,13 @@ class LetterForm(AugmentedFormMixin, ModelForm):
 	endpoint = 'send_letter'
 
 	recipients = forms.ModelMultipleChoiceField(
-		widget=forms.CheckboxSelectMultiple(), 
+		widget=forms.CheckboxSelectMultiple(),
 		queryset=Position.objects.all())
 		
 	class Meta:
 		model = Letter
 		fields = [
-			'parent_letter', 'target', 'user', 'valence', 'title', 
+			'parent_letter', 'target', 'user', 'valence', 'title',
 			'recipients', 'text'
 		]
 		widgets = {
@@ -383,7 +384,7 @@ class ProposalVersionForm(AugmentedFormMixin, ModelForm):
 		# a brand new proposal
 		if self.cleaned_data['proposal'] is None:
 
-			# Copy data from the proposal_version, 
+			# Copy data from the proposal_version,
 			# which is used to make the proposal itself
 			proposal_init = utils.extract_dict(
 				self.cleaned_data,
@@ -397,14 +398,14 @@ class ProposalVersionForm(AugmentedFormMixin, ModelForm):
 			self.proposal = Proposal(**proposal_init)
 			self.proposal.save()
 
-			# now save the proposal version, then bind the proposal and 
+			# now save the proposal version, then bind the proposal and
 			# then save the bound proposal_version
 			new_proposal_version = super(ProposalVersionForm, self).save(
 				commit=False)
 			new_proposal_version.proposal = self.proposal
 			new_proposal_version.save()
 
-			# Finally copy the sectors to the saved proposal and 
+			# Finally copy the sectors to the saved proposal and
 			# proposal_version
 			for sector in self.cleaned_data['sectors']:
 				new_proposal_version.sectors.add(sector)
@@ -414,7 +415,7 @@ class ProposalVersionForm(AugmentedFormMixin, ModelForm):
 		# proposal version
 		else:
 
-			# Update the values in the Proposal which mirror the 
+			# Update the values in the Proposal which mirror the
 			# ProposalVersion.  Since this is an edit, there is already
 			# a proposal bound to the form, get it, then update values.
 			self.proposal = self.cleaned_data['proposal']
@@ -484,7 +485,7 @@ class TaggedProposalForm(object):
 				self.taggit['errors'].append(
 					'Please include at least one tag.')
 
-			else: 
+			else:
 				self.taggit['errors'].append('Tags should contain only '\
 					'letters, numbers and hyphens.')
 			
@@ -628,6 +629,30 @@ class UserRegisterForm(AugmentedFormMixin, ModelForm):
 
 		return cleaned
 
+class ResetPasswordForm(AugmentedFormMixin,ModelForm):
+	class Meta:
+		model = PasswordReset
+		fields = ['username', 'email']
+		widgets = {
+			'username': forms.TextInput(),
+			'email': forms.EmailInput(),
+		}
+
+
+	def clean(self):
+		cleaned = super(ResetPasswordForm, self).clean()
+		user_email_match = False
+		try:
+		    User.objects.get(username = cleaned['username'],email = cleaned['email'])
+		    user_email_match = True
+		except ObjectDoesNotExist:
+		    user_email_match = False
+		    print("Username and email don't match.")
+		
+		if not user_email_match:
+		    self._errors['username'] = self.error_class(["Username doesn't exist or email doesn't match."])
+		
+		return cleaned
 
 from haystack.forms import SearchForm
 

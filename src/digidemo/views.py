@@ -1,6 +1,8 @@
 import difflib
 import collections as c
 
+from uuid import uuid4
+
 from django.core import serializers
 from django.core.files.storage import default_storage
 from django.core.files.base import ContentFile
@@ -21,7 +23,7 @@ from digidemo.forms import *
 from digidemo import utils
 from digidemo.utils import force_logout
 from forms import ProposalSearchForm
-from settings import DEBUG 
+from settings import DEBUG
 
 import json
 import sys
@@ -119,12 +121,12 @@ def get_petition_list_tabs(active_tab):
 	tabs = [
 		{
 			'name': 'interesting',
-			'url': reverse('all_petitions_list', 
+			'url': reverse('all_petitions_list',
 				kwargs={'order_by':'interesting'})
 		},
 		{
 			'name': 'activity',
-			'url': reverse('all_petitions_list', 
+			'url': reverse('all_petitions_list',
 				kwargs={'order_by':'activity'})
 		},
 		{
@@ -133,7 +135,7 @@ def get_petition_list_tabs(active_tab):
 		},
 		{
 			'name': 'location',
-			'url': reverse('all_petitions_list', 
+			'url': reverse('all_petitions_list',
 				kwargs={'order_by':'location'})
 		},
 	]
@@ -151,12 +153,12 @@ def get_question_list_tabs(active_tab):
 	question_list_tabs = [
 		{
 			'name': 'interesting',
-			'url': reverse('all_questions_list', 
+			'url': reverse('all_questions_list',
 				kwargs={'order_by':'interesting'})
 		},
 		{
 			'name': 'activity',
-			'url': reverse('all_questions_list', 
+			'url': reverse('all_questions_list',
 				kwargs={'order_by':'activity'})
 		},
 		{
@@ -165,7 +167,7 @@ def get_question_list_tabs(active_tab):
 		},
 		{
 			'name': 'location',
-			'url': reverse('all_questions_list', 
+			'url': reverse('all_questions_list',
 				kwargs={'order_by':'location'})
 		},
 	]
@@ -221,7 +223,7 @@ def flatten(list_2d):
 def split_keep(s, r):
 
 	'''
-	split the s (a string) wherever *after* matches to r (a regular 
+	split the s (a string) wherever *after* matches to r (a regular
 	expression representing a delimiter) keeping the delimiter attached to the
 	substring to the "left" of the split.
 	'''
@@ -315,7 +317,7 @@ def history(request, proposal_id):
 	proposal_vote_form = get_vote_form(
 		ProposalVote, ProposalVoteForm, logged_in_user, proposal)
 
-	# make diff between the latest version of the proposal and the one 
+	# make diff between the latest version of the proposal and the one
 	# before it
 	proposal_versions = ProposalVersion.objects\
 		.filter(proposal=proposal)\
@@ -395,7 +397,7 @@ def get_vote_form(VoteModel, VoteForm, user, target, id_prefix=''):
 
 
 class CommentSection(object):
-	''' 
+	'''
 	this encapsulates a series of comments as well as an add comment
 	form. It removes the burden of creating links between these aspects
 	from the view
@@ -404,9 +406,9 @@ class CommentSection(object):
 		self.comments = comment_set
 		self.comment_form = comment_form
 
-		# Below is the important line, which ensures that the 
+		# Below is the important line, which ensures that the
 		# include id used to set the html id's in the comments area
-		# matches the comment_form's prefix id.  This is necessary for 
+		# matches the comment_form's prefix id.  This is necessary for
 		# allowing new comments submitted by the comment form to get displayed
 		# dynamically in the comments area by javascript
 		self.id_prefix = comment_form.id_prefix
@@ -416,13 +418,13 @@ class PostSection(object):
 	'''
 	This encapsulates a "post" along with its comments, comment_form,
 	and voting widget.  A "post" is an abstract object, and Question, Answer,
-	Discussion, Reply, and Letter, are, conceptually, non-abstract 
+	Discussion, Reply, and Letter, are, conceptually, non-abstract
 	implementations of it.
 	
 	This class let's one build all of the widgetery that goes along with
-	a post, which is fairly repetitive buisiness.  In doing so, it makes 
-	sure that all of the id's, which ultimately become html ids, are 
-	syncronized so that assumptions that exist in the templates, which 
+	a post, which is fairly repetitive buisiness.  In doing so, it makes
+	sure that all of the id's, which ultimately become html ids, are
+	syncronized so that assumptions that exist in the templates, which
 	bind behaviors between elements in the post based on getting these elements
 	by id, are satisfied, and everything works nicely, and DRYly.
 	'''
@@ -459,16 +461,16 @@ class PostSection(object):
 
 		# make a vote form
 		self.vote_form = get_vote_form(
-			self.Vote, 
+			self.Vote,
 			self.VoteForm,
-			user, 
+			user,
 			post,
 			id_prefix=self.id_prefix
 		)
 
 		# make a comments section
 		self.comments_section = CommentSection(
-			self.comments, 
+			self.comments,
 			self.comment_form
 		)
 
@@ -499,11 +501,11 @@ class LetterSection(PostSection):
 	VoteForm = LetterVoteForm
 	ResendForm = ResendLetterForm
 
-	def __init__(self, 
-			post, 
-			user, 
-			id_prefix=None, 
-			*args, 
+	def __init__(self,
+			post,
+			user,
+			id_prefix=None,
+			*args,
 			**kwargs
 		):
 
@@ -518,7 +520,7 @@ class LetterSection(PostSection):
 
 		# We need a list of all the senders of the letter...
 		self.resenders = set([
-			l.user 
+			l.user
 			for l in Letter.objects
 				.exclude(user=self.post.user)
 				.filter(parent_letter=self.post)
@@ -534,7 +536,7 @@ class LetterSection(PostSection):
 				'title': self.post.title,
 				'recipients': self.post.recipients.all(),
 				'text': self.post.text
-			}, 
+			},
 			id_prefix=self.id_prefix
 		)
 
@@ -542,11 +544,11 @@ class LetterSection(PostSection):
 
 class AbstractView(object):
 
-	# override this with desired template 
+	# override this with desired template
 	template = 'digidemo/__base.html'
 
 
-	# Top-level request handler. 
+	# Top-level request handler.
 	# Give this function to the url resolver in urls.py.
 	def view(self, request, *args, **kwargs):
 
@@ -598,7 +600,7 @@ class AbstractView(object):
 	def get_context(self):
 		context_data = self.get_default_context()
 		context_data.update(self.get_context_data())
-		return RequestContext(self.request, context_data) 
+		return RequestContext(self.request, context_data)
 
 
 	# Usually this is the only function to override.
@@ -607,7 +609,7 @@ class AbstractView(object):
 				+ ' get_context_data')
 
 	
-	# handles post requests.  Usually you'll want to override the functions 
+	# handles post requests.  Usually you'll want to override the functions
 	# to which it delegates, rather than this itself.
 	def handle_post(self):
 		# Create the response
@@ -633,9 +635,9 @@ class AbstractView(object):
 
 
 
-# This provides a base for creating views which only logged in users 
-# should be able to access.  
-# 
+# This provides a base for creating views which only logged in users
+# should be able to access.
+#
 # As an additional, optional protection, if this is a view which handles
 # post data from a form that contains a `user` field, a check can be
 # performed to ensure that the user indicated in the form is the same as the
@@ -662,7 +664,7 @@ class AbstractLoginRequiredView(AbstractView):
 		if request.POST and self.check_form_user is not None:
 
 			# Make sure that we haven't just forgotten to set up the user
-			# form validation.  This requires that check_user_form is 
+			# form validation.  This requires that check_user_form is
 			# explicitly set to False in order to opt out of the check.
 			if self.form_class is None:
 				raise NotImplementedError(
@@ -1038,17 +1040,17 @@ class MakePost(AbstractLoginRequiredView):
 			pk=self.kwargs['target_id'])
 
 		form = self.form_class(
-			self.request.POST, 
+			self.request.POST,
 			endpoint=self.get_form_endpoint()
 		)
 
-		# If the form is valid, save question and redirect to the 
+		# If the form is valid, save question and redirect to the
 		# question view page
 		if form.is_valid():
 			post = form.save()
 			return redirect(post.get_url())
 
-		# If the form wasn't valid, we don't redirect.  
+		# If the form wasn't valid, we don't redirect.
 		# build the context
 		context_data = {
 			'globals': get_globals(),
@@ -1061,7 +1063,7 @@ class MakePost(AbstractLoginRequiredView):
 			'headline_icon_url': self.get_headline_icon_url()
 		}
 
-		context = RequestContext(self.request, context_data) 
+		context = RequestContext(self.request, context_data)
 
 		# get the template
 		template = self.get_template()
@@ -1157,7 +1159,7 @@ class PostAreaView(AbstractView):
 
 	def get_context_data(self):
 
-		# The following class attributes should be overriden 
+		# The following class attributes should be overriden
 		concrete_attributes = [self.Post, self.PostSection, self.Subpost,
 			self.SubpostSection, self.SubpostForm]
 
@@ -1176,7 +1178,7 @@ class PostAreaView(AbstractView):
 		post_section = self.PostSection(
 			post, self.request.user, id_prefix='q')
 
-		# make sections for subposts 
+		# make sections for subposts
 		subpost_sections = []
 		for subpost in self.Subpost.objects.filter(target=post):
 			subsection = self.SubpostSection(subpost, self.request.user)
@@ -1344,7 +1346,7 @@ def show_test_page(request):
 	return render(request, 'digidemo/test.html', {})
 
 
-# A simple way to force reload from the server.  
+# A simple way to force reload from the server.
 # This allows one to trigger a reload without the risk of re-posting form data
 def do_reload(request):
 	return redirect(request.META['HTTP_REFERER'])
@@ -1384,7 +1386,7 @@ def mainPage(request,sort_type='most_recent'):
 def userRegistration(request):
 	if(request.method == 'POST'):
 		reg_form = UserRegisterForm(
-			request.POST, 
+			request.POST,
 			endpoint=reverse('userRegistration')
 		)
 		
@@ -1403,7 +1405,7 @@ def userRegistration(request):
 
 			return redirect('../mainPage')
 
-	else: 
+	else:
 		reg_form = UserRegisterForm(
 		endpoint=reverse('userRegistration'))
 
@@ -1411,12 +1413,51 @@ def userRegistration(request):
 	return render(
 		request,
 		'digidemo/register.html',
-		{ 
+		{
 			'form' : reg_form,
 			'django_vars_js': get_django_vars_JSON(request=request)
 		}
 	)
 
+def resetPassword(request):
+	if(request.method == 'POST'):
+		pass_reset_form = ResetPasswordForm(
+			request.POST,
+			endpoint=reverse('resetPassword')
+		)
+		
+		
+		if pass_reset_form.is_valid():
+			user = User.objects.get(username = pass_reset_form.cleaned_data['username'],email = pass_reset_form.cleaned_data['email'])
+			new_password = str(uuid4()).replace('-', '')[:8]
+			user.set_password(new_password)
+			user.save()
+			user.email_user(subject='Luminocracy.org Password Reset', message='Your new luminocracy.org password is: '+new_password, from_email='donotreply@luminocracy.org')
+			#new_user = User.objects.create_user(
+			#	password = reg_form.cleaned_data['password'],
+			#	username = reg_form.cleaned_data['username'],
+			#	email = reg_form.cleaned_data['email'],
+			#	first_name = reg_form.cleaned_data['first_name'],
+			#	last_name = reg_form.cleaned_data['last_name']
+			#)
+
+			#user_profile = UserProfile(user=new_user)
+			#user_profile.save()
+
+			return redirect('../mainPage')
+
+	else:
+		pass_reset_form = ResetPasswordForm(endpoint=reverse('resetPassword'))
+
+ 
+	return render(
+		request,
+		'digidemo/reset_password.html',
+		{
+			'form' : pass_reset_form,
+			'django_vars_js': get_django_vars_JSON(request=request)
+		}
+	)
 
 def get_default_context(request):
 
@@ -1444,7 +1485,7 @@ def search(request):
 	context = get_default_context(request)
 	context.update({'notes':results})
 	return render(
-		request, 
+		request,
 		'search/search.html',
 		context
 	)
@@ -1460,7 +1501,7 @@ def users(request):
 			dictionary[user] = lev(
 				user.user.username,request.POST['userName'])
 
-		# Use this for descending order 
+		# Use this for descending order
 		# for w in sorted(dictionary,key=dictionary.get,reverse=True)
 
 		for user in sorted(dictionary, key=dictionary.get):
@@ -1481,8 +1522,8 @@ def users(request):
 
 def userProfile(request, userName) :
 	userLoggedIn = User.objects.get(username = userName);
-	userProfile = UserProfile.objects.get(user = userLoggedIn); 
-	return render (request, 'digidemo/userProfile.html', 
+	userProfile = UserProfile.objects.get(user = userLoggedIn);
+	return render (request, 'digidemo/userProfile.html',
 		{
 			'django_vars_js': get_django_vars_JSON(request=request),
 			'user' : userProfile,
@@ -1519,7 +1560,7 @@ def userProfileEdit(request,userName) :
 		if 'image' in request.FILES:
 			uploadedImage = request.FILES['image'];
 			uploadedImage.name = userName;
-			userProfileLoggedIn.avatar_img = uploadedImage;               
+			userProfileLoggedIn.avatar_img = uploadedImage;
 
 		userProfileLoggedIn.save();
    	
@@ -1536,8 +1577,8 @@ def userProfileEdit(request,userName) :
 				request,"You have not been authorised to access the page"));
 		
 		return render(
-			request, 
-			'digidemo/userProfileEdit.html', 
+			request,
+			'digidemo/userProfileEdit.html',
 			{
 				'django_vars_js': get_django_vars_JSON(request=request),
 				'user' : userProfileLoggedIn,
@@ -1558,14 +1599,14 @@ def errorPage(request, error):
 
 
 #        ,------,
-#   o O <` WAT? | 
+#   o O <` WAT? |
 #    ^   \______,
-#    
+#
 def lev(a, b):
 	if not a: return len(b)
 	if not b: return len(a)
 	return min(
-		lev(a[1:], b[1:]) + (a[0] != b[0]), 
+		lev(a[1:], b[1:]) + (a[0] != b[0]),
 		lev(a[1:], b) + 1,
 		lev(a, b[1:])+1
 	)

@@ -5,11 +5,11 @@
 
 	<!-- if user logged in, show greeting, profile link, and logout button -->
 	<div id="login_div">
-		<div class="login_elm"> 
-			Welcome,&nbsp;
-		</div> 
 		<div class="login_elm">
-			<a href="{% url "userProfile" request|getLoggedInUser %}"> 
+			Welcome,&nbsp;
+		</div>
+		<div class="login_elm">
+			<a href="{% url "userProfile" request|getLoggedInUser %}">
 				{{request|getLoggedInUser}}
 			</a>
 		</div>
@@ -36,20 +36,23 @@
 			<div id="login-content">
 				<form id="login_form">
 					<fieldset id="inputs">
-						<input id="username" type="text" 
-							name="username" placeholder="username" 
-							required />   
-						<input id="password" type="password" 
-							name="password" placeholder="password" 
+						<input id="username" type="text"
+							name="username" placeholder="username"
+							required />
+						<input id="password" type="password"
+							name="password" placeholder="password"
 							required />
 					</fieldset>
 
 					<fieldset id="actions">
 						<input type="button" id="submit_login" value="Log in" />
 						<label>
-							<input type="checkbox" checked="checked" /> 
+							<input type="checkbox" checked="checked" />
 							Keep me signed in
 						</label>
+						<label>
+						    <a href="{% url "resetPassword" %}">Reset password</a>
+						   </label>
 					</fieldset>
 				</form>
 			</div>
@@ -66,7 +69,7 @@
 	// arm the login triger to slide open / closed the login form
 	$('#login-trigger').click(function(){
 		$(this).next('#login-content').slideToggle();
-		$(this).toggleClass('active');          
+		$(this).toggleClass('active');
 		
 		if ($(this).hasClass('active')) {
 			$(this).find('span').html('&#x25B2;')

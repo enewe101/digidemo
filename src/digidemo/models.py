@@ -1,7 +1,7 @@
 from django.db import models
 from digidemo.choices import *
 from django.contrib.auth.models import User
-from django.utils import timezone 
+from django.utils import timezone
 from django.core.urlresolvers import reverse
 from django.template.defaultfilters import slugify
 from django.utils.safestring import mark_safe
@@ -55,7 +55,7 @@ class Vote(TimeStamped):
 
 class Subscribable(TimeStamped):
 	'''
-		models that inheret subscribable get assigned a globally unique 
+		models that inheret subscribable get assigned a globally unique
 		subscription_id the first time that they are saved.  Within the app,
 		the subscription_id acts as an identifier accross different kinds
 		of objects (proposals, questions, petitions...) which users can
@@ -80,7 +80,7 @@ class Subscribable(TimeStamped):
 		abstract = True
 
 
-# *** Concrete Models *** # 
+# *** Concrete Models *** #
 
 class EmailRecipient(TimeStamped):
 	'''
@@ -90,17 +90,24 @@ class EmailRecipient(TimeStamped):
 	email = models.EmailField(max_length=254)
 	active = models.BooleanField(default=True)
 
+class PasswordReset(TimeStamped):
+	'''
+		This is for password reset
+	'''
+	email = models.EmailField(max_length=254)
+	username = models.CharField(max_length=DEFAULT_TEXT_LENGTH)
+
 
 class SubscriptionId(TimeStamped):
 	'''
 		this is a list of all the subscribable ids ever assigned.  It may seems
-		strange to have a table that stores only primary keys!  But it 
+		strange to have a table that stores only primary keys!  But it
 		provides a linkage point between subscribable objects, like proposals,
 		questions, discussions, etc, and user's subscriptions.
 			2) By linking to the SubscriptionId, rather than the subscribable
-				directly, we don't have an issue with the fact that the 
+				directly, we don't have an issue with the fact that the
 				subscribables are of heterogeneous types.
-			1) We rely on the db's autoincrement to give out unique 
+			1) We rely on the db's autoincrement to give out unique
 				subscription id's.
 	'''
 	subscription_id = models.AutoField(primary_key=True)
@@ -115,8 +122,8 @@ class Sector(TimeStamped):
 
 	def render(self):
 		html =  (
-			'<div class="sector_tag ' + self.name + '_sector">' 
-				+ self.name + 
+			'<div class="sector_tag ' + self.name + '_sector">'
+				+ self.name +
 			'</div>'
 		)
 
@@ -145,7 +152,7 @@ class Proposal(Subscribable):
 	original_user = models.ForeignKey(
 		User, related_name='initiated_proposals')
 	user = models.ForeignKey(
-		User, related_name='proposals_rectently_edited') 
+		User, related_name='proposals_rectently_edited')
 	proposal_image = models.ImageField(
 		upload_to='proposal_avatars',default='/digidemo/proposal-images/');
 	tags = models.ManyToManyField(
@@ -172,12 +179,12 @@ class Proposal(Subscribable):
 		return url_stub + slugify(self.title)
 
 	def get_open_discussions_url(self):
-		url_stub = reverse('editors_area', 
+		url_stub = reverse('editors_area',
 			kwargs={'issue_id': self.pk, 'open_status': 'open'})
 		return url_stub + slugify(self.title)
 
 	def get_closed_discussions_url(self):
-		url_stub = reverse('editors_area', 
+		url_stub = reverse('editors_area',
 			kwargs={'issue_id': self.pk, 'open_status': 'closed'})
 		return url_stub + slugify(self.title)
 
@@ -263,13 +270,13 @@ class UserProfile(TimeStamped):
 		# Validation: event_name should be a string
 		if not isinstance(event_name, basestring):
 			raise ValueError('UserProfile.apply_score: event_name should'
-				'be string-like.') 
+				'be string-like.')
 
 		try:
 			rep_delta = self.rep_events[event_name]
 
 		except KeyError as e:
-			raise ValueError('UserProfile: there is no %s rep-event.' % 
+			raise ValueError('UserProfile: there is no %s rep-event.' %
 					str(event_name))
 
 		return rep_delta
@@ -324,12 +331,12 @@ class Position(TimeStamped):
 	mandate_summary = models.TextField()
 
 	def __unicode__(self):
-		return "%s, %s %s" %(self.name, self.person.fname, 
+		return "%s, %s %s" %(self.name, self.person.fname,
 			self.person.lname)
 
 
 class Letter(Subscribable):
-	parent_letter = models.ForeignKey('self', blank=True, null=True, 
+	parent_letter = models.ForeignKey('self', blank=True, null=True,
 		related_name='resent_letters')
 	target = models.ForeignKey(Proposal)
 	valence = models.SmallIntegerField(choices=VALENCE_CHOICES)
