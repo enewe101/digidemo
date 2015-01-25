@@ -229,6 +229,9 @@ class SeleniumTestCase(LiveServerTestCase):
 
 
 
+
+
+
 # Tests the leaving comments.  Tests the comment forms for all the various
 # types of comments and places they occur.  Tests that submitting an empty
 # comment generates an error message for the user.  
@@ -1545,6 +1548,64 @@ class TestLoginRequired(TestCase):
 		self.assertFalse(reply_data['success'], 'the post to %s should '
 			'have been denied.' % endpoint)
 		self.assertEqual(reply_data['msg'], "user did not authenticate")
+
+
+class PublishSubscribeTest(TestCase):
+	'''
+		Tests that creating various subscribable objects always leads 
+		to two things:
+		1) The author is subscribed to the created object
+		2) A Publication is isued against target objects.  For example,
+			if a Question is being posted within a certain Proposal, then 
+			a Publication shoulid be issued for that Proposal, so that
+			any users subscribed to the Proposal will be notified of the 
+			new Question
+	'''
+
+	def test_question(self):
+
+		# get a few ingredients together so we can make a proposal
+		proposal_author = User.objects.get(username='regularuser')
+		tag = Tag.objects.get(pk=1)
+		sector = Sector.objects.get(pk=1)
+
+		# make a proposal
+		proposal = Proposal(
+			title='test proposal 1', 
+			summary='test proposal 1',
+			text='test proposal 1',
+			original_user=proposal_author,
+			user=proposal_author
+		)
+		proposal.save()
+		proposal.tags.add(tag)
+		proposal.sectors.add(sector)
+		proposal.save()
+
+		# make an associated proposal version
+		proposal_version = ProposalVersion(
+			proposal=proposal,
+			title='test proposal 1', 
+			summary='test proposal 1',
+			text='test proposal 1',
+			user=proposal_author
+		)
+		proposal_version.save()
+		proposal_version.tags.add(tag)
+		proposal_version.sectors.add(sector)
+		proposal_version.save()
+
+		# Check if a Subscription was made
+		sub_id = proposal.subscription_id
+		s = Subscription.objects.get(subscription_id=sub_id)
+		self.assertEqual(s.user, proposal_author)
+
+		# Check if a Publication was made against the tag 
+		p = Publication.objects.get(subscription_id=tag.subscription_id)
+		
+
+
+
 
 
 class UserProfileTest(TestCase):
