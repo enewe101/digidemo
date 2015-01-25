@@ -10,6 +10,7 @@ from django.test import TestCase, LiveServerTestCase
 from django.utils.html import escape
 from digidemo import settings, markdown as md
 from digidemo.models import *
+from digidemo.abstract_models import *
 from selenium import webdriver
 from selenium.common.exceptions import TimeoutException
 from selenium.webdriver.support.ui import WebDriverWait 
@@ -1577,10 +1578,10 @@ class PublishSubscribeTest(TestCase):
 			original_user=proposal_author,
 			user=proposal_author
 		)
-		proposal.save()
+		proposal.save(suppress_publish=True)
 		proposal.tags.add(tag)
 		proposal.sectors.add(sector)
-		proposal.save()
+		proposal.save(force_publish=True)
 
 		# make an associated proposal version
 		proposal_version = ProposalVersion(

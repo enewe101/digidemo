@@ -72,6 +72,15 @@ EVENT_TYPE_CHOICES = (
 	# Notification.
 
 
+class EmailRecipient(abstract_models.TimeStamped):
+    ''' 
+        This is for people that sign up for to receive emails on our landing
+        page.
+    '''
+    email = models.EmailField(max_length=254)
+    active = models.BooleanField(default=True)
+
+
 class Sector(abstract_models.Subscribable):
 	# Overriden in Subscribable to prevent auto-subscription
 	def get_author(self):
@@ -143,9 +152,10 @@ class Proposal(abstract_models.Subscribable):
 
 	def get_targets(self):
 		sector_targets = [s.subscription_id for s in self.sectors.all()]
-		tag_targets = [t.substritpion_id for t in self.tags.all()]
+		tag_targets = [t.subscription_id for t in self.tags.all()]
+		targets = sector_targets + tag_targets
 
-		return sector_targets + tag_targets
+		return targets
 
 	def get_latest(self):
 		return ProposalVersion.get_latest(self)
@@ -153,7 +163,10 @@ class Proposal(abstract_models.Subscribable):
 	def __unicode__(self):
 		return self.title
 
-	def get_url(self, view_name):
+	def get_url(self):
+		return self.get_url_by_view_name('proposal')
+
+	def get_url_by_view_name(self, view_name):
 		url_stub = reverse(view_name, kwargs={'proposal_id': self.pk})
 		return url_stub + slugify(self.title)
 
@@ -192,7 +205,7 @@ class Proposal(abstract_models.Subscribable):
 		return url_stub + slugify(self.title)
  
 	def get_proposal_url(self):
-		return self.get_url('proposal')
+		return self.get_url_by_view_name('proposal')
 
 	class Meta:
 		get_latest_by = 'creation_date'

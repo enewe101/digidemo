@@ -111,16 +111,23 @@ class TriggersNotification(TimeStamped):
 		return self.get_url()
 
 
-	def save(self, *args, **kwargs):
+	def save(
+			self, 
+			suppress_publish=False, 
+			force_publish=False, 
+			*args, 
+			**kwargs
+		):
 
-		# Check if this is the first save
+		# Check if this is the first save, and decide whether to publish
 		first_save = (self.pk is None)
+		do_publish = (first_save and not suppress_publish) or force_publish
 
 		# Let save happen normally 
 		super(TriggersNotification, self).save(*args, **kwargs)
 
 		# Now, if this was the first save, issue publication(s)
-		if first_save:
+		if do_publish:
 
 			# get a list of targets for this notification.  
 			targets = self.get_targets()
@@ -211,6 +218,9 @@ class AbstractComment(ScoredPost, Subscribable):
 
 	def get_event_type(self):
 		return 'COMMENT'
+
+	def get_url(self):
+		return None
 
 	class Meta:
 		abstract=True

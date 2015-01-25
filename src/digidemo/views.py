@@ -823,7 +823,7 @@ class AddProposalView(AbstractLoginRequiredView):
 		if proposal_form.is_valid():
 			proposal_version = proposal_form.save()
 			proposal = proposal_version.proposal
-			return redirect(proposal.get_url('proposal'))
+			return redirect(proposal.get_url_by_view_name('proposal'))
 
 		# Otherwise, make the context to dislpay the form
 
