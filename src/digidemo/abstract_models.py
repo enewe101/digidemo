@@ -111,13 +111,13 @@ class TriggersNotification(TimeStamped):
 		return self.get_url()
 
 
-	def save(self):
+	def save(self, *args, **kwargs):
 
 		# Check if this is the first save
 		first_save = (self.pk is None)
 
 		# Let save happen normally 
-		super(TriggersNotification, self).save()
+		super(TriggersNotification, self).save(*args, **kwargs)
 
 		# Now, if this was the first save, issue publication(s)
 		if first_save:
