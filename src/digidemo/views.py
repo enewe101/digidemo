@@ -825,7 +825,7 @@ class AddProposalView(AbstractLoginRequiredView):
 		if proposal_form.is_valid():
 			proposal_version = proposal_form.save()
 			proposal = proposal_version.proposal
-			return redirect(proposal.get_url('proposal'))
+			return redirect(proposal.get_url_by_view_name('proposal'))
 
 		# Otherwise, make the context to dislpay the form
 
@@ -1426,29 +1426,25 @@ def resetPassword(request):
 			endpoint=reverse('resetPassword')
 		)
 		
-		
 		if pass_reset_form.is_valid():
-			user = User.objects.get(username = pass_reset_form.cleaned_data['username'],email = pass_reset_form.cleaned_data['email'])
+			user = User.objects.get(
+				username = pass_reset_form.cleaned_data['username'],
+				email = pass_reset_form.cleaned_data['email']
+			)
 			new_password = str(uuid4()).replace('-', '')[:8]
 			user.set_password(new_password)
 			user.save()
-			user.email_user(subject='Luminocracy.org Password Reset', message='Your new luminocracy.org password is: '+new_password, from_email='donotreply@luminocracy.org')
-			#new_user = User.objects.create_user(
-			#	password = reg_form.cleaned_data['password'],
-			#	username = reg_form.cleaned_data['username'],
-			#	email = reg_form.cleaned_data['email'],
-			#	first_name = reg_form.cleaned_data['first_name'],
-			#	last_name = reg_form.cleaned_data['last_name']
-			#)
-
-			#user_profile = UserProfile(user=new_user)
-			#user_profile.save()
+			user.email_user(
+				subject='Luminocracy.org Password Reset',
+				message='Your new luminocracy.org password is: '
+					+new_password,
+				from_email='donotreply@luminocracy.org'
+			)
 
 			return redirect('../mainPage')
 
 	else:
 		pass_reset_form = ResetPasswordForm(endpoint=reverse('resetPassword'))
-
  
 	return render(
 		request,

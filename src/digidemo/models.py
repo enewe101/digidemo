@@ -1,3 +1,33 @@
+'''
+	This defines the core objects for the application, and thus, much of its
+	core behavior.
+
+	It accomplishes a few things
+
+		1) the database is set up based on the models here, so for every
+			model, there is a database table that is made (thanks to Django)
+
+		2) much of the application logic is defined by the behaviors that
+			are given to these models through there methods.  
+			
+			As an example,
+			the fact that, when a user creates a new Question, she will be
+			notified when someone answers it, occurs by virtue of the fact 
+			that, the Question model inherits the Subscribable abstract
+			model, which causes a subscription to be made by the author
+			of the question.
+
+	There is a lot of important logic that is also defined in 
+	abstract_models.py, and in general, all of the models described here
+	extend some kind of abstract model.  The most basic abstract model is
+	Timestamped.  Objects that are instances of Any model extending 
+	Timestamped will always record the timestamp of their initial creation 
+	and of subsequent modifications. (All models extend Timestamped, but 
+	sometimes indirectly)
+'''
+
+
+# Includes
 from django.db import models
 from digidemo.choices import *
 from django.contrib.auth.models import User
@@ -6,114 +36,71 @@ from django.core.urlresolvers import reverse
 from django.template.defaultfilters import slugify
 from django.utils.safestring import mark_safe
 from django.contrib.staticfiles.templatetags.staticfiles import static
+from digidemo import abstract_models
 import re
 import os
 
+
+# Constants
 NAME_LENGTH = 48
 URL_LENGTH = 256
 TITLE_LENGTH = 256
+EMAIL_LENGTH = 254
 DEFAULT_COMMENT_LENGTH = 512
 DEFAULT_TEXT_LENGTH = 8192
+EVENT_TYPE_CHOICES = (
+	('ISSUE', 'issue'),
+	('EDIT_ISSUE', 'edit issue'),
+	('QUESTION', 'question'),
+	('ANSWER', 'answer'),
+	('DISCUSSION', 'discussion'),
+	('REPLY', 'reply'),
+	('COMMENT', 'comment'),
+	('LETTER', 'letter'),
+	('SIGN_LETTER','sign letter'),
+	('VOTE', 'vote'),
+	('SYSTEM', 'system'),
+)
 
 
-# *** Abstract Models *** #
-
-class TimeStamped(models.Model):
-	creation_date = models.DateTimeField(editable=False)
-	last_modified = models.DateTimeField(editable=False)
-
-	def save(self, *args, **kwargs):
-		if not self.creation_date:
-			self.creation_date = timezone.now()
-		
-		self.last_modified = timezone.now()
-		return super(TimeStamped, self).save(*args, **kwargs)
-
-	class Meta:
-		abstract = True
+# *** All of the Concrete Models Follow *** # 
 
 
-class ScoredPost(models.Model):
-	user = models.ForeignKey(User)
-	score = models.SmallIntegerField(default=0, editable=False)
-	text = models.CharField(max_length=DEFAULT_TEXT_LENGTH)
-
-	def __unicode__(self):
-		return self.text[:20]
-
-	class Meta:
-		abstract = True
+	# Note, models related to the notification system are defined in 
+	# abstract_models.py, even though they are not actually abstract.
+	# This is because they are needed to define the abstract models.
+	# This includes SubscriptionId, Publication, Subscription, and 
+	# Notification.
 
 
-class Vote(TimeStamped):
-	user = models.ForeignKey(User)
-	valence = models.SmallIntegerField(choices=VOTE_CHOICES)
-
-	class Meta:
-		abstract=True
-
-
-class Subscribable(TimeStamped):
-	'''
-		models that inheret subscribable get assigned a globally unique
-		subscription_id the first time that they are saved.  Within the app,
-		the subscription_id acts as an identifier accross different kinds
-		of objects (proposals, questions, petitions...) which users can
-		be subscribed to.  Users are always auto-subscribed to content
-		they generated.
-	'''
-		
-	subscription_id = models.ForeignKey('SubscriptionId', editable=False, null=True)
-
-	def _get_subscription_id(self):
-		s = SubscriptionId()
-		s.save()
-		return s
-
-	def save(self, *args, **kwargs):
-		if self.subscription_id is None:
-			self.subscription_id = self._get_subscription_id()
-		
-		return super(Subscribable, self).save(*args, **kwargs)
-
-	class Meta:
-		abstract = True
+class EmailRecipient(abstract_models.TimeStamped):
+    ''' 
+        This is for people that sign up for to receive emails on our landing
+        page.
+    '''
+    email = models.EmailField(max_length=EMAIL_LENGTH)
+    active = models.BooleanField(default=True)
 
 
-# *** Concrete Models *** #
-
-class EmailRecipient(TimeStamped):
-	'''
-		This is for people that sign up for to receive emails on our landing
-		page.
-	'''
-	email = models.EmailField(max_length=254)
-	active = models.BooleanField(default=True)
-
-class PasswordReset(TimeStamped):
+class PasswordReset(abstract_models.TimeStamped):
 	'''
 		This is for password reset
 	'''
-	email = models.EmailField(max_length=254)
+	email = models.EmailField(max_length=EMAIL_LENGTH)
 	username = models.CharField(max_length=DEFAULT_TEXT_LENGTH)
 
 
-class SubscriptionId(TimeStamped):
-	'''
-		this is a list of all the subscribable ids ever assigned.  It may seems
-		strange to have a table that stores only primary keys!  But it
-		provides a linkage point between subscribable objects, like proposals,
-		questions, discussions, etc, and user's subscriptions.
-			2) By linking to the SubscriptionId, rather than the subscribable
-				directly, we don't have an issue with the fact that the
-				subscribables are of heterogeneous types.
-			1) We rely on the db's autoincrement to give out unique
-				subscription id's.
-	'''
-	subscription_id = models.AutoField(primary_key=True)
+class Sector(abstract_models.Subscribable):
 
+	# Overriden in Subscribable to prevent auto-subscription
+	def get_author(self):
+		return None
 
-class Sector(TimeStamped):
+	# Overridden in TriggersNotification -- we don't want to issue 
+	# notifications when users make new tags
+	def get_targets(self):
+		return []
+
 	short_name = models.CharField(max_length=3)
 	name = models.CharField(max_length=64)
 
@@ -130,7 +117,17 @@ class Sector(TimeStamped):
 		return mark_safe(html)
 
 
-class Tag(TimeStamped):
+class Tag(abstract_models.Subscribable):
+
+	# Overriden in Subscribable to prevent auto-subscription
+	def get_author(self):
+		return None
+
+	# Overridden in TriggersNotification -- we don't want to issue 
+	# notifications when users make new tags
+	def get_targets(self):
+		return []
+
 	name = models.CharField(max_length=48)
 	sector = models.ForeignKey(Sector, null=True)
 	target = models.ForeignKey('self', null=True)
@@ -139,7 +136,7 @@ class Tag(TimeStamped):
 		return self.name
 
 
-class Proposal(Subscribable):
+class Proposal(abstract_models.Subscribable):
 	is_published = models.BooleanField(default=False)
 	score = models.SmallIntegerField(default=0)
 	title = models.CharField(max_length=256)
@@ -160,13 +157,26 @@ class Proposal(Subscribable):
 	sectors = models.ManyToManyField(
 		Sector, related_name='proposals', blank=True, null=True)
 
+	def get_event_type(self):
+		return 'ISSUE'
+
+	def get_targets(self):
+		sector_targets = [s.subscription_id for s in self.sectors.all()]
+		tag_targets = [t.subscription_id for t in self.tags.all()]
+		targets = sector_targets + tag_targets
+
+		return targets
+
 	def get_latest(self):
 		return ProposalVersion.get_latest(self)
 
 	def __unicode__(self):
 		return self.title
 
-	def get_url(self, view_name):
+	def get_url(self):
+		return self.get_url_by_view_name('proposal')
+
+	def get_url_by_view_name(self, view_name):
 		url_stub = reverse(view_name, kwargs={'proposal_id': self.pk})
 		return url_stub + slugify(self.title)
 
@@ -205,13 +215,13 @@ class Proposal(Subscribable):
 		return url_stub + slugify(self.title)
  
 	def get_proposal_url(self):
-		return self.get_url('proposal')
+		return self.get_url_by_view_name('proposal')
 
 	class Meta:
 		get_latest_by = 'creation_date'
 
 
-class ProposalVersion(TimeStamped):
+class ProposalVersion(abstract_models.TimeStamped):
 	proposal = models.ForeignKey(Proposal, blank=True, null=True)
 	title = models.CharField(max_length=256)
 	summary = models.TextField()
@@ -232,7 +242,7 @@ class ProposalVersion(TimeStamped):
 		return pvs[0]
 
 
-class UserProfile(TimeStamped):
+class UserProfile(abstract_models.TimeStamped):
 	user = models.OneToOneField(User, related_name='profile')
 	email_validated = models.BooleanField(default=False)
 	avatar_img = models.ImageField(upload_to='avatars')
@@ -242,6 +252,10 @@ class UserProfile(TimeStamped):
 	country = models.CharField(max_length=64, choices=COUNTRIES)
 	province = models.CharField(max_length=32, choices=PROVINCES, blank=True)
         followedProposals = models.ManyToManyField(Proposal,null=True)
+	do_email_news = models.BooleanField(default=True)
+	do_email_responses = models.BooleanField(default=True)
+	do_email_petitions = models.BooleanField(default=True)
+	do_email_watched = models.BooleanField(default=True)
 	
 	# non-field class attributes
 	rep_events = {
@@ -290,8 +304,8 @@ class UserProfile(TimeStamped):
 		self.rep -= self.get_rep_delta(event_name)
 
 	def get_user_url(self):
-                url_stub = reverse('userProfile', kwargs={'userName': self.user.username})
-                return url_stub;
+		url_stub = reverse('userProfile', kwargs={'userName': self.user.username})
+		return url_stub;
 	
 
 	def get_avatar_img_url(self):
@@ -303,7 +317,7 @@ class UserProfile(TimeStamped):
 			return static('digidemo/images/avatar_not_found.png')
 			
 
-class Person(TimeStamped):
+class Person(abstract_models.TimeStamped):
 	fname = models.CharField(max_length=NAME_LENGTH)
 	lname = models.CharField(max_length=NAME_LENGTH)
 	portrait_url = models.CharField(max_length=URL_LENGTH)
@@ -311,7 +325,7 @@ class Person(TimeStamped):
 	bio_summary = models.TextField()
 
 	
-class Organization(TimeStamped):
+class Organization(abstract_models.TimeStamped):
 	short_name = models.CharField(max_length=64)
 	legal_name = models.CharField(max_length=128)
 	legal_classification = models.CharField(
@@ -321,7 +335,7 @@ class Organization(TimeStamped):
 
 
 # Rename this "Actor"
-class Position(TimeStamped):
+class Position(abstract_models.TimeStamped):
 	name = models.CharField(max_length=128) # name of position (i.e. title)
 	person = models.ForeignKey(Person)
 	organization = models.ForeignKey(Organization)
@@ -335,8 +349,8 @@ class Position(TimeStamped):
 			self.person.lname)
 
 
-class Letter(Subscribable):
-	parent_letter = models.ForeignKey('self', blank=True, null=True,
+class Letter(abstract_models.Subscribable):
+	parent_letter = models.ForeignKey('self', blank=True, null=True, 
 		related_name='resent_letters')
 	target = models.ForeignKey(Proposal)
 	valence = models.SmallIntegerField(choices=VALENCE_CHOICES)
@@ -345,6 +359,9 @@ class Letter(Subscribable):
 	title = models.CharField(max_length=TITLE_LENGTH)
 	recipients = models.ManyToManyField(Position, related_name='letters')
 	text = models.TextField()
+
+	def get_event_type(self):
+		return 'LETTER'
 
 	def __unicode__(self):
 		return "%s-%s" %(
@@ -360,10 +377,13 @@ class Letter(Subscribable):
 		self.save()
 
 
-class Discussion(ScoredPost, Subscribable):
+class Discussion(abstract_models.ScoredPost, abstract_models.Subscribable):
 	target = models.ForeignKey(Proposal, null=True)
 	title = models.CharField(max_length=TITLE_LENGTH)
 	is_open = models.BooleanField(default=False)
+
+	def get_event_type(self):
+		return 'DISCUSSION'
 
 	def __unicode__(self):
 		return self.title
@@ -373,87 +393,109 @@ class Discussion(ScoredPost, Subscribable):
 		return url + slugify(self.title)
 
 
-class Reply(ScoredPost, Subscribable):
+class Reply(abstract_models.ScoredPost, abstract_models.Subscribable):
 	target = models.ForeignKey(Discussion, null=True, related_name='replies')
 	is_open = models.BooleanField(default=False)
+
+	def get_event_type(self):
+		return 'REPLY'
+
+	def get_url(self):
+		return None
 
 	def __unicode__(self):
 		return self.user.username
 
 
-class Question(ScoredPost, Subscribable):
+class Question(abstract_models.ScoredPost, abstract_models.Subscribable):
 	title = models.CharField('question title', max_length=TITLE_LENGTH)
 	target = models.ForeignKey(Proposal)
+
+	def get_event_type(self):
+		return 'QUESTION'	
 
 	def get_url(self):
 		url = reverse('view_question', kwargs={'post_id':self.pk})
 		return url + slugify(self.title)
 
 
-class Answer(ScoredPost, Subscribable):
+class Answer(abstract_models.ScoredPost, abstract_models.Subscribable):
 	target = models.ForeignKey(Question, related_name='replies')
 
+	def get_event_type(self):
+		return 'ANSWER'
 
-# This should be renamed "LetterComment"
-class Comment(ScoredPost, TimeStamped):
+	def get_url(self):
+		return None
+
+	def __unicode__(self):
+		return self.user.username
+
+
+# TODO: These Comments should be collapsed into one type, and use a 
+#	point-of-connection table (like SubscriptionId) to handle the 
+#	type-heterogeneity of their targets
+
+# TODO: This should be renamed "LetterComment"
+class Comment(abstract_models.AbstractComment):
 	target = models.ForeignKey(Letter, related_name='comment_set')
 
-
-class QuestionComment(ScoredPost, TimeStamped):
+class QuestionComment(abstract_models.AbstractComment):
 	target = models.ForeignKey(Question, related_name='comment_set')
 	
-
-class AnswerComment(ScoredPost, TimeStamped):
+class AnswerComment(abstract_models.AbstractComment):
 	target = models.ForeignKey(Answer, related_name='comment_set')
 
-
-class DiscussionComment(ScoredPost, TimeStamped):
+class DiscussionComment(abstract_models.AbstractComment):
 	target = models.ForeignKey(Discussion, related_name='comment_set')
 
-
-class ReplyComment(ScoredPost, TimeStamped):
+class ReplyComment(abstract_models.AbstractComment):
 	target = models.ForeignKey(Reply, related_name='comment_set')
 
 
-class DiscussionVote(Vote):
+# TODO: These Votes should be collapsed into one type, and use a 
+#	point-of-connection table (like SubscriptionId) to handle the 
+#	type-heterogeneity of their targets
+class DiscussionVote(abstract_models.Vote):
 	target = models.ForeignKey(Discussion)
 
 	class Meta:
 		unique_together = ('user', 'target')
 
-class ProposalVote(Vote):
+class ProposalVote(abstract_models.Vote):
 	target = models.ForeignKey(Proposal)
 
 	class Meta:
 		unique_together	= ('user', 'target')
 
-class LetterVote(Vote):
+class LetterVote(abstract_models.Vote):
 	target = models.ForeignKey(Letter)
 
 	class Meta:
 		unique_together = ('user', 'target')
 
-class ReplyVote(Vote):
+class ReplyVote(abstract_models.Vote):
 	target = models.ForeignKey(Reply)
 
 	class Meta:
 		unique_together = ('user', 'target')
 
-class QuestionVote(Vote):
+class QuestionVote(abstract_models.Vote):
 	target = models.ForeignKey(Question)
 
 	class Meta:
 		unique_together = ('user', 'target')
 
-class AnswerVote(Vote):
+class AnswerVote(abstract_models.Vote):
 	target = models.ForeignKey(Answer)
 
 	class Meta:
 		unique_together = ('user', 'target')
 
-class CommentVote(Vote):
+class CommentVote(abstract_models.Vote):
 	target = models.ForeignKey(Comment)
 
 	class Meta:
 		unique_together = ('user', 'target')
+
 
