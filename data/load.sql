@@ -94,7 +94,7 @@ CREATE TABLE `auth_permission` (
   UNIQUE KEY `content_type_id` (`content_type_id`,`codename`),
   KEY `auth_permission_37ef4eb4` (`content_type_id`),
   CONSTRAINT `content_type_id_refs_id_d043b34a` FOREIGN KEY (`content_type_id`) REFERENCES `django_content_type` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=109 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=112 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -103,7 +103,7 @@ CREATE TABLE `auth_permission` (
 
 LOCK TABLES `auth_permission` WRITE;
 /*!40000 ALTER TABLE `auth_permission` DISABLE KEYS */;
-REPLACE INTO `auth_permission` (`id`, `name`, `content_type_id`, `codename`) VALUES (1,'Can add log entry',1,'add_logentry'),(2,'Can change log entry',1,'change_logentry'),(3,'Can delete log entry',1,'delete_logentry'),(4,'Can add permission',2,'add_permission'),(5,'Can change permission',2,'change_permission'),(6,'Can delete permission',2,'delete_permission'),(7,'Can add group',3,'add_group'),(8,'Can change group',3,'change_group'),(9,'Can delete group',3,'delete_group'),(10,'Can add user',4,'add_user'),(11,'Can change user',4,'change_user'),(12,'Can delete user',4,'delete_user'),(13,'Can add content type',5,'add_contenttype'),(14,'Can change content type',5,'change_contenttype'),(15,'Can delete content type',5,'delete_contenttype'),(16,'Can add session',6,'add_session'),(17,'Can change session',6,'change_session'),(18,'Can delete session',6,'delete_session'),(19,'Can add notification',7,'add_notification'),(20,'Can change notification',7,'change_notification'),(21,'Can delete notification',7,'delete_notification'),(22,'Can add subscription',8,'add_subscription'),(23,'Can change subscription',8,'change_subscription'),(24,'Can delete subscription',8,'delete_subscription'),(25,'Can add subscription id',9,'add_subscriptionid'),(26,'Can change subscription id',9,'change_subscriptionid'),(27,'Can delete subscription id',9,'delete_subscriptionid'),(28,'Can add publication',10,'add_publication'),(29,'Can change publication',10,'change_publication'),(30,'Can delete publication',10,'delete_publication'),(31,'Can add email recipient',11,'add_emailrecipient'),(32,'Can change email recipient',11,'change_emailrecipient'),(33,'Can delete email recipient',11,'delete_emailrecipient'),(34,'Can add sector',12,'add_sector'),(35,'Can change sector',12,'change_sector'),(36,'Can delete sector',12,'delete_sector'),(37,'Can add tag',13,'add_tag'),(38,'Can change tag',13,'change_tag'),(39,'Can delete tag',13,'delete_tag'),(40,'Can add proposal',14,'add_proposal'),(41,'Can change proposal',14,'change_proposal'),(42,'Can delete proposal',14,'delete_proposal'),(43,'Can add proposal version',15,'add_proposalversion'),(44,'Can change proposal version',15,'change_proposalversion'),(45,'Can delete proposal version',15,'delete_proposalversion'),(46,'Can add user profile',16,'add_userprofile'),(47,'Can change user profile',16,'change_userprofile'),(48,'Can delete user profile',16,'delete_userprofile'),(49,'Can add person',17,'add_person'),(50,'Can change person',17,'change_person'),(51,'Can delete person',17,'delete_person'),(52,'Can add organization',18,'add_organization'),(53,'Can change organization',18,'change_organization'),(54,'Can delete organization',18,'delete_organization'),(55,'Can add position',19,'add_position'),(56,'Can change position',19,'change_position'),(57,'Can delete position',19,'delete_position'),(58,'Can add letter',20,'add_letter'),(59,'Can change letter',20,'change_letter'),(60,'Can delete letter',20,'delete_letter'),(61,'Can add discussion',21,'add_discussion'),(62,'Can change discussion',21,'change_discussion'),(63,'Can delete discussion',21,'delete_discussion'),(64,'Can add reply',22,'add_reply'),(65,'Can change reply',22,'change_reply'),(66,'Can delete reply',22,'delete_reply'),(67,'Can add question',23,'add_question'),(68,'Can change question',23,'change_question'),(69,'Can delete question',23,'delete_question'),(70,'Can add answer',24,'add_answer'),(71,'Can change answer',24,'change_answer'),(72,'Can delete answer',24,'delete_answer'),(73,'Can add comment',25,'add_comment'),(74,'Can change comment',25,'change_comment'),(75,'Can delete comment',25,'delete_comment'),(76,'Can add question comment',26,'add_questioncomment'),(77,'Can change question comment',26,'change_questioncomment'),(78,'Can delete question comment',26,'delete_questioncomment'),(79,'Can add answer comment',27,'add_answercomment'),(80,'Can change answer comment',27,'change_answercomment'),(81,'Can delete answer comment',27,'delete_answercomment'),(82,'Can add discussion comment',28,'add_discussioncomment'),(83,'Can change discussion comment',28,'change_discussioncomment'),(84,'Can delete discussion comment',28,'delete_discussioncomment'),(85,'Can add reply comment',29,'add_replycomment'),(86,'Can change reply comment',29,'change_replycomment'),(87,'Can delete reply comment',29,'delete_replycomment'),(88,'Can add discussion vote',30,'add_discussionvote'),(89,'Can change discussion vote',30,'change_discussionvote'),(90,'Can delete discussion vote',30,'delete_discussionvote'),(91,'Can add proposal vote',31,'add_proposalvote'),(92,'Can change proposal vote',31,'change_proposalvote'),(93,'Can delete proposal vote',31,'delete_proposalvote'),(94,'Can add letter vote',32,'add_lettervote'),(95,'Can change letter vote',32,'change_lettervote'),(96,'Can delete letter vote',32,'delete_lettervote'),(97,'Can add reply vote',33,'add_replyvote'),(98,'Can change reply vote',33,'change_replyvote'),(99,'Can delete reply vote',33,'delete_replyvote'),(100,'Can add question vote',34,'add_questionvote'),(101,'Can change question vote',34,'change_questionvote'),(102,'Can delete question vote',34,'delete_questionvote'),(103,'Can add answer vote',35,'add_answervote'),(104,'Can change answer vote',35,'change_answervote'),(105,'Can delete answer vote',35,'delete_answervote'),(106,'Can add comment vote',36,'add_commentvote'),(107,'Can change comment vote',36,'change_commentvote'),(108,'Can delete comment vote',36,'delete_commentvote');
+REPLACE INTO `auth_permission` (`id`, `name`, `content_type_id`, `codename`) VALUES (1,'Can add log entry',1,'add_logentry'),(2,'Can change log entry',1,'change_logentry'),(3,'Can delete log entry',1,'delete_logentry'),(4,'Can add permission',2,'add_permission'),(5,'Can change permission',2,'change_permission'),(6,'Can delete permission',2,'delete_permission'),(7,'Can add group',3,'add_group'),(8,'Can change group',3,'change_group'),(9,'Can delete group',3,'delete_group'),(10,'Can add user',4,'add_user'),(11,'Can change user',4,'change_user'),(12,'Can delete user',4,'delete_user'),(13,'Can add content type',5,'add_contenttype'),(14,'Can change content type',5,'change_contenttype'),(15,'Can delete content type',5,'delete_contenttype'),(16,'Can add session',6,'add_session'),(17,'Can change session',6,'change_session'),(18,'Can delete session',6,'delete_session'),(19,'Can add notification',7,'add_notification'),(20,'Can change notification',7,'change_notification'),(21,'Can delete notification',7,'delete_notification'),(22,'Can add subscription',8,'add_subscription'),(23,'Can change subscription',8,'change_subscription'),(24,'Can delete subscription',8,'delete_subscription'),(25,'Can add subscription id',9,'add_subscriptionid'),(26,'Can change subscription id',9,'change_subscriptionid'),(27,'Can delete subscription id',9,'delete_subscriptionid'),(28,'Can add publication',10,'add_publication'),(29,'Can change publication',10,'change_publication'),(30,'Can delete publication',10,'delete_publication'),(31,'Can add email recipient',11,'add_emailrecipient'),(32,'Can change email recipient',11,'change_emailrecipient'),(33,'Can delete email recipient',11,'delete_emailrecipient'),(34,'Can add password reset',12,'add_passwordreset'),(35,'Can change password reset',12,'change_passwordreset'),(36,'Can delete password reset',12,'delete_passwordreset'),(37,'Can add sector',13,'add_sector'),(38,'Can change sector',13,'change_sector'),(39,'Can delete sector',13,'delete_sector'),(40,'Can add tag',14,'add_tag'),(41,'Can change tag',14,'change_tag'),(42,'Can delete tag',14,'delete_tag'),(43,'Can add proposal',15,'add_proposal'),(44,'Can change proposal',15,'change_proposal'),(45,'Can delete proposal',15,'delete_proposal'),(46,'Can add proposal version',16,'add_proposalversion'),(47,'Can change proposal version',16,'change_proposalversion'),(48,'Can delete proposal version',16,'delete_proposalversion'),(49,'Can add user profile',17,'add_userprofile'),(50,'Can change user profile',17,'change_userprofile'),(51,'Can delete user profile',17,'delete_userprofile'),(52,'Can add person',18,'add_person'),(53,'Can change person',18,'change_person'),(54,'Can delete person',18,'delete_person'),(55,'Can add organization',19,'add_organization'),(56,'Can change organization',19,'change_organization'),(57,'Can delete organization',19,'delete_organization'),(58,'Can add position',20,'add_position'),(59,'Can change position',20,'change_position'),(60,'Can delete position',20,'delete_position'),(61,'Can add letter',21,'add_letter'),(62,'Can change letter',21,'change_letter'),(63,'Can delete letter',21,'delete_letter'),(64,'Can add discussion',22,'add_discussion'),(65,'Can change discussion',22,'change_discussion'),(66,'Can delete discussion',22,'delete_discussion'),(67,'Can add reply',23,'add_reply'),(68,'Can change reply',23,'change_reply'),(69,'Can delete reply',23,'delete_reply'),(70,'Can add question',24,'add_question'),(71,'Can change question',24,'change_question'),(72,'Can delete question',24,'delete_question'),(73,'Can add answer',25,'add_answer'),(74,'Can change answer',25,'change_answer'),(75,'Can delete answer',25,'delete_answer'),(76,'Can add comment',26,'add_comment'),(77,'Can change comment',26,'change_comment'),(78,'Can delete comment',26,'delete_comment'),(79,'Can add question comment',27,'add_questioncomment'),(80,'Can change question comment',27,'change_questioncomment'),(81,'Can delete question comment',27,'delete_questioncomment'),(82,'Can add answer comment',28,'add_answercomment'),(83,'Can change answer comment',28,'change_answercomment'),(84,'Can delete answer comment',28,'delete_answercomment'),(85,'Can add discussion comment',29,'add_discussioncomment'),(86,'Can change discussion comment',29,'change_discussioncomment'),(87,'Can delete discussion comment',29,'delete_discussioncomment'),(88,'Can add reply comment',30,'add_replycomment'),(89,'Can change reply comment',30,'change_replycomment'),(90,'Can delete reply comment',30,'delete_replycomment'),(91,'Can add discussion vote',31,'add_discussionvote'),(92,'Can change discussion vote',31,'change_discussionvote'),(93,'Can delete discussion vote',31,'delete_discussionvote'),(94,'Can add proposal vote',32,'add_proposalvote'),(95,'Can change proposal vote',32,'change_proposalvote'),(96,'Can delete proposal vote',32,'delete_proposalvote'),(97,'Can add letter vote',33,'add_lettervote'),(98,'Can change letter vote',33,'change_lettervote'),(99,'Can delete letter vote',33,'delete_lettervote'),(100,'Can add reply vote',34,'add_replyvote'),(101,'Can change reply vote',34,'change_replyvote'),(102,'Can delete reply vote',34,'delete_replyvote'),(103,'Can add question vote',35,'add_questionvote'),(104,'Can change question vote',35,'change_questionvote'),(105,'Can delete question vote',35,'delete_questionvote'),(106,'Can add answer vote',36,'add_answervote'),(107,'Can change answer vote',36,'change_answervote'),(108,'Can delete answer vote',36,'delete_answervote'),(109,'Can add comment vote',37,'add_commentvote'),(110,'Can change comment vote',37,'change_commentvote'),(111,'Can delete comment vote',37,'delete_commentvote');
 /*!40000 ALTER TABLE `auth_permission` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -219,8 +219,8 @@ CREATE TABLE `digidemo_answer` (
   KEY `digidemo_answer_6340c63c` (`user_id`),
   KEY `digidemo_answer_655ead11` (`subscription_id_id`),
   KEY `digidemo_answer_70bfdfd1` (`target_id`),
-  CONSTRAINT `target_id_refs_id_e84baa74` FOREIGN KEY (`target_id`) REFERENCES `digidemo_question` (`id`),
   CONSTRAINT `subscription_id_id_refs_subscription_id_4a74ef70` FOREIGN KEY (`subscription_id_id`) REFERENCES `digidemo_subscriptionid` (`subscription_id`),
+  CONSTRAINT `target_id_refs_id_e84baa74` FOREIGN KEY (`target_id`) REFERENCES `digidemo_question` (`id`),
   CONSTRAINT `user_id_refs_id_daa77108` FOREIGN KEY (`user_id`) REFERENCES `auth_user` (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=44 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -255,9 +255,9 @@ CREATE TABLE `digidemo_answercomment` (
   KEY `digidemo_answercomment_6340c63c` (`user_id`),
   KEY `digidemo_answercomment_655ead11` (`subscription_id_id`),
   KEY `digidemo_answercomment_70bfdfd1` (`target_id`),
-  CONSTRAINT `user_id_refs_id_bf3a0f99` FOREIGN KEY (`user_id`) REFERENCES `auth_user` (`id`),
   CONSTRAINT `subscription_id_id_refs_subscription_id_0366146d` FOREIGN KEY (`subscription_id_id`) REFERENCES `digidemo_subscriptionid` (`subscription_id`),
-  CONSTRAINT `target_id_refs_id_5979b3a6` FOREIGN KEY (`target_id`) REFERENCES `digidemo_answer` (`id`)
+  CONSTRAINT `target_id_refs_id_5979b3a6` FOREIGN KEY (`target_id`) REFERENCES `digidemo_answer` (`id`),
+  CONSTRAINT `user_id_refs_id_bf3a0f99` FOREIGN KEY (`user_id`) REFERENCES `auth_user` (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -324,8 +324,8 @@ CREATE TABLE `digidemo_comment` (
   KEY `digidemo_comment_6340c63c` (`user_id`),
   KEY `digidemo_comment_655ead11` (`subscription_id_id`),
   KEY `digidemo_comment_70bfdfd1` (`target_id`),
-  CONSTRAINT `target_id_refs_id_549c5f06` FOREIGN KEY (`target_id`) REFERENCES `digidemo_letter` (`id`),
   CONSTRAINT `subscription_id_id_refs_subscription_id_d96a2b4d` FOREIGN KEY (`subscription_id_id`) REFERENCES `digidemo_subscriptionid` (`subscription_id`),
+  CONSTRAINT `target_id_refs_id_549c5f06` FOREIGN KEY (`target_id`) REFERENCES `digidemo_letter` (`id`),
   CONSTRAINT `user_id_refs_id_b202d78c` FOREIGN KEY (`user_id`) REFERENCES `auth_user` (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -394,9 +394,9 @@ CREATE TABLE `digidemo_discussion` (
   KEY `digidemo_discussion_6340c63c` (`user_id`),
   KEY `digidemo_discussion_655ead11` (`subscription_id_id`),
   KEY `digidemo_discussion_70bfdfd1` (`target_id`),
-  CONSTRAINT `user_id_refs_id_dc56e1ff` FOREIGN KEY (`user_id`) REFERENCES `auth_user` (`id`),
   CONSTRAINT `subscription_id_id_refs_subscription_id_a3689b9b` FOREIGN KEY (`subscription_id_id`) REFERENCES `digidemo_subscriptionid` (`subscription_id`),
-  CONSTRAINT `target_id_refs_id_67b12962` FOREIGN KEY (`target_id`) REFERENCES `digidemo_proposal` (`id`)
+  CONSTRAINT `target_id_refs_id_67b12962` FOREIGN KEY (`target_id`) REFERENCES `digidemo_proposal` (`id`),
+  CONSTRAINT `user_id_refs_id_dc56e1ff` FOREIGN KEY (`user_id`) REFERENCES `auth_user` (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -430,8 +430,8 @@ CREATE TABLE `digidemo_discussioncomment` (
   KEY `digidemo_discussioncomment_6340c63c` (`user_id`),
   KEY `digidemo_discussioncomment_655ead11` (`subscription_id_id`),
   KEY `digidemo_discussioncomment_70bfdfd1` (`target_id`),
-  CONSTRAINT `target_id_refs_id_dbf73071` FOREIGN KEY (`target_id`) REFERENCES `digidemo_discussion` (`id`),
   CONSTRAINT `subscription_id_id_refs_subscription_id_2cbe21fa` FOREIGN KEY (`subscription_id_id`) REFERENCES `digidemo_subscriptionid` (`subscription_id`),
+  CONSTRAINT `target_id_refs_id_dbf73071` FOREIGN KEY (`target_id`) REFERENCES `digidemo_discussion` (`id`),
   CONSTRAINT `user_id_refs_id_5eee85f6` FOREIGN KEY (`user_id`) REFERENCES `auth_user` (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -464,8 +464,8 @@ CREATE TABLE `digidemo_discussionvote` (
   UNIQUE KEY `user_id` (`user_id`,`target_id`),
   KEY `digidemo_discussionvote_6340c63c` (`user_id`),
   KEY `digidemo_discussionvote_70bfdfd1` (`target_id`),
-  CONSTRAINT `target_id_refs_id_4355b2d1` FOREIGN KEY (`target_id`) REFERENCES `digidemo_discussion` (`id`),
-  CONSTRAINT `user_id_refs_id_ae8336d4` FOREIGN KEY (`user_id`) REFERENCES `auth_user` (`id`)
+  CONSTRAINT `user_id_refs_id_ae8336d4` FOREIGN KEY (`user_id`) REFERENCES `auth_user` (`id`),
+  CONSTRAINT `target_id_refs_id_4355b2d1` FOREIGN KEY (`target_id`) REFERENCES `digidemo_discussion` (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -530,8 +530,8 @@ CREATE TABLE `digidemo_letter` (
   KEY `digidemo_letter_b0eaace7` (`parent_letter_id`),
   KEY `digidemo_letter_70bfdfd1` (`target_id`),
   KEY `digidemo_letter_6340c63c` (`user_id`),
-  CONSTRAINT `parent_letter_id_refs_id_5234e149` FOREIGN KEY (`parent_letter_id`) REFERENCES `digidemo_letter` (`id`),
   CONSTRAINT `subscription_id_id_refs_subscription_id_e9976c73` FOREIGN KEY (`subscription_id_id`) REFERENCES `digidemo_subscriptionid` (`subscription_id`),
+  CONSTRAINT `parent_letter_id_refs_id_5234e149` FOREIGN KEY (`parent_letter_id`) REFERENCES `digidemo_letter` (`id`),
   CONSTRAINT `target_id_refs_id_a3d9d864` FOREIGN KEY (`target_id`) REFERENCES `digidemo_proposal` (`id`),
   CONSTRAINT `user_id_refs_id_747eea8b` FOREIGN KEY (`user_id`) REFERENCES `auth_user` (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=51 DEFAULT CHARSET=utf8;
@@ -595,8 +595,8 @@ CREATE TABLE `digidemo_lettervote` (
   UNIQUE KEY `user_id` (`user_id`,`target_id`),
   KEY `digidemo_lettervote_6340c63c` (`user_id`),
   KEY `digidemo_lettervote_70bfdfd1` (`target_id`),
-  CONSTRAINT `target_id_refs_id_2b6488e6` FOREIGN KEY (`target_id`) REFERENCES `digidemo_letter` (`id`),
-  CONSTRAINT `user_id_refs_id_955f482c` FOREIGN KEY (`user_id`) REFERENCES `auth_user` (`id`)
+  CONSTRAINT `user_id_refs_id_955f482c` FOREIGN KEY (`user_id`) REFERENCES `auth_user` (`id`),
+  CONSTRAINT `target_id_refs_id_2b6488e6` FOREIGN KEY (`target_id`) REFERENCES `digidemo_letter` (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -673,6 +673,32 @@ LOCK TABLES `digidemo_organization` WRITE;
 /*!40000 ALTER TABLE `digidemo_organization` DISABLE KEYS */;
 REPLACE INTO `digidemo_organization` (`id`, `creation_date`, `last_modified`, `short_name`, `legal_name`, `legal_classification`, `revenue`, `operations_summary`) VALUES (1,'2014-07-13 17:03:14','2014-07-13 17:03:14','The Conservative Party of Canada','The Conservative Party of Canada','NPT',-1,'Stephen Harper’s Conservative Government is focused on the priorities of Canadians – job creation and economic growth.\nWith the support of our Economic Action Plan, the Canadian economy has created approximately one million net new jobs since the depths of the global economic recession.  While the job isn’t done yet, this job creation record is the best in the G7 and shows that Canada is on the right track.');
 /*!40000 ALTER TABLE `digidemo_organization` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `digidemo_passwordreset`
+--
+
+DROP TABLE IF EXISTS `digidemo_passwordreset`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `digidemo_passwordreset` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `creation_date` datetime NOT NULL,
+  `last_modified` datetime NOT NULL,
+  `email` varchar(254) NOT NULL,
+  `username` varchar(8192) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `digidemo_passwordreset`
+--
+
+LOCK TABLES `digidemo_passwordreset` WRITE;
+/*!40000 ALTER TABLE `digidemo_passwordreset` DISABLE KEYS */;
+/*!40000 ALTER TABLE `digidemo_passwordreset` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -987,8 +1013,8 @@ CREATE TABLE `digidemo_publication` (
   PRIMARY KEY (`id`),
   KEY `digidemo_publication_d0f0f216` (`source_user_id`),
   KEY `digidemo_publication_655ead11` (`subscription_id_id`),
-  CONSTRAINT `source_user_id_refs_id_f954fbd2` FOREIGN KEY (`source_user_id`) REFERENCES `auth_user` (`id`),
-  CONSTRAINT `subscription_id_id_refs_subscription_id_e3845dc9` FOREIGN KEY (`subscription_id_id`) REFERENCES `digidemo_subscriptionid` (`subscription_id`)
+  CONSTRAINT `subscription_id_id_refs_subscription_id_e3845dc9` FOREIGN KEY (`subscription_id_id`) REFERENCES `digidemo_subscriptionid` (`subscription_id`),
+  CONSTRAINT `source_user_id_refs_id_f954fbd2` FOREIGN KEY (`source_user_id`) REFERENCES `auth_user` (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -1023,9 +1049,9 @@ CREATE TABLE `digidemo_question` (
   KEY `digidemo_question_6340c63c` (`user_id`),
   KEY `digidemo_question_655ead11` (`subscription_id_id`),
   KEY `digidemo_question_70bfdfd1` (`target_id`),
-  CONSTRAINT `user_id_refs_id_b7595eaf` FOREIGN KEY (`user_id`) REFERENCES `auth_user` (`id`),
   CONSTRAINT `subscription_id_id_refs_subscription_id_05738e40` FOREIGN KEY (`subscription_id_id`) REFERENCES `digidemo_subscriptionid` (`subscription_id`),
-  CONSTRAINT `target_id_refs_id_246dc8e3` FOREIGN KEY (`target_id`) REFERENCES `digidemo_proposal` (`id`)
+  CONSTRAINT `target_id_refs_id_246dc8e3` FOREIGN KEY (`target_id`) REFERENCES `digidemo_proposal` (`id`),
+  CONSTRAINT `user_id_refs_id_b7595eaf` FOREIGN KEY (`user_id`) REFERENCES `auth_user` (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -1059,8 +1085,8 @@ CREATE TABLE `digidemo_questioncomment` (
   KEY `digidemo_questioncomment_6340c63c` (`user_id`),
   KEY `digidemo_questioncomment_655ead11` (`subscription_id_id`),
   KEY `digidemo_questioncomment_70bfdfd1` (`target_id`),
-  CONSTRAINT `target_id_refs_id_91b3fcca` FOREIGN KEY (`target_id`) REFERENCES `digidemo_question` (`id`),
   CONSTRAINT `subscription_id_id_refs_subscription_id_c7140123` FOREIGN KEY (`subscription_id_id`) REFERENCES `digidemo_subscriptionid` (`subscription_id`),
+  CONSTRAINT `target_id_refs_id_91b3fcca` FOREIGN KEY (`target_id`) REFERENCES `digidemo_question` (`id`),
   CONSTRAINT `user_id_refs_id_89b69e62` FOREIGN KEY (`user_id`) REFERENCES `auth_user` (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -1129,8 +1155,8 @@ CREATE TABLE `digidemo_reply` (
   KEY `digidemo_reply_6340c63c` (`user_id`),
   KEY `digidemo_reply_655ead11` (`subscription_id_id`),
   KEY `digidemo_reply_70bfdfd1` (`target_id`),
-  CONSTRAINT `target_id_refs_id_0f0a157b` FOREIGN KEY (`target_id`) REFERENCES `digidemo_discussion` (`id`),
   CONSTRAINT `subscription_id_id_refs_subscription_id_ce91050d` FOREIGN KEY (`subscription_id_id`) REFERENCES `digidemo_subscriptionid` (`subscription_id`),
+  CONSTRAINT `target_id_refs_id_0f0a157b` FOREIGN KEY (`target_id`) REFERENCES `digidemo_discussion` (`id`),
   CONSTRAINT `user_id_refs_id_9950cae7` FOREIGN KEY (`user_id`) REFERENCES `auth_user` (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=44 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -1199,8 +1225,8 @@ CREATE TABLE `digidemo_replyvote` (
   UNIQUE KEY `user_id` (`user_id`,`target_id`),
   KEY `digidemo_replyvote_6340c63c` (`user_id`),
   KEY `digidemo_replyvote_70bfdfd1` (`target_id`),
-  CONSTRAINT `user_id_refs_id_d659ef00` FOREIGN KEY (`user_id`) REFERENCES `auth_user` (`id`),
-  CONSTRAINT `target_id_refs_id_9f87ff39` FOREIGN KEY (`target_id`) REFERENCES `digidemo_reply` (`id`)
+  CONSTRAINT `target_id_refs_id_9f87ff39` FOREIGN KEY (`target_id`) REFERENCES `digidemo_reply` (`id`),
+  CONSTRAINT `user_id_refs_id_d659ef00` FOREIGN KEY (`user_id`) REFERENCES `auth_user` (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -1320,9 +1346,9 @@ CREATE TABLE `digidemo_tag` (
   KEY `digidemo_tag_655ead11` (`subscription_id_id`),
   KEY `digidemo_tag_663ed8c9` (`sector_id`),
   KEY `digidemo_tag_70bfdfd1` (`target_id`),
-  CONSTRAINT `target_id_refs_id_f8085903` FOREIGN KEY (`target_id`) REFERENCES `digidemo_tag` (`id`),
   CONSTRAINT `sector_id_refs_id_ce1721cd` FOREIGN KEY (`sector_id`) REFERENCES `digidemo_sector` (`id`),
-  CONSTRAINT `subscription_id_id_refs_subscription_id_f968891e` FOREIGN KEY (`subscription_id_id`) REFERENCES `digidemo_subscriptionid` (`subscription_id`)
+  CONSTRAINT `subscription_id_id_refs_subscription_id_f968891e` FOREIGN KEY (`subscription_id_id`) REFERENCES `digidemo_subscriptionid` (`subscription_id`),
+  CONSTRAINT `target_id_refs_id_f8085903` FOREIGN KEY (`target_id`) REFERENCES `digidemo_tag` (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=76 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -1451,7 +1477,7 @@ CREATE TABLE `django_content_type` (
   `model` varchar(100) NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `app_label` (`app_label`,`model`)
-) ENGINE=InnoDB AUTO_INCREMENT=37 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=38 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -1460,7 +1486,7 @@ CREATE TABLE `django_content_type` (
 
 LOCK TABLES `django_content_type` WRITE;
 /*!40000 ALTER TABLE `django_content_type` DISABLE KEYS */;
-REPLACE INTO `django_content_type` (`id`, `name`, `app_label`, `model`) VALUES (1,'log entry','admin','logentry'),(2,'permission','auth','permission'),(3,'group','auth','group'),(4,'user','auth','user'),(5,'content type','contenttypes','contenttype'),(6,'session','sessions','session'),(7,'notification','digidemo','notification'),(8,'subscription','digidemo','subscription'),(9,'subscription id','digidemo','subscriptionid'),(10,'publication','digidemo','publication'),(11,'email recipient','digidemo','emailrecipient'),(12,'sector','digidemo','sector'),(13,'tag','digidemo','tag'),(14,'proposal','digidemo','proposal'),(15,'proposal version','digidemo','proposalversion'),(16,'user profile','digidemo','userprofile'),(17,'person','digidemo','person'),(18,'organization','digidemo','organization'),(19,'position','digidemo','position'),(20,'letter','digidemo','letter'),(21,'discussion','digidemo','discussion'),(22,'reply','digidemo','reply'),(23,'question','digidemo','question'),(24,'answer','digidemo','answer'),(25,'comment','digidemo','comment'),(26,'question comment','digidemo','questioncomment'),(27,'answer comment','digidemo','answercomment'),(28,'discussion comment','digidemo','discussioncomment'),(29,'reply comment','digidemo','replycomment'),(30,'discussion vote','digidemo','discussionvote'),(31,'proposal vote','digidemo','proposalvote'),(32,'letter vote','digidemo','lettervote'),(33,'reply vote','digidemo','replyvote'),(34,'question vote','digidemo','questionvote'),(35,'answer vote','digidemo','answervote'),(36,'comment vote','digidemo','commentvote');
+REPLACE INTO `django_content_type` (`id`, `name`, `app_label`, `model`) VALUES (1,'log entry','admin','logentry'),(2,'permission','auth','permission'),(3,'group','auth','group'),(4,'user','auth','user'),(5,'content type','contenttypes','contenttype'),(6,'session','sessions','session'),(7,'notification','digidemo','notification'),(8,'subscription','digidemo','subscription'),(9,'subscription id','digidemo','subscriptionid'),(10,'publication','digidemo','publication'),(11,'email recipient','digidemo','emailrecipient'),(12,'password reset','digidemo','passwordreset'),(13,'sector','digidemo','sector'),(14,'tag','digidemo','tag'),(15,'proposal','digidemo','proposal'),(16,'proposal version','digidemo','proposalversion'),(17,'user profile','digidemo','userprofile'),(18,'person','digidemo','person'),(19,'organization','digidemo','organization'),(20,'position','digidemo','position'),(21,'letter','digidemo','letter'),(22,'discussion','digidemo','discussion'),(23,'reply','digidemo','reply'),(24,'question','digidemo','question'),(25,'answer','digidemo','answer'),(26,'comment','digidemo','comment'),(27,'question comment','digidemo','questioncomment'),(28,'answer comment','digidemo','answercomment'),(29,'discussion comment','digidemo','discussioncomment'),(30,'reply comment','digidemo','replycomment'),(31,'discussion vote','digidemo','discussionvote'),(32,'proposal vote','digidemo','proposalvote'),(33,'letter vote','digidemo','lettervote'),(34,'reply vote','digidemo','replyvote'),(35,'question vote','digidemo','questionvote'),(36,'answer vote','digidemo','answervote'),(37,'comment vote','digidemo','commentvote');
 /*!40000 ALTER TABLE `django_content_type` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -1486,7 +1512,6 @@ CREATE TABLE `django_session` (
 
 LOCK TABLES `django_session` WRITE;
 /*!40000 ALTER TABLE `django_session` DISABLE KEYS */;
-REPLACE INTO `django_session` (`session_key`, `session_data`, `expire_date`) VALUES ('orx99pzrfas8zmc89fowbsqmj5fvz8cm','ZTZhM2E3N2JhYjNjNmYxZDIzN2YwMGIyNzYyMzQxZjg3ZTZjNWNiNzp7fQ==','2015-02-08 02:22:23'),('wz3lh1m9j805e44sihralhux3gft5pwa','ZjI4YWFhOGFjZTAxOTk3YzE0NmU2NzUxZjdhOTUyNDUxMzlhZmIwYjp7Il9hdXRoX3VzZXJfYmFja2VuZCI6ImRqYW5nby5jb250cmliLmF1dGguYmFja2VuZHMuTW9kZWxCYWNrZW5kIiwiX2F1dGhfdXNlcl9pZCI6M30=','2015-02-08 02:22:32');
 /*!40000 ALTER TABLE `django_session` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -1499,4 +1524,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2015-01-25 12:46:15
+-- Dump completed on 2015-01-26  0:15:18
