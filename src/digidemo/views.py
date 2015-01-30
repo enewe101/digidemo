@@ -181,7 +181,8 @@ def get_question_list_tabs(active_tab):
 	
 def get_globals():
 	return {
-		'DEBUG': DEBUG
+		'DEBUG': DEBUG,
+		'SECTORS': [s.name for s in Sector.objects.all()]
 	}
 
 
@@ -1374,6 +1375,7 @@ def mainPage(request,sort_type='most_recent'):
 		request,
 		'digidemo/index.html',
 		{
+			'GLOBALS': get_globals(),
 			'django_vars_js': get_django_vars_JSON(request=request),
 			'users': users,
 			'active_issues': active_issues,

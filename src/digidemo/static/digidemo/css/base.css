@@ -132,81 +132,121 @@ body {
 	margin: 0;
 	padding: 0;
 	color: rgb(80,80,80);
-	background: rgb(230,230,230);
+	background: no-repeat 0 100% url('../images/crowd_cut.jpg');
 }
 
 #footer {
 	clear: both;
 	padding: 20px;
-	height: 100px;
-	border-top: solid 1px rgb(200,200,200);
-	background: rgb(230,230,230);
+	height: 500px;
 }
 
 #header {
 	position: fixed;
-	padding: 4px;
-	border-bottom: solid 1px rgb(200,200,200);
-	background: rgb(230,230,230);
+	padding: 8px 4px 4px 4px;
+	background: white;
 	z-index: 999;
 	width: 100%;
 }
 
+#topic_list {
+	clear: both;
+	text-align: center;
+	width: 946px;
+	padding: 4px 0 0 0;
+}
+
+.sector_links, .sector_links_first {
+	color: orange;
+	font-size: 18px;
+}
+.sector_links {
+	margin: 0 8px 0 8px;
+}
+
+div.short_nav_button, div.short_nav_button_first {
+	border-radius: 6px;
+	border: solid 2px black;
+	float:left;
+	padding: 3px;
+	height: 40px;
+	width: 46px;
+	background: white;
+	text-align: center;
+}
+
+div.short_nav_button {
+	margin: 0 0 0 8px;
+}
+
+a.navitem, a.navitem_active {
+	border-radius: 6px;
+	float:left;
+	padding: 10px 0 0 0;
+	height: 36px;
+	width: 126px;
+	margin: 0 0 0 8px;
+	font-size: 20px;
+	text-align: center;
+
+}
+
+a.navitem_active {
+	background: white;
+	color: white;
+	border: solid 2px rgb(170, 0, 212);
+	background: rgb(170, 0, 212);
+}
+
+a.navitem {
+	background: black;
+	border: black;
+	border: solid 2px black;
+	color: white;
+}
+
+a.create_navitem {
+}
+
+
 #colophon {
-	float: left;
 	margin: 0 0 0 0px;
 }
 
 div#navbar {
 	display: block;
-	list-style-type: none;
 	padding: 0;
-	margin: 0px 0 0 30px;
 	float: left;
-}
-
-a.navitem, a.navitem_active {
-	display: block;
-	padding: 6px 8px;
-	margin: 6px 3px 3px 3px;
-	float: left;
-}
-
-a.navitem_active {
-	background: white;
-	color: rgb(170, 0, 212);
-	border: solid 1px rgb(170, 0, 212);
-}
-
-a.navitem {
-	background: rgb(80,80,80);
-	border: solid 1px rgb(80,80,80);
-	color: white;
-}
-
-a.create_navitem {
-	margin-left: 30px;
 }
 
 #search_bar {
-	float: left;
-	margin: 10px 0 0 30px;
+	position: relative;
+	padding: 6px 3px 3px 3px;
+	height: 37px;
+	background-image: no-repeat url('../images/search.png');
 }
 
 #search_bar input {
 	border: solid 1px rgb(80,80,80);
 	background: white;
+	display:none;
 }
 
 #search_bar .search_submit {
-	background: no-repeat -2px -2px white url('../images/search.png');
+	display:none;
 	width: 20px;
+}
+
+#login_div {
+	padding-top: 6px;
+	margin-left: 16px;
 }
 
 #login_row {
 	float: left;
 	margin: 10px 0 0 0;
 }
+
 
 #header_spacer {
 	height: 52px;
@@ -219,7 +259,11 @@ a.create_navitem {
 .inner_center {
 	text-align: left;
 	margin: auto;
-	width: 1024px;
+	width: 1100px;
+}
+
+#login_form {
+	display: none;
 }
 
 #user {
@@ -229,7 +273,6 @@ a.create_navitem {
 #middle {
 	padding: 40px 0 40px 0;
 	clear: both;
-	background: white;
 }
 
 div.tags  {
@@ -288,11 +331,6 @@ div.tags  {
 .education_sector {
 	background: cyan;
 	color: black;
-}
-
-#footer {
-	clear: both;
-	background: rgb(230,230,230);
 }
 
 .comment_author {

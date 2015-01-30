@@ -1,66 +1,39 @@
 {% load staticfiles %}
 {% load apptags %}
 
-{% if request|getLoggedInUser != "false" %}
+	<div id="login_div">
 
 	<!-- if user logged in, show greeting, profile link, and logout button -->
-	<div id="login_div">
-		<div class="login_elm">
-			Welcome,&nbsp;
-		</div>
-		<div class="login_elm">
-			<a href="{% url "userProfile" request|getLoggedInUser %}">
-				{{request|getLoggedInUser}}
-			</a>
-		</div>
-		<div class="login_elm_right">
-			&nbsp;<input type="button" id="logout" value="logout" />
-		</div>
-	</div>
-	<!-- end of greeting, profile link, and logout button -->
+	{% if request|getLoggedInUser != "false" %}
 
-{% else %}
+		Welcome,&nbsp;
+		<a href="{% url "userProfile" request|getLoggedInUser %}">
+			{{request|getLoggedInUser}}
+		</a>
+
 
 	<!-- otherwise, show login form and register link -->
-	<div id="login_div">
-		<div class="login_elm">
-			<a href="{% url "userRegistration" %}">register</a>
-		</div>
-		<div class="login_elm">
+	{% else %}
+
+		<a href="{% url "userRegistration" %}">register</a>
 			|
-		</div>
-		<div class="login_elm" id="login">
-			<a id="login-trigger" >
+			<span>
 				login
-			</a>
-			<div id="login-content">
+
 				<form id="login_form">
-					<fieldset id="inputs">
-						<input id="username" type="text"
-							name="username" placeholder="username"
-							required />
-						<input id="password" type="password"
-							name="password" placeholder="password"
-							required />
-					</fieldset>
+					<input id="username" type="text"
+						name="username" placeholder="username" />
+					<input id="password" type="password"
+						name="password" placeholder="password" />
 
-					<fieldset id="actions">
-						<input type="button" id="submit_login" value="Log in" />
-						<label>
-							<input type="checkbox" checked="checked" />
-							Keep me signed in
-						</label>
-						<label>
-						    <a href="{% url "resetPassword" %}">Reset password</a>
-						   </label>
-					</fieldset>
+					<input type="button" id="submit_login" value="Log in" />
+					<a href="{% url "resetPassword" %}">Reset password</a>
 				</form>
-			</div>
-		</div>
-	</div>
-	<!-- end of login form and register link -->
+			</span>
 
-{% endif %}
+	{% endif %}
+	</div>
+
 <script>
 (function(){
 

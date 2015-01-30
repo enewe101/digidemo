@@ -1,3 +1,25 @@
+
+#banner {
+	margin: 36px 0 36px 0;
+}
+
+#big_logo{
+	margin-left: 120px;
+	float:left;
+}
+
+.cta {
+	color: rgb(128,0,128);
+	border: solid 3px rgb(128,0,128);
+	border-radius: 10px;
+	float: left;
+	width: 140px;
+	font-size: 22px;
+	padding: 14px;
+	height: 80px;
+	margin-left: 20px;
+}
+
 .issue_preview .status_indicator {
 	float: left;
 	height: 80px;

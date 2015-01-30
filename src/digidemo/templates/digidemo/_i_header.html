@@ -5,13 +5,16 @@
 		<div class="inner_center">
 
 			<a href="{% url "mainPage" %}">
+				<div class="short_nav_button_first">
 				<img id="colophon" 
 					src="{% static "digidemo/images/colophon_inline.png"%}" />
+				</div>
 			</a>
 
 			{% include "digidemo/_i_main_nav_bar.html" %}
 
-			<div id="search_bar">
+			<div class="short_nav_button" id="search_bar">
+				<img src="{% static "digidemo/images/search.png" %}" />
 				<div id="search_row">
 					<form type="get" action="{% url "search" %}">  
 						<input type="text" name="q" />
@@ -22,6 +25,15 @@
 
 			<div id="login_row">
 				{% include "digidemo/_w_login_user.html" %}
+			</div>
+
+			<div id="topic_list">
+				{% for sector in GLOBALS.SECTORS %}
+				<span 
+					class='sector_links{% if forloop.first %}_first{%endif%}'>
+						{{ sector }}
+				</span>
+				{% endfor %}
 			</div>
 
 		</div>
