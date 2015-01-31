@@ -5,7 +5,7 @@
 {% block css %}
 	{{ block.super }}
 	<link rel="stylesheet" type="text/css" 
-		href="{% static "digidemo/css/proposal_index_style.css" %}" />
+		href="{% static "digidemo/css/index.css" %}" />
 {% endblock css %}
 
 {% block middle %}
@@ -13,23 +13,48 @@
 	<div id="banner" class="centered">
 		<img id="big_logo"
 			src="{% static "digidemo/images/big_logo.png" %}" />
-		<div class="cta">What's this all about?</div>
-		<div class="cta">Find issues you care about</div>
+			<a href="{% url "what_about" %}" 
+				id="what_about" class="cta">What's this all about?</a>
+			<a href="{% url "find_issues" %}" 
+				id="find_issues" class="cta">Find issues you care about</a>
 		<div class="clear"></div>
 	</div>
 
 	<!-- begin featured -->
-	<div class="marquee_section">
+	<div id="featured_issue" >
 
-		<h2 class="marquee_heading">
+		<h2 class="featured_heading">
 			Featured Issue
 			<a href="{% url "issue_list" order_by="interesting" %}" class="marquee_see_more">
-				See all
+				<span class="orange">See all</span>
 			</a>
 		</h2>
 
-		<div class="marquee_body">
-			{% include "digidemo/_i_issue_preview.html" with issue=featured_post %}
+		<div id="featured_body">
+			
+			<div class="issue_preview">
+
+				<h2 class="issue_title">
+					<a href="{{featured_post.get_proposal_url}}">
+						<span class="black">{{featured_post.title}}</span>
+					</a>
+				</h2>
+
+				<div class="info_line">
+					<span class="last_modified">
+						Last mod {{ featured_post.last_modified }} 
+					</span>
+				</div>
+
+				<div class="preview_summary">
+					<span class="bold">In brief:</span> {{featured_post.summary}} 
+					
+					<a href="{{featured_post.get_proposal_url}}">
+						<span class="orange">read more</span>
+					</a>
+				</div>
+			</div>
+
 		</div>
 		<div class="clear"></div>
 	</div>
@@ -37,15 +62,15 @@
 
 
 	<!-- begin more articles -->
-	<div class="marquee_section">
-		<h2 class="marquee_heading">
-			Active Issues
+	<div id="trending">
+		<h2 class="featured_headin">
+			Trending
 			<a href="{% url "issue_list" order_by="activity" %}" class="marquee_see_more">
-				See all
+				<span class="orange">See all</span>
 			</a>
 		</h2>
 
-		<div class="marquee_body">
+		<div id="trending_body">
 			<!-- begin post -->
 			{% for proposal in active_issues %}
 				<div class="issue_info">
@@ -54,8 +79,9 @@
 							{{proposal.title}}
 						</a> 
 					</h3>
+					<span class="gray smallcaps">issue</span>
 					<span class="last_modified">
-						Last mod {{ featured_post.last_modified }} 
+						(Last mod {{ featured_post.last_modified }})
 					</span>
 				</div>
 			{% endfor %}
@@ -66,7 +92,7 @@
 
 
 	<!-- begin post navigation -->
-	<div class="marquee_section">
+	<!--div class="marquee_section">
 		<h2 class="marquee_heading">
 			New Petitions
 			<a href="{% url "petition_list" %}" class="marquee_see_more">
@@ -91,7 +117,7 @@
 			</div>
 		{% endfor %}
 
-	</div>
+	</div-->
 	<!-- end post navigation -->
 
 {% endblock middle %}

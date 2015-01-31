@@ -211,7 +211,7 @@ def auto_add_input_class(form_class_name, form_instance):
 			attrs['class'] = css_classes
 
 
-class EmailSignupForm(ModelForm):
+class EmailSignupForm(AugmentedFormMixin, ModelForm):
 	form_class = 'signup_form'
 	class Meta:
 		model = EmailRecipient

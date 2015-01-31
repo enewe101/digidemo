@@ -731,6 +731,34 @@ function ToggleHidden(toggle_div, content_1, content_2, message_1, message_2) {
 			js_error('ToggleHidden: unexpected state');
 		}
 	}
+
+	// Makes toggler show.  Does nothing if already showing
+	// note, this is public
+	this.show = function() {
+		if(state == 'hiding_1') {
+			content_1.css('display', 'block');
+			hide_2();
+			if(has_messages) {
+				toggle_div.html(message_1);
+			}
+			state = 'showing_1';
+			hooks.on_show();
+		}
+	};
+
+	// Makes toggler hide.  Does nothing if already hidden
+	// note, this is public
+	this.hide = function() {
+		if(state == 'showing_1') {
+			content_1.css('display', 'none');
+			show_2();
+			if(has_messages) {
+				toggle_div.html(message_2);
+			}
+			state = 'hiding_1';
+			hooks.on_hide();
+		}
+	};
 	
 	// register display toggling behavior to clickable element
 	toggle_div.click(this.toggle);

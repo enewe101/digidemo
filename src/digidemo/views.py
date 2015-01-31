@@ -292,11 +292,14 @@ def land(request):
 
 	if request.POST:
 		sent_email_form = EmailSignupForm(request.POST)
+
 		if sent_email_form.is_valid():
+			print "validated"
 			sent_email_form.save()
-			thank_you = True;
+			thank_you = True
 
 		else:
+			print "not valid"
 			email_form = sent_email_form
 			email_form.id_prefix = 0
 			email_form.endpoint = '/'
@@ -1356,6 +1359,59 @@ def do_reload(request):
 class AllPetitionListView(object):
 	def view(self, request):
 		return mainPage(request)
+
+
+def what_about(request,sort_type='most_recent'):
+
+	if(sort_type=='most_recent'):
+		proposals = Proposal.objects.order_by('-creation_date')[:5]
+	elif(sort_type=='top_score'):
+		proposals = Proposal.objects.order_by('-score')[:5]
+
+	active_issues =  Proposal.objects.order_by('-score')[:6]
+	featured_post = Proposal.objects.get(pk=1);
+	users = UserProfile.objects.all();
+	new_petitions = Letter.objects.all()
+
+        
+	return render(
+		request,
+		'digidemo/index.html',
+		{
+			'GLOBALS': get_globals(),
+			'django_vars_js': get_django_vars_JSON(request=request),
+			'users': users,
+			'active_issues': active_issues,
+			'featured_post': featured_post,
+			'new_petitions': new_petitions
+		}
+	)
+
+def find_issues(request,sort_type='most_recent'):
+
+	if(sort_type=='most_recent'):
+		proposals = Proposal.objects.order_by('-creation_date')[:5]
+	elif(sort_type=='top_score'):
+		proposals = Proposal.objects.order_by('-score')[:5]
+
+	active_issues =  Proposal.objects.order_by('-score')[:6]
+	featured_post = Proposal.objects.get(pk=1);
+	users = UserProfile.objects.all();
+	new_petitions = Letter.objects.all()
+
+        
+	return render(
+		request,
+		'digidemo/index.html',
+		{
+			'GLOBALS': get_globals(),
+			'django_vars_js': get_django_vars_JSON(request=request),
+			'users': users,
+			'active_issues': active_issues,
+			'featured_post': featured_post,
+			'new_petitions': new_petitions
+		}
+	)
 
 
 def mainPage(request,sort_type='most_recent'):

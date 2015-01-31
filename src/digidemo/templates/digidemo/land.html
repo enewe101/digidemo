@@ -12,6 +12,10 @@
 			href="{% static "digidemo/css/forms.css" %}" />
 		<link rel="stylesheet" type="text/css" 
 			href="{% static "digidemo/css/base.css" %}" />
+		<link rel="stylesheet" type="text/css" 
+			href="{% static "digidemo/css/alacarte.css" %}" />
+		<link rel="stylesheet" type="text/css" 
+			href="{% static "digidemo/css/forms.css" %}" />
 
 	</head>
 	<body id="landing_bg">
@@ -20,36 +24,62 @@
 			<div class="outer_center">
 				<div class="land_inner_center">
 
-					<div class="vert100"></div>
-					<img class="land_banner" 
-						src="{% static "digidemo/images/land_banner.png" %}" />
+					<div class="page">
 
-					<div class="vert60"></div>
-					<div id="land_info">
-						<div id="land_who_we_are">
-							We are programmers, users, activists, 
-							conservatives, anarchists, institutionalists,
-							engineers, artists, ...
+					<img id="land_banner" 
+						src="{% static "digidemo/images/big_logo.png" %}" />
+
+					<div id="alpha_wrapper">
+						<div id="alpha_note">
+							Alpha testing will begin 5 Feb 2015.<br/>
+						  	We'd love your help.  Let's keep in touch!
 						</div>
-						<div id="land_notify">
-							Alpha testing begins<strong> 5 February 2015</strong>!
-							Join our email list and become one of our alpha 
-							testers!
-							<div class="land_form">
-								{% if thank_you %}
-									<div class="land_green">Thank you!</div>
-								{% endif %}
-								{% include "digidemo/_w_simple_form_wrapped.html" with form=email_form id_prefix=0 %}
-							</div>
+						
+						{% if thank_you %}
+							<div class="land_green">Thank you!</div>
+
+						{% else %}
+							<form id="email_form" method="POST" />
+								{% csrf_token %}
+								<span class="field_errors">
+									{% for error in email_form.email.errors %}
+										{{ error }}
+									{% endfor %}
+								</span>
+								{{ email_form.email }}
+								<input id="email_sign_up" type="submit" 
+									value="sign up" />
+							</form>
+						{% endif %}
+						
+					</div>
+					<div id="description_row">
+						<div id="description">
+							<h1 class="land_h1">What is luminocracy?</h1>
+							Luminocracy is a balanced, unbiased source of
+							information about important issues in Canadian 
+							politics, and a tool to channel the collective
+							political will into action.
+
+							<br/>
+							<br/>
+
+							We combine crowdsourced, fact-checked articles
+							with open-letter writing, allowing you to express 
+							your informed opinions to political, economic, 
+							and cultural actors, while gaining the support 
+							of your peers.  Luminocracy is a platform for
+							driving <span class="italic">credible</span>
+							campaigns for change.
+
 						</div>
-						<div id="land_attend">
+						<div id="join_us">
+
 							<h1 class="land_h1">Join us!</h1>
-							<img id="warning_img"
-							src="{% static "digidemo/images/warning.png" %}" />
-							Come to the inaugural meeting and 
-							info-session for the Student's Society for Digital
-							Democracy, during which we will show off our 
-							flagship project, luminocracy.org
+							On 5 Feb 2015, come eat pizza and discuss the 
+							future of democracy.  It's totally free and we 
+							want to see you!  We'll give a demo of the platform
+							and invite you to get involved!
 							<ul>
 								<li>
 									<strong><em>when:</em></strong>
@@ -58,12 +88,12 @@
 								<li>
 									<strong><em>where:</em></strong>
 									&nbsp;&nbsp;
-									McConnel Engineering Building, Room 103
+									(<a target="_blank" href="https://www.google.ca/maps/place/McConnell+Engineering+Bldg,+McGill+University,+3480+University+St,+Montreal,+QC+H3A+2A7/@45.5049621,-73.5785149,17z/data=!4m2!3m1!1s0x4cc91a47f27f34b5:0x10145cffeb84edae">map</a>)
+									McConnell Engineering Building, Room 103
 								</li>
 								<li>
 									<strong><em>directions:</em></strong>
 									&nbsp;&nbsp;
-									<a target="_blank" href="https://www.google.ca/maps/place/McConnell+Engineering+Bldg,+McGill+University,+3480+University+St,+Montreal,+QC+H3A+2A7/@45.5049621,-73.5785149,17z/data=!4m2!3m1!1s0x4cc91a47f27f34b5:0x10145cffeb84edae">google map</a>
 								</li>
 							</ul>
 							<div class="clear"></div>
@@ -79,8 +109,82 @@
 								</a>
 							</div>
 						</div>
+						<div class="clear"></div>
 					</div>
+
+					<div class="feature_row">
+						<div class="feature_wrapper">
+							<img class="feature_icon" 
+							src="{% static "digidemo/images/linking.png" %}"/>
+
+							<div class="feature_blurb">
+								<h2 class="feature_title">
+									Linking knowledge and action
+								</h2>
+								It's frustrating to read the news and feel
+								powerless.  We're connecting factual 
+								information about important issues with tools
+								to exert your political will.
+							</div>
+						</div>
+
+						<div class="feature_spacer"></div>
+
+						<div class="feature_wrapper">
+							<img class="feature_icon" 
+							src="{% static "digidemo/images/unbiased.png" %}"/>
+
+							<div class="feature_blurb">
+								<h2 class="feature_title">
+									Algorithmically unbiased
+								</h2>
+								We're building the first source of truly 
+								unbiased political information.  Skeptical?  
+								Great!  It's powered by the skepticism of the 
+								crowd.
+							</div>
+						</div>
+						<div class="clear"></div>
+					</div>
+
+					<div class="feature_row">
+						<div class="feature_wrapper">
+							<img class="feature_icon" 
+							src="{% static "digidemo/images/crowd_curated.png" %}"/>
+
+							<div class="feature_blurb">
+								<h2 class="feature_title">
+									Crowd curated
+								</h2>
+								Our content is sourced from the crowd, so it is
+								inherently free from manipulation by interested
+								powers.
+							</div>
+						</div>
+
+						<div class="feature_spacer"></div>
+
+						<div class="feature_wrapper">
+							<img class="feature_icon" 
+							src="{% static "digidemo/images/transparent.png" %}"/>
+
+							<div class="feature_blurb">
+								<h2 class="feature_title">
+									Transparent
+								</h2>
+								Our platform carries open, mature, 
+								and proportionate discussion.  
+								We invite participation from 
+								the government and corporations.  
+								We can handle the truth!
+							</div>
+						</div>
+						<div class="clear"></div>
+					</div>
+
 					<div class="clear"></div>
+
+					</div>
 				</div>
 			</div>
 			<!-- end of centering device for the middle of the page layout -->

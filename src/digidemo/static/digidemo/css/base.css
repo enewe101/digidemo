@@ -131,8 +131,8 @@ body {
 	font-size: 15px;
 	margin: 0;
 	padding: 0;
-	color: rgb(80,80,80);
-	background: no-repeat 0 100% url('../images/crowd_cut.jpg');
+	color: black;
+	background: repeat-x 0 100% url('../images/crowd_cut.jpg');
 }
 
 #footer {
@@ -179,6 +179,7 @@ div.short_nav_button {
 	margin: 0 0 0 8px;
 }
 
+
 a.navitem, a.navitem_active {
 	border-radius: 6px;
 	float:left;
@@ -219,6 +220,10 @@ div#navbar {
 	float: left;
 }
 
+#innocuous_button_wrap {
+	float:left;
+}
+
 #search_bar {
 	position: relative;
 	padding: 6px 3px 3px 3px;
@@ -227,14 +232,46 @@ div#navbar {
 }
 
 #search_bar input {
-	border: solid 1px rgb(80,80,80);
-	background: white;
-	display:none;
+	padding: 0;
+	position: absolute;
+	left: 20px;
+	top: 16px;
+	border: solid 1px black;
+	background: rgb(250,250,250);
+	height: 34px;
+	width: 300px;
 }
 
 #search_bar .search_submit {
-	display:none;
-	width: 20px;
+	position: absolute;
+	left: 324px;
+	top: 16px;
+	width: 48px;
+	height: 36px;
+	padding: 0;
+}
+
+#border_cover {
+	top:-2px;
+	right:-2px;
+	position: absolute;
+	width: 52px;
+	height: 5px;
+	background: white;
+	border-right: solid 2px black;
+}
+
+#search_form {
+	display: none;
+	bottom: -69px;
+	right:-2px;
+	width: 360px;
+	height: 36px;
+	border: solid 2px black;
+	position: absolute;
+	background: white;
+	padding: 16px;
+	border-radius: 6px;
 }
 
 #login_div {

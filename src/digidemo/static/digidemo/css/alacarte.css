@@ -18,6 +18,18 @@
 	font-weight: bold;
 }
 
+.smallcaps {
+	font-variant: small-caps;
+}
+
+.orange {
+	color: orange;
+}
+
+.gray {
+	color: rgb(120,120,120);
+}
+
 .grey {
 	color: rgb(200,200,200);
 }

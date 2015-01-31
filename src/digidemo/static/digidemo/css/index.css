@@ -15,9 +15,17 @@
 	float: left;
 	width: 140px;
 	font-size: 22px;
-	padding: 14px;
-	height: 80px;
 	margin-left: 20px;
+}
+
+#find_issues {
+	padding: 14px 14px 14px 14px;
+	height: 80px;
+}
+
+#what_about {
+	padding: 27px 14px 14px 14px;
+	height: 65px;
 }
 
 .issue_preview .status_indicator {
@@ -51,27 +59,42 @@
 	font-size: 14px;
 }
 
-.issue_info {
-	background: rgb(245, 245, 245);
-	padding: 8px;
-	margin: 6px;
+#featured_issue {
+	width: 550px;
 }
 
-.issue_info h3.issue_title {
+#trending {
+	width: 325px;
+}
+
+#featured_heading {
+	padding: 0 8px;
+	margin: 0;
+}
+
+#featured_issue, #trending {
+	float:left;
+	position: relative;
+	margin: 10px;
+	padding: 20px 10px 10px 10px;
+}
+
+#trending_body, #featured_body {
+	margin: 10px 10px 10px 24px;
+	clear: both;
+}
+
+.issue_info {
+	margin: 20px 0 0 0;
+}
+
+.issue_title {
 	margin: 0px;
 	padding: 0px;
 	font-size: 18px;
 	line-height: 1.2em;
 	display: inline;
 	font-family: computerModern;
-}
-
-.issue_preview h2.issue_title {
-	margin: 0px;
-	padding: 0px;
-	font-size: 24px;
-	line-height: 1.2em;
-	display: inline;
 }
 
 .petition_title_div {
@@ -105,13 +128,12 @@
 
 .issue_preview {
 	font-family: computerModern;
-	font-size: 16px;
+	font-size: 18px;
 }
 
 .issue_preview .preview_summary {
 	margin: 14px 0 14px 0;
-	padding: 10px;
-	background: rgb(245, 245, 245);
+	text-align: justify;
 }
 
 .petition_score {
