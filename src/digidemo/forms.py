@@ -396,7 +396,7 @@ class ProposalVersionForm(AugmentedFormMixin, ModelForm):
 
 			# now make the proposal and save it
 			self.proposal = Proposal(**proposal_init)
-			self.proposal.save()
+			self.proposal.save(suppress_subscribe=True, suppress_publish=True)
 
 			# now save the proposal version, then bind the proposal and
 			# then save the bound proposal_version
@@ -422,7 +422,9 @@ class ProposalVersionForm(AugmentedFormMixin, ModelForm):
 			for field in ['title', 'summary', 'text', 'user']:
 				setattr(self.proposal, field, self.cleaned_data[field])
 
-			self.proposal.save()
+			# this save will cause the editing user to be subscribed to the 
+			# issue
+			self.proposal.save(suppress_publish=True, suppress_subscribe=True)
 
 			# Save a new proposal version based on the contents of this form
 			new_proposal_version = super(ProposalVersionForm, self).save()
@@ -647,7 +649,6 @@ class ResetPasswordForm(AugmentedFormMixin,ModelForm):
 		    user_email_match = True
 		except ObjectDoesNotExist:
 		    user_email_match = False
-		    print("Username and email don't match.")
 		
 		if not user_email_match:
 		    self._errors['username'] = self.error_class(["Username doesn't exist or email doesn't match."])

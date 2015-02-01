@@ -294,12 +294,10 @@ def land(request):
 		sent_email_form = EmailSignupForm(request.POST)
 
 		if sent_email_form.is_valid():
-			print "validated"
 			sent_email_form.save()
 			thank_you = True
 
 		else:
-			print "not valid"
 			email_form = sent_email_form
 			email_form.id_prefix = 0
 			email_form.endpoint = '/'
@@ -783,7 +781,15 @@ class EditProposalView(AbstractLoginRequiredView):
 		)
 
 		if proposal_form.is_valid():
+
 			proposal_version = proposal_form.save()
+
+			# while saving the form above, publication is suppressed.
+			# publish now.
+			proposal = proposal_version.proposal
+			proposal.subscribe(reason='EDITOR')
+			proposal.publish(event_type='EDIT_ISSUE')
+
 			return redirect(proposal.get_proposal_url())
 
 		# Otherwise, make the context to dislpay the form
@@ -829,6 +835,8 @@ class AddProposalView(AbstractLoginRequiredView):
 		if proposal_form.is_valid():
 			proposal_version = proposal_form.save()
 			proposal = proposal_version.proposal
+			proposal.subscribe(reason='AUTHOR')
+			proposal.publish(event_type='ISSUE')
 			return redirect(proposal.get_url_by_view_name('proposal'))
 
 		# Otherwise, make the context to dislpay the form

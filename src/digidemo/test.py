@@ -863,38 +863,42 @@ class ProposalFormTest(FormTest):
 	username = REG_USERNAME
 	expect_proposal_id = 1
 
+	REASON = 'EDITOR'
+	EVENT_TYPE = 'EDIT_ISSUE'
 	TEST_TAGS = 'tag1 tag2'
 	PROPOSAL_TAGS_ID = 'proposal_tags'
 	PROPOSAL_TAGS_CLASS = 'ui-widget-content'
 	TAGS_ERROR_ID = 'proposal_tags_errors'
 	TAGS_ERROR_MSG = 'Please include at least one tag.'
-	def test_edit_proposal_form(self):
 
-		# login a regularuser
+#	def test_edit_proposal_form(self):
+#
+#		# login a regularuser
+#		self.login_regularuser()
+#
+#		# test the edit form.  Ensure that incomplete forms cause an error to
+#		# be shown, and that html special characters get escaped.
+#		self.edit_proposal()
+#		self.edit_proposal_incomplete()
+#		self.edit_proposal_ensure_escape()
+
+
+	def test_edit_proposal(self):
+
 		self.login_regularuser()
-
-		# test the edit form.  Ensure that incomplete forms cause an error to
-		# be shown, and that html special characters get escaped.
-		self.edit_proposal()
-		self.edit_proposal_incomplete()
-		self.edit_proposal_ensure_escape()
-
-
-	def edit_proposal(self):
 
 		expected_id = self.expect_proposal_id()
 
 		# Go to the edit page for a test proposal
 		self.driver.get(self.get_url())
 
-
 		# Fill and submit the form with valid data
 		self.fill_form(self.form_data)
 		self.driver.find_element(
 			'id', 'proposal_tags_input').find_element_by_class_name(
 			self.PROPOSAL_TAGS_CLASS).send_keys(self.TEST_TAGS)
-		self.click('ProposalVersionForm__sectors_0')
-		self.click('ProposalVersionForm__sectors_4')
+		self.click('ProposalVersionForm__sectors_1')
+		self.click('ProposalVersionForm__sectors_5')
 		self.driver.find_element('id', self.submit_id).click()
 
 		# check that the proposal was correctly loaded
@@ -904,11 +908,21 @@ class ProposalFormTest(FormTest):
 		self.assertTrue(self.elements_contain(expect_data))
 
 		# check the database
-		self.check_db(expected_id, *self.values, username=self.username)
+		sectors = [
+			Sector.objects.get(name='environment'),
+			Sector.objects.get(name='culture')
+		]
+		self.check_db(
+			expected_id, *self.values, username=self.username,
+			tags=self.TEST_TAGS, sectors=sectors, 
+			event_type=self.EVENT_TYPE
+		)
 
 
 	# TODO: This should check the case where user has not entered any tags
-	def edit_proposal_incomplete(self):
+	def test_edit_proposal_incomplete(self):
+
+		self.login_regularuser()
 
 		# Go to the edit page for a test proposal
 		self.driver.get(self.get_url())
@@ -926,8 +940,8 @@ class ProposalFormTest(FormTest):
 				'id', 'proposal_tags_input').find_element_by_class_name(
 				self.PROPOSAL_TAGS_CLASS).send_keys('\b'*5 + self.TEST_TAGS)
 
-			self.click('ProposalVersionForm__sectors_0')
-			self.click('ProposalVersionForm__sectors_4')
+			self.click('ProposalVersionForm__sectors_1')
+			self.click('ProposalVersionForm__sectors_5')
 			self.click(self.submit_id)
 
 			# Check for the error message
@@ -949,8 +963,8 @@ class ProposalFormTest(FormTest):
 			'id', 'proposal_tags_input').find_element_by_class_name(
 			self.PROPOSAL_TAGS_CLASS).send_keys('\b'*5)
 
-		self.click('ProposalVersionForm__sectors_0')
-		self.click('ProposalVersionForm__sectors_4')
+		self.click('ProposalVersionForm__sectors_1')
+		self.click('ProposalVersionForm__sectors_5')
 		self.click(self.submit_id)
 
 		# check for the user-facing error
@@ -964,7 +978,9 @@ class ProposalFormTest(FormTest):
 			self.error_class in wrapper.get_attribute('class'))
 
 
-	def edit_proposal_ensure_escape(self):
+	def test_edit_proposal_ensure_escape(self):
+		self.login_regularuser()
+
 		expected_id = self.expect_proposal_id()
 
 		form_data_needs_escape = dict([
@@ -981,20 +997,27 @@ class ProposalFormTest(FormTest):
 
 		# Fill and submit the form with data that should get escaped
 		self.fill_form(form_data_needs_escape)
+
 		self.driver.find_element(
-			'id', self.PROPOSAL_TAGS_ID).find_element_by_class_name(
+			'id', 'proposal_tags_input').find_element_by_class_name(
 			self.PROPOSAL_TAGS_CLASS).send_keys(self.TEST_TAGS)
-		self.click('ProposalVersionForm__sectors_0')
-		self.click('ProposalVersionForm__sectors_4')
+
+		self.click('ProposalVersionForm__sectors_1')
+		self.click('ProposalVersionForm__sectors_5')
 		self.driver.find_element('id', self.submit_id).click()
+
 
 		# check that the proposal was correctly loaded
 		self.assertTrue(self.elements_contain(expect_escaped_data))
 
 		# check the database
+		sectors = [
+			Sector.objects.get(name='environment'),
+			Sector.objects.get(name='culture')
+		]
 		self.check_db(expected_id, self.escape_text, 
-			self.escape_text, self.escape_text, self.username)
-
+			self.escape_text, self.escape_text, self.username, 
+				self.TEST_TAGS, sectors, self.EVENT_TYPE)
 
 	def get_url(self):
 		return (self.live_server_url 
@@ -1005,9 +1028,20 @@ class ProposalFormTest(FormTest):
 		return 1
 
 
-	def check_db(self, expected_id, title, summary, text, username):
+	def check_db(
+			self, 
+			expected_id, 
+			title, 
+			summary, 
+			text, 
+			username, 
+			tags, 
+			sectors,
+			event_type
+		):
 
 		proposal = Proposal.objects.get(title=title)
+		user = User.objects.get(username=username)
 
 		# this switch is used to turn of checking the primary key for
 		# the AddProposalTest, which inherits from this test
@@ -1024,11 +1058,56 @@ class ProposalFormTest(FormTest):
 		self.assertEqual(text, proposal_version.text)
 		self.assertEqual(username, proposal_version.user.username)
 
-			
+		#TODO: check for the creation of a notification
+		# note this is where I left... I haven't adapted the tests below,
+		# which were copied from elsewhere.  I also don't know whether
+		# tags and sectors are being added to the proposal in the tests of 
+		# this class.
+		# They need to be, so that we can test whether notifications get
+		# made against the tags and Sectors.
+
+		# Check if a Subscription was made
+		sub_id = proposal.subscription_id
+		s = Subscription.objects.get(subscription_id=sub_id, user=user, 
+			reason=self.REASON)
+		#self.assertEqual(s.user.username, username)
+
+		# Check if a Publication was made against the tags
+		tag_names = tags.split()
+		tag_objects = [
+			Tag.objects.get(name=tag_names[0]),
+			Tag.objects.get(name=tag_names[1])
+		]
+		for tag in tag_objects:
+			p = Publication.objects.get(
+				subscription_id=tag.subscription_id,
+				source_user=user,
+				event_type=event_type
+			)
+			self.assertEqual(p.source_user, user)
+			self.assertEqual(p.event_type, event_type)
+			self.assertEqual(p.was_posted, False)
+			self.assertEqual(p.event_data, proposal.text[:100])
+			self.assertEqual(p.link_back, 
+				proposal.get_url_by_view_name('proposal'))
+
+		for sector in sectors:
+			# Check if a Publication was made against the sector
+			p = Publication.objects.get(
+				subscription_id=sector.subscription_id)
+			self.assertEqual(p.source_user, user)
+			self.assertEqual(p.event_type, event_type)
+			self.assertEqual(p.was_posted, False)
+			self.assertEqual(p.event_data, proposal.text[:100])
+			self.assertEqual(p.link_back, 
+				proposal.get_url_by_view_name('proposal'))
+
 
 class AddProposalTest(ProposalFormTest):
 
 	check_pk = False
+	REASON = 'AUTHOR'
+	EVENT_TYPE = 'ISSUE'
 
 	def get_url(self):
 		return self.live_server_url + reverse('add_proposal')
@@ -1573,8 +1652,8 @@ class PublishSubscribeTest(TestCase):
 	'''
 
 	# TODO: implement these three tests
-	def test_proposal_edit(self):
-		pass
+
+
 
 	def test_sign_letter(self):
 		pass
@@ -1597,10 +1676,11 @@ class PublishSubscribeTest(TestCase):
 			original_user=proposal_author,
 			user=proposal_author
 		)
-		proposal.save(suppress_publish=True)
+		proposal.save(suppress_subscribe=True, suppress_publish=True)
 		proposal.tags.add(tag)
 		proposal.sectors.add(sector)
-		proposal.save(force_publish=True)
+		proposal.publish(event_type='ISSUE')
+		proposal.subscribe(reason='AUTHOR')
 
 		# make an associated proposal version
 		proposal_version = ProposalVersion(

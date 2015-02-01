@@ -121,37 +121,48 @@ class TriggersNotification(TimeStamped):
 
 		# Check if this is the first save, and decide whether to publish
 		first_save = (self.pk is None)
-		do_publish = (first_save and not suppress_publish) or force_publish
+		do_publish = (first_save or force_publish) and not suppress_publish
 
 		# Let save happen normally 
 		super(TriggersNotification, self).save(*args, **kwargs)
 
 		# Now, if this was the first save, issue publication(s)
 		if do_publish:
+			self.publish()
 
-			# get a list of targets for this notification.  
-			targets = self.get_targets()
 
-			# If there aren't any targets, there's nothing to do.
-			if len(targets) == 0:
-				return
+	def publish(
+			self,
+			targets=[],
+			source_user=None,
+			event_data=None,
+			link_back=None,
+			event_type=None
+		):
 
-			# get some information about the publication(s) to be made
-			source_user = self.get_source_user()
-			event_data = self.get_event_data()
-			link_back = self.get_link_back()
-			event_type = self.get_event_type()
+		# get a list of targets for this notification.  
+		targets = targets or self.get_targets()
 
-			# now make all the notifications
-			for subscription_id in targets:
-				pub = Publication(
-					source_user = source_user,
-					subscription_id = subscription_id,
-					event_type = event_type,
-					event_data = event_data,
-					link_back = link_back
-				)
-				pub.save()
+		# If there aren't any targets, there's nothing to do.
+		if len(targets) == 0:
+			return
+
+		# get some information about the publication(s) to be made
+		source_user = source_user or self.get_source_user()
+		event_data = event_data or self.get_event_data()
+		link_back = link_back or self.get_link_back()
+		event_type = event_type or self.get_event_type()
+
+		# now make all the notifications
+		for subscription_id in targets:
+			pub = Publication(
+				source_user = source_user,
+				subscription_id = subscription_id,
+				event_type = event_type,
+				event_data = event_data,
+				link_back = link_back
+			)
+			pub.save()
 
 	class Meta:
 		abstract = True
@@ -187,7 +198,20 @@ class Subscribable(TriggersNotification):
 	def get_author(self):
 		return self.user
 
-	def save(self, *args, **kwargs):
+	def get_reason(self):
+		'''
+			Gets the reason that the person was subscribed.  Default to
+			AUTHOR, because most of the time people are subscribed because
+			thay created the thing.
+		'''
+		return 'AUTHOR'
+
+	def save(
+			self, 
+			suppress_subscribe=False, 
+			force_subscribe=False,
+			*args, **kwargs
+		):
 
 		# Is this the first save?  Then give this object a subscription_id
 		first_save = (self.pk is None)
@@ -199,15 +223,25 @@ class Subscribable(TriggersNotification):
 
 		# If this is the first save, subscribe the author to this object
 		# This behavior can be suppressed by returning non from get_author()
-		if first_save:
-			author = self.get_author()
-			if author is not None:
-				sub = Subscription(
-					user = self.get_author(),
-					reason = 'AUTHOR',
+		if (first_save or force_subscribe) and not suppress_subscribe:
+			self.subscribe()
+
+
+	def subscribe(self, subscriber=None, reason=None):
+
+			# default values are assumed so that authors can be auto-susbcribed
+			# when their subscribable object is saved.  This can be overridden.
+			subscriber = subscriber or self.get_author()
+			reason = reason or self.get_reason()
+
+			if subscriber is not None:
+				sub, created = Subscription.objects.get_or_create(
+					user = subscriber,
+					reason = reason,
 					subscription_id = self.subscription_id
 				)
 				sub.save()
+
 
 	class Meta:
 		abstract = True
@@ -277,6 +311,7 @@ class Subscription(TimeStamped):
 		('AUTHOR', 'author'),
 		('COMMENTER', 'commenter'),
 		('SUBSCRIBED', 'actively subscribed'),
+		('EDITOR', 'edited related content')
 	)
 	user = models.ForeignKey(User, related_name='subscriptions')
 	reason = models.CharField(max_length=20, choices=REASON_CHOICES)
@@ -298,6 +333,9 @@ class SubscriptionId(TimeStamped):
 				subscription id's.
 	'''
 	subscription_id = models.AutoField(primary_key=True)
+
+	def __unicode__(self):
+		return str(self.subscription_id)
 
 
 class Publication(TimeStamped):

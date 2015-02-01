@@ -157,8 +157,20 @@ class Proposal(abstract_models.Subscribable):
 	sectors = models.ManyToManyField(
 		Sector, related_name='proposals', blank=True, null=True)
 
+
 	def get_event_type(self):
-		return 'ISSUE'
+
+		# Proposals must be saved using save(suppress_publish=True).
+		# After saving publish(event_type="ISSUE" | "EDIT") should be called 
+		# directly.  This is because the proposal is either being created
+		# or edited, but we can't infer that at save() time.
+		if not hasattr(self, 'event_type'):
+			raise ValueError('Proposals must be saved with' 
+				'suppress_publish=True, and then manually published using'
+				'proposal.publish(event_type="ISSUE" | "EDIT")'
+			)
+
+		return self.event_type
 
 	def get_targets(self):
 		sector_targets = [s.subscription_id for s in self.sectors.all()]
@@ -166,6 +178,12 @@ class Proposal(abstract_models.Subscribable):
 		targets = sector_targets + tag_targets
 
 		return targets
+
+
+	def publish(self, event_type):
+		self.event_type=event_type
+		super(Proposal, self).publish()
+
 
 	def get_latest(self):
 		return ProposalVersion.get_latest(self)
