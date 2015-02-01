@@ -55,8 +55,6 @@ def createUser():
 	return user
 
 
-
-
 def text_is_similar(text_1, text_2):
 	'''
 		checks for equality in strings, ignoring any white space.
@@ -65,8 +63,6 @@ def text_is_similar(text_1, text_2):
 	text_1 = MATCH_WSPACE.sub('', text_1)
 	text_2 = MATCH_WSPACE.sub('', text_2)
 	return text_1 == text_2
-
-
 
 
 class SeleniumTestCase(LiveServerTestCase):
@@ -442,7 +438,22 @@ class CommentTest(SeleniumTestCase):
 		self.assertEqual(author, '~ ' + username)
 
 		# Check that the comment can be found in the database
-		comment_class.objects.get(text=comment_text)
+		comment = comment_class.objects.get(text=comment_text)
+
+		# Make sure the commenter was subscribed to her comment...
+		user = User.objects.get(username=username)
+		sub = Subscription.objects.get(
+			user=user,
+			reason="AUTHOR",
+			subscription_id=comment.subscription_id
+		)
+
+		# ...and that she was subscribed to the thing she commented on
+		sub = Subscription.objects.get(
+			user=user,
+			reason='COMMENTER',
+			subscription_id=comment.target.subscription_id
+		)
 
 		# Check that the comment textarea was hidden, and that when shown
 		# it has been cleared of the last comment entered

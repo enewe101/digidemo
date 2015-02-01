@@ -255,6 +255,17 @@ class AbstractComment(ScoredPost, Subscribable):
 	def get_url(self):
 		return None
 
+	def save(self, *args, **kwargs):
+		super(AbstractComment, self).save(*args, **kwargs)
+
+		# subscribe the user to the thing she commented on
+		sub = Subscription(
+			user=self.user,
+			reason='COMMENTER', 
+			subscription_id=self.target.subscription_id
+		)
+		sub.save()
+
 	class Meta:
 		abstract=True
 	
