@@ -78,9 +78,9 @@ class EmailRecipient(abstract_models.TimeStamped):
         This is for people that sign up for to receive emails on our landing
         page.
     '''
+
     email = models.EmailField(max_length=EMAIL_LENGTH)
     active = models.BooleanField(default=True)
-
 
 class PasswordReset(abstract_models.TimeStamped):
 	'''

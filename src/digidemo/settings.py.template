@@ -8,28 +8,45 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/1.6/ref/settings/
 """
 
-# SECURITY WARNING: don't run with debug turned on in production!
 import sys
 TESTING_MODE = 'test' in sys.argv
-DEBUG = not TESTING_MODE
-TEMPLATE_DEBUG = True
+TEMPLATE_DEBUG = not TESTING_MODE
+# SECURITY WARNING: don't run with debug turned on in production!
+DEBUG = True
+
+class InvalidString(str):
+    def __mod__(self, other):
+        from django.template.base import TemplateSyntaxError
+        raise TemplateSyntaxError(
+            "Undefined variable or unknown value for: \"%s\"" % other)
+
+TEMPLATE_STRING_IF_INVALID = InvalidString("%s")
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 import os
-
-# path to the root of the project, i.e. what is created during git clone
-PROJECT_DIR = '/path/to/digidemo'	#<>#
+PROJECT_DIR = '/path/to/digidemo'  #<>#
 BASE_DIR = PROJECT_DIR + '/src'
+
+SITE_NAME = 'polis'
+# Quick-start development settings - unsuitable for production
+# See https://docs.djangoproject.com/en/1.6/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = 't7665_02)%3ujsq0m6!_rsg3i3%o^ti)odqry33bn3q$n_&7i8'
 
-ALLOWED_HOSTS = []
+
+
+ALLOWED_HOSTS = ['localhost']
+
 TEMPLATE_CONTEXT_PROCESSORS = (
+	'django.contrib.messages.context_processors.messages',
 	'django.core.context_processors.request',
+	'django.contrib.auth.context_processors.auth'
 )
 
+
 # Application definition
+
 INSTALLED_APPS = (
     'django.contrib.admin',
     'django.contrib.auth',
@@ -41,15 +58,6 @@ INSTALLED_APPS = (
 	'haystack',
 )
 
-# Provide haystack connection configuration
-# (Add anywhere in settings file)
-HAYSTACK_CONNECTIONS = {
-    'default': {
-        'ENGINE': 'haystack.backends.whoosh_backend.WhooshEngine',
-        'PATH': os.path.join(os.path.dirname(__file__), 'whoosh_index'),
-    },
-}
-
 MIDDLEWARE_CLASSES = (
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -59,37 +67,39 @@ MIDDLEWARE_CLASSES = (
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 )
 
-
 ROOT_URLCONF = 'digidemo.urls'
 WSGI_APPLICATION = 'digidemo.wsgi.application'
 
 
-# DATABASE STUFF
-#
-# You do not necessarily need to change the settings below, provided that you
-# create a MySQL user named `digidemo` and a mysql database named `digidemo`
-# and that you give the user full priveleges on that database, and put that
-# user's password in the project's my.cnf file, which can be found at:
-#
-# 			<proj-root:digidemo>/src/digidemo/my.cnf
-# 
-# If you don't want to use the default settings, you can make changes below.
-# See this page for details:
+# Database
 # https://docs.djangoproject.com/en/1.6/ref/settings/#databases
 
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-		'OPTIONS': {
-			'read_default_file': BASE_DIR + '/digidemo/my.cnf'	#<>#
-		},
-        'NAME': 'digidemo',										#<>#
+        'OPTIONS': {
+			'read_default_file': BASE_DIR + '/digidemo/my.cnf', #<>#
+		 },
+		'NAME': 'digidemo',
     }
 }
 
+HAYSTACK_CONNECTIONS = {
+	'default': {
+		'ENGINE': 'haystack.backends.whoosh_backend.WhooshEngine',
+		'PATH': os.path.join(os.path.dirname(__file__), 'whoosh_index'),
+	},
+}
+
+EMAIL_HOST = "smtp.sendgrid.net"
+EMAIL_HOST_USER = "USER" #<>#
+EMAIL_HOST_PASSWORD = "PASSWORD" #<>#
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
 
 # Internationalization
 # https://docs.djangoproject.com/en/1.6/topics/i18n/
+
 LANGUAGE_CODE = 'en-us'
 TIME_ZONE = 'UTC'
 USE_I18N = True
@@ -97,11 +107,12 @@ USE_L10N = True
 USE_TZ = True
 
 
-# Define more paths within the project
+# Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.6/howto/static-files/
-STATIC_URL = '/static/'
+
+STATIC_URL = '/dd_static/'
 STATICFILES_DIRS = (BASE_DIR + '/digidemo/static',)
 FIXTURE_DIRS = (os.path.join(PROJECT_DIR, 'data/fixtures'),)
 STATIC_ROOT = PROJECT_DIR + '/static'
-MEDIA_URL = '/media/'
+MEDIA_URL = '/dd_media/'
 MEDIA_ROOT = PROJECT_DIR + '/media/'
