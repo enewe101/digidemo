@@ -871,18 +871,6 @@ class ProposalFormTest(FormTest):
 	TAGS_ERROR_ID = 'proposal_tags_errors'
 	TAGS_ERROR_MSG = 'Please include at least one tag.'
 
-#	def test_edit_proposal_form(self):
-#
-#		# login a regularuser
-#		self.login_regularuser()
-#
-#		# test the edit form.  Ensure that incomplete forms cause an error to
-#		# be shown, and that html special characters get escaped.
-#		self.edit_proposal()
-#		self.edit_proposal_incomplete()
-#		self.edit_proposal_ensure_escape()
-
-
 	def test_edit_proposal(self):
 
 		self.login_regularuser()
@@ -897,6 +885,7 @@ class ProposalFormTest(FormTest):
 		self.driver.find_element(
 			'id', 'proposal_tags_input').find_element_by_class_name(
 			self.PROPOSAL_TAGS_CLASS).send_keys(self.TEST_TAGS)
+
 		self.click('ProposalVersionForm__sectors_1')
 		self.click('ProposalVersionForm__sectors_5')
 		self.driver.find_element('id', self.submit_id).click()
@@ -1058,19 +1047,21 @@ class ProposalFormTest(FormTest):
 		self.assertEqual(text, proposal_version.text)
 		self.assertEqual(username, proposal_version.user.username)
 
-		#TODO: check for the creation of a notification
-		# note this is where I left... I haven't adapted the tests below,
-		# which were copied from elsewhere.  I also don't know whether
-		# tags and sectors are being added to the proposal in the tests of 
-		# this class.
-		# They need to be, so that we can test whether notifications get
-		# made against the tags and Sectors.
-
 		# Check if a Subscription was made
 		sub_id = proposal.subscription_id
 		s = Subscription.objects.get(subscription_id=sub_id, user=user, 
 			reason=self.REASON)
-		#self.assertEqual(s.user.username, username)
+
+		# check if a publication was made against the proposal
+		p = Publication.objects.get(
+			subscription_id=proposal.subscription_id,
+			source_user=user,
+			event_type=event_type
+		)
+		self.assertEqual(p.was_posted, False)
+		self.assertEqual(p.event_data, proposal.text[:100])
+		self.assertEqual(p.link_back, 
+			proposal.get_url_by_view_name('proposal'))
 
 		# Check if a Publication was made against the tags
 		tag_names = tags.split()
@@ -1078,14 +1069,14 @@ class ProposalFormTest(FormTest):
 			Tag.objects.get(name=tag_names[0]),
 			Tag.objects.get(name=tag_names[1])
 		]
+
 		for tag in tag_objects:
+
 			p = Publication.objects.get(
 				subscription_id=tag.subscription_id,
 				source_user=user,
 				event_type=event_type
 			)
-			self.assertEqual(p.source_user, user)
-			self.assertEqual(p.event_type, event_type)
 			self.assertEqual(p.was_posted, False)
 			self.assertEqual(p.event_data, proposal.text[:100])
 			self.assertEqual(p.link_back, 
@@ -1116,8 +1107,6 @@ class AddProposalTest(ProposalFormTest):
 		return Proposal.objects.all().count() + 1
 
 
-
-# LEFT OFF HERE
 
 class VoteTest(SeleniumTestCase):
 
@@ -1699,6 +1688,16 @@ class PublishSubscribeTest(TestCase):
 		sub_id = proposal.subscription_id
 		s = Subscription.objects.get(subscription_id=sub_id)
 		self.assertEqual(s.user, proposal_author)
+
+		# Check if a Pubscription was made against the Proposal
+		p = Publication.objects.get(subscription_id=proposal.subscription_id)
+		self.assertEqual(p.source_user, proposal_author)
+		self.assertEqual(p.event_type, 'ISSUE')
+		self.assertEqual(p.was_posted, False)
+		self.assertEqual(p.event_data, proposal.text[:100])
+		self.assertEqual(p.link_back, 
+			proposal.get_url_by_view_name('proposal'))
+
 
 		# Check if a Publication was made against the tag
 		p = Publication.objects.get(subscription_id=tag.subscription_id)

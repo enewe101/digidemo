@@ -177,6 +177,8 @@ class Proposal(abstract_models.Subscribable):
 		tag_targets = [t.subscription_id for t in self.tags.all()]
 		targets = sector_targets + tag_targets
 
+		targets.append(self.subscription_id)
+
 		return targets
 
 
