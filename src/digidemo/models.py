@@ -61,6 +61,12 @@ EVENT_TYPE_CHOICES = (
 	('VOTE', 'vote'),
 	('SYSTEM', 'system'),
 )
+REASON_CHOICES = (
+	('AUTHOR', 'author'),
+	('COMMENTER', 'commenter'),
+	('SUBSCRIBED', 'actively subscribed'),
+	('EDITOR', 'edited related content')
+)
 
 
 # *** All of the Concrete Models Follow *** # 

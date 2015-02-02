@@ -29,6 +29,12 @@ EVENT_TYPE_CHOICES = (
 	('VOTE', 'vote'),
 	('SYSTEM', 'system'),
 )
+REASON_CHOICES = (
+	('AUTHOR', 'author'),
+	('COMMENTER', 'commenter'),
+	('SUBSCRIBED', 'actively subscribed'),
+	('EDITOR', 'edited related content')
+)
 
 # *** Abstract Models *** #
 
@@ -308,6 +314,7 @@ class Notification(TimeStamped):
 		User, related_name='received_notifications', null=True)
 	event_type = models.CharField(
 			max_length=20, choices=EVENT_TYPE_CHOICES)
+	reason = models.CharField(max_length=20, choices=REASON_CHOICES)
 	event_data = models.CharField(max_length=2048)
 	link_back = models.URLField(max_length=512, null=True)
 	was_seen = models.BooleanField(default=False)
@@ -318,12 +325,6 @@ class Subscription(TimeStamped):
 	'''
 		Lists the objects that users are subscribed to.
 	'''
-	REASON_CHOICES = (
-		('AUTHOR', 'author'),
-		('COMMENTER', 'commenter'),
-		('SUBSCRIBED', 'actively subscribed'),
-		('EDITOR', 'edited related content')
-	)
 	user = models.ForeignKey(User, related_name='subscriptions')
 	reason = models.CharField(max_length=20, choices=REASON_CHOICES)
 	subscription_id = models.ForeignKey('SubscriptionId', 
