@@ -876,7 +876,7 @@ class ProposalFormTest(FormTest):
 
 	REASON = 'EDITOR'
 	EVENT_TYPE = 'EDIT_ISSUE'
-	TEST_TAGS = 'tag1 tag2'
+	TEST_TAGS = 'tag1 tag2 '
 	PROPOSAL_TAGS_ID = 'proposal_tags'
 	PROPOSAL_TAGS_CLASS = 'ui-widget-content'
 	TAGS_ERROR_ID = 'proposal_tags_errors'

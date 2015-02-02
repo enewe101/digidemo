@@ -1,38 +1,166 @@
 {% load staticfiles %}
 {% load apptags %}
 
-	<div id="login_div">
 
 	<!-- if user logged in, show greeting, profile link, and logout button -->
 	{% if request|getLoggedInUser != "false" %}
+		<div id="logged_in_div" class="logged_in_div">
+			<div class="sender_avatar_image">
+				<img class="avatar_image_medium"
+				src="{{ user.profile.get_avatar_img_url }}"
+				alt="{{ user.username }}" />
 
-		Welcome,&nbsp;
-		<a href="{% url "userProfile" request|getLoggedInUser %}">
-			{{request|getLoggedInUser}}
-		</a>
+				<img class="avatar_mask_medium"
+				src="{% static "digidemo/images/avatar_mask.png" %}" />
+			</div>
 
+			<div id="logged_in_menu">
+				<div class="border_cover"></div>
+				<a class="menu_item" 
+					href="{% url "userProfile" request|getLoggedInUser %}">
+					profile
+				</a>	
+				<a id="logout" class="menu_item">
+					logout
+				</a>	
+				<a class="menu_item">
+					my questions
+				</a>	
+				<a class="menu_item">
+					my issues
+				</a>	
+				<a class="menu_item">
+					recent stuff
+				</a>	
+			</div>
+
+		</div>
+		<script type="text/javascript">
+		(function(){
+			var logged_in_div = $('#logged_in_div');
+			var logged_in_menu = $('#logged_in_menu');
+
+			// clicking in the search form doesn't bubble up to be a 
+			// click on the search button
+			logged_in_menu.click(function(e){
+				e.stopPropagation();
+			});
+
+			var tog = new ToggleHidden(logged_in_div, logged_in_menu);
+			function style_logged_in_div() {
+				logged_in_div.addClass('logged_in_div_active');
+				logged_in_div.removeClass('logged_in_div');
+			}
+			function unstyle_logged_in_div() {
+				logged_in_div.addClass('logged_in_div');
+				logged_in_div.removeClass('logged_in_div_active');
+			}
+
+			tog.hook('on_show', style_logged_in_div);
+			tog.hook('on_hide', unstyle_logged_in_div);
+
+			// clicking out of the search area gets rid of search form
+			doc_event_registrar.on('click', function(e){
+				tog.hide();
+			});
+			// ensure that clicking the search button doesn't bubble
+			// up to the document.click we just established
+			logged_in_div.click(function(e) {
+				e.stopPropagation();
+			});
+
+			// make clicking the logout cause a logout and reload the page
+			$( "#logout" ).click(function( event ) {
+				ajax('ajax_logout', {}, {
+					'success': function(){
+						window.location = RELOAD_URL;
+					},
+					'error': function(){alert('error')}
+				})
+			});
+		})();
+
+		</script>
 
 	<!-- otherwise, show login form and register link -->
 	{% else %}
 
-		<a href="{% url "userRegistration" %}">register</a>
-			|
-			<span>
-				login
+		<div id="log_or_register_div">
+			<div id="login_div" class="login_div">
 
-				<form id="login_form">
-					<input id="username" type="text"
-						name="username" placeholder="username" />
-					<input id="password" type="password"
-						name="password" placeholder="password" />
+				<a>login </a>
 
-					<input type="button" id="submit_login" value="Log in" />
-					<a href="{% url "resetPassword" %}">Reset password</a>
-				</form>
-			</span>
+				<div id="login_form_div">
+					<div class="border_cover_short"></div>
+					<form id="login_form">
+						<input class='text_input' id="username" type="text"
+							name="username" placeholder="username" />
+
+						<input class='text_input' id="password" type="password"
+							name="password" placeholder="password" />
+
+						<input type="button" id="submit_login" 
+							value="Log in" />
+						<a href="{% url "resetPassword" %}">forgot?</a>
+					</form>
+				</div>
+
+			</div>
+
+			<div id="separator_div" class="float_left">|</div>
+
+			<div id="register_div" class="float_left">
+				<a href="{% url "userRegistration" %}">register</a>
+			</div>
+		</div>
+		<script type="text/javascript">
+		(function(){
+			var login_div = $('#login_div');
+			var login_form_div = $('#login_form_div');
+
+			// clicking in the search form doesn't bubble up to be a 
+			// click on the search button
+			login_form_div.click(function(e){
+				e.stopPropagation();
+			});
+
+			var tog = new ToggleHidden(login_div, login_form_div);
+			function style_login_div() {
+				login_div.addClass('login_div_active');
+				login_div.removeClass('login_div');
+			}
+			function unstyle_login_div() {
+				login_div.addClass('login_div');
+				login_div.removeClass('login_div_active');
+			}
+
+			tog.hook('on_show', style_login_div);
+			tog.hook('on_hide', unstyle_login_div);
+
+			// clicking out of the search area gets rid of search form
+			doc_event_registrar.on('click', function(e){
+				tog.hide();
+			});
+			// ensure that clicking the search button doesn't bubble
+			// up to the document.click we just established
+			login_div.click(function(e) {
+				e.stopPropagation();
+			});
+
+			// make clicking the logout cause a logout and reload the page
+			$( "#logout" ).click(function( event ) {
+				ajax('ajax_logout', {}, {
+					'success': function(){
+						window.location = RELOAD_URL;
+					},
+					'error': function(){alert('error')}
+				})
+			});
+		})();
+
+		</script>
 
 	{% endif %}
-	</div>
 
 <script>
 (function(){
@@ -57,17 +185,12 @@
 
 	// define a callback to be executed after a successful login
 	var login_success_callback = function(data) {
-		$("#login_div").html(
-			"<nav><ul><li id=\"login-trigger\">Welcome "
-			+ document.getElementById('username').value
-			+ "</li></ul></nav>"
-		);
 		window.location = RELOAD_URL;
 	}
 
 	// define a callback to be executed when login fails
 	var login_error_callback = function(data) {
-		alert('could not log in');
+		alert(data.toSource());
 	}
 
 	// bind the callbacks to the login widget
@@ -76,15 +199,6 @@
 		widgets['login_form'].widget.hook('error', login_error_callback);
 	});
 
-	// make clicking the logout cause a logout and reload the page
-	$( "#logout" ).click(function( event ) {
-		ajax('ajax_logout', {}, {
-			'success': function(){
-				window.location = RELOAD_URL;
-			},
-			'error': function(){alert('error')}
-		})
-	});
 
 }());
 

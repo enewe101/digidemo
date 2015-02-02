@@ -23,6 +23,37 @@ function getCookie(name) {
 }
 
 
+
+///////////////////////////////	
+//  						 //
+//  Registrar for Doc Events //
+//	 (prevents collisions)	 //
+//  						 //
+///////////////////////////////	
+
+function DocEventRegistrar() {
+
+	var callbacks = {
+		"click" : []
+	};
+
+	this.on = function(event_name, func) {
+		callbacks[event_name].push(func)
+	};
+
+	var arm_fire_callbacks = function(event_name) {
+		return function(e) {
+			for(var i=0; i<callbacks[event_name].length; i++) {
+				callbacks[event_name][i](e);
+			}
+		}
+	};
+
+	$(document).on('click', arm_fire_callbacks('click'));
+}
+var doc_event_registrar = new DocEventRegistrar();
+
+
 function csrfSafeMethod(method) {
     // these HTTP methods do not require CSRF protection
     return (/^(GET|HEAD|OPTIONS|TRACE)$/.test(method));
