@@ -321,6 +321,7 @@ div#navbar {
 }
 
 #login_form_div {
+	cursor: default;
 	position: absolute;
 	top: 43px;
 	right: -2px;
@@ -360,7 +361,17 @@ div#navbar {
 	font-family: ubuntu;
 }
 
-input[type="text"] {
+input[type="submit"] {
+	height: 36px;
+	border: solid 1px black;
+	background: rgb(250,250,250);
+	border-radius: 3px;
+	font-size: 16px;
+	font-family: ubuntu;
+	padding: 0 4px 0 4px;
+}
+
+input[type="text"], input[type="password"], input[type="email"] {
 	height: 34px;
 	width: 200px;
 	border: solid 1px black;
@@ -390,9 +401,6 @@ input[type="text"] {
 	font-size: 16px;
 }
 
-#login_form_div {
-	display: none;
-}
 
 #log_or_register_div{
 	height: 50px;
