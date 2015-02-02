@@ -380,6 +380,8 @@ input[type="text"], input[type="password"], input[type="email"] {
 	font-size: 16px;
 	font-family: ubuntu;
 	padding: 0 4px 0 4px;
+	opacity: 0.8;
+	filter: alpha(opacity=80); /* For IE8 and earlier */
 }
 
 #logged_in_menu {

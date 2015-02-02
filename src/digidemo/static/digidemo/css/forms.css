@@ -1,3 +1,18 @@
+.mid_form_tall {
+	width: 220px;
+	margin: auto;
+	background: 30px 80px no-repeat url('../images/logo_huge.png');
+	padding: 40px 80px 80px 80px;
+}
+
+.mid_form {
+	width: 220px;
+	margin: auto;
+	background: 30px 30px no-repeat url('../images/logo_huge.png');
+	padding: 120px 80px 80px 80px;
+	height: 230px;
+}
+
 .form_line {
 	margin-bottom: 10px;
 }

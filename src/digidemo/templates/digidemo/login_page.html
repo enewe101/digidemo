@@ -1,10 +1,19 @@
 {% extends "digidemo/__base.html" %}
-{% load apptags %}
 {% load staticfiles %}
+{% load apptags %}
+
+{% block css %}
+	{{ block.super }}
+{% endblock css %}
+
+{% block js %}
+	{{ block.super }}
+{% endblock js %}
 
 {% block middle %}
-	<img src="{% static "digidemo/images/large_icon.png" %}" />
-	<div class="field_errors">{{ error }}</div>
+
+<div class="mid_form">
 	{% include "digidemo/_w_simple_form_wrapped.html" with form=login_form %}
+</div>
 
 {% endblock middle %}
