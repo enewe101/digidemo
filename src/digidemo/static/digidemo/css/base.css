@@ -297,6 +297,7 @@ div#navbar {
 	background: white;
 	padding: 16px;
 	border-radius: 6px;
+	z-index: 1000;
 }
 
 #logged_in_div {
@@ -353,6 +354,7 @@ div#navbar {
 	width: 168px;
 	text-align: left;
 	padding: 8px;
+	z-index: 1000;
 }
 
 .empty_notifications_div {
@@ -473,6 +475,7 @@ input[type="text"], input[type="password"], input[type="email"] {
 	text-align: left;
 	padding: 4px;
 	background: white;
+	z-index: 1000;
 }
 
 

@@ -72,8 +72,8 @@
 
 			</div>
 
-			<div id="_w_toggle_hidden_content_{{letter_section.id_prefix}}" 
-				class="resend_letter_form_area">
+			<div class="hidden" id="_w_toggle_hidden_content_{{letter_section.id_prefix}}" 
+
 				{% include "digidemo/_w_ajax_form.html" with form=letter_section.resend_form %}
 			</div>
 
@@ -96,7 +96,12 @@
 				</div>
 
 				<div class="sign_petition">
-					<a id="_w_toggle_hidden_{{ letter_section.id_prefix }}"><img 
+					<a 
+						{% if GLOBALS.IS_USER_AUTHENTICATED %}
+						{% else %}
+							title='You must login to sign!'
+						{% endif %}
+						id="_w_toggle_hidden_{{ letter_section.id_prefix }}"><img 
 						src="{% static "digidemo/images/feather_sign.png" %}" 
 						/> sign the petition
 					</a>
@@ -151,6 +156,7 @@
 		'resender_list');
 
 
+						{% if GLOBALS.IS_USER_AUTHENTICATED %}
 	//
 	// Create a toggler to show / hide the resend letter form
 	//
@@ -168,6 +174,7 @@
 	register_widget('toggle_hidden_{{ letter_section.id_prefix }}', 
 		toggler, 'toggle_hidden');
 
+						{% endif %}
 
 
 	//

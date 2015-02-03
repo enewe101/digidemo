@@ -1,59 +1,23 @@
 {% extends "digidemo/__base.html" %}
-{% load apptags %}
 {% load staticfiles %}
+{% load apptags %}
 
-	{% block body %}
-	{{block.super}}
+{% block css %}
+	{{ block.super }}
+{% endblock css %}
 
-	{{user.user.userName}}
+{% block js %}
+	{{ block.super }}
+{% endblock js %}
+
+{% block middle %}
+
 	
+{% include "digidemo/_i_user_id.html" with user=user %}
 
 	{% if request|getLoggedInUser == user.user.username %}
 	<a href = "edit"><h2> Edit Profile </h2> </a> 
 	{% endif %}
 
+{% endblock middle %}
 
-	<!-- Display basic information about everything--> 
-
-	<!-- Basic user Information : Note: Different from UserProfile -->
-	Welcome : {{user.user.username}}
-	<br /> <br />
-	First Name : {{ user.user.first_name }}
-	<br /> <br />
-	Last Name : {{ user.user.last_name }}
-	<br /> <br />
-	Email : {{ user.user.email }}
-	<br /> <br />
-	
-	The User Reputation : {{user.rep}}
-	<br /> <br />
-
-	Street : {{user.street}}
-	<br /> <br />
-
-	Zip Code : {{user.zip_code}}
-	<br /> <br />
-
-	Country : {{user.country}}
-	<br /> <br />
-
-	Province : {{user.province}}
-	<br /> <br />
-
-	Display pic : <img src="{{user.avatar_img.url}}" alt="some_text">
-
-	<br /> <br />
-
-	
-	
-	<!-- Display the followed posts -->
-
-	The followed proposals of the user are : 
-	<br /> <br />
-	
-	{% for proposal in user.followedProposals.all %}
-	<a href = "{{proposal.get_proposal_url}}">	{{proposal.title}}  </a>
-	<br /> <br />
-	{% endfor %}		
-	
-	{% endblock body %}

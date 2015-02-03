@@ -44,7 +44,7 @@ urlpatterns = patterns('',
 	url(r'^issue_list_sector/(?P<sector>\w*)/(?P<order_by>\w*)', 
 		IssueListView().view, name="issue_list_sector"),
 
-	url(r'^issue_list_tag/(?P<tag>\w*)/(?P<order_by>\w*)', 
+	url(r'^issue_list_tag/(?P<tag>[-a-zA-Z0-9]+(,[-a-zA-Z0-9]+)*)/(?P<order_by>\w*)', 
 		IssueListView().view, name="issue_list_tag"),
 
 	url(r'^topics/$', TagListView().view, name="topics"),

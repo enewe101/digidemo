@@ -12,20 +12,20 @@
 {% endblock css %}
 
 {% block  headline_title %}
-	Petitions
+	Open Letters
 {% endblock headline_title %}
 
 {% block maincol %}
 	<!-- start the section title and section-specific buttons -->
 	<div class="section_header">
-		<h2 class="subtitle float_left">{{letters.count}} Petition{{letters.count|pluralize}}</h2>
+		<h2 class="subtitle float_left">{{letters.count}} Letters{{letters.count|pluralize}}</h2>
 
 
-		<div class="section_buttons_right">
+		<!--div class="section_buttons_right">
 			<a class="go_button_inline" title="not implemented" href="#">
 				Start a petition
 			</a>
-		</div>
+		</div-->
 
 		<div class="clear"></div>
 	</div>
@@ -124,12 +124,11 @@
 		<img src="{% static "digidemo/images/bulb_icon.png" %}" 
 			class="note_icon" />
 		<p>
-			Petition admonition goes here...
-		</p>
-		<p>
-			Make sure to read the 
-			<a title="not implemented" href="#">writing a good petition</a> 
-			guideline before contributing :)
+			To write an open letter, first 
+			<a href="{% url "issue_list" order_by="interesting" %}">
+				find the issue</a> 
+			that your letter relates to.  If there isn't an applicable issue
+		    yet, you can <a href="{% url "add_proposal" %}">create one</a>.
 		</p>
 	</div>
 {% endblock rightcol %}

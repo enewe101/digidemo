@@ -10,86 +10,91 @@
 
 {% block middle %}
 
-	<div id="banner" class="centered">
-		<img id="big_logo"
-			src="{% static "digidemo/images/big_logo.png" %}" />
+	<div id="center_banner">
+		<div id="banner" class="centered">
+			<img id="big_logo"
+				src="{% static "digidemo/images/big_logo.png" %}" />
 			<a href="{% url "what_about" %}" 
 				id="what_about" class="cta">What's this all about?</a>
-			<a href="{% url "find_issues" %}" 
+			<a href="{% url "topics" %}" 
 				id="find_issues" class="cta">Find issues you care about</a>
-		<div class="clear"></div>
+			<div class="clear"></div>
+		</div>
 	</div>
-
 	<!-- begin featured -->
-	<div id="featured_issue" >
+	<div id="outer_center_featured">
+		<div id="center_featured">
+			<div id="featured_issue" >
 
-		<h2 class="featured_heading">
-			Featured Issue
-			<a href="{% url "issue_list" order_by="interesting" %}" class="marquee_see_more">
-				<span class="orange">See all</span>
-			</a>
-		</h2>
-
-		<div id="featured_body">
-			
-			<div class="issue_preview">
-
-				<h2 class="issue_title">
-					<a href="{{featured_post.get_proposal_url}}">
-						<span class="black">{{featured_post.title}}</span>
+				<h2 class="featured_heading">
+					Featured Issue
+					<a href="{% url "issue_list" order_by="interesting" %}" class="marquee_see_more">
+						<span class="orange">See all</span>
 					</a>
 				</h2>
 
-				<div class="info_line">
-					<span class="last_modified">
-						Last mod {{ featured_post.last_modified }} 
-					</span>
-				</div>
-
-				<div class="preview_summary">
-					<span class="bold">In brief:</span> {{featured_post.summary}} 
+				<div id="featured_body">
 					
-					<a href="{{featured_post.get_proposal_url}}">
-						<span class="orange">read more</span>
-					</a>
+					<div class="issue_preview">
+
+						<h2 class="issue_title">
+							<a href="{{featured_post.get_proposal_url}}">
+								<span class="black">{{featured_post.title}}</span>
+							</a>
+						</h2>
+						<span class="gray smallcaps ubuntu">issue</span>
+
+						<div class="info_line">
+							<!--span class="last_modified">
+								Last mod {{ featured_post.last_modified }} 
+							</span-->
+						</div>
+
+						<div class="preview_summary">
+							<span class="bold">In brief:</span> {{featured_post.summary}} 
+							
+							<a href="{{featured_post.get_proposal_url}}">
+								<span class="orange">read more</span>
+							</a>
+						</div>
+					</div>
+
 				</div>
+				<div class="clear"></div>
 			</div>
-
-		</div>
-		<div class="clear"></div>
-	</div>
-	<!-- end featured -->
+			<!-- end featured -->
 
 
-	<!-- begin more articles -->
-	<div id="trending">
-		<h2 class="featured_headin">
-			Trending
-			<a href="{% url "issue_list" order_by="activity" %}" class="marquee_see_more">
-				<span class="orange">See all</span>
-			</a>
-		</h2>
+			<!-- begin more articles -->
+			<div id="trending">
+				<h2 class="featured_headin">
+					Trending
+					<a href="{% url "issue_list" order_by="activity" %}" class="marquee_see_more">
+						<span class="orange">See all</span>
+					</a>
+				</h2>
 
-		<div id="trending_body">
-			<!-- begin post -->
-			{% for proposal in active_issues %}
-				<div class="issue_info">
-					<h3 class="issue_title"> 
-						<a href="{{ proposal.get_proposal_url }}">
-							{{proposal.title}}
-						</a> 
-					</h3>
-					<span class="gray smallcaps">issue</span>
-					<span class="last_modified">
-						(Last mod {{ featured_post.last_modified }})
-					</span>
+				<div id="trending_body">
+					<!-- begin post -->
+					{% for proposal in active_issues %}
+						<div class="issue_info">
+							<h3 class="issue_title"> 
+								<a href="{{ proposal.get_proposal_url }}">
+									{{proposal.title}}
+								</a> 
+							</h3>
+							<span class="gray smallcaps">issue</span>
+							<!--span class="last_modified">
+								(Last mod {{ featured_post.last_modified }})
+							</span-->
+						</div>
+					{% endfor %}
 				</div>
-			{% endfor %}
+				<div class="clear"></div>
+			</div>
+			<!-- end more articles -->
 		</div>
-		<div class="clear"></div>
 	</div>
-	<!-- end more articles -->
-
 
 	<!-- begin post navigation -->
 	<!--div class="marquee_section">

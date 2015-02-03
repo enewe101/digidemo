@@ -34,15 +34,15 @@ from choices import *;
 # Names we use for the tabs in proposal sections
 OVERVIEW_TAB_NAME = 'issue'
 QUESTIONS_TAB_NAME = 'questions'
-OPINION_TAB_NAME = 'letters'
-EDIT_TAB_NAME = 'discussion'
+OPINION_TAB_NAME = 'petitions'
+EDIT_TAB_NAME = 'editing room'
 
 # Names we use for the top level "button" navigation
 ISSUE_NAV_NAME = 'issues'
 TOPICS_NAV_NAME = 'topics'
 CREATE_NAV_VAME = 'create'
 QUESTIONS_NAV_NAME = 'questions'
-OPINION_NAV_NAME = 'letters'
+OPINION_NAV_NAME = 'petitions'
 USERS_NAV_NAME = 'users'
 
 
@@ -139,10 +139,10 @@ def get_issue_list_tabs(active_tab):
 			'name': 'newest',
 			'url': reverse('issue_list', kwargs={'order_by':'newest'})
 		},
-		#{
-		#	'name': 'location',
-		#	'url': reverse('issue_list', kwargs={'order_by':'location'})
-		#},
+		{
+			'name': 'location',
+			'url': reverse('issue_list', kwargs={'order_by':'location'})
+		},
 	]
 
 	# mark the active tab as active
@@ -170,11 +170,11 @@ def get_petition_list_tabs(active_tab):
 			'name': 'newest',
 			'url': reverse('all_petitions_list', kwargs={'order_by':'newest'})
 		},
-		#{
-		#	'name': 'location',
-		#	'url': reverse('all_petitions_list',
-		#		kwargs={'order_by':'location'})
-		#},
+		{
+			'name': 'location',
+			'url': reverse('all_petitions_list',
+				kwargs={'order_by':'location'})
+		},
 	]
 
 	# mark the active tab as active
@@ -202,11 +202,11 @@ def get_question_list_tabs(active_tab):
 			'name': 'newest',
 			'url': reverse('all_questions_list', kwargs={'order_by':'newest'})
 		},
-		#{
-		#	'name': 'location',
-		#	'url': reverse('all_questions_list',
-		#		kwargs={'order_by':'location'})
-		#},
+		{
+			'name': 'location',
+			'url': reverse('all_questions_list',
+				kwargs={'order_by':'location'})
+		},
 	]
 
 	# mark the active tab as active
@@ -1031,20 +1031,16 @@ class AllPetitionsListView(AbstractView):
 		# get the list of petitions, sorted in the desired way
 		order_by = self.kwargs['order_by'] or 'interesting'
 		if order_by == 'interesting':
-			petitions = Letter.objects.filter(
-				parent_letter=None).order_by('-last_modified')
+			petitions = Letter.objects.filter(parent_letter=None).order_by('?')
 
 		elif order_by == 'newest':
-			petitions = Letter.objects.filter(
-				parent_letter=None).order_by('-creation_date')
+			petitions = Letter.objects.filter(parent_letter=None).order_by('-creation_date')
 
 		elif order_by == 'activity':
-			petitions = Letter.objects.filter(
-				parent_letter=None).order_by('-score')
+			petitions = Letter.objects.filter(parent_letter=None).order_by('-creation_date')
 
 		elif order_by == 'location':
-			petitions = Letter.objects.filter(
-				parent_letter=None).order_by('-creation_date')
+			petitions = Letter.objects.filter(parent_letter=None).order_by('-creation_date')
 
 		# build the tabs, and show the right tab as active
 		tabs = get_petition_list_tabs(order_by)
@@ -1067,7 +1063,7 @@ class AllQuestionsListView(AbstractView):
 		# get the list of questions, sorted in the desired way
 		order_by = self.kwargs['order_by'] or 'interesting'
 		if order_by == 'interesting':
-			questions = Question.objects.all().order_by('-last_modified')
+			questions = Question.objects.all().order_by('?')
 
 		elif order_by == 'newest':
 			questions = Question.objects.all().order_by('-creation_date')
@@ -1668,9 +1664,8 @@ def userProfile(request, userName) :
 	userProfile = UserProfile.objects.get(user = userLoggedIn);
 	return render (request, 'digidemo/userProfile.html',
 		{
-			'GLOBALS': get_globals(request),
 			'django_vars_js': get_django_vars_JSON(request=request),
-			'user' : userLoggedIn,
+			'user' : userProfile,
 		}
 	)
 

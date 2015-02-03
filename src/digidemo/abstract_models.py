@@ -1,3 +1,4 @@
+from digidemo.utils import *
 from django.db import models
 from digidemo.choices import *
 from django.contrib.auth.models import User
@@ -223,7 +224,7 @@ class Subscribable(TriggersNotification):
 		first_save = (self.pk is None)
 		if first_save:
 			self.subscription_id = self._get_subscription_id()
-		
+
 		# Save the object
 		super(Subscribable, self).save(*args, **kwargs)
 
@@ -264,13 +265,21 @@ class AbstractComment(ScoredPost, Subscribable):
 	def save(self, *args, **kwargs):
 		super(AbstractComment, self).save(*args, **kwargs)
 
-		# subscribe the user to the thing she commented on
-		sub = Subscription(
-			user=self.user,
-			reason='COMMENTER', 
-			subscription_id=self.target.subscription_id
+		# subscribe the user to the thing she commented on, if she's not 
+		# already subscribed
+		sub = get_or_none(
+			Subscription, 
+			user= self.user,
+			subscription_id = self.target.subscription_id
 		)
-		sub.save()
+
+		if not sub:
+			sub = Subscription(
+				user=self.user,
+				reason='COMMENTER', 
+				subscription_id=self.target.subscription_id
+			)
+			sub.save()
 
 	class Meta:
 		abstract=True

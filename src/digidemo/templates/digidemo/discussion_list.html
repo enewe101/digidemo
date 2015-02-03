@@ -2,7 +2,6 @@
 {% load staticfiles %}
 
 {% block  headline_title %}
-	<img src="{% static "digidemo/images/discuss_edits.png" %}" />
 	{{ issue.title }}
 
 	<div id="follow">
@@ -16,21 +15,21 @@
 
 	<!-- start the section title and section-specific buttons -->
 	<div class="section_header">
-		<h2 class="subtitle float_left">Editor's discussion area</h2>
+		<h2 class="subtitle float_left">Discussion area</h2>
 
 		<div class="section_buttons_right">
 			<a class="go_button_inline" href="{{ issue.get_start_discussion_url }}">
 				start a discussion
 			</a>
 
-			<a class="go_button_inline{% if highlighted == "closed" %}_highlighted{%endif%}" 
+			<!--a class="go_button_inline{% if highlighted == "closed" %}_highlighted{%endif%}" 
 				href="{{ issue.get_closed_discussions_url }}">
 				{{closed_items.count}} closed discussions
 			</a>
 			<a class="go_button_inline{% if highlighted == "open" %}_highlighted{%endif%}"
 				href="{{ issue.get_open_discussions_url }}">
 				{{open_items.count}} open discussions
-			</a>
+			</a-->
 		</div>
 
 		<div class="clear"></div>
@@ -68,12 +67,12 @@
 
 {% block rightcol %}
 
-	<div class="section">
+	<!--div class="section">
 		<a class="go_button" href="{{issue.get_edit_url}}">
 			start editing
 		</a>
 		<div class="clear"></div>
-	</div>
+	</div-->
 
 	<div class="take_note">
 		<img src="{% static "digidemo/images/icon_info.png" %}" 
@@ -83,10 +82,10 @@
 		accuracy, and completeness! Your contributions make this site work!
 		</p>
 
-		<p>
+		<!--p>
 		If this is your first time contributing, welcome :) Before you start 
 		editing, please read the the <a href="#">content guidelines</a>
-		</p>
+		</p-->
 
 		<p>
 			Editor's discuss the issue write-up by opening "discussions".

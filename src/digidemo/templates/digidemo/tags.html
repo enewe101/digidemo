@@ -35,15 +35,15 @@
 					<div class="sector_tag {{sector.sector.name}}_sector">
 						{{sector.sector.name}}
 					</div>
-					<a href="{% url "petition_list" %}" class="marquee_see_more">
+					<!--a href="{% url "petition_list" %}" class="marquee_see_more">
 						See all
-					</a>
+					</a-->
 				</h2>
 
 				<div class="marquee_body">
 					{% for tag in sector.tags %}
 						<div class='tag'>
-							{{ tag.name }}
+							{{ tag.render_link }}
 						</div>
 					{% endfor %}
 				</div>

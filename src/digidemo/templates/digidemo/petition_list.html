@@ -27,11 +27,21 @@
 {% block maincol %}
 
 	<!-- start the proposal -->
-	<h2 class="subtitle">
-		{{letter_sections|length}}
-		Petition{{letter_sections|length|pluralize}}
-	</h2>
 
+	<div class="section_header">
+		<h2 class="subtitle float_left">	
+			{{letter_sections|length}}
+			Letter{{letter_sections|length|pluralize}}
+		</h2>
+
+		<div class="section_buttons_right">
+			<a class="go_button_inline" href="{{ proposal.get_start_petition_url }}">
+				start a letter
+			</a>
+		</div>
+
+		<div class="clear"></div>
+	</div>
 
 	<!-- start the open letters area -->
 	<div id="letters">
@@ -69,7 +79,7 @@
 						{{ letter_section.post.text|truncatewords:100 }}
 						<br />
 						<a href="{{letter_section.post.get_url}}">
-							go to petition...
+							go to letter...
 						</a>
 					</div>
 
@@ -126,9 +136,6 @@
 {% block rightcol %}
 
 	<div class="section">
-		<a class="go_button" href="{{ proposal.get_start_petition_url }}">
-			start a petition
-		</a>
 	</div>
 
 {% endblock rightcol %}
