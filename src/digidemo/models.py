@@ -426,9 +426,9 @@ class Letter(abstract_models.Subscribable):
 	text = models.TextField()
 
 	def get_targets(self):
-		targets = [self.target]
+		targets = [self.target.subscription_id]
 		if self.parent_letter is not None:
-			targets.append(self.parent_letter)
+			targets.append(self.parent_letter.subscription_id)
 
 		return targets
 

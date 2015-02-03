@@ -1789,11 +1789,14 @@ def get_notification_message(notification):
 
 	# this case is easy
 	if event_type=='VOTE':
-		if int(event_data) == 1:
-			return "your post was upvoted!"
-		elif int(event_data) == -1:
-			return "your post was downvoted"
-		else:
+		try:
+			if int(event_data) == 1:
+				return "your post was upvoted!"
+			elif int(event_data) == -1:
+				return "your post was downvoted"
+			else:
+				return "someone voted on your post"
+		except ValueError:
 			return "someone voted on your post"
 
 	# so is this one
