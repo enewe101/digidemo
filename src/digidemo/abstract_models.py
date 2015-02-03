@@ -259,7 +259,7 @@ class AbstractComment(ScoredPost, Subscribable):
 		return 'COMMENT'
 
 	def get_url(self):
-		return None
+		return self.target.get_url()
 
 	def save(self, *args, **kwargs):
 		super(AbstractComment, self).save(*args, **kwargs)

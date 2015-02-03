@@ -317,6 +317,17 @@ def register_notifications_seen(request):
 		'errors': []
 	}
 
+@ajax_endpoint_login_required()
+def register_notification_checked(request):
+
+	notification_checked = int(request.POST['notification_pk'])
+	notification_checked = Notification.objects.filter(pk=notification_checked)
+	notification_checked.update(was_checked=True)
+	
+	return {
+		'success':True,
+		'errors': []
+	}
 
 
 @ajax_endpoint_login_required('You must login to post a reply!', ReplyForm)

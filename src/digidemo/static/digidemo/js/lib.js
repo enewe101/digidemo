@@ -85,6 +85,18 @@ $.ajaxSetup({
 });
 
 
+function alert_ajax_error(response, textStatus) { 
+
+	// for responses with http error code
+	if(response.status) {
+		js_error(response.status + ': ' + response.responseText);
+
+	// for http success but with application error code
+	} else {
+		js_error(response.msg);
+	}
+};
+
 
 ///////////////////////////////	
 //  						 //
@@ -602,17 +614,6 @@ function add_noops(handlers, events) {
 	return handlers;
 }
 
-function alert_ajax_error(response, textStatus) { 
-
-	// for responses with http error code
-	if(response.status) {
-		js_error(response.status + ': ' + response.responseText);
-
-	// for http success but with application error code
-	} else {
-		js_error(response.msg);
-	}
-};
 
 function conditional_ajax_error(handlers) {
 	handlers = handlers || {}

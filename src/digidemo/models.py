@@ -427,7 +427,7 @@ class Reply(abstract_models.ScoredPost, abstract_models.Subscribable):
 		return 'REPLY'
 
 	def get_url(self):
-		return None
+		return self.target.get_url()
 
 	def __unicode__(self):
 		return self.user.username
@@ -452,7 +452,7 @@ class Answer(abstract_models.ScoredPost, abstract_models.Subscribable):
 		return 'ANSWER'
 
 	def get_url(self):
-		return None
+		return self.target.get_url()
 
 	def __unicode__(self):
 		return self.user.username

@@ -49,13 +49,17 @@
 				<div class="border_cover_short"></div>
 				{% for notification in GLOBALS.NOTIFICATIONS %}
 					<a notification="{{notification.pk}}" 
-						class="notification"
+						{% if notification.was_checked %}
+							class="notification_checked"
+						{% else %}
+							class="notification_unchecked"
+						{% endif %}
 						href="{{notification.link_back}}"> 
 							{{notification.message}} 
 					</a>
 				{% endfor %}
 				{% if GLOBALS.NOTIFICATIONS|length < 1 %}
-					<div class="italic"> 
+					<div class="empty_notifications_div"> 
 						no notifications!
 					</div>
 				{% endif %}
@@ -70,6 +74,17 @@
 		<!-- Arm the notifications menu behaviors -->
 		<script type="text/javascript">
 		(function(){
+			// arm unchecked notifications so that they flag themselves as 
+		 	// "seen" when clicked
+		 	var notifications = $('.notification_unchecked');
+			notifications.click(function (e) {
+				ajax(
+					'register_notification_checked',
+					{'notification_pk':$(this).attr('notification')},
+					{'error':noop,'success':noop}
+				)
+			});
+
 		 	// make menu items hightlight on mouseover
 		 	function highlight(e) {
 				$(this).addClass('menu_item_highlight');

@@ -57,19 +57,16 @@ def get_user_notifications(user):
 
 	# Force queryset evaluation
 	unchecked_notifications = list(unchecked_notifications)
+	num_left_to_show = SHOW_AT_LEAST - len(unchecked_notifications)
 
 	# get seen notifications in order to show at least SHOW_AT_LEAST
-	num_left_to_show = SHOW_AT_LEAST - len(unchecked_notifications)
-	seen_notifications = []
-	if num_left_to_show < 8:
-		seen_notifications = Notification.objects\
+	checked_notifications = Notification.objects\
 		.filter(target_user=user, was_checked=True)\
-		.exclude(source_user=user)[:num_left_to_show]
+		.exclude(source_user=user).order_by('-creation_date')
 
-		# Force queryset evaluation
-		seen_notifications = list(seen_notifications)
-
-	notifications = unchecked_notifications + seen_notifications
+	# Force queryset evaluation
+	checked_notifications = list(checked_notifications)
+	notifications = unchecked_notifications + checked_notifications
 
 	return notifications
 

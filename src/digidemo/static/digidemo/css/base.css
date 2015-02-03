@@ -335,6 +335,20 @@ div#navbar {
 	padding: 8px;
 }
 
+.empty_notifications_div {
+	text-align: center;
+	padding: 20px 0 20px 0;
+	font-style: italic;
+}
+
+.notification_checked {
+	background: white;
+}
+
+.notification_unchecked {
+	background: yellow;
+}
+
 #notifications_menu {
 	width: 240px;
 }
