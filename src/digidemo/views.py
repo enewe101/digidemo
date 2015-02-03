@@ -978,7 +978,13 @@ class IssueListView(AbstractView):
 	def get_context_data(self):
 		
 		# get the list of issues, sorted in the desired way
-		order_by = self.kwargs['order_by'] or 'interesting'
+		order_by = self.kwargs.pop('order_by', 'interesting')
+		sector = self.kwargs.pop('sector', None)
+		sector_title = ' : ' + sector.name if sector is not None else ''
+
+		tag = self.kwargs.pop('tag', None)
+		tag_title = ' : ' + tag.name if tag is not None else ''
+
 		if order_by == 'interesting':
 			issues = Proposal.objects.all().order_by('?')
 

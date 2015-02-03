@@ -157,7 +157,7 @@ body {
 }
 
 .sector_links, .sector_links_first {
-	color: orange;
+	color: rgb(255, 102, 0);
 	font-size: 18px;
 }
 .sector_links {
@@ -562,7 +562,7 @@ div.tags  {
 }
 
 .economy_sector {
-	background: orange;
+	background: rgb(255, 102, 0);
 	color: black;
 }
 
