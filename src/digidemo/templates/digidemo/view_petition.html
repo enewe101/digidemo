@@ -44,6 +44,7 @@
 
 		<div class="physical_letter">
 
+
 			<div id="_w_hidden_content_1">
 				<h2 class="petition_title">
 					{{ letter_section.post.title }}
@@ -72,7 +73,7 @@
 
 			</div>
 
-			<div class="hidden" id="_w_toggle_hidden_content_{{letter_section.id_prefix}}" 
+			<div class="hidden" id="_w_toggle_hidden_content_{{letter_section.id_prefix}}" >
 
 				{% include "digidemo/_w_ajax_form.html" with form=letter_section.resend_form %}
 			</div>
@@ -95,6 +96,7 @@
 					{% include "digidemo/_i_user_id.html" with user=letter_section.post.user %}
 				</div>
 
+				{% if not signed %}
 				<div class="sign_petition">
 					<a 
 						{% if GLOBALS.IS_USER_AUTHENTICATED %}
@@ -106,6 +108,7 @@
 						/> sign the petition
 					</a>
 				</div>
+				{% endif %}
 
 				<div class="clear"></div>
 
@@ -118,6 +121,10 @@
 			<div class="clear"></div>
 
 		</div>
+
+		{% if signed %}
+			<div class="stamp"></div>
+		{% endif %}
 
 		<img class="cover_corner"
 			src="{% static "digidemo/images/corner.png" %}" />
@@ -134,6 +141,15 @@
 <script type="text/javascript">
 
 	(function(){
+
+	 //
+	 // refresh the page after submitting the letter
+	 //
+	 var resend_form_id = '{{ letter_section.resend_form.form_class}}_{{ letter_section.resend_form.id_prefix }}';
+	 var send_form_widget = widgets[resend_form_id].widget;
+	 send_form_widget.hook('success', function(){
+		 location.reload();
+	 });
 
 	//
 	// Create a resender list widget using elements on the page
@@ -157,6 +173,7 @@
 
 
 						{% if GLOBALS.IS_USER_AUTHENTICATED %}
+						{% if not signed %}
 	//
 	// Create a toggler to show / hide the resend letter form
 	//
@@ -175,37 +192,39 @@
 		toggler, 'toggle_hidden');
 
 						{% endif %}
+						{% endif %}
+
 
 
 	//
 	// Bind a callback to the resend_letter_form which adds a user's avatar
 	// to the list of resenders when they resend a letter
 	//
-	$('document').ready(function() {
-
-		// get the resend letter widget, and the resender list
-		var resend_letter_form = widgets[
-		'{{letter_section.resend_form.form_class}}_{{letter_section.resend_form.id_prefix}}']['widget'];
-		var resender_list = widgets['resender_list_{{letter_section.id_prefix}}']['widget'];
-
-		// get the toggler widget for showing / hiding the letter resend form
-		var toggler = widgets['toggle_hidden_{{letter_section.id_prefix}}'].widget
-
-		// make a callback function -- when the user resends a letter, she
-		// will get added to the resender list
-		var callback = function(rsl) {
-			return function() {
-				$('#resend_letter_status_{{letter_section.id_prefix}}').text(
-					'Your letter was sent!');
-				$('#_w_toggle_hidden_{{ letter_section.id_prefix }}').text('Send another');
-				toggler.toggle();
-				rsl.add_user(django.user.pk);
-			};
-		}(resender_list);
-
-		// now bind this function to the resend letter widget's hook
-		resend_letter_form.hook('success', callback);
-	})
+//	$('document').ready(function() {
+//
+//		// get the resend letter widget, and the resender list
+//		var resend_letter_form = widgets[
+//		'{{letter_section.resend_form.form_class}}_{{letter_section.resend_form.id_prefix}}']['widget'];
+//		var resender_list = widgets['resender_list_{{letter_section.id_prefix}}']['widget'];
+//
+//		// get the toggler widget for showing / hiding the letter resend form
+//		var toggler = widgets['toggle_hidden_{{letter_section.id_prefix}}'].widget
+//
+//		// make a callback function -- when the user resends a letter, she
+//		// will get added to the resender list
+//		var callback = function(rsl) {
+//			return function() {
+//				$('#resend_letter_status_{{letter_section.id_prefix}}').text(
+//					'Your letter was sent!');
+//				$('#_w_toggle_hidden_{{ letter_section.id_prefix }}').text('Send another');
+//				toggler.toggle();
+//				rsl.add_user({{GLOBALS.USER.pk}});
+//			};
+//		}(resender_list);
+//
+//		// now bind this function to the resend letter widget's hook
+//		resend_letter_form.hook('success', callback);
+//	})
 
 	}());
 

@@ -1307,6 +1307,20 @@ class PetitionListView(AbstractView):
 		letters = Letter.objects.filter(parent_letter=None, target=proposal)
 		for letter in letters:
 			letter_section = LetterSection(letter, self.request.user)
+			signed=False
+
+			if not self.request.user.is_authenticated():
+				signed = False
+			elif letter.user.pk == self.request.user.pk:
+				signed=True
+			elif letter.resent_letters.filter(
+				user__pk=self.request.user.pk).count()>0:
+				signed=True
+
+			print letter.resent_letters.count()
+			print '****' + self.request.user.username
+
+			letter_section.signed = signed
 			letter_sections.append(letter_section)
 
 		return {
@@ -1404,7 +1418,17 @@ class PetitionView(AbstractView):
 		proposal = letter.target
 		letter_section = LetterSection(letter, self.request.user)
 
+		# figure out if the user has already signed this letter
+		signed = False
+		if not self.request.user.is_authenticated():
+			signed = False
+		elif letter.user == self.request.user:
+			signed = True
+		elif letter.resent_letters.filter(user=self.request.user).count()>0:
+			signed = True
+
 		return {
+			'signed': signed,
 			'headline': proposal.title,
 			'proposal': proposal,
 			'letter_section': letter_section,
@@ -1760,11 +1784,17 @@ def get_notification_message(notification):
 
 	source_user = notification.source_user.username
 	event_type = notification.event_type
+	event_data = notification.event_data
 	reason = notification.reason
 
 	# this case is easy
 	if event_type=='VOTE':
-		return "someone voted on your post"
+		if int(event_data) == 1:
+			return "your post was upvoted!"
+		elif int(event_data) == -1:
+			return "your post was downvoted"
+		else:
+			return "someone voted on your post"
 
 	# so is this one
 	if event_type=='SYSTEM':

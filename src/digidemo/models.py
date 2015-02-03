@@ -418,12 +418,19 @@ class Letter(abstract_models.Subscribable):
 	parent_letter = models.ForeignKey('self', blank=True, null=True, 
 		related_name='resent_letters')
 	target = models.ForeignKey(Proposal)
-	valence = models.SmallIntegerField(choices=VALENCE_CHOICES)
+	valence = models.SmallIntegerField(choices=VALENCE_CHOICES, null=True)
 	user = models.ForeignKey(User)
 	score = models.SmallIntegerField(default=1)
 	title = models.CharField(max_length=TITLE_LENGTH)
 	recipients = models.ManyToManyField(Position, related_name='letters')
 	text = models.TextField()
+
+	def get_targets(self):
+		targets = [self.target]
+		if self.parent_letter is not None:
+			targets.append(self.parent_letter)
+
+		return targets
 
 	def get_event_type(self):
 		return 'LETTER'

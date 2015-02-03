@@ -110,6 +110,10 @@
 					<div class="clear"></div>
 				</div>
 
+				{% if letter_section.signed %}
+					<div class="stamp"></div>
+				{% endif %}
+
 				<img class="cover_corner"
 					src="{% static "digidemo/images/corner.png" %}" />
 

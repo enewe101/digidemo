@@ -296,7 +296,7 @@ class Vote(TriggersNotification):
 		return 'VOTE'
 
 	def get_link_back(self):
-		return None
+		return self.target.get_url()
 
 	class Meta:
 		abstract=True

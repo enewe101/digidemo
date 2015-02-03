@@ -23,6 +23,13 @@ def post_notifications():
 		)
 
 		for sub in subscriptions:
+
+			# Don't notify people that something dot voted on
+			# unless they are the author
+			if pub.event_type == 'VOTE':
+				if sub.reason != 'AUTHOR':
+					continue
+
 			note = Notification(
 				source_user = pub.source_user,
 				target_user = sub.user,
