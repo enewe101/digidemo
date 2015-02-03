@@ -19,6 +19,7 @@ from django.views.debug import ExceptionReporter
 from django.conf import settings
 
 from digidemo.models import *
+from digidemo.abstract_models import *
 from digidemo.forms import *
 from digidemo import utils
 from digidemo.utils import force_logout
@@ -43,6 +44,45 @@ CREATE_NAV_VAME = 'create'
 QUESTIONS_NAV_NAME = 'questions'
 OPINION_NAV_NAME = 'petitions'
 USERS_NAV_NAME = 'users'
+
+
+def get_user_notifications(user):
+	SHOW_AT_LEAST = 8
+
+	# get unchecked notifications
+	unchecked_notifications = Notification.objects\
+		.filter(target_user=user, was_checked=False)\
+		.exclude(source_user=user)\
+		.order_by('-creation_date')\
+
+	# Force queryset evaluation
+	unchecked_notifications = list(unchecked_notifications)
+
+	# get seen notifications in order to show at least SHOW_AT_LEAST
+	num_left_to_show = SHOW_AT_LEAST - len(unchecked_notifications)
+	seen_notifications = []
+	if num_left_to_show < 8:
+		seen_notifications = Notification.objects\
+		.filter(target_user=user, was_checked=True)\
+		.exclude(source_user=user)[:num_left_to_show]
+
+		# Force queryset evaluation
+		seen_notifications = list(seen_notifications)
+
+	notifications = unchecked_notifications + seen_notifications
+
+	return notifications
+
+
+def get_pretty_user_notifications(user):
+	notifications = get_user_notifications(user)
+	pretty_notifications = []
+	for n in notifications:
+		message = get_notification_message(n)
+		n.message = message
+		pretty_notifications.append(n)
+
+	return pretty_notifications
 
 
 def get_proposal_tabs(proposal, active_tab):
@@ -179,11 +219,32 @@ def get_question_list_tabs(active_tab):
 	return question_list_tabs
 
 	
-def get_globals():
-	return {
+def get_globals(request):
+
+	GLOBALS = {
 		'DEBUG': DEBUG,
-		'SECTORS': [s.name for s in Sector.objects.all()]
+		'SECTORS': [s.name for s in Sector.objects.all()],
+		'IS_USER_AUTHENTICATED': request.user.is_authenticated(),
+		'USER': request.user
 	}
+
+	if request.user.is_authenticated():
+		# count how many were never seen before
+		notifications = get_pretty_user_notifications(request.user) 
+		unseen_notification_pks = [
+			str(n.pk) for n in notifications if not n.was_seen]
+		num_unseen = len(unseen_notification_pks)
+		GLOBALS['NOTIFICATIONS'] = notifications
+		GLOBALS['NUM_UNSEEN_NOTIFICATIONS'] = num_unseen
+		GLOBALS['UNSEEN_NOTIFICATION_PKS'] = ','.join(
+			unseen_notification_pks)
+
+	else:
+		GLOBALS['NOTIFICATIONS'] = []
+		GLOBALS['NUM_UNSEEN_NOTIFICATIONS'] = 0
+		GLOBALS['UNSEEN_NOTIFICATION_PKS'] = ''
+
+	return GLOBALS
 
 
 def show_server_error(request):
@@ -591,7 +652,7 @@ class AbstractView(object):
 		logged_in_user = User.objects.get(pk=1)
 
 		return {
-			'globals': get_globals(),
+			'GLOBALS': get_globals(self.request),
 			'django_vars_js': get_django_vars_JSON(request=self.request),
 			'user': self.request.user
 		}
@@ -1065,7 +1126,7 @@ class MakePost(AbstractLoginRequiredView):
 		# If the form wasn't valid, we don't redirect.
 		# build the context
 		context_data = {
-			'globals': get_globals(),
+			'GLOBALS': get_globals(self.request),
 			'django_vars_js': get_django_vars_JSON(request=self.request),
 			'headline': self.target.title,
 			'target': self.target,
@@ -1386,7 +1447,7 @@ def what_about(request,sort_type='most_recent'):
 		request,
 		'digidemo/index.html',
 		{
-			'GLOBALS': get_globals(),
+			'GLOBALS': get_globals(request),
 			'django_vars_js': get_django_vars_JSON(request=request),
 			'users': users,
 			'active_issues': active_issues,
@@ -1412,7 +1473,7 @@ def find_issues(request,sort_type='most_recent'):
 		request,
 		'digidemo/index.html',
 		{
-			'GLOBALS': get_globals(),
+			'GLOBALS': get_globals(request),
 			'django_vars_js': get_django_vars_JSON(request=request),
 			'users': users,
 			'active_issues': active_issues,
@@ -1439,7 +1500,7 @@ def mainPage(request,sort_type='most_recent'):
 		request,
 		'digidemo/index.html',
 		{
-			'GLOBALS': get_globals(),
+			'GLOBALS': get_globals(request),
 			'django_vars_js': get_django_vars_JSON(request=request),
 			'users': users,
 			'active_issues': active_issues,
@@ -1526,7 +1587,7 @@ def get_default_context(request):
 	logged_in_user = User.objects.get(pk=1)
 
 	return {
-		'globals': get_globals(),
+		'GLOBALS': get_globals(request),
 		'django_vars_js': get_django_vars_JSON(request=request),
 		'user': request.user
 	}
@@ -1673,3 +1734,75 @@ def lev(a, b):
 		lev(a, b[1:])+1
 	)
 
+
+def get_notification_message(notification):
+
+	source_user = notification.source_user.username
+	event_type = notification.event_type
+	reason = notification.reason
+
+	# this case is easy
+	if event_type=='VOTE':
+		return "someone voted on your post"
+
+	# so is this one
+	if event_type=='SYSTEM':
+		return notification.event_data
+
+	# the rest of the cases we need to get a user and an action
+	# user is always source_user.  But we need to figure out the action:
+	if event_type=='ISSUE':
+		action = "started an issue in a topic you're watching"
+
+	elif event_type=='EDIT_ISSUE':
+		action = "edited an issue you're watching"
+
+	elif event_type=='QUESTION':
+		action = "asked a question in an issue you're watching"
+
+	elif event_type=='ANSWER':
+		action = 'answered a question'
+		if reason == 'AUTHOR':
+			action += ' you asked'
+		elif reason == 'COMMENTER':
+			action += ' you commented on'
+		else:
+			action += " you're watching"
+
+	elif event_type=='DISCUSSION':
+		action = "posted in an issue you're watching"
+
+	elif event_type =='REPLY':
+		action = 'replied to a post'
+		if reason == 'AUTHOR':
+			action += ' you wrote'
+		elif reason == 'COMMENTER':
+			action += ' you commented on'
+		else:
+			action += " you're watching"
+
+
+	elif event_type=='COMMENT':
+		action = 'commented on a post'
+		if reason == 'AUTHOR':
+			action += ' you wrote'
+		elif reason == 'COMMENTER':
+			action += ' you also commented on'
+		else:
+			action += " you're watching"
+
+	elif event_type=='LETTER':
+		action = ("sent a letter in relation to an issue "
+			"you're watching")
+
+	elif event_type=='SIGN_LETTER':
+		action = 'signed a letter'
+		if reason == 'AUTHOR':
+			action += ' you wrote'
+		elif reason == 'COMMENTER':
+			action += ' you commented on'
+		else:
+			action += " you're watching"
+
+	message = '%s %s' % (source_user, action)
+	return message

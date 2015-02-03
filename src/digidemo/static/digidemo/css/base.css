@@ -280,10 +280,11 @@ div#navbar {
 }
 
 #logged_in_div {
+	float:left;
 	cursor: pointer;
 	position: relative;
-	margin: 0 0 0 8px;
-	width: 52px;
+	margin: 0 0 0 4px;
+	width: 48px;
 	height: 46px;
 	text-align: center;
 	background-image: no-repeat url('../images/search.png');
@@ -332,6 +333,49 @@ div#navbar {
 	width: 168px;
 	text-align: left;
 	padding: 8px;
+}
+
+#notifications_menu {
+	width: 240px;
+}
+
+#notifications_menu a {
+	font-size: 12px;
+}
+
+#notifications_div {
+	float: left;
+	padding: 10px 0 0 0;
+	cursor: pointer;
+	position: relative;
+	margin: 0 0 0 4px;
+	width: 42px;
+	height: 36px;
+	text-align: center;
+	border-radius: 6px;
+}
+
+#notifications_icon {
+	margin: auto;
+	width: 36px;
+	height: 21px;
+	padding: 2px 0 0 0;
+	color: white;
+	text-align: center;
+}
+
+.no_notifications {
+	background: no-repeat url('../images/notifications_none.png');
+}
+.has_notifications {
+	background: no-repeat url('../images/notifications_some.png');
+}
+
+.notifications_div {
+	border: solid 2px white;
+}
+.notifications_div_active {
+	border: solid 2px black;
 }
 
 #submit_login {
@@ -384,25 +428,29 @@ input[type="text"], input[type="password"], input[type="email"] {
 	filter: alpha(opacity=80); /* For IE8 and earlier */
 }
 
-#logged_in_menu {
+.header_menu {
 	position: absolute;
 	top: 43px;
 	right: -2px;
 	border: solid 2px black;
 	border-radius: 6px;
 	display: none;
-	background: white;
 	width: 120px;
 	text-align: left;
-	padding: 16px;
+	padding: 4px;
+	background: white;
 }
 
-#logged_in_menu a {
+
+.header_menu a {
 	display: block;
-	padding: 4px;
+	padding: 4px 8px 4px 8px;
 	font-size: 16px;
 }
 
+.menu_item_highlight {
+	background: rgb(249,238,252);
+}
 
 #log_or_register_div{
 	height: 50px;
@@ -413,7 +461,26 @@ input[type="text"], input[type="password"], input[type="email"] {
 	top:-2px;
 	right:-2px;
 	position: absolute;
+	width: 42px;
+	height: 5px;
+	background: white;
+	border-right: solid 2px black;
+}
+
+.border_cover_med_short {
+	top:-2px;
+	right:-2px;
+	position: absolute;
 	width: 46px;
+	height: 5px;
+	background: white;
+	border-right: solid 2px black;
+}
+.border_cover_med {
+	top:-2px;
+	right:-2px;
+	position: absolute;
+	width: 48px;
 	height: 5px;
 	background: white;
 	border-right: solid 2px black;

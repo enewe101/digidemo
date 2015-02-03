@@ -11,6 +11,7 @@ from django.utils.html import escape
 from digidemo import settings, markdown as md
 from digidemo.models import *
 from digidemo.abstract_models import *
+from digidemo.views import get_notification_message
 from selenium import webdriver
 from selenium.common.exceptions import TimeoutException
 from selenium.webdriver.support.ui import WebDriverWait 
@@ -1326,6 +1327,78 @@ class VoteTest(SeleniumTestCase):
 		self.assertEqual(score5, score4)
 
 
+
+class TestNotificationMessage(TestCase):
+	EXPECTED_MESSAGES = [
+		"superuser started an issue in a topic you're watching",
+		"superuser started an issue in a topic you're watching",
+		"superuser started an issue in a topic you're watching",
+		"superuser started an issue in a topic you're watching",
+		"superuser edited an issue you're watching",
+		"superuser edited an issue you're watching",
+		"superuser edited an issue you're watching",
+		"superuser edited an issue you're watching",
+		"superuser asked a question in an issue you're watching",
+		"superuser asked a question in an issue you're watching",
+		"superuser asked a question in an issue you're watching",
+		"superuser asked a question in an issue you're watching",
+		"superuser answered a question you asked",
+		"superuser answered a question you commented on",
+		"superuser answered a question you're watching",
+		"superuser answered a question you're watching",
+		"superuser posted in an issue you're watching",
+		"superuser posted in an issue you're watching",
+		"superuser posted in an issue you're watching",
+		"superuser posted in an issue you're watching",
+		"superuser replied to a post you wrote",
+		"superuser replied to a post you commented on",
+		"superuser replied to a post you're watching",
+		"superuser replied to a post you're watching",
+		"superuser commented on a post you wrote",
+		"superuser commented on a post you also commented on",
+		"superuser commented on a post you're watching",
+		"superuser commented on a post you're watching",
+		"superuser sent a letter in relation to an issue you're watching",
+		"superuser sent a letter in relation to an issue you're watching",
+		"superuser sent a letter in relation to an issue you're watching",
+		"superuser sent a letter in relation to an issue you're watching",
+		"superuser signed a letter you wrote",
+		"superuser signed a letter you commented on",
+		"superuser signed a letter you're watching",
+		"superuser signed a letter you're watching",
+		"someone voted on your post",
+		"someone voted on your post",
+		"someone voted on your post",
+		"someone voted on your post",
+		"system says hi!",
+		"system says hi!",
+		"system says hi!",
+		"system says hi!"
+	]
+
+	def test_message(self):
+		# these constants are defined in models and abstract_models
+		events = [e[0] for e in EVENT_TYPE_CHOICES]
+		reasons = [r[0] for r in REASON_CHOICES]
+
+		source_user = User.objects.get(pk=1)
+		target_user = User.objects.get(pk=2)
+
+		pointer = 0
+		for e in events:
+			for r in reasons:
+				notification = Notification(
+					source_user=source_user,
+					target_user=target_user,
+					event_type=e,
+					reason=r,
+					link_back='link_back',
+					event_data='system says hi!'
+				)
+				found_message = get_notification_message(notification)
+				expected_message = self.EXPECTED_MESSAGES[pointer]
+				pointer += 1
+				self.assertEqual(found_message, expected_message)
 
 class TestLoginRequired(TestCase):
 	'''

@@ -318,6 +318,7 @@ class Notification(TimeStamped):
 	event_data = models.CharField(max_length=2048)
 	link_back = models.URLField(max_length=512, null=True)
 	was_seen = models.BooleanField(default=False)
+	was_checked = models.BooleanField(default=False)
 	was_mailed = models.BooleanField(default=False)
 
 

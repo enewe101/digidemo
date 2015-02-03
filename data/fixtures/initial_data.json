@@ -9,7 +9,7 @@
             "is_active": true, 
             "is_superuser": true, 
             "is_staff": true, 
-            "last_login": "2014-08-31T23:36:35Z", 
+            "last_login": "2015-02-03T00:24:11Z", 
             "groups": [], 
             "user_permissions": [], 
             "password": "pbkdf2_sha256$12000$vdIKgzqx54r5$J3tT4LmxhxzRu/4YX8kPVNcf7GdGYbCDfBrkbUQ6NaI=", 
@@ -27,7 +27,7 @@
             "is_active": true, 
             "is_superuser": false, 
             "is_staff": false, 
-            "last_login": "2015-02-01T23:56:48Z", 
+            "last_login": "2015-02-03T00:23:33Z", 
             "groups": [], 
             "user_permissions": [], 
             "password": "pbkdf2_sha256$12000$S01CzToKJJkm$uffjfOLMFXy1E4o86Z2WKAxMzkNW4hjJ1KL8na4BtZU=", 
@@ -45,12 +45,165 @@
             "is_active": true, 
             "is_superuser": false, 
             "is_staff": false, 
-            "last_login": "2015-02-01T20:56:55Z", 
+            "last_login": "2015-02-03T00:22:37Z", 
             "groups": [], 
             "user_permissions": [], 
             "password": "pbkdf2_sha256$12000$JYHkpHNEry2X$z4MA5nWH/0KwgDm1CWcGzA3MEuPC7m/LBZ7UAxrfR4Y=", 
             "email": "e@e.com", 
             "date_joined": "2014-08-22T16:40:26Z"
+        }
+    }, 
+    {
+        "pk": 1, 
+        "model": "digidemo.notification", 
+        "fields": {
+            "event_type": "ANSWER", 
+            "was_seen": true, 
+            "target_user": 3, 
+            "was_mailed": false, 
+            "creation_date": "2015-02-02T00:07:36Z", 
+            "source_user": 2, 
+            "reason": "AUTHOR", 
+            "last_modified": "2015-02-02T00:07:36Z", 
+            "was_checked": false, 
+            "link_back": null, 
+            "event_data": "Hey e, here's an answer"
+        }
+    }, 
+    {
+        "pk": 2, 
+        "model": "digidemo.notification", 
+        "fields": {
+            "event_type": "VOTE", 
+            "was_seen": true, 
+            "target_user": 3, 
+            "was_mailed": false, 
+            "creation_date": "2015-02-02T21:14:23Z", 
+            "source_user": 2, 
+            "reason": "AUTHOR", 
+            "last_modified": "2015-02-02T21:14:23Z", 
+            "was_checked": false, 
+            "link_back": null, 
+            "event_data": "1"
+        }
+    }, 
+    {
+        "pk": 3, 
+        "model": "digidemo.notification", 
+        "fields": {
+            "event_type": "VOTE", 
+            "was_seen": true, 
+            "target_user": 1, 
+            "was_mailed": false, 
+            "creation_date": "2015-02-02T21:14:23Z", 
+            "source_user": 2, 
+            "reason": "COMMENTER", 
+            "last_modified": "2015-02-02T21:14:23Z", 
+            "was_checked": false, 
+            "link_back": null, 
+            "event_data": "1"
+        }
+    }, 
+    {
+        "pk": 4, 
+        "model": "digidemo.notification", 
+        "fields": {
+            "event_type": "COMMENT", 
+            "was_seen": true, 
+            "target_user": 3, 
+            "was_mailed": false, 
+            "creation_date": "2015-02-02T21:14:23Z", 
+            "source_user": 1, 
+            "reason": "AUTHOR", 
+            "last_modified": "2015-02-02T21:14:23Z", 
+            "was_checked": false, 
+            "link_back": null, 
+            "event_data": "yo dude whatchoo said?"
+        }
+    }, 
+    {
+        "pk": 5, 
+        "model": "digidemo.notification", 
+        "fields": {
+            "event_type": "COMMENT", 
+            "was_seen": true, 
+            "target_user": 1, 
+            "was_mailed": false, 
+            "creation_date": "2015-02-03T00:23:12Z", 
+            "source_user": 3, 
+            "reason": "COMMENTER", 
+            "last_modified": "2015-02-03T00:23:12Z", 
+            "was_checked": false, 
+            "link_back": null, 
+            "event_data": "hip biddy"
+        }
+    }, 
+    {
+        "pk": 6, 
+        "model": "digidemo.notification", 
+        "fields": {
+            "event_type": "COMMENT", 
+            "was_seen": true, 
+            "target_user": 1, 
+            "was_mailed": false, 
+            "creation_date": "2015-02-03T00:23:12Z", 
+            "source_user": 3, 
+            "reason": "COMMENTER", 
+            "last_modified": "2015-02-03T00:23:12Z", 
+            "was_checked": false, 
+            "link_back": null, 
+            "event_data": "aoeu"
+        }
+    }, 
+    {
+        "pk": 7, 
+        "model": "digidemo.notification", 
+        "fields": {
+            "event_type": "COMMENT", 
+            "was_seen": false, 
+            "target_user": 3, 
+            "was_mailed": false, 
+            "creation_date": "2015-02-03T00:23:12Z", 
+            "source_user": 1, 
+            "reason": "COMMENTER", 
+            "last_modified": "2015-02-03T00:23:12Z", 
+            "was_checked": false, 
+            "link_back": null, 
+            "event_data": "joe bidden"
+        }
+    }, 
+    {
+        "pk": 8, 
+        "model": "digidemo.notification", 
+        "fields": {
+            "event_type": "COMMENT", 
+            "was_seen": false, 
+            "target_user": 3, 
+            "was_mailed": false, 
+            "creation_date": "2015-02-03T00:23:12Z", 
+            "source_user": 1, 
+            "reason": "COMMENTER", 
+            "last_modified": "2015-02-03T00:23:12Z", 
+            "was_checked": false, 
+            "link_back": null, 
+            "event_data": "joe bidden"
+        }
+    }, 
+    {
+        "pk": 9, 
+        "model": "digidemo.notification", 
+        "fields": {
+            "event_type": "COMMENT", 
+            "was_seen": false, 
+            "target_user": 3, 
+            "was_mailed": false, 
+            "creation_date": "2015-02-03T00:23:12Z", 
+            "source_user": 1, 
+            "reason": "COMMENTER", 
+            "last_modified": "2015-02-03T00:23:12Z", 
+            "was_checked": false, 
+            "link_back": null, 
+            "event_data": "joe bidden"
         }
     }, 
     {
@@ -348,6 +501,94 @@
             "creation_date": "2015-02-01T23:57:12Z", 
             "reason": "AUTHOR", 
             "user": 2
+        }
+    }, 
+    {
+        "pk": 28, 
+        "model": "digidemo.subscription", 
+        "fields": {
+            "subscription_id": 328, 
+            "last_modified": "2015-02-02T21:14:01Z", 
+            "creation_date": "2015-02-02T21:14:01Z", 
+            "reason": "AUTHOR", 
+            "user": 1
+        }
+    }, 
+    {
+        "pk": 29, 
+        "model": "digidemo.subscription", 
+        "fields": {
+            "subscription_id": 326, 
+            "last_modified": "2015-02-02T21:14:01Z", 
+            "creation_date": "2015-02-02T21:14:01Z", 
+            "reason": "COMMENTER", 
+            "user": 1
+        }
+    }, 
+    {
+        "pk": 30, 
+        "model": "digidemo.subscription", 
+        "fields": {
+            "subscription_id": 329, 
+            "last_modified": "2015-02-02T23:39:00Z", 
+            "creation_date": "2015-02-02T23:39:00Z", 
+            "reason": "AUTHOR", 
+            "user": 3
+        }
+    }, 
+    {
+        "pk": 31, 
+        "model": "digidemo.subscription", 
+        "fields": {
+            "subscription_id": 228, 
+            "last_modified": "2015-02-02T23:39:00Z", 
+            "creation_date": "2015-02-02T23:39:00Z", 
+            "reason": "COMMENTER", 
+            "user": 3
+        }
+    }, 
+    {
+        "pk": 32, 
+        "model": "digidemo.subscription", 
+        "fields": {
+            "subscription_id": 330, 
+            "last_modified": "2015-02-02T23:39:44Z", 
+            "creation_date": "2015-02-02T23:39:44Z", 
+            "reason": "AUTHOR", 
+            "user": 3
+        }
+    }, 
+    {
+        "pk": 33, 
+        "model": "digidemo.subscription", 
+        "fields": {
+            "subscription_id": 228, 
+            "last_modified": "2015-02-02T23:39:44Z", 
+            "creation_date": "2015-02-02T23:39:44Z", 
+            "reason": "COMMENTER", 
+            "user": 3
+        }
+    }, 
+    {
+        "pk": 34, 
+        "model": "digidemo.subscription", 
+        "fields": {
+            "subscription_id": 331, 
+            "last_modified": "2015-02-03T00:20:45Z", 
+            "creation_date": "2015-02-03T00:20:45Z", 
+            "reason": "AUTHOR", 
+            "user": 1
+        }
+    }, 
+    {
+        "pk": 35, 
+        "model": "digidemo.subscription", 
+        "fields": {
+            "subscription_id": 228, 
+            "last_modified": "2015-02-03T00:20:45Z", 
+            "creation_date": "2015-02-03T00:20:45Z", 
+            "reason": "COMMENTER", 
+            "user": 1
         }
     }, 
     {
@@ -2967,15 +3208,47 @@
         }
     }, 
     {
+        "pk": 328, 
+        "model": "digidemo.subscriptionid", 
+        "fields": {
+            "last_modified": "2015-02-02T21:14:01Z", 
+            "creation_date": "2015-02-02T21:14:01Z"
+        }
+    }, 
+    {
+        "pk": 329, 
+        "model": "digidemo.subscriptionid", 
+        "fields": {
+            "last_modified": "2015-02-02T23:39:00Z", 
+            "creation_date": "2015-02-02T23:39:00Z"
+        }
+    }, 
+    {
+        "pk": 330, 
+        "model": "digidemo.subscriptionid", 
+        "fields": {
+            "last_modified": "2015-02-02T23:39:44Z", 
+            "creation_date": "2015-02-02T23:39:44Z"
+        }
+    }, 
+    {
+        "pk": 331, 
+        "model": "digidemo.subscriptionid", 
+        "fields": {
+            "last_modified": "2015-02-03T00:20:45Z", 
+            "creation_date": "2015-02-03T00:20:45Z"
+        }
+    }, 
+    {
         "pk": 1, 
         "model": "digidemo.publication", 
         "fields": {
             "event_type": "DISCUSSION", 
             "creation_date": "2015-01-25T02:22:54Z", 
             "source_user": 3, 
-            "last_modified": "2015-01-25T02:22:54Z", 
+            "last_modified": "2015-02-02T00:07:35Z", 
             "link_back": "/view-discussion/4/e", 
-            "was_posted": false, 
+            "was_posted": true, 
             "subscription_id": 301, 
             "event_data": "e"
         }
@@ -2987,9 +3260,9 @@
             "event_type": "COMMENT", 
             "creation_date": "2015-01-25T02:25:41Z", 
             "source_user": 3, 
-            "last_modified": "2015-01-25T02:25:41Z", 
+            "last_modified": "2015-02-02T00:07:35Z", 
             "link_back": null, 
-            "was_posted": false, 
+            "was_posted": true, 
             "subscription_id": 302, 
             "event_data": "e"
         }
@@ -3001,9 +3274,9 @@
             "event_type": "REPLY", 
             "creation_date": "2015-01-25T02:25:47Z", 
             "source_user": 3, 
-            "last_modified": "2015-01-25T02:25:47Z", 
+            "last_modified": "2015-02-02T00:07:35Z", 
             "link_back": null, 
-            "was_posted": false, 
+            "was_posted": true, 
             "subscription_id": 302, 
             "event_data": "bip"
         }
@@ -3015,9 +3288,9 @@
             "event_type": "REPLY", 
             "creation_date": "2015-01-25T17:43:23Z", 
             "source_user": 2, 
-            "last_modified": "2015-01-25T17:43:23Z", 
+            "last_modified": "2015-02-02T00:07:35Z", 
             "link_back": null, 
-            "was_posted": false, 
+            "was_posted": true, 
             "subscription_id": 207, 
             "event_data": "A test reply"
         }
@@ -3029,9 +3302,9 @@
             "event_type": "EDIT", 
             "creation_date": "2015-02-01T19:30:10Z", 
             "source_user": 3, 
-            "last_modified": "2015-02-01T19:30:10Z", 
+            "last_modified": "2015-02-02T00:07:35Z", 
             "link_back": "/overview/1/keystone-xl-pipeline-extension", 
-            "was_posted": false, 
+            "was_posted": true, 
             "subscription_id": 167, 
             "event_data": "#Background#\r\nThe Keystone XL pipeline project is a contentious political issue, owing to probable e"
         }
@@ -3043,9 +3316,9 @@
             "event_type": "EDIT", 
             "creation_date": "2015-02-01T19:30:10Z", 
             "source_user": 3, 
-            "last_modified": "2015-02-01T19:30:10Z", 
+            "last_modified": "2015-02-02T00:07:35Z", 
             "link_back": "/overview/1/keystone-xl-pipeline-extension", 
-            "was_posted": false, 
+            "was_posted": true, 
             "subscription_id": 178, 
             "event_data": "#Background#\r\nThe Keystone XL pipeline project is a contentious political issue, owing to probable e"
         }
@@ -3057,9 +3330,9 @@
             "event_type": "EDIT", 
             "creation_date": "2015-02-01T19:30:10Z", 
             "source_user": 3, 
-            "last_modified": "2015-02-01T19:30:10Z", 
+            "last_modified": "2015-02-02T00:07:35Z", 
             "link_back": "/overview/1/keystone-xl-pipeline-extension", 
-            "was_posted": false, 
+            "was_posted": true, 
             "subscription_id": 179, 
             "event_data": "#Background#\r\nThe Keystone XL pipeline project is a contentious political issue, owing to probable e"
         }
@@ -3071,9 +3344,9 @@
             "event_type": "EDIT", 
             "creation_date": "2015-02-01T19:55:48Z", 
             "source_user": 3, 
-            "last_modified": "2015-02-01T19:55:48Z", 
+            "last_modified": "2015-02-02T00:07:35Z", 
             "link_back": "/overview/1/keystone-xl-pipeline-extensione", 
-            "was_posted": false, 
+            "was_posted": true, 
             "subscription_id": 167, 
             "event_data": "#Background#\r\nThe Keystone XL pipeline project is a contentious political issue, owing to probable e"
         }
@@ -3085,9 +3358,9 @@
             "event_type": "EDIT", 
             "creation_date": "2015-02-01T19:55:48Z", 
             "source_user": 3, 
-            "last_modified": "2015-02-01T19:55:48Z", 
+            "last_modified": "2015-02-02T00:07:35Z", 
             "link_back": "/overview/1/keystone-xl-pipeline-extensione", 
-            "was_posted": false, 
+            "was_posted": true, 
             "subscription_id": 178, 
             "event_data": "#Background#\r\nThe Keystone XL pipeline project is a contentious political issue, owing to probable e"
         }
@@ -3099,9 +3372,9 @@
             "event_type": "EDIT", 
             "creation_date": "2015-02-01T19:55:48Z", 
             "source_user": 3, 
-            "last_modified": "2015-02-01T19:55:48Z", 
+            "last_modified": "2015-02-02T00:07:35Z", 
             "link_back": "/overview/1/keystone-xl-pipeline-extensione", 
-            "was_posted": false, 
+            "was_posted": true, 
             "subscription_id": 179, 
             "event_data": "#Background#\r\nThe Keystone XL pipeline project is a contentious political issue, owing to probable e"
         }
@@ -3113,9 +3386,9 @@
             "event_type": "EDIT", 
             "creation_date": "2015-02-01T19:57:41Z", 
             "source_user": 3, 
-            "last_modified": "2015-02-01T19:57:41Z", 
+            "last_modified": "2015-02-02T00:07:35Z", 
             "link_back": "/overview/1/keystone-xl-pipeline-extensione", 
-            "was_posted": false, 
+            "was_posted": true, 
             "subscription_id": 167, 
             "event_data": "#Background#\r\nThe Keystone XL pipeline project is a contentious political issue, owing to probable e"
         }
@@ -3127,9 +3400,9 @@
             "event_type": "EDIT", 
             "creation_date": "2015-02-01T19:57:41Z", 
             "source_user": 3, 
-            "last_modified": "2015-02-01T19:57:41Z", 
+            "last_modified": "2015-02-02T00:07:35Z", 
             "link_back": "/overview/1/keystone-xl-pipeline-extensione", 
-            "was_posted": false, 
+            "was_posted": true, 
             "subscription_id": 178, 
             "event_data": "#Background#\r\nThe Keystone XL pipeline project is a contentious political issue, owing to probable e"
         }
@@ -3141,9 +3414,9 @@
             "event_type": "EDIT", 
             "creation_date": "2015-02-01T19:57:41Z", 
             "source_user": 3, 
-            "last_modified": "2015-02-01T19:57:41Z", 
+            "last_modified": "2015-02-02T00:07:36Z", 
             "link_back": "/overview/1/keystone-xl-pipeline-extensione", 
-            "was_posted": false, 
+            "was_posted": true, 
             "subscription_id": 179, 
             "event_data": "#Background#\r\nThe Keystone XL pipeline project is a contentious political issue, owing to probable e"
         }
@@ -3155,9 +3428,9 @@
             "event_type": "EDIT", 
             "creation_date": "2015-02-01T20:58:06Z", 
             "source_user": 3, 
-            "last_modified": "2015-02-01T20:58:06Z", 
+            "last_modified": "2015-02-02T00:07:36Z", 
             "link_back": "/overview/1/keystone-xl-pipeline-extension", 
-            "was_posted": false, 
+            "was_posted": true, 
             "subscription_id": 167, 
             "event_data": "#Background#\r\nThe Keystone XL pipeline project is a contentious political issue, owing to probable e"
         }
@@ -3169,9 +3442,9 @@
             "event_type": "EDIT", 
             "creation_date": "2015-02-01T20:58:06Z", 
             "source_user": 3, 
-            "last_modified": "2015-02-01T20:58:06Z", 
+            "last_modified": "2015-02-02T00:07:36Z", 
             "link_back": "/overview/1/keystone-xl-pipeline-extension", 
-            "was_posted": false, 
+            "was_posted": true, 
             "subscription_id": 178, 
             "event_data": "#Background#\r\nThe Keystone XL pipeline project is a contentious political issue, owing to probable e"
         }
@@ -3183,9 +3456,9 @@
             "event_type": "EDIT", 
             "creation_date": "2015-02-01T20:58:06Z", 
             "source_user": 3, 
-            "last_modified": "2015-02-01T20:58:06Z", 
+            "last_modified": "2015-02-02T00:07:36Z", 
             "link_back": "/overview/1/keystone-xl-pipeline-extension", 
-            "was_posted": false, 
+            "was_posted": true, 
             "subscription_id": 179, 
             "event_data": "#Background#\r\nThe Keystone XL pipeline project is a contentious political issue, owing to probable e"
         }
@@ -3197,9 +3470,9 @@
             "event_type": "ANSWER", 
             "creation_date": "2015-02-01T21:26:55Z", 
             "source_user": 3, 
-            "last_modified": "2015-02-01T21:26:55Z", 
+            "last_modified": "2015-02-02T00:07:36Z", 
             "link_back": null, 
-            "was_posted": false, 
+            "was_posted": true, 
             "subscription_id": 228, 
             "event_data": "hoop"
         }
@@ -3211,9 +3484,9 @@
             "event_type": "COMMENT", 
             "creation_date": "2015-02-01T21:27:27Z", 
             "source_user": 3, 
-            "last_modified": "2015-02-01T21:27:27Z", 
+            "last_modified": "2015-02-02T00:07:36Z", 
             "link_back": null, 
-            "was_posted": false, 
+            "was_posted": true, 
             "subscription_id": 228, 
             "event_data": "bip"
         }
@@ -3225,9 +3498,9 @@
             "event_type": "COMMENT", 
             "creation_date": "2015-02-01T23:51:57Z", 
             "source_user": 3, 
-            "last_modified": "2015-02-01T23:51:57Z", 
+            "last_modified": "2015-02-02T00:07:36Z", 
             "link_back": null, 
-            "was_posted": false, 
+            "was_posted": true, 
             "subscription_id": 228, 
             "event_data": "testing notifications"
         }
@@ -3239,9 +3512,9 @@
             "event_type": "QUESTION", 
             "creation_date": "2015-02-01T23:53:40Z", 
             "source_user": 3, 
-            "last_modified": "2015-02-01T23:53:40Z", 
+            "last_modified": "2015-02-02T00:07:36Z", 
             "link_back": "/view-question/6/new-question-by-e", 
-            "was_posted": false, 
+            "was_posted": true, 
             "subscription_id": 180, 
             "event_data": "???"
         }
@@ -3253,11 +3526,81 @@
             "event_type": "ANSWER", 
             "creation_date": "2015-02-01T23:57:12Z", 
             "source_user": 2, 
-            "last_modified": "2015-02-01T23:57:12Z", 
+            "last_modified": "2015-02-02T00:07:36Z", 
             "link_back": null, 
-            "was_posted": false, 
+            "was_posted": true, 
             "subscription_id": 326, 
             "event_data": "Hey e, here's an answer"
+        }
+    }, 
+    {
+        "pk": 22, 
+        "model": "digidemo.publication", 
+        "fields": {
+            "event_type": "VOTE", 
+            "creation_date": "2015-02-02T00:16:36Z", 
+            "source_user": 2, 
+            "last_modified": "2015-02-02T21:14:23Z", 
+            "link_back": null, 
+            "was_posted": true, 
+            "subscription_id": 326, 
+            "event_data": "1"
+        }
+    }, 
+    {
+        "pk": 23, 
+        "model": "digidemo.publication", 
+        "fields": {
+            "event_type": "COMMENT", 
+            "creation_date": "2015-02-02T21:14:01Z", 
+            "source_user": 1, 
+            "last_modified": "2015-02-02T21:14:23Z", 
+            "link_back": null, 
+            "was_posted": true, 
+            "subscription_id": 326, 
+            "event_data": "yo dude whatchoo said?"
+        }
+    }, 
+    {
+        "pk": 24, 
+        "model": "digidemo.publication", 
+        "fields": {
+            "event_type": "COMMENT", 
+            "creation_date": "2015-02-02T23:39:00Z", 
+            "source_user": 3, 
+            "last_modified": "2015-02-03T00:23:12Z", 
+            "link_back": null, 
+            "was_posted": true, 
+            "subscription_id": 228, 
+            "event_data": "hip biddy"
+        }
+    }, 
+    {
+        "pk": 25, 
+        "model": "digidemo.publication", 
+        "fields": {
+            "event_type": "COMMENT", 
+            "creation_date": "2015-02-02T23:39:44Z", 
+            "source_user": 3, 
+            "last_modified": "2015-02-03T00:23:12Z", 
+            "link_back": null, 
+            "was_posted": true, 
+            "subscription_id": 228, 
+            "event_data": "aoeu"
+        }
+    }, 
+    {
+        "pk": 26, 
+        "model": "digidemo.publication", 
+        "fields": {
+            "event_type": "COMMENT", 
+            "creation_date": "2015-02-03T00:20:45Z", 
+            "source_user": 1, 
+            "last_modified": "2015-02-03T00:23:12Z", 
+            "link_back": null, 
+            "was_posted": true, 
+            "subscription_id": 228, 
+            "event_data": "joe bidden"
         }
     }, 
     {
@@ -6293,13 +6636,13 @@
             "do_email_petitions": true, 
             "do_email_responses": true, 
             "country": "", 
-            "rep": 0, 
+            "rep": 10, 
             "creation_date": "2014-08-22T16:40:26Z", 
             "followedProposals": [], 
             "do_email_watched": true, 
             "street": "", 
             "user": 3, 
-            "last_modified": "2014-08-22T16:45:16Z", 
+            "last_modified": "2015-02-02T00:16:36Z", 
             "avatar_img": "", 
             "do_email_news": true, 
             "zip_code": ""
@@ -7025,9 +7368,9 @@
             "title": "New question by e", 
             "text": "???", 
             "creation_date": "2015-02-01T23:53:40Z", 
-            "score": 0, 
+            "score": 1, 
             "user": 3, 
-            "last_modified": "2015-02-01T23:53:40Z", 
+            "last_modified": "2015-02-02T00:16:36Z", 
             "subscription_id": 326
         }
     }, 
@@ -7760,6 +8103,58 @@
         }
     }, 
     {
+        "pk": 9, 
+        "model": "digidemo.questioncomment", 
+        "fields": {
+            "target": 6, 
+            "text": "yo dude whatchoo said?", 
+            "creation_date": "2015-02-02T21:14:01Z", 
+            "score": 0, 
+            "user": 1, 
+            "last_modified": "2015-02-02T21:14:01Z", 
+            "subscription_id": 328
+        }
+    }, 
+    {
+        "pk": 10, 
+        "model": "digidemo.questioncomment", 
+        "fields": {
+            "target": 1, 
+            "text": "hip biddy", 
+            "creation_date": "2015-02-02T23:39:00Z", 
+            "score": 0, 
+            "user": 3, 
+            "last_modified": "2015-02-02T23:39:00Z", 
+            "subscription_id": 329
+        }
+    }, 
+    {
+        "pk": 11, 
+        "model": "digidemo.questioncomment", 
+        "fields": {
+            "target": 1, 
+            "text": "aoeu", 
+            "creation_date": "2015-02-02T23:39:44Z", 
+            "score": 0, 
+            "user": 3, 
+            "last_modified": "2015-02-02T23:39:44Z", 
+            "subscription_id": 330
+        }
+    }, 
+    {
+        "pk": 12, 
+        "model": "digidemo.questioncomment", 
+        "fields": {
+            "target": 1, 
+            "text": "joe bidden", 
+            "creation_date": "2015-02-03T00:20:45Z", 
+            "score": 0, 
+            "user": 1, 
+            "last_modified": "2015-02-03T00:20:45Z", 
+            "subscription_id": 331
+        }
+    }, 
+    {
         "pk": 1, 
         "model": "digidemo.answercomment", 
         "fields": {
@@ -8100,6 +8495,17 @@
             "creation_date": "2014-08-31T19:44:35Z", 
             "target": 1, 
             "last_modified": "2014-08-31T21:06:34Z", 
+            "user": 2
+        }
+    }, 
+    {
+        "pk": 3, 
+        "model": "digidemo.questionvote", 
+        "fields": {
+            "valence": 1, 
+            "creation_date": "2015-02-02T00:16:36Z", 
+            "target": 6, 
+            "last_modified": "2015-02-02T00:16:36Z", 
             "user": 2
         }
     }, 

@@ -14,27 +14,130 @@
 				src="{% static "digidemo/images/avatar_mask.png" %}" />
 			</div>
 
-			<div id="logged_in_menu">
-				<div class="border_cover"></div>
-				<a class="menu_item" 
+			<div id="logged_in_menu" class="header_menu">
+				<div class="border_cover_med"></div>
+				<a 
 					href="{% url "userProfile" request|getLoggedInUser %}">
 					profile
 				</a>	
-				<a id="logout" class="menu_item">
+				<a id="logout">
 					logout
 				</a>	
-				<a class="menu_item">
+				<a>
 					my questions
 				</a>	
-				<a class="menu_item">
+				<a>
 					my issues
 				</a>	
-				<a class="menu_item">
+				<a>
 					recent stuff
 				</a>	
 			</div>
 
 		</div>
+
+		<div id="notifications_div" class="notifications_div">
+			{%  if GLOBALS.NUM_UNSEEN_NOTIFICATIONS > 0 %}
+				<div id="notifications_icon" class="has_notifications">
+					{{ GLOBALS.NUM_UNSEEN_NOTIFICATIONS }}
+				</div>
+			{% else %}
+				<div id="notifications_icon" class="no_notifications">
+				</div>
+			{% endif %}
+			<div id="notifications_menu" class="header_menu">
+				<div class="border_cover_short"></div>
+				{% for notification in GLOBALS.NOTIFICATIONS %}
+					<a notification="{{notification.pk}}" 
+						class="notification"
+						href="{{notification.link_back}}"> 
+							{{notification.message}} 
+					</a>
+				{% endfor %}
+				{% if GLOBALS.NOTIFICATIONS|length < 1 %}
+					<div class="italic"> 
+						no notifications!
+					</div>
+				{% endif %}
+				<form id="register_notifications_seen_form">
+					<input type="hidden" 
+						value="{{GLOBALS.UNSEEN_NOTIFICATION_PKS}}"
+						name="notification_pks" />
+				</form>
+			</div>
+		</div>
+
+		<!-- Arm the notifications menu behaviors -->
+		<script type="text/javascript">
+		(function(){
+		 	// make menu items hightlight on mouseover
+		 	function highlight(e) {
+				$(this).addClass('menu_item_highlight');
+			}
+			function unhighlight(e) {
+				$(this).removeClass('menu_item_highlight');
+			}
+			menu_items = $('.header_menu a').on({
+				'mouseover': highlight,
+				'mouseout': unhighlight
+			});
+
+			var notifications_div = $('#notifications_div');
+			var notifications_menu = $('#notifications_menu');
+			var notifications_icon = $('#notifications_icon');
+			var register_notifications_form = $('#register_notifications_form');
+
+			// register the register_notifications_form.
+			// Note, we're using the notifications_div as a submit button
+			register_form(
+				'register_notifications_seen_form',
+				'register_notifications_seen',
+				'notification_form',
+				'notifications_div'
+			);
+
+			// clicking in the search form doesn't bubble up to be a 
+			// click on the search button
+			notifications_menu.click(function(e){
+				e.stopPropagation();
+			});
+
+			var tog = new ToggleHidden(notifications_div, notifications_menu);
+			function style_logged_in_div() {
+				notifications_div.addClass('notifications_div_active');
+				notifications_div.removeClass('notifications_div');
+			}
+			function unstyle_logged_in_div() {
+				notifications_div.addClass('notifications_div');
+				notifications_div.removeClass('notifications_div_active');
+			}
+			function clear_notifications_icon() {
+				notifications_icon.addClass('no_notifications');
+				notifications_icon.removeClass('has_notifications');
+				notifications_icon.text('');
+			}
+			function on_hide() {
+				unstyle_logged_in_div();
+				clear_notifications_icon();
+			}
+
+			tog.hook('on_show', style_logged_in_div);
+			tog.hook('on_hide', on_hide);
+
+			// clicking out of the search area gets rid of notifications div
+			doc_event_registrar.on('click', function(e){
+				tog.hide();
+			});
+			// ensure that clicking the search button doesn't bubble
+			// up to the document.click we just established
+			notifications_div.click(function(e) {
+				e.stopPropagation();
+			});
+
+		})();
+		</script>
+
+		<!-- Arm the logged-in menu behaviors -->
 		<script type="text/javascript">
 		(function(){
 			var logged_in_div = $('#logged_in_div');
@@ -79,9 +182,7 @@
 				})
 			});
 		})();
-
 		</script>
-
 	<!-- otherwise, show login form and register link -->
 	{% else %}
 
@@ -91,7 +192,7 @@
 				<a>login </a>
 
 				<div id="login_form_div">
-					<div class="border_cover_short"></div>
+					<div class="border_cover_med_short"></div>
 					<form id="login_form">
 						<input class='text_input' id="username" type="text"
 							name="username" placeholder="username" />

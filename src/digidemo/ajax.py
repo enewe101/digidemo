@@ -5,6 +5,7 @@ from django.http import HttpResponse, HttpResponseRedirect
 from django.template import Context, RequestContext
 from django.template.loader import get_template
 from digidemo.models import *
+from digidemo.abstract_models import *
 from digidemo.forms import *
 from digidemo.settings import DEBUG
 from digidemo.utils import get_or_none, force_logout
@@ -291,6 +292,30 @@ def vote_reply(request):
 	}
 
 	return vote(vote_spec, request)
+
+
+
+@ajax_endpoint_login_required()
+def register_notifications_seen(request):
+
+	notifications_seen = request.POST['notification_pks'].strip()
+	if notifications_seen == '':
+		return {
+			'success':True,
+			'num_marked':0,
+			'errors': []
+		}
+
+	notifications_seen = [int(i) for i in notifications_seen.split(',')]
+	num_marked = len(notifications_seen)
+	notifications_seen = Notification.objects.filter(pk__in=notifications_seen)
+	notifications_seen.update(was_seen=True)
+	
+	return {
+		'success':True,
+		'num_marked': num_marked,
+		'errors': []
+	}
 
 
 
