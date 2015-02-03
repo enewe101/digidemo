@@ -1,73 +1,52 @@
 {% extends "digidemo/__base.html" %}
 {% load staticfiles %}
 
+<!-- add to the css block -->
 {% block css %}
 	{{block.super}}
 	<link rel="stylesheet" type="text/css" 
 		href="{% static "digidemo/css/tabbed.css" %}" />
 {% endblock css %}
 
-{% block body %}
+<!-- pass js block through (can be overriden by inheriting template) -->
+{% block js %}
+	{{block.super}}
+{% endblock js %}
 
-	<!-- start of header -->
-	{% include "digidemo/_i_header.html" %}
-	<div class="clear"></div>
-	<!-- end of header -->
+<!-- pass media block through (can be overriden by inheriting template) -->
+{% block media %}
+	{{block.super}}
+{% endblock media %}
 
-	<!-- start of headline -->
+<!-- fill in the headline -->
+{% block headline %}
 	<div id="headline">
-		{% block headline %}
-			<div class="outer_center">
-				<div class="inner_center">
-					<h1 id="headline_title" class="headline_title">
-						{% block  headline_title %}
-							{{ headline }}
-						{% endblock headline_title %}
-					</h1>
-				</div>
-			</div>
-		{% endblock headline %}
-
-		<!-- tabs -->
-		{% include "digidemo/_w_tabs.html" with tabs=tabs include_id="main_tabs" %}
-		<!-- tabs -->
-
-	</div>
-	<!-- end of headline -->
-
-
-	<!-- content in the middle (vertical middle) of the page -->
-	<div id="middle">
-
-		<!-- centering device for the middle of the page layout -->
 		<div class="outer_center">
 			<div class="inner_center">
-
-				<!-- main page content goes here -->
-				{% block maincontent %}
-				{% endblock maincontent %}
-				<!-- end of main page content -->
-
-				<div class="clear"></div>
+				<h1 id="headline_title" class="headline_title">
+					{% block  headline_title %}
+						{{ headline }}
+					{% endblock headline_title %}
+				</h1>
 			</div>
 		</div>
-		<!-- end of centering device for the middle of the page layout -->
 
-		<div class="clear"></div>
+	<!-- tabs -->
+	{% include "digidemo/_w_tabs.html" with tabs=tabs include_id="main_tabs" %}
+	<!-- tabs -->
 
 	</div>
-	<!-- end of the (vertical) middle of the page layout -->
+{% endblock headline %}
+<!-- end of headline -->
 
-	<!-- start of page footer -->
-	<div id="footer">
-		<div class="outer_center">
-			<div class="inner_center">
-				{% block footer %}
-					footer
-				{% endblock footer %}
-			</div>
-		</div>
-	</div>
-	<!-- end of page footer -->
+<!-- pass middle block through (can be overriden by inheriting template) -->
+{% block middle %}
+	{{block.super}}
+{% endblock middle %}
 
-{% endblock body %}
+<!-- pass footer block through (can be overriden by inheriting template) -->
+{% block footer %}
+	{{block.super}}
+{% endblock footer %}
+
+

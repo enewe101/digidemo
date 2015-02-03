@@ -16,16 +16,14 @@
 
 
 {% block  headline_title %}
-	<img src="{% static "digidemo/images/compas_icon.png" %}" />
 	<span id="proposal_title">{{ proposal.title }}</span>
-
 	<div id="follow">
 		{% include "digidemo/_w_follow_post.html" %}
 	</div>
 
 {% endblock headline_title %}
 
-{% block maincontent %}
+{% block middle %}
 <!-- start the previews -->
 <div id="previews">
 	<div>
@@ -175,5 +173,5 @@
 
 
 </div>
-{% endblock maincontent %}
+{% endblock middle %}
 

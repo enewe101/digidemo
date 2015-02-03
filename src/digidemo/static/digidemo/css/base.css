@@ -143,10 +143,30 @@ body {
 
 #header {
 	position: fixed;
-	padding: 8px 4px 4px 4px;
-	background: white;
 	z-index: 999;
 	width: 100%;
+}
+
+#header_bg {
+	background: white;
+	padding: 8px 0 0 0;
+}
+
+#header_border {
+	height:3px;
+	background: white;
+	border-bottom: solid 1px rgb(200,200,200);
+}
+
+#header_shadow {
+	height:2px;
+	background: rgb(0,0,0);
+	opacity: 0.05;
+	filter: alpha(opacity=5); /* For IE8 and earlier */
+}
+
+#header_spacer {
+	height: 88px;
 }
 
 #topic_list {
@@ -518,10 +538,6 @@ input[type="text"], input[type="password"], input[type="email"] {
 	padding: 15px 6px 0 6px;
 	height: 31px;
 	float: left;
-}
-
-#header_spacer {
-	height: 52px;
 }
 
 .outer_center {

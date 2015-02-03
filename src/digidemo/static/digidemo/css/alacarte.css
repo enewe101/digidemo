@@ -164,14 +164,16 @@ hr {
 }
 
 .go_button, .go_button_inline {
-	background: rgb(80,80,80);
+	background: black;
 	color: white;
-	border: solid 1px rgb(80,80,80);
+	border: solid 1px black;
+	border-radius: 3px;
 }
 
 .go_button_highlighted, .go_button_inline_highlighted {
 	background: white;
 	color: rgb(170, 0, 212);
+	border-radius: 3px;
 	border: solid 1px rgb(170, 0, 212);
 }
 
