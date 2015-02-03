@@ -26,6 +26,7 @@ TEMPLATE_STRING_IF_INVALID = InvalidString("%s")
 import os
 PROJECT_DIR = '/path/to/digidemo'  #<>#
 BASE_DIR = PROJECT_DIR + '/src'
+TEMP_DIR = PROJECT_DIR + '/temp'
 
 SITE_NAME = 'polis'
 # Quick-start development settings - unsuitable for production

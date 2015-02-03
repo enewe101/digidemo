@@ -6,6 +6,7 @@ from uuid import uuid4
 from django.core import serializers
 from django.core.files.storage import default_storage
 from django.core.files.base import ContentFile
+from django.core.files import File
 from django.core.urlresolvers import reverse
 from django.shortcuts import render, get_object_or_404, redirect
 from django.template import Context, RequestContext
@@ -25,6 +26,8 @@ from digidemo import utils
 from digidemo.utils import force_logout
 from forms import ProposalSearchForm
 from settings import DEBUG
+from settings import TEMP_DIR
+import pydenticon
 
 import json
 import sys
@@ -1573,6 +1576,31 @@ def userRegistration(request):
 
 			user_profile = UserProfile(user=new_user)
 			user_profile.save()
+
+			foreground = [ 
+				"rgb(45,79,255)",
+				"rgb(254,180,44)",
+				"rgb(226,121,234)",
+				"rgb(30,179,253)",
+				"rgb(232,77,65)",
+				"rgb(49,203,115)",
+				"rgb(141,69,170)" 
+			] 
+			background = "rgb(224,224,224)"
+			avatar_generator = pydenticon.Generator(
+				8,8, foreground=foreground, background=background)
+			avatar = avatar_generator.generate(
+				new_user.username,240,240,output_format='png')
+
+			img_dir = os.path.join(TEMP_DIR, '%s.png' % new_user.username)
+			f = open(img_dir, 'wb')
+			f.write(avatar)
+			f.close()
+			f = open(img_dir, 'r')
+			user_profile.avatar_img.save(
+				'%s.png' % new_user.username,
+				File(f)
+			)
 
 			return redirect('../mainPage')
 

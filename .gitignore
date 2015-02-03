@@ -1,6 +1,7 @@
 resources/*
 static/*
 media/*
+temp/*
 docs/my_notes/*
 *.svg
 *.pyc
