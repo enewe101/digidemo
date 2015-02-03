@@ -115,9 +115,24 @@ class Sector(abstract_models.Subscribable):
 
 	def render(self):
 		html =  (
-			'<div class="sector_tag ' + self.name + '_sector">'
-				+ self.name +
-			'</div>'
+			'<div href="' 
+				+ reverse('issue_list_sector', 
+					kwargs={'sector':self.name, 'order_by':'interesting'})
+				+ '" class="sector_tag ' + self.name + '_sector">' 
+				+ self.name 
+			+ '</div>'
+		)
+
+		return mark_safe(html)
+
+	def render_link(self):
+		html =  (
+			'<a href="' 
+				+ reverse('issue_list_sector', 
+					kwargs={'sector':self.name, 'order_by':'interesting'})
+				+ '" class="sector_tag ' + self.name + '_sector">' 
+				+ self.name 
+			+ '</a>'
 		)
 
 		return mark_safe(html)
@@ -137,6 +152,30 @@ class Tag(abstract_models.Subscribable):
 	name = models.CharField(max_length=48)
 	sector = models.ForeignKey(Sector, null=True)
 	target = models.ForeignKey('self', null=True)
+
+	def render(self):
+		html =  (
+			'<div href="' 
+				+ reverse('issue_list_tag', 
+					kwargs={'tag':self.name, 'order_by':'interesting'})
+				+ '" class="tag">' 
+				+ self.name 
+			+ '</div>'
+		)
+
+		return mark_safe(html)
+
+	def render_link(self):
+		html =  (
+			'<a href="' 
+				+ reverse('issue_list_tag', 
+					kwargs={'tag':self.name, 'order_by':'interesting'})
+				+ '" class="tag">' 
+				+ self.name 
+			+ '</a>'
+		)
+
+		return mark_safe(html)
 
 	def __unicode__(self):
 		return self.name

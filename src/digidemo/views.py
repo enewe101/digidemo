@@ -220,7 +220,7 @@ def get_globals(request):
 
 	GLOBALS = {
 		'DEBUG': DEBUG,
-		'SECTORS': [s.name for s in Sector.objects.all()],
+		'SECTORS': Sector.objects.all(),
 		'IS_USER_AUTHENTICATED': request.user.is_authenticated(),
 		'USER': request.user
 	}
@@ -979,28 +979,41 @@ class IssueListView(AbstractView):
 		
 		# get the list of issues, sorted in the desired way
 		order_by = self.kwargs.pop('order_by', 'interesting')
+
+		issue_list = Proposal.objects.all()
+
 		sector = self.kwargs.pop('sector', None)
-		sector_title = ' : ' + sector.name if sector is not None else ''
+		sector_title = ''
+		if sector is not None:
+			sector = Sector.objects.get(name=sector)
+			sector_title = ' : ' + sector.name if sector is not None else ''
+			issue_list = issue_list.filter(sectors=sector)
 
 		tag = self.kwargs.pop('tag', None)
-		tag_title = ' : ' + tag.name if tag is not None else ''
+		tag_title = ''
+		if tag is not None:
+			tag = Tag.objects.get(name=tag)
+			tag_title = ' : ' + tag.name if tag is not None else ''
+			issue_list = issue_list.filter(tags=tag)
 
 		if order_by == 'interesting':
-			issues = Proposal.objects.all().order_by('?')
+			issues = issue_list.order_by('?')
 
 		elif order_by == 'newest':
-			issues = Proposal.objects.all().order_by('-creation_date')
+			issues = issue_list.order_by('-creation_date')
 
 		elif order_by == 'activity':
-			issues = Proposal.objects.all().order_by('-creation_date')
+			issues = issue_list.order_by('-creation_date')
 
 		elif order_by == 'location':
-			issues = Proposal.objects.all().order_by('-creation_date')
+			issues = issue_list.order_by('-creation_date')
 
 		# build the tabs, and show the right tab as active
 		tabs = get_issue_list_tabs(order_by)
 
 		return {
+			'tag_title': tag_title,
+			'sector_title': sector_title,
 			'issues': issues,
 			'tabs': tabs,
 			'active_navitem': ISSUE_NAV_NAME

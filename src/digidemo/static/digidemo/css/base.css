@@ -561,42 +561,42 @@ div.tags  {
 	background: rgb(250, 220, 255);
 }
 
-.economy_sector {
+a.economy_sector, .economy_sector {
 	background: rgb(255, 102, 0);
 	color: black;
 }
 
-.environment_sector {
+a.environment_sector, .environment_sector {
 	color: white;
 	background: lightgreen;
 }
 
-.relations_sector {
+a.relations_sector, .relations_sector {
 	color: white;
 	background: blue;
 }
 
-.readiness_sector {
+a.readiness_sector, .readiness_sector {
 	color: white;
 	background: red;
 }
 
-.culture_sector {
+a.culture_sector, .culture_sector {
 	color: white;
 	background: rgb(170, 0, 212);
 }
 
-.health_sector {
+a.health_sector, .health_sector {
 	background: pink;
 	color: black;
 }
 
-.democracy_sector {
+a.democracy_sector, .democracy_sector {
 	background: rgb(80,80,80);
 	color: white;
 }
 
-.education_sector {
+a.education_sector, .education_sector {
 	background: cyan;
 	color: black;
 }

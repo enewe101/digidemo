@@ -38,9 +38,15 @@ urlpatterns = patterns('',
 
 	# main tabs
 	url(r'^petition_list', AllPetitionListView().view, name="petition_list"),
-	url(r'^issue_list(/(?P<order_by>\w*)(/(?P<sector>\w*)(/(?P<tag>\w*))?)?)?', 
-		IssueListView().view,
-		name="issue_list"),
+	url(r'^issue_list/(?P<order_by>\w*)', 
+		IssueListView().view, name="issue_list"),
+
+	url(r'^issue_list_sector/(?P<sector>\w*)/(?P<order_by>\w*)', 
+		IssueListView().view, name="issue_list_sector"),
+
+	url(r'^issue_list_tag/(?P<tag>\w*)/(?P<order_by>\w*)', 
+		IssueListView().view, name="issue_list_tag"),
+
 	url(r'^topics/$', TagListView().view, name="topics"),
 	url(r'^all_questions_list/(?P<order_by>\w*)', AllQuestionsListView().view,
 		name="all_questions_list"),

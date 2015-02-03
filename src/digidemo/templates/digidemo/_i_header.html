@@ -58,10 +58,10 @@
 
 			<div id="topic_list">
 				{% for sector in GLOBALS.SECTORS %}
-				<span 
+				<a href="{% url "issue_list_sector" sector=sector.name order_by="interesting" %}"
 					class='sector_links{% if forloop.first %}_first{%endif%}'>
-						{{ sector }}
-				</span>
+						{{ sector.name }}
+				</a>
 				{% endfor %}
 			</div>
 

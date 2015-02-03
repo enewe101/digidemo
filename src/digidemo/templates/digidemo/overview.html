@@ -152,14 +152,12 @@
 	<div id="tags" class="tags">
 		{% for sector in proposal.sectors.all %}
 			 
-				{{ sector.render }}
+				{{ sector.render_link }}
 			
 		{% endfor %}
 
 		{% for tag in proposal.tags.all %}
-			<div class="tag">
-				{{ tag.name }}
-			</div>
+				{{ tag.render_link }}
 		{% endfor %}
 		
 	</div>
