@@ -78,10 +78,10 @@ WSGI_APPLICATION = 'digidemo.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'OPTIONS': {
-			'read_default_file': BASE_DIR + '/digidemo/my.cnf', #<>#
-		 },
 		'NAME': 'digidemo',
+		'USER': '<user>',						#<>#
+		'PASSWORD':'<pwd>', 					#<>#
+		'HOST':'localhost'
     }
 }
 
