@@ -2,12 +2,14 @@ import difflib
 import collections as c
 
 from uuid import uuid4
+import hashlib
 
 from django.core import serializers
 from django.core.files.storage import default_storage
 from django.core.files.base import ContentFile
 from django.core.files import File
 from django.core.urlresolvers import reverse
+from django.core.mail import send_mail
 from django.shortcuts import render, get_object_or_404, redirect
 from django.template import Context, RequestContext
 from django.template.loader import get_template
@@ -63,9 +65,11 @@ def get_user_notifications(user):
 	num_left_to_show = SHOW_AT_LEAST - len(unchecked_notifications)
 
 	# get seen notifications in order to show at least SHOW_AT_LEAST
-	checked_notifications = Notification.objects\
-		.filter(target_user=user, was_checked=True)\
-		.exclude(source_user=user).order_by('-creation_date')
+	checked_notifications = []
+	if num_left_to_show > 0:
+		checked_notifications = Notification.objects\
+			.filter(target_user=user, was_checked=True)\
+			.exclude(source_user=user).order_by('-creation_date')[:num_left_to_show]
 
 	# Force queryset evaluation
 	checked_notifications = list(checked_notifications)
@@ -1577,6 +1581,7 @@ def userRegistration(request):
 			user_profile = UserProfile(user=new_user)
 			user_profile.save()
 
+			# make a default avatar
 			foreground = [ 
 				"rgb(45,79,255)",
 				"rgb(254,180,44)",
@@ -1602,7 +1607,24 @@ def userRegistration(request):
 				File(f)
 			)
 
-			return redirect('../mainPage')
+			# send registration email
+			random_hash = hashlib.sha256(
+				'af612da003486b687' + new_user.username
+			).hexdigest()[:32]
+
+			# make a verification entry
+			verification = EmailVerification(user=new_user, code=random_hash)
+			verification.save()
+
+			# send an email
+			message = ('To verify your account, click this link: '
+				'http://luminocracy.org/email-verify/%s' % random_hash)
+			send_mail('Welcome to luminocracy', message, 
+				'welcome@luminocracy.org', [new_user.email], 
+				fail_silently=False
+			)
+
+			return redirect(reverse('mail_sent'))
 
 	else:
 		reg_form = UserRegisterForm(
@@ -1617,6 +1639,33 @@ def userRegistration(request):
 			'django_vars_js': get_django_vars_JSON(request=request)
 		}
 	)
+
+
+def mail_sent(request):
+	return render(
+		request,
+		'digidemo/check_your_mail.html',
+		{
+			'GLOBALS': get_globals(request),
+			'django_vars_js': get_django_vars_JSON(request=request)
+		}
+	)
+
+
+def verify_email(request, code):
+	user = get_object_or_404(EmailVerification, code=code).user
+	user.email_validate = True
+	user.save()
+
+	return render(
+		request,
+		'digidemo/validated.html',
+		{
+			'GLOBALS': get_globals(request),
+			'django_vars_js': get_django_vars_JSON(request=request)
+		}
+	)
+
 
 def resetPassword(request):
 	if(request.method == 'POST'):

@@ -32,9 +32,8 @@
 
 			<div class="marquee_section">
 				<h2 class="marquee_heading">
-					<div class="sector_tag {{sector.sector.name}}_sector">
-						{{sector.sector.name}}
-					</div>
+					{{sector.sector.render_link}}
+
 					<!--a href="{% url "petition_list" %}" class="marquee_see_more">
 						See all
 					</a-->
@@ -42,9 +41,7 @@
 
 				<div class="marquee_body">
 					{% for tag in sector.tags %}
-						<div class='tag'>
 							{{ tag.render_link }}
-						</div>
 					{% endfor %}
 				</div>
 				<div class="clear"></div>

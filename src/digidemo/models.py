@@ -382,6 +382,11 @@ class UserProfile(abstract_models.TimeStamped):
 			return static('digidemo/images/avatar_not_found.png')
 			
 
+class EmailVerification(abstract_models.TimeStamped):
+	user = models.ForeignKey(User)
+	code = models.CharField(max_length=60)
+
+
 class Person(abstract_models.TimeStamped):
 	fname = models.CharField(max_length=NAME_LENGTH)
 	lname = models.CharField(max_length=NAME_LENGTH)

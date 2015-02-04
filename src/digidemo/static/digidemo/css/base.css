@@ -368,7 +368,7 @@ div#navbar {
 }
 
 .notification_unchecked {
-	background: yellow;
+	background: rgb(219,250,251);
 }
 
 #notifications_menu {
@@ -571,13 +571,17 @@ div.tags  {
 .tag, .sector_tag {
 	display: block;
 	float: left;
-	padding: 0 3px 1px 4px;
+	padding: 0 6px 2px 6px;
 	margin: 2px;
 	font-family: ubuntu;
 }
 
 .tag {
 	background: rgb(250, 220, 255);
+}
+
+a.tag {
+	color: black;
 }
 
 a.economy_sector, .economy_sector {

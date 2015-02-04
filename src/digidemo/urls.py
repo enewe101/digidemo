@@ -36,6 +36,10 @@ urlpatterns = patterns('',
 	url(r'^login_required/(?P<next_url>.+)', Login().view, name='login_required'),
 	url(r'^do_reload/', do_reload, name='do_reload'),
 
+	# email verification
+	url(r'^email-verify/(?P<code>\w*)', verify_email, name='verify_email'),
+	url(r'^mail-sent', mail_sent, name='mail_sent'),
+
 	# main tabs
 	url(r'^petition_list', AllPetitionListView().view, name="petition_list"),
 	url(r'^issue_list/(?P<order_by>\w*)', 
