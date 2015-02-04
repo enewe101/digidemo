@@ -15,27 +15,35 @@ the role of webserver.
 
 1. Install git
 
-		see http://git-scm.com/book/en/Getting-Started-Installing-Git
+		# apt-get install git
+
+	see http://git-scm.com/book/en/Getting-Started-Installing-Git
 
 *If you are deploying perform steps 1 and 2, otherwise skip ahead to step 3.*
 
 2. Install Apache httpd webserver.
 
-		see http://http://httpd.apache.org/download.cgi
+		# apt-get install git
+
+	see http://http://httpd.apache.org/download.cgi
 
 3. Install mod\_wsgi, and configure apache webserver to use it.  Verify that
 	you can serve a simple wsgi test application on localhost
 
-		see https://code.google.com/p/modwsgi/
+		# apt-get install libapache2-mod-wsgi
+
+	see https://code.google.com/p/modwsgi/
 
 4. Install the X Virtual frame buffer, Xvfb:
 
-		sudo apt-get install xvfb
+		apt-get install xvfb
 
 *Start here if you are getting set up for development!*
 5. Install MySQL
 
-		see http://dev.mysql.com/downloads/installer/
+		apt-get install mysql-server
+
+	see http://dev.mysql.com/downloads/installer/
 
 	You'll need to do some config here.  Use the MySQL documentation to get 
 	through it!  Once it's installed and configured, you can test to make sure
@@ -45,27 +53,36 @@ the role of webserver.
 
 	That should take you to the mysql command-line tool (You'll see `mysql>`).
 
-6. Install python
+6. Install python headers
 
-		see https://www.python.org/download
+		apt-get install python-dev
+		
 
 7. Install pip
 
-		see http://pip.readthedocs.org/en/latest/installing.html
+		sudo apt-get install python-pip
+
+	see http://pip.readthedocs.org/en/latest/installing.html
+
+8. Install MySQLdb
+
+		apt-get install libmysqlclient-dev
+		pip install MySQL-python
+		
 
 8. Install Django
 	(may require Pillow; `$ pip install Pillow`)
 	Run this in the terminal:
 		
-		$ pip install Django
+		$ pip install Django==1.6.5
 
 9. Install Selenium (package for python)
 
 		$ pip install selenium
 
-10. Install difflib (package for python)
+10. Install pydenticon
 
-		(Actually, I didn't have to install it, check if you already have it).
+		pip install pydenticon
 
 11. Install haystack (package for python)
 
