@@ -18,9 +18,14 @@
 		<h2 class="subtitle float_left">Discussion area</h2>
 
 		<div class="section_buttons_right">
+			<a class="go_button_inline" href="{{issue.get_edit_url}}">
+				edit issue
+			</a>
 			<a class="go_button_inline" href="{{ issue.get_start_discussion_url }}">
 				start a discussion
 			</a>
+
+			<div class="clear"></div>
 
 			<!--a class="go_button_inline{% if highlighted == "closed" %}_highlighted{%endif%}" 
 				href="{{ issue.get_closed_discussions_url }}">
@@ -67,12 +72,6 @@
 
 {% block rightcol %}
 
-	<!--div class="section">
-		<a class="go_button" href="{{issue.get_edit_url}}">
-			start editing
-		</a>
-		<div class="clear"></div>
-	</div-->
 
 	<div class="take_note">
 		<img src="{% static "digidemo/images/icon_info.png" %}" 

@@ -40,7 +40,7 @@ from choices import *;
 OVERVIEW_TAB_NAME = 'issue'
 QUESTIONS_TAB_NAME = 'questions'
 OPINION_TAB_NAME = 'letters'
-EDIT_TAB_NAME = 'discussion'
+EDIT_TAB_NAME = 'edit / discuss'
 
 # Names we use for the top level "button" navigation
 ISSUE_NAV_NAME = 'issues'
@@ -94,9 +94,9 @@ def get_proposal_tabs(proposal, active_tab):
 	# This is the basic tabs definition for the proposal views
 	proposal_tabs = [
 		{'name': OVERVIEW_TAB_NAME,'url': proposal.get_proposal_url()},
+		{'name': EDIT_TAB_NAME,'url': proposal.get_open_discussions_url()},
 		{'name': QUESTIONS_TAB_NAME,'url': proposal.get_question_list_url()},
 		{'name': OPINION_TAB_NAME,'url': proposal.get_petitions_url()},
-		{'name': EDIT_TAB_NAME,'url': proposal.get_open_discussions_url()},
 	]
 
 	# mark the active tab as active
