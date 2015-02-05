@@ -75,5 +75,23 @@
 	<div id="header_border"> </div>
 	<div id="header_shadow"></div>
 
+			<!-- feedback form -->
+			<div id="feedback_area">
+				<a id="toggle_feedback">feedback</a>
+
+				<div id="feedback_form_wrapper">
+					<h2>Feedback</h2>
+					{% include "digidemo/_w_simple_form_wrapped.html" with form=GLOBALS.FEEDBACK_FORM %}
+				</div>
+			</div>
+			<script type="text/javascript">
+
+			(function(){
+				var tog_div = $('#toggle_feedback');
+				var show_div = $('#feedback_form_wrapper');
+				var tog = ToggleHidden(tog_div, show_div);
+			})();
+			</script>
+			<!-- end of feedback form -->
 </div>
 

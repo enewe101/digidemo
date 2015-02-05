@@ -222,6 +222,28 @@ def get_question_list_tabs(active_tab):
 
 	return question_list_tabs
 
+def feedback(request):
+	thank_you = False
+	if request.POST:
+
+		form = FeedbackForm(request.POST)
+
+		if form.is_valid():
+			form.save()
+			thank_you = True
+
+	else:
+		form = FeedbackForm()
+
+	return render(request, 'digidemo/feedback.html', {
+		'GLOBALS': get_globals(request),
+		'django_vars_js': get_django_vars_JSON(request=request),
+		'thank_you': thank_you,
+		'form': form
+	})
+
+
+
 	
 def get_globals(request):
 
@@ -229,7 +251,8 @@ def get_globals(request):
 		'DEBUG': DEBUG,
 		'SECTORS': Sector.objects.all(),
 		'IS_USER_AUTHENTICATED': request.user.is_authenticated(),
-		'USER': request.user
+		'USER': request.user,
+		'FEEDBACK_FORM': FeedbackForm()
 	}
 
 	if request.user.is_authenticated():
@@ -1483,27 +1506,12 @@ class AllPetitionListView(object):
 
 def what_about(request,sort_type='most_recent'):
 
-	if(sort_type=='most_recent'):
-		proposals = Proposal.objects.order_by('-creation_date')[:5]
-	elif(sort_type=='top_score'):
-		proposals = Proposal.objects.order_by('-score')[:5]
-
-	active_issues =  Proposal.objects.order_by('-score')[:6]
-	featured_post = Proposal.objects.get(pk=1);
-	users = UserProfile.objects.all();
-	new_petitions = Letter.objects.all()
-
-        
 	return render(
 		request,
-		'digidemo/index.html',
+		'digidemo/what_about.html',
 		{
 			'GLOBALS': get_globals(request),
-			'django_vars_js': get_django_vars_JSON(request=request),
-			'users': users,
-			'active_issues': active_issues,
-			'featured_post': featured_post,
-			'new_petitions': new_petitions
+			'django_vars_js': get_django_vars_JSON(request=request)
 		}
 	)
 

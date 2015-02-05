@@ -211,6 +211,19 @@ def auto_add_input_class(form_class_name, form_instance):
 			attrs['class'] = css_classes
 
 
+class FeedbackForm(AugmentedFormMixin, ModelForm):
+	form_class = 'feedback_form'
+	endpoint = '/send_feedback/'
+
+	class Meta:
+		model = FeedbackNote
+		fields = ['email', 'message']
+		widgets = {
+			'email': forms.EmailInput(),
+			'message': forms.Textarea()
+		}
+
+
 class EmailSignupForm(AugmentedFormMixin, ModelForm):
 	form_class = 'signup_form'
 	class Meta:

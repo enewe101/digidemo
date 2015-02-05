@@ -79,6 +79,16 @@ REASON_CHOICES = (
 	# Notification.
 
 
+class FeedbackNote(abstract_models.TimeStamped):
+    ''' 
+        This is for people that sign up for to receive emails on our landing
+        page.
+    '''
+    email = models.EmailField(max_length=EMAIL_LENGTH)
+    message = models.CharField(max_length="1024")
+
+
+
 class EmailRecipient(abstract_models.TimeStamped):
     ''' 
         This is for people that sign up for to receive emails on our landing

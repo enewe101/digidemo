@@ -26,6 +26,10 @@
 	font-family: ubuntu;
 }
 
+.computerModern {
+	font-family: computerModern;
+}
+
 .orange {
 	color: rgb(255, 102, 0);
 }
@@ -81,6 +85,24 @@
 
 .disabled{
 	color: rgb(220,220,220);
+}
+
+.text_page{
+	width: 700px;
+	margin: auto;
+	text-align: justify;
+}
+
+#feedback_area {
+	position: absolute;
+	border: solid 1px black;
+	background: white;
+}
+
+#feedback_form_wrapper {
+	margin: auto;
+	padding: 40px;
+	display: none;
 }
 
 .hr_flourish {

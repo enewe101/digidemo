@@ -209,9 +209,12 @@
 				<div id="login_form_div">
 					<div class="border_cover_med_short"></div>
 					<form id="login_form">
+						<div id="login_error"></div>
+						<label for="username">Username</label><br/>
 						<input class='text_input' id="username" type="text"
 							name="username" placeholder="username" />
 
+						<label for="password">Password</label><br/>
 						<input class='text_input' id="password" type="password"
 							name="password" placeholder="password" />
 
@@ -301,12 +304,14 @@
 
 	// define a callback to be executed after a successful login
 	var login_success_callback = function(data) {
+		$('#login_error').html('');
 		window.location = RELOAD_URL;
 	}
 
 	// define a callback to be executed when login fails
 	var login_error_callback = function(data) {
-		alert(data.toSource());
+		$('#login_error').html(
+			'<span class="form_errors">Wrong username or password<span>');
 	}
 
 	// bind the callbacks to the login widget
