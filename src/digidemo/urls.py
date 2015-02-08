@@ -26,7 +26,8 @@ urlpatterns = patterns('',
 	url('^admin/', include(admin.site.urls)),
 
 	# front page urls
-	url(r'^$', land, name='land'),
+	#url(r'^$', land, name='land'),
+	url(r'^$',mainPage, name='mainPage'),
 	url(r'^mainPage/$',mainPage, name='mainPage'),
 	url(r'^what_this_is_about/$', what_about, name='what_about'),
 	url(r'^find_issues/$', find_issues, name='find_issues'),

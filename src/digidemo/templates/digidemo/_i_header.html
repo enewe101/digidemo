@@ -18,7 +18,7 @@
 			<div class="short_nav_button" id="search_bar">
 				<img src="{% static "digidemo/images/search.png" %}" />
 
-				<div id="search_form">
+				<div id="search_form" title="not implemented">
 					<div class="border_cover"></div>
 					<form type="get" action="{% url "search" %}">  
 						<input placeholder="keywords" type="text" name="q" />
@@ -28,29 +28,29 @@
 				</div>
 			</div>
 			<script type="text/javascript">
-			(function(){
-				var search_button = $('#search_bar');
-				var search_form = $('#search_form');
-
-				// clicking in the search form doesn't bubble up to be a 
-				// click on the search button
-				search_form.click(function(e){
-					e.stopPropagation();
-				});
-
-				var tog = new ToggleHidden(search_button, search_form);
-
-				// clicking out of the search area gets rid of search form
-				doc_event_registrar.on('click', function(e){
-					tog.hide();
-				});
-				// ensure that clicking the search button doesn't bubble
-				// up to the document.click we just established
-				search_button.click(function(e) {
-					e.stopPropagation();
-				});
-
-			})();
+//				////			(function(){
+//				var search_button = $('#search_bar');
+//				var search_form = $('#search_form');
+//
+//				// clicking in the search form doesn't bubble up to be a 
+//				// click on the search button
+//				search_form.click(function(e){
+//					e.stopPropagation();
+//				});
+//
+//				var tog = new ToggleHidden(search_button, search_form);
+//
+//				// clicking out of the search area gets rid of search form
+//				doc_event_registrar.on('click', function(e){
+//					tog.hide();
+//				});
+//				// ensure that clicking the search button doesn't bubble
+//				// up to the document.click we just established
+//				search_button.click(function(e) {
+//					e.stopPropagation();
+//				});
+//
+//			})();
 
 			</script>
 

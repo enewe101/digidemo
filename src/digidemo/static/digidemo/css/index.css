@@ -15,9 +15,10 @@
 	float:left;
 }
 
-.cta {
-	color: rgb(128,0,128);
-	border: solid 2px rgb(170,0,212);
+a.cta {
+	color: white;
+	border: solid 2px rgb(140,0,152);
+	background: rgb(170,0,212);
 	border-radius: 10px;
 	float: left;
 	width: 140px;
