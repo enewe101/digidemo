@@ -64,40 +64,44 @@
 	<div class="section">
 		{% include "digidemo/_w_follow_post.html" %}
 	</div>
-	<!-- start of proposal sectors -->
-	<div class="section tags">
-		Sectors
-		<ul>
-			<li>
-				<div class="economy_sector_tag">
-					Economy
-				</div>
-			</li>
-			<li>
-				<div class="environment_sector_tag">
-					Environment
-				</div>
-			</li>
-		</ul>
+
+	<div id="tag_container">
+		<!-- start of proposal sectors -->
+		<div class="section tags">
+			Sectors
+			<ul>
+				<li>
+					<div class="economy_sector_tag">
+						Economy
+					</div>
+				</li>
+				<li>
+					<div class="environment_sector_tag">
+						Environment
+					</div>
+				</li>
+			</ul>
+			<div class="clear"></div>
+		</div>
+		<!-- end of proposal sectors -->
+
+		<!-- start of tags -->
+		<div class="section tags">
+			Tags
+			{% for tag in proposal.tags.all %}
+			<ul>
+				<li>
+					<div class="tag">
+						{{tag.render_link}}
+					</div>
+				</li>
+
+			</ul>
+			{% endfor %}
+			<div class="clear"></div>
+		</div>
+		<!-- end of tags -->
 		<div class="clear"></div>
 	</div>
-	<!-- end of proposal sectors -->
-
-	<!-- start of tags -->
-	<div class="section tags">
-		Tags
-		{% for tag in proposal.tags.all %}
-		<ul>
-			<li>
-				<div class="tag">
-					{{tag.render_link}}
-				</div>
-			</li>
-
-		</ul>
-		{% endfor %}
-		<div class="clear"></div>
-	</div>
-	<!-- end of tags -->
 
 {% endblock rightcol %}

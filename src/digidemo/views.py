@@ -391,6 +391,7 @@ def land(request):
 			email_form.endpoint = '/'
 
 	return render(request, 'digidemo/land.html', {
+		'GLOBALS': get_globals(request),
 		'thank_you': thank_you,
 		'email_form': email_form
 	})
@@ -436,6 +437,7 @@ def history(request, proposal_id):
 		request,
 		'digidemo/history.html',
 		{
+			'GLOBALS': get_globals(self.request),
 			'django_vars_js': get_django_vars_JSON(request=request),
 			'proposal': proposal,
 			'proposal_vote_form': proposal_vote_form,
@@ -795,6 +797,7 @@ class Login(AbstractView):
 		login_form = LoginForm(endpoint=self.request.path)
 
 		return {
+			'GLOBALS': get_globals(self.request),
 			'login_form': login_form,
 			'error': self.error
 		}
@@ -850,6 +853,7 @@ class EditProposalView(AbstractLoginRequiredView):
 		
 
 		return {
+			'GLOBALS': get_globals(self.request),
 			'headline': proposal.title,
 			'proposal': proposal,
 			'proposal_form': proposal_form,
@@ -963,6 +967,7 @@ class AddProposalView(AbstractLoginRequiredView):
 			cancel_url = self.request.META['HTTP_REFERER']
 
 		return {
+			'GLOBALS': get_globals(self.request),
 			'headline': 'new issue',
 			'proposal_form': proposal_form,
 			'tabs': None,
@@ -997,6 +1002,7 @@ class TagListView(AbstractView):
 				
 
 		return {
+			'GLOBALS': get_globals(self.request),
 			'sector_sets': sector_sets,
 			'active_navitem': TOPICS_NAV_NAME
 		}
@@ -1042,6 +1048,7 @@ class IssueListView(AbstractView):
 		tabs = get_issue_list_tabs(order_by)
 
 		return {
+			'GLOBALS': get_globals(self.request),
 			'tag_title': tag_title,
 			'sector_title': sector_title,
 			'issues': issues,
@@ -1080,6 +1087,7 @@ class AllPetitionsListView(AbstractView):
 		tabs = get_petition_list_tabs(order_by)
 
 		return {
+			'GLOBALS': get_globals(self.request),
 			'letters': petitions,
 			'tabs': tabs,
 			'logged_in_user': logged_in_user,
@@ -1112,6 +1120,7 @@ class AllQuestionsListView(AbstractView):
 		tabs = get_question_list_tabs(order_by)
 
 		return {
+			'GLOBALS': get_globals(self.request),
 			'questions': questions,
 			'tabs': tabs,
 			'logged_in_user': logged_in_user,
@@ -1148,6 +1157,7 @@ class MakePost(AbstractLoginRequiredView):
 		)
 
 		return 	{
+			'GLOBALS': get_globals(self.request),
 			'headline': self.target.title,
 			'target': self.target,
 			'tabs': self.get_tabs(),
@@ -1257,6 +1267,7 @@ class IssueOverview(AbstractView):
 			letter_sections.append(letter_section)
 
 		return {
+			'GLOBALS': get_globals(self.request),
 			'proposal': proposal,
 			'num_questions': questions.count,
 			'questions': questions[0:5],
@@ -1312,6 +1323,7 @@ class PostAreaView(AbstractView):
 			initial={'user':self.request.user, 'target':post})
 
 		return {
+			'GLOBALS': get_globals(self.request),
 			'post_section': post_section,
 			'subpost_sections': subpost_sections,
 			'subpost_form': subpost_form,
@@ -1354,6 +1366,7 @@ class PetitionListView(AbstractView):
 			letter_sections.append(letter_section)
 
 		return {
+			'GLOBALS': get_globals(self.request),
 			'section_title': '%d Petitions' % letters.count(),
 			'proposal': proposal,
 			'letter_sections': letter_sections,
@@ -1400,6 +1413,7 @@ class DiscussionListView(AbstractView):
 			is_open=False)
 
 		return {
+			'GLOBALS': get_globals(self.request),
 			'section_title': 'Welcome to the editor\'s area',
 			'issue': proposal,
 			'headline': proposal.title,
@@ -1429,6 +1443,7 @@ class QuestionListView(AbstractView):
 		logged_in_user = User.objects.get(pk=1)
 
 		return {
+			'GLOBALS': get_globals(self.request),
 			'section_title': '%d Questions' % questions.count(),
 			'proposal': proposal,
 			'target': proposal,
@@ -1458,6 +1473,7 @@ class PetitionView(AbstractView):
 			signed = True
 
 		return {
+			'GLOBALS': get_globals(self.request),
 			'signed': signed,
 			'headline': proposal.title,
 			'proposal': proposal,
@@ -1643,6 +1659,7 @@ def userRegistration(request):
 		request,
 		'digidemo/register.html',
 		{
+			'GLOBALS': get_globals(request),
 			'form' : reg_form,
 			'django_vars_js': get_django_vars_JSON(request=request)
 		}
@@ -1697,7 +1714,7 @@ def resetPassword(request):
 				from_email='donotreply@luminocracy.org'
 			)
 
-			return redirect('../mainPage')
+			return mainPage(request)
 
 	else:
 		pass_reset_form = ResetPasswordForm(endpoint=reverse('resetPassword'))
@@ -1706,6 +1723,7 @@ def resetPassword(request):
 		request,
 		'digidemo/reset_password.html',
 		{
+			'GLOBALS': get_globals(request),
 			'form' : pass_reset_form,
 			'django_vars_js': get_django_vars_JSON(request=request)
 		}
@@ -1762,6 +1780,7 @@ def users(request):
 	return render(
 		request,'digidemo/users.html',
 		{
+			'GLOBALS': get_globals(request),
 			'django_vars_js': get_django_vars_JSON(request=request),
 			'usersList' : listToReturn,
 		}
@@ -1833,6 +1852,7 @@ def userProfileEdit(request,userName) :
 			request,
 			'digidemo/userProfileEdit.html',
 			{
+				'GLOBALS': get_globals(request),
 				'django_vars_js': get_django_vars_JSON(request=request),
 				'user' : userProfileLoggedIn,
 				'country':COUNTRIES,
@@ -1845,6 +1865,7 @@ def errorPage(request, error):
 		request,
 		'digidemo/errorPage.html',
 		{
+			'GLOBALS': get_globals(request),
 			'django_vars_js': get_django_vars_JSON(request=request),
 			'error' : error,
 		}
