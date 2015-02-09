@@ -20,7 +20,7 @@ dependencies, but you won't be able to install them using apt-get.
 		
 		$ git clone https://github.com/enewe101/digidemo.git
 
-### Part 2 -- wiring
+### Part 1 -- wiring and config
 4. Set up a database and user that the  digidemo webapp will use
 		
 	Head into mysql:
@@ -56,7 +56,7 @@ dependencies, but you won't be able to install them using apt-get.
 	Go into settings and find spots where #<># occurs.  Make the changes
 	to reflect the location where you put the digidemo code.
 
-
+### Part 2 --- fire up and test the app
 6. Get the digidemo app ready, then fire it up. 
 	Inside `~/my_projects/digidemo/src` do:
 
