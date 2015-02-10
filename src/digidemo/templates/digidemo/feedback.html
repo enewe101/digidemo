@@ -6,7 +6,11 @@
 
 
 <div class="mid_form_tall">
-	<h1 class="computerModern">Thank You For Your Feedback</h1></br> 	
+	{% if thank_you %}
+		<h1 class="italic computerModern">Thank You For Your Feedback</h1></br> 	
+	{% else %}
+  		<h1 class="italic computerModern">Error</h1></br> 	
+	{% endif %}
 	{% include "digidemo/_w_simple_form_wrapped.html" with form=form %}
 </div>
 
