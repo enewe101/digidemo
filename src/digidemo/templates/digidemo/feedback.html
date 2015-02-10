@@ -4,14 +4,14 @@
 
 {% block middle %}
 
+{% if thank_you %}
+	<div><h1 class="italic computerModern">Thank you!</h1></div>
+{% else %}
+	<div class="mid_form_tall">
+ 		<h1 class="italic computerModern">Whoops</h1></br> 
+		{% include "digidemo/_w_simple_form_wrapped.html" with form=form %}	
+	</div>
+{% endif %}
 
-<div class="mid_form_tall">
-	{% if thank_you %}
-		<h1 class="italic computerModern">Thank You For Your Feedback</h1></br> 	
-	{% else %}
-  		<h1 class="italic computerModern">Error</h1></br> 	
-	{% endif %}
-	{% include "digidemo/_w_simple_form_wrapped.html" with form=form %}
-</div>
 
 {% endblock middle %}
