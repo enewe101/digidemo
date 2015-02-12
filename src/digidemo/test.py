@@ -776,6 +776,129 @@ class QuestionFormTest(SeleniumTestCase):
 		self.assertEqual(error_class, FIELD_WRAPPER_ERROR_CLASS)
 
 
+# 
+# ** Stub for Discussion Test
+#
+class AddDiscussionTest(SeleniumTestCase):
+	'''
+		Tests adding a discussion discussion using the add discussion form.
+		Ensures that added discussions display correctly.  Tests that 
+		submitting an incomplete form triggers errors.
+	'''
+
+	TITLE = 'Test Discussion'
+	TEXT = 'Charlie Brown, why do you test my patience?'
+	TITLE_ERROR = 'error_message_for_the_title'  
+	TEXT_ERROR = 'error_message_for_the_text'
+
+	#  vv START HERE vv
+	def test_add_complete_discussion(self):
+		'''
+			Tests adding a discussion.  Ensures the discussion displays
+			correctly after adding it, and that it is included in the 
+			discussion list view for the proposal.
+		'''
+
+		# login a regular user
+		self.login_regularuser()
+		user = User.objects.get(username='regularuser')
+
+		# visit the edit/discussion page for a proposal
+		proposal = Proposal.objects.get(pk=1)
+		url = self.live_server_url + proposal.get_start_discussion_url()
+		self.driver.get(url)
+
+		#
+		#   o O   You'll need to fill in some stuff to make this work!
+		#    v	 
+		#
+		# use webdriver commands to insert the test discussion's title
+		# you'll need to get the right html id here
+		text_input_id = 'html_id_for_the_title_text_input_in_discussion_form'
+		self.driver.find_element('id', text_input_id).send_keys(self.TITLE)
+
+		# do similarly to insert the discussion text. (get the correct id)
+		text_input_id = 'html_id_for_the_body_text_input_in_discussion_form'
+		self.driver.find_element('id', text_input_id).send_keys(self.TEXT)
+
+		# now click the form's submit button (get the correct id!!)
+		submit_button_id = 'html_id_for_the_submit_button'
+		self.driver.find_element('id', submit_button_id).click()
+
+		# check that the discussion displays correctly on the page.  Look
+		# for the display of the title and text
+		# this is a bit complicated -- basically, the act of checking for 
+		# the text is wrapped in a "wait" command, which means that 
+		# selenium will keep trying to find that text for 3 seconds before
+		# giving up.  That gives the content time to load on the page.
+		some_html_id = 'html_id_for_the_text_displaying_the_title'
+		self.assertTrue(
+			self.wait.until(lambda driver:
+				self.driver.find_element('id', ).text
+				== self.TITLE
+			)
+		)
+
+		# do a similar check for the display of the discussion body text
+		some_html_id = 'html_id_for_the_text_displaying_the_body_text'
+		self.assertTrue(
+			self.wait.until(lambda driver:
+				self.driver.find_element('id', some_html_id).text
+				== self.TEXT
+			)
+		)
+
+		# now navigate to the discussion list view and check that the new
+		# discussion also displays in the list (the bug was that it didn't 
+		# display here)  You should use similar commands as above, to
+		# find the appropriate html element, and ensure that it has the
+		# right content in it
+
+		# Finally test that the discussion exists in the database.  
+		# This will throw an error automatically if it the submitted 
+		# discussion doesn't exist.
+		d = Discussion.objects.get(
+			proposal=proposal,
+			title=self.TITLE,
+			text=self.TEXT
+			user=user,
+			is_open=True
+		)
+
+
+	def test_add_incomplete_discussion(self):
+		'''
+			Tests error messaging when a discussion is added incorrectly.  
+		'''
+
+		# login a regular user
+		self.login_regularuser()
+
+		# visit the edit/discussion page for a proposal
+		proposal = Proposal.objects.get(pk=1)
+		url = self.live_server_url + proposal.get_start_discussion_url()
+		self.driver.get(url)
+
+		# use webdriver commands to insert text into the form and submit it
+		# just like above.  Except leave the title blank!
+
+		# An error message should be displayed
+		# note -- you'll need to set the TITLE_ERROR to be what it actually
+		# is (TITLE_ERROR is a class attribute defined above just inside the
+		# start of this class definition)
+		error_msg_id = "html_id_for_error_msg_text"
+		self.assertTrue(
+			self.wait.until(lambda driver:
+				self.driver.find_element('id', error_msg_id).text
+				== self.TITLE_ERROR
+			)
+		)
+
+		# Now do the same, but this time, leave the discussion body text
+		# blank, and check that it shows an error.
+
+		
+
 
 class FormTest(SeleniumTestCase):
 
