@@ -560,6 +560,7 @@ input[type="text"], input[type="password"], input[type="email"] {
 #middle {
 	padding: 40px 0 40px 0;
 	clear: both;
+	min-height: 350px;
 }
 
 div.tags  {
