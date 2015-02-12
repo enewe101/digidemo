@@ -467,7 +467,7 @@ class Letter(abstract_models.Subscribable):
 class Discussion(abstract_models.ScoredPost, abstract_models.Subscribable):
 	target = models.ForeignKey(Proposal, null=True)
 	title = models.CharField(max_length=TITLE_LENGTH)
-	is_open = models.BooleanField(default=False)
+	is_open = models.BooleanField(default=True)
 
 	def get_event_type(self):
 		return 'DISCUSSION'
