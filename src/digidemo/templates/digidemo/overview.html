@@ -149,13 +149,11 @@
 
 	<div id="tags" class="tags">
 		{% for sector in proposal.sectors.all %}
-			 
-				{{ sector.render_link }}
-			
+			{{ sector.render_link }}
 		{% endfor %}
 
 		{% for tag in proposal.tags.all %}
-				{{ tag.render_link }}
+			{{ tag.render_link }}
 		{% endfor %}
 		
 	</div>

@@ -565,15 +565,13 @@ input[type="text"], input[type="password"], input[type="email"] {
 
 div.tags  {
 	width: 650px;
-	float:left;
 	margin: 10px 0 20px 0;
 }
 
 .tag, .sector_tag {
-	display: block;
-	float: left;
+	display: inline;
 	padding: 0 6px 2px 6px;
-	margin: 2px;
+	margin: 0px;
 	font-family: ubuntu;
 }
 
