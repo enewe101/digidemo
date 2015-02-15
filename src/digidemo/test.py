@@ -813,16 +813,15 @@ class AddDiscussionTest(SeleniumTestCase):
 		#    v	 
 		#
 		# use webdriver commands to insert the test discussion's title
-		# you'll need to get the right html id here
-		text_input_id = 'html_id_for_the_title_text_input_in_discussion_form'
+		text_input_id = 'DiscussionForm__title'
 		self.driver.find_element('id', text_input_id).send_keys(self.TITLE)
 
-		# do similarly to insert the discussion text. (get the correct id)
-		text_input_id = 'html_id_for_the_body_text_input_in_discussion_form'
+		# do similarly to insert the discussion text. 
+		text_input_id = 'DiscussionForm__text'
 		self.driver.find_element('id', text_input_id).send_keys(self.TEXT)
 
-		# now click the form's submit button (get the correct id!!)
-		submit_button_id = 'html_id_for_the_submit_button'
+		# now click the form's submit button 
+		submit_button_id = 'DiscussionForm__submit'
 		self.driver.find_element('id', submit_button_id).click()
 
 		# check that the discussion displays correctly on the page.  Look
