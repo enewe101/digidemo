@@ -1,4 +1,5 @@
 {% extends "digidemo/__two_column.html" %}
+{% load apptags %}
 {% load staticfiles %}
 
 {% block css %}
@@ -65,10 +66,7 @@
 				<div class="clear"></div>
 
 				<div class="letter_body">
-					{{ letter_section.post.text|truncatewords:100 }}
-					{% if letter_section.post.text|wordcount > 100 %}
-						<a href="#">view full letter</a>
-					{% endif %}
+					{{ letter_section.post.text|markdown }}
 				</div>
 
 			</div>
