@@ -7,11 +7,11 @@
 
 	<!-- start discussion main area -->
 	<div class="post_main_area">
-			<h2 class="post_title">{{ post_section.post.title }}</h2>
+			<h2 id ="post__title"class="post_title">{{ post_section.post.title }}</h2>
 			<div class="post_user">
 				{% include "digidemo/_i_user_id.html" with user=post_section.post.user %}
 			</div>
-			<div class="post_body">{{ post_section.post.text }}</div>
+			<div id ="post__body" class="post_body">{{ post_section.post.text }}</div>
 			<div class="clear"></div>
 	</div>
 	<!-- end discussion main area -->
