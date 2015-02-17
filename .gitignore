@@ -2,7 +2,7 @@ resources/*
 static/*
 media/*
 temp/*
-docs/my_notes/*
+docs/*
 *.svg
 *.pyc
 *.swp
