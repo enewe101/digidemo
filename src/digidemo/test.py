@@ -895,7 +895,6 @@ class AddDiscussionTest(SeleniumTestCase):
 
 		# do a similar check for the display of the discussion body text
 		discussion_text_id = "discussion_text_%d" % discussion_id
-		print self.driver.find_element('id', discussion_text_id).text
 		self.assertTrue(
 			self.wait.until(lambda driver:
 
