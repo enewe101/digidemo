@@ -55,10 +55,19 @@
 						replies
 					</div>
 				</div>
-				<div id= "{{ item.title|cut:' '|lower }}" class="list_body">
-					<a id= "{{ item.title|cut:' '|upper }}" href="{{ item.get_url }}">{{ item.title }}</a><br />
-						{{ item.text|truncatechars:180 }}
-					<span class="bold">~{{ item.user }}</span>
+				<div id="discussion_{{ item.pk }}" class="list_body">
+					<a id="discussion_title_{{ item.pk }}"
+						href="{{ item.get_url }}">
+						{{ item.title }}
+					</a>
+					<div id="discussion_body_{{ item.pk }}">
+						<span id="discussion_text_{{item.pk}}">
+							{{ item.text|truncatechars:180 }}
+						</span>
+						<span class="bold">
+							~{{ item.user }}
+						</span>
+					</div>
 				</div>
 				<div class="clear"></div>
 			</div>

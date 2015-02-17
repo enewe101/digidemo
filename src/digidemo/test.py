@@ -787,8 +787,6 @@ class AddDiscussionTest(SeleniumTestCase):
 	'''
 
 	TITLE = 'Test Discussion'
-	TITLE_ID = 'TESTDISCUSSION' # This is the unique title id used in discussion_list.html 
-	TEXT_ID = 'testdiscussion'  # The title-id is joined and uppercase, the text-id is all lowercase
 	TEXT = 'Charlie Brown, why do you test my patience?'
 	ERROR = 'This field is required.'  
 	
@@ -809,10 +807,6 @@ class AddDiscussionTest(SeleniumTestCase):
 		url = self.live_server_url + proposal.get_start_discussion_url()
 		self.driver.get(url)
 
-		#
-		#   o O   You'll need to fill in some stuff to make this work!
-		#    v	 
-		#
 		# use webdriver commands to insert the test discussion's title
 		title_input_id = 'DiscussionForm__title'
 		self.driver.find_element('id', title_input_id).send_keys(self.TITLE)
@@ -824,6 +818,30 @@ class AddDiscussionTest(SeleniumTestCase):
 		# now click the form's submit button 
 		submit_button_id = 'DiscussionForm__submit'
 		self.driver.find_element('id', submit_button_id).click()
+
+		# This used to come after verifying the display of the discussion
+		# on the page.  Instead, I've moved checking the discussion appears
+		# in the database, because we'll need the ID (which is determined in 
+		# the database) to find the right discussion on the page.
+		# This will throw an error automatically if the submitted 
+		# discussion doesn't exist.
+		d = Discussion.objects.get(
+
+			# vv Error was here vv.  "proposal" should be "target". My bad.
+			#proposal=proposal,
+
+			# vv Correction here vv
+			target=proposal,
+
+			title=self.TITLE,
+			text=self.TEXT,
+			user=user,
+			is_open=True
+		)
+
+		# get the ID, which is used to find the discussion within th 
+		# discussion list
+		discussion_id = d.pk
 
 		# check that the discussion displays correctly on the page.  Look
 		# for the display of the title and text
@@ -859,34 +877,34 @@ class AddDiscussionTest(SeleniumTestCase):
 
 		# find the appropriate html element, and ensure that it has the
 		# right content in it
-
-		discussion_title_id = self.TITLE_ID
+		#
+		# I decided to change slightly how the id's are working, 
+		# because the discussion title might not necessarily be unique...
+		#
+		discussion_title_id = "discussion_title_%d" % discussion_id
 		self.assertTrue(
 			self.wait.until(lambda driver:
-				self.driver.find_element('id', discussion_title_id).text
-				== self.TITLE
+
+				# vv using the text_is_similar() function, rather than a==b
+				text_is_similar(
+					self.driver.find_element('id', discussion_title_id).text,
+					self.TITLE
+				)
 			)
 		)
 
-		#do a similar check for the display of the discussion body text
-		#discussion_text_id = self.TEXT_ID
-		#self.assertTrue(
-		#	self.wait.until(lambda driver:
-		#		self.driver.find_element('id', discussion_text_id).text
-		#		== self.TEXT
-		#	)
-		#)
+		# do a similar check for the display of the discussion body text
+		discussion_text_id = "discussion_text_%d" % discussion_id
+		print self.driver.find_element('id', discussion_text_id).text
+		self.assertTrue(
+			self.wait.until(lambda driver:
 
-
-		#Finally test that the discussion exists in the database.  
-		#This will throw an error automatically if the submitted 
-		#discussion doesn't exist.
-		d = Discussion.objects.get(
-			proposal=proposal,
-			title=self.TITLE,
-			text=self.TEXT,
-			user=user,
-			is_open=True
+				# vv using the text_is_similar() function, rather than a==b
+				text_is_similar(
+					self.driver.find_element('id', discussion_text_id).text,
+					self.TEXT
+				)
+			)
 		)
 
 
