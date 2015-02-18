@@ -331,7 +331,7 @@ class UserProfile(abstract_models.TimeStamped):
 	do_email_responses = models.BooleanField(default=True)
 	do_email_petitions = models.BooleanField(default=True)
 	do_email_watched = models.BooleanField(default=True)
-	
+
 	# non-field class attributes
 	rep_events = {
 		'up_proposal': 10,

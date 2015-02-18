@@ -209,27 +209,6 @@ class SeleniumTestCase(LiveServerTestCase):
 		
 
 
-## Useful if you have a few tests one class that need to login. 
-## it logs in the user once when the test class is first made.
-## Make sure to put it *after* SeleniumTestCase!! 
-## 
-## e.g.
-##	MyTetClass(SeleniumTestCase, RegularuserMixin): ...
-##
-## of regular user at the start of a test class's execution.  
-##
-#class RegularuserMixin(object):
-#	@classmethod
-#	def setUpClass(cls):
-#		super(RegularuserMixin, cls).setUpClass()
-#		print 'doing mixin'
-#		cls.login_regularuser()
-
-
-
-
-
-
 # Tests the leaving comments.  Tests the comment forms for all the various
 # types of comments and places they occur.  Tests that submitting an empty
 # comment generates an error message for the user.  
