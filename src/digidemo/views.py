@@ -1731,6 +1731,7 @@ def resetPassword(request):
 		}
 	)
 
+
 def get_default_context(request):
 
 	logged_in_user = User.objects.get(pk=1)
@@ -1874,9 +1875,9 @@ def errorPage(request, error):
 	)
 
 
-#        ,------,
-#   o O <` WAT? |
-#    ^   \______,
+#        ,------,   ,----------------------,
+#   o O <` WAT? |  | levinshtein distance!	>  * *
+#    ^   \______,   \______________________/    _
 #
 def lev(a, b):
 	if not a: return len(b)
