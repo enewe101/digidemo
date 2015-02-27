@@ -399,14 +399,7 @@ def land(request):
 
 def history(request, proposal_id):
 
-	# ** Hardcoded the logged in user to be enewe101 **
-	logged_in_user = User.objects.get(pk=1)
-
 	proposal = Proposal.objects.get(pk=proposal_id)
-
-	# make a proposal vote form
-	proposal_vote_form = get_vote_form(
-		ProposalVote, ProposalVoteForm, logged_in_user, proposal)
 
 	# make diff between the latest version of the proposal and the one
 	# before it
@@ -440,8 +433,6 @@ def history(request, proposal_id):
 			'GLOBALS': get_globals(self.request),
 			'django_vars_js': get_django_vars_JSON(request=request),
 			'proposal': proposal,
-			'proposal_vote_form': proposal_vote_form,
-			'logged_in_user': logged_in_user,
 			'diff_table': diff_table,
 			'active_navitem': 'issues',
 			'tabs': get_proposal_tabs(proposal, 'edit')
@@ -677,8 +668,6 @@ class AbstractView(object):
 
 	# Preloads the context with stuff that pretty much every view should have
 	def get_default_context(self):
-
-		logged_in_user = User.objects.get(pk=1)
 
 		return {
 			'GLOBALS': get_globals(self.request),
@@ -1063,8 +1052,6 @@ class AllPetitionsListView(AbstractView):
 
 	def get_context_data(self):
 
-		logged_in_user = User.objects.get(pk=1)
-
 		# get the list of petitions, sorted in the desired way
 		order_by = self.kwargs['order_by'] or 'interesting'
 		if order_by == 'interesting':
@@ -1090,7 +1077,6 @@ class AllPetitionsListView(AbstractView):
 			'GLOBALS': get_globals(self.request),
 			'letters': petitions,
 			'tabs': tabs,
-			'logged_in_user': logged_in_user,
 			'active_navitem': OPINION_NAV_NAME
 		}
 
@@ -1099,8 +1085,6 @@ class AllQuestionsListView(AbstractView):
 	template = 'digidemo/all_questions_list.html'
 
 	def get_context_data(self):
-
-		logged_in_user = User.objects.get(pk=1)
 
 		# get the list of questions, sorted in the desired way
 		order_by = self.kwargs['order_by'] or 'interesting'
@@ -1123,7 +1107,6 @@ class AllQuestionsListView(AbstractView):
 			'GLOBALS': get_globals(self.request),
 			'questions': questions,
 			'tabs': tabs,
-			'logged_in_user': logged_in_user,
 			'active_navitem': QUESTIONS_NAV_NAME
 		}
 
@@ -1442,7 +1425,6 @@ class QuestionListView(AbstractView):
 	def get_context_data(self):
 		proposal = Proposal.objects.get(pk=self.kwargs['proposal_id'])
 		questions = Question.objects.filter(target=proposal)
-		logged_in_user = User.objects.get(pk=1)
 
 		return {
 			'GLOBALS': get_globals(self.request),
@@ -1451,7 +1433,6 @@ class QuestionListView(AbstractView):
 			'target': proposal,
 			'headline': proposal.title,
 			'items': questions,
-			'logged_in_user': logged_in_user,
 			'tabs': get_proposal_tabs(proposal, QUESTIONS_TAB_NAME),
 			'active_navitem': QUESTIONS_NAV_NAME
 		}
@@ -1568,7 +1549,7 @@ def mainPage(request,sort_type='most_recent'):
 		proposals = Proposal.objects.order_by('-score')[:5]
 
 	active_issues =  Proposal.objects.order_by('-score')[:6]
-	featured_post = Proposal.objects.get(pk=1);
+	featured_post = get_or_none(Proposal, pk=1);
 	users = UserProfile.objects.all();
 	new_petitions = Letter.objects.all()
 
@@ -1733,8 +1714,6 @@ def resetPassword(request):
 
 
 def get_default_context(request):
-
-	logged_in_user = User.objects.get(pk=1)
 
 	return {
 		'GLOBALS': get_globals(request),

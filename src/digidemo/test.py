@@ -75,6 +75,8 @@ class SeleniumTestCase(LiveServerTestCase):
 		how to use WebDriver and WebDriverWait
 	'''
 
+	fixtures = ['test_fixture']
+
 	LIVE_SERVER_URL = 'localhost:8081'
 
 	@classmethod
@@ -206,6 +208,13 @@ class SeleniumTestCase(LiveServerTestCase):
 		})
 
 		cls.click('LoginForm__submit')
+
+
+	def logout(cls):
+		# click the avatar
+		cls.click('logged_in_div')
+		cls.click('logout')
+	
 		
 
 
@@ -340,13 +349,13 @@ class CommentTest(SeleniumTestCase):
 		comment_form_spec = {
 			'url': self.live_server_url + question.get_url(),
 			'comment_class': AnswerComment,
-			'comment_textarea_id': 'AnswerCommentForm_2_text',
-			'toggler_id': '_w_toggle_hidden_comment_2',
+			'comment_textarea_id': 'AnswerCommentForm_3_text',
+			'toggler_id': '_w_toggle_hidden_comment_3',
 			'comment_text': 'Test comment 6!',
-			'comments_wrapper_id': 'comments_2',
+			'comments_wrapper_id': 'comments_3',
 			'comments_class': 'letter_comment',
 			'username': REG_USERNAME,
-			'submit_id': 'AnswerCommentForm_2_submit'
+			'submit_id': 'AnswerCommentForm_3_submit'
 		}
 		self.submit_comment(**comment_form_spec)
 
@@ -356,14 +365,14 @@ class CommentTest(SeleniumTestCase):
 		comment_form_spec = {
 			'url': self.live_server_url + question.get_url(),
 			'comment_class': AnswerComment,
-			'comment_textarea_id': 'AnswerCommentForm_2_text',
-			'toggler_id': '_w_toggle_hidden_comment_2',
+			'comment_textarea_id': 'AnswerCommentForm_3_text',
+			'toggler_id': '_w_toggle_hidden_comment_3',
 			'comment_text': 'Test comment 7!',
-			'comments_wrapper_id': 'comments_2',
+			'comments_wrapper_id': 'comments_3',
 			'comments_class': 'letter_comment',
 			'username': REG_USERNAME,
-			'submit_id': 'AnswerCommentForm_2_submit',
-			'error_div_id': 'AnswerCommentForm_2_text_errors',
+			'submit_id': 'AnswerCommentForm_3_submit',
+			'error_div_id': 'AnswerCommentForm_3_text_errors',
 			'error_text': 'This field is required.'
 		}
 		self.submit_blank_comment(**comment_form_spec)
@@ -428,12 +437,15 @@ class CommentTest(SeleniumTestCase):
 			subscription_id=comment.subscription_id
 		)
 
+		# TODO: restore publish-subscribe testing after changes to 
+		# publish-subscribe system have been made
+
 		# ...and that she was subscribed to the thing she commented on
-		sub = Subscription.objects.get(
-			user=user,
-			reason='COMMENTER',
-			subscription_id=comment.target.subscription_id
-		)
+		#sub = Subscription.objects.get(
+		#	user=user,
+		#	reason='COMMENTER',
+		#	subscription_id=comment.target.subscription_id
+		#)
 
 		# Check that the comment textarea was hidden, and that when shown
 		# it has been cleared of the last comment entered
@@ -503,33 +515,32 @@ class QuestionRenderTest(SeleniumTestCase):
 
 		# make sure the question contents displayed correctly
 		title = self.driver.find_element_by_class_name('post_title')
-		self.assertEqual(title.text, question.title)
+		self.assertTrue(text_is_similar(title.text, question.title))
 		body = self.driver.find_element_by_class_name('post_body')
-		self.assertEqual(body.text, question.text)
+		self.assertTrue(text_is_similar(body.text, question.text))
 
 		# TODO: this is fragile.  It should be based on the actual 
 		# answer objects...
 
 		# make sure that all the answers showed up
-		answers = Answer.objects.filter(target=question)
+		answers = Answer.objects.filter(target=question).order_by('pk')
 		answer_divs = self.driver.find_elements_by_class_name('subpost_body')
 		self.assertEqual(len(answer_divs), answers.count())
 		space_match = re.compile(r'\s')
 		for i in range(len(answer_divs)):
-
-			# Answer 42 got deleted from the test data.  
-			# Witness the fragility! (see above TODO)
-			if i==41:
-				continue
 
 			a, a_div = answers[i], answer_divs[i]
 			self.assertEqual(
 				space_match.sub('', a_div.text), 
 				space_match.sub('', a.text)
 			)
-			self.driver.find_element('id', 'AnswerVoteForm_%d_upvote'%(i+1))
-			self.driver.find_element('id', 'AnswerVoteForm_%d_score'%(i+1))
-			self.driver.find_element('id', 'AnswerVoteForm_%d_downvote'%(i+1))
+
+			pk = a.pk
+
+			self.driver.find_element('id', 'AnswerVoteForm_%d_upvote'%(pk))
+			self.driver.find_element('id', 'AnswerVoteForm_%d_score'%(pk))
+			self.driver.find_element(
+				'id', 'AnswerVoteForm_%d_downvote'%(pk))
 		
 
 
@@ -755,8 +766,7 @@ class QuestionFormTest(SeleniumTestCase):
 		self.assertEqual(error_class, FIELD_WRAPPER_ERROR_CLASS)
 
 
-# 
-# ** Stub for Discussion Test
+# Test adding a discussion 
 #
 class AddDiscussionTest(SeleniumTestCase):
 	'''
@@ -769,7 +779,6 @@ class AddDiscussionTest(SeleniumTestCase):
 	TEXT = 'Charlie Brown, why do you test my patience?'
 	ERROR = 'This field is required.'  
 	
-	#  vv START HERE vv
 	def test_add_complete_discussion(self):
 		'''
 			Tests adding a discussion.  Ensures the discussion displays
@@ -798,36 +807,21 @@ class AddDiscussionTest(SeleniumTestCase):
 		submit_button_id = 'DiscussionForm__submit'
 		self.driver.find_element('id', submit_button_id).click()
 
-		# This used to come after verifying the display of the discussion
-		# on the page.  Instead, I've moved checking the discussion appears
-		# in the database, because we'll need the ID (which is determined in 
-		# the database) to find the right discussion on the page.
-		# This will throw an error automatically if the submitted 
-		# discussion doesn't exist.
+		# Check that the discussion was added to the database
 		d = Discussion.objects.get(
-
-			# vv Error was here vv.  "proposal" should be "target". My bad.
-			#proposal=proposal,
-
-			# vv Correction here vv
 			target=proposal,
-
 			title=self.TITLE,
 			text=self.TEXT,
 			user=user,
 			is_open=True
 		)
 
-		# get the ID, which is used to find the discussion within th 
+		# get the ID, which is used to find the discussion within the
 		# discussion list
 		discussion_id = d.pk
 
 		# check that the discussion displays correctly on the page.  Look
 		# for the display of the title and text
-		# this is a bit complicated -- basically, the act of checking for 
-		# the text is wrapped in a "wait" command, which means that 
-		# selenium will keep trying to find that text for 3 seconds before
-		# giving up.  That gives the content time to load on the page.
 		post_title_id = 'post__title'
 		self.assertTrue(
 			self.wait.until(lambda driver:
@@ -846,8 +840,7 @@ class AddDiscussionTest(SeleniumTestCase):
 		)
 
 		# now navigate to the discussion list view and check that the new
-		# discussion also displays in the list (the bug was that it didn't 
-		# display here)  
+		# discussion also displays in the list
 
 		# visit the edit/discussion page for a proposal
 		proposal = Proposal.objects.get(pk=1)
@@ -856,15 +849,9 @@ class AddDiscussionTest(SeleniumTestCase):
 
 		# find the appropriate html element, and ensure that it has the
 		# right content in it
-		#
-		# I decided to change slightly how the id's are working, 
-		# because the discussion title might not necessarily be unique...
-		#
 		discussion_title_id = "discussion_title_%d" % discussion_id
 		self.assertTrue(
 			self.wait.until(lambda driver:
-
-				# vv using the text_is_similar() function, rather than a==b
 				text_is_similar(
 					self.driver.find_element('id', discussion_title_id).text,
 					self.TITLE
@@ -876,8 +863,6 @@ class AddDiscussionTest(SeleniumTestCase):
 		discussion_text_id = "discussion_text_%d" % discussion_id
 		self.assertTrue(
 			self.wait.until(lambda driver:
-
-				# vv using the text_is_similar() function, rather than a==b
 				text_is_similar(
 					self.driver.find_element('id', discussion_text_id).text,
 					self.TEXT
@@ -899,7 +884,7 @@ class AddDiscussionTest(SeleniumTestCase):
 		url = self.live_server_url + proposal.get_start_discussion_url()
 		self.driver.get(url)
 
-		# use webdriver commands to insert the test discussion's title
+		# Leave the test discussion's title blank
 		title_input_id = 'DiscussionForm__title'
 		self.driver.find_element('id', title_input_id).send_keys('')
 
@@ -938,7 +923,7 @@ class AddDiscussionTest(SeleniumTestCase):
 		title_input_id = 'DiscussionForm__title'
 		self.driver.find_element('id', title_input_id).send_keys(self.TITLE)
 
-		# do similarly to insert the discussion text. 
+		# leave the test discussions body blank
 		text_input_id = 'DiscussionForm__text'
 		self.driver.find_element('id', text_input_id).send_keys('')
 
@@ -953,7 +938,6 @@ class AddDiscussionTest(SeleniumTestCase):
 				== self.ERROR
 			)
 		)
-
 
 
 class FormTest(SeleniumTestCase):
@@ -1261,28 +1245,30 @@ class ProposalFormTest(FormTest):
 			Tag.objects.get(name=tag_names[1])
 		]
 
-		for tag in tag_objects:
+		# TODO: restore publish-subscribe system after making changes to it
 
-			p = Publication.objects.get(
-				subscription_id=tag.subscription_id,
-				source_user=user,
-				event_type=event_type
-			)
-			self.assertEqual(p.was_posted, False)
-			self.assertEqual(p.event_data, proposal.text[:100])
-			self.assertEqual(p.link_back, 
-				proposal.get_url_by_view_name('proposal'))
+		#for tag in tag_objects:
 
-		for sector in sectors:
-			# Check if a Publication was made against the sector
-			p = Publication.objects.get(
-				subscription_id=sector.subscription_id)
-			self.assertEqual(p.source_user, user)
-			self.assertEqual(p.event_type, event_type)
-			self.assertEqual(p.was_posted, False)
-			self.assertEqual(p.event_data, proposal.text[:100])
-			self.assertEqual(p.link_back, 
-				proposal.get_url_by_view_name('proposal'))
+		#	p = Publication.objects.get(
+		#		subscription_id=tag.subscription_id,
+		#		source_user=user,
+		#		event_type=event_type
+		#	)
+		#	self.assertEqual(p.was_posted, False)
+		#	self.assertEqual(p.event_data, proposal.text[:100])
+		#	self.assertEqual(p.link_back, 
+		#		proposal.get_url_by_view_name('proposal'))
+
+		#for sector in sectors:
+		#	# Check if a Publication was made against the sector
+		#	p = Publication.objects.get(
+		#		subscription_id=sector.subscription_id,
+		#		source_user=user,
+		#		event_type=event_type,
+		#		was_posted=False,
+		#		event_data=proposal.text[:100],
+		#		link_back=proposal.get_url_by_view_name('proposal')
+		#	)
 
 
 class AddProposalTest(ProposalFormTest):
@@ -1305,19 +1291,10 @@ class VoteTest(SeleniumTestCase):
 	down_on_class = 'downvote_on'
 
 
-	def test_all_votes(self):
+
+	def test_question_vote(self):
 		self.login_regularuser()
-
-		self.QuestionVote()
-		self.AnswerVote()
-		# self.NewAnswerVote()
-		self.DiscussionVote()
-		self.ReplyVote()
-		# self.NewReplyVote()
-
-
-	def QuestionVote(self):
-		url = self.live_server_url + Question.objects.get(pk=2).get_url()
+		url = self.live_server_url + Question.objects.get(pk=1).get_url()
 		vote_spec = {
 			'up_id': 'QuestionVoteForm_q_upvote',
 			'score_id': 'QuestionVoteForm_q_score',
@@ -1328,42 +1305,22 @@ class VoteTest(SeleniumTestCase):
 		self.vote_test(**vote_spec)
 
 
-	def AnswerVote(self):
+	def test_answer_vote(self):
+		self.login_superuser()
 		url = self.live_server_url + Question.objects.get(pk=1).get_url()
 		vote_spec = {
-			'up_id': 'AnswerVoteForm_2_upvote',
-			'score_id': 'AnswerVoteForm_2_score',
-			'down_id': 'AnswerVoteForm_2_downvote',
+			'up_id': 'AnswerVoteForm_1_upvote',
+			'score_id': 'AnswerVoteForm_1_score',
+			'down_id': 'AnswerVoteForm_1_downvote',
 			'url': url
 		}
 
 		self.vote_test(**vote_spec)
 
 
-	# Can't do new-answer vote, because a user cannot vote on their own
-	# answer.  However, this used to work before user authentication
-	# was added.
-	def NewAnswerVote(self):
-		url = self.live_server_url + Question.objects.get(pk=1).get_url()
-		self.driver.get(url)
-
-		post_id = 1 + len(self.driver.find_elements_by_class_name('subpost'))
-
-		self.driver.find_element('id', 'AnswerForm__text').send_keys('test')
-		self.click('AnswerForm__submit')
-
-		vote_spec = {
-			'up_id': 'AnswerVoteForm_%d_upvote' % post_id,
-			'score_id': 'AnswerVoteForm_%d_score' % post_id,
-			'down_id': 'AnswerVoteForm_%d_downvote' % post_id,
-			'url': url
-		}
-
-		self.vote_test(**vote_spec)
-
-
-	def DiscussionVote(self):
-		url = self.live_server_url + Discussion.objects.get(pk=2).get_url()
+	def test_discussion_vote(self):
+		self.login_superuser()
+		url = self.live_server_url + Discussion.objects.get(pk=1).get_url()
 		vote_spec = {
 			'up_id': 'DiscussionVoteForm_q_upvote',
 			'score_id': 'DiscussionVoteForm_q_score',
@@ -1374,46 +1331,24 @@ class VoteTest(SeleniumTestCase):
 		self.vote_test(**vote_spec)
 
 
-	def ReplyVote(self):
+	def test_reply_vote(self):
+		self.login_regularuser()
 		url = self.live_server_url + Discussion.objects.get(pk=1).get_url()
 		vote_spec = {
-			'up_id': 'ReplyVoteForm_26_upvote',
-			'score_id': 'ReplyVoteForm_26_score',
-			'down_id': 'ReplyVoteForm_26_downvote',
+			'up_id': 'ReplyVoteForm_1_upvote',
+			'score_id': 'ReplyVoteForm_1_score',
+			'down_id': 'ReplyVoteForm_1_downvote',
 			'url': url
 		}
 
 		self.vote_test(**vote_spec)
 
-
-	# Can't do new-reply vote, because a user cannot vote on their own
-	# answer.  However, this used to work before user authentication
-	# was added.
-	def NewReplyVote(self):
-		# figure out what the next post id will be
-		user = User.objects.get(pk=1)
-		post_id = 1 + Reply.objects.filter(user=user).order_by('-pk')[0].pk
-
-		url = self.live_server_url + Discussion.objects.get(pk=1).get_url()
-		self.driver.get(url)
-
-		self.driver.find_element('id', 'ReplyForm__text').send_keys('test')
-		self.click('ReplyForm__submit')
-
-		vote_spec = {
-			'up_id': 'ReplyVoteForm_%d_upvote' % post_id,
-			'score_id': 'ReplyVoteForm_%d_score' % post_id,
-			'down_id': 'ReplyVoteForm_%d_downvote' % post_id,
-			'url': url
-		}
-
-		self.vote_test(**vote_spec)
 
 	def get_elements(self):
 		self.up_elm = self.driver.find_element('id', self.up_id)
 		self.score_elm = self.driver.find_element('id', self.score_id)
 		self.down_elm = self.driver.find_element('id', self.down_id)
-		
+
 
 	def get_voting_status(self):
 		is_up_on = self.up_elm.get_attribute('class') == self.up_on_class
@@ -1579,6 +1514,7 @@ class TestNotificationMessage(TestCase):
 				pointer += 1
 				self.assertEqual(found_message, expected_message)
 
+
 class TestLoginRequired(TestCase):
 	'''
 	Attempts to perform requests and POSTs that require login, without
@@ -1592,8 +1528,7 @@ class TestLoginRequired(TestCase):
 	# aren't supported right now because we don't use them.
 	login_get_views = [
 		('add_proposal',{}),
-		('start_discussion', {'target_id': 1}),
-
+		('start_discussion', {'target_id': 1})
 	]
 
 	# lists views that should require login, which is to be tested.
@@ -1649,13 +1584,11 @@ class TestLoginRequired(TestCase):
 
 	ajax_posts = [
 		# votes
-		('vote_answer', {'valence':1, 'user':1, 'target':1}, AnswerVote),
-		('vote_question', {'valence':1, 'user':1, 'target':1}, QuestionVote),
+		('vote_answer', {'valence':1, 'user':1, 'target':2}, AnswerVote),
+		('vote_question', {'valence':1, 'user':1, 'target':2}, QuestionVote),
 		('vote_discussion', {'valence':1, 'user':1, 'target':1}, 
 			DiscussionVote),
-		('vote_proposal', {'valence':1, 'user':1, 'target':1}, ProposalVote),
-		('vote_letter', {'valence':1, 'user':1, 'target':1}, LetterVote),
-		('vote_reply', {'valence':1, 'user':1, 'target':39}, ReplyVote),
+		('vote_reply', {'valence':1, 'user':1, 'target':2}, ReplyVote),
 
 		# Comments
 		('answer_comment', {'text':'Test comment', 'user':1, 'target':1},
@@ -1664,7 +1597,7 @@ class TestLoginRequired(TestCase):
 			QuestionComment),
 		('comment', {'text':'Test comment', 'user':1, 'target':1},
 			Comment),
-		('reply_comment', {'text':'Test comment', 'user':1, 'target':39},
+		('reply_comment', {'text':'Test comment', 'user':1, 'target':1},
 			ReplyComment),
 		('discussion_comment', {'text':'Test comment', 'user':1, 'target':1},
 			DiscussionComment),
@@ -1716,7 +1649,6 @@ class TestLoginRequired(TestCase):
 
 			# since posting should have failed, the object should not exist
 			self.assertRaises(post_class.DoesNotExist, func)
-
 
 		# this time we'll login before posting, but the logged in user
 		# won't match the user indicated in the form, so we'll still get
@@ -1790,6 +1722,7 @@ class TestLoginRequired(TestCase):
 			self.assert_ajax_post_denied(response, endpoint)
 
 			# since the post failed, we can't find the object in the database
+
 			self.assertEqual(
 				post_class.objects.filter(**post_data).count(), 0)
 
@@ -1800,11 +1733,13 @@ class TestLoginRequired(TestCase):
 		# but login as a different user than what is posted in the user field
 		for endpoint, post_data, post_class in self.ajax_posts:
 
+
+
 			# This part of the test only applies when the post data contains
 			# a 'user' field.
 			if 'user' in post_data:
 
-				# Login as user 2
+				# Login as user regularuser
 				self.client.login(
 					username='regularuser', password='regularuser')
 
@@ -1831,7 +1766,7 @@ class TestLoginRequired(TestCase):
 		# 1) will now match the logged in user.
 		for endpoint, post_data, post_class in self.ajax_posts:
 
-			# Login as user 1
+			# Login as user superuser
 			self.client.login(username='superuser', password='superuser')
 
 			url = reverse('handle_ajax_json', kwargs={'view':endpoint})
@@ -1972,13 +1907,14 @@ class PublishSubscribeTest(TestCase):
 			proposal.get_url_by_view_name('proposal'))
 
 		# Check if a Publication was made against the sector
-		p = Publication.objects.get(subscription_id=sector.subscription_id)
-		self.assertEqual(p.source_user, proposal_author)
-		self.assertEqual(p.event_type, 'ISSUE')
-		self.assertEqual(p.was_posted, False)
-		self.assertEqual(p.event_data, proposal.text[:100])
-		self.assertEqual(p.link_back, 
-			proposal.get_url_by_view_name('proposal'))
+		p = Publication.objects.get(
+			subscription_id=sector.subscription_id,
+			source_user=proposal_author,
+			event_type='ISSUE',
+			was_posted=False,
+			event_data=proposal.text[:100],
+			link_back=proposal.get_url_by_view_name('proposal')
+		)
 
 
 	def test_question(self):
