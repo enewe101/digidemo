@@ -209,7 +209,7 @@
 				<div id="login_form_div">
 					<div class="border_cover_med_short"></div>
 					<form id="login_form">
-						<div id="login_error"></div>
+						<div id="ajax_login_error"></div>
 						<label for="username">Username</label><br/>
 						<input class='text_input' id="username" type="text"
 							name="username" placeholder="username" />
@@ -313,7 +313,7 @@
 	// This makes the login failed message clear (if it was already showing)
 	// upon next submission
 	$('#submit_login').click(function() {
-		$('#login_error').html('');
+		$('#ajax_login_error').html('');
 	});
 
 	// make it so that hitting the enter key submits the ajax login form
@@ -339,8 +339,8 @@
 
 	// define a callback to be executed when login fails
 	var login_error_callback = function(data) {
-		$('#login_error').html(
-			'<span class="form_errors">Wrong username or password<span>');
+		$('#ajax_login_error').html(
+			'<span class="form_errors">Incorrect username or password<span>');
 	}
 
 	// bind the callbacks to the login widget

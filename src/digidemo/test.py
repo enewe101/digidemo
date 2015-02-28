@@ -20,6 +20,7 @@ from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.select import Select
 from selenium.webdriver.common.by import By
+from selenium.common.exceptions import NoSuchElementException
 import filecmp
 import os
 
@@ -140,6 +141,28 @@ class SeleniumTestCase(LiveServerTestCase):
 			)
 
 		return valid
+
+	# Find the element based on html id attribute
+	#
+	@classmethod
+	def full_url(cls, url_without_domain):
+		return 'http://' + cls.get_live_server_url() + url_without_domain
+
+	# Find the element based on html id attribute
+	#
+	@classmethod
+	def go(cls, url_without_domain):
+		cls.driver.get(cls.get_live_server_url() + url_without_domain)
+
+
+	# Checks that an element with a given id *does not exist* on the page
+	#
+	def assertNotFound(self, element_id):
+
+		def func():
+			self.find(element_id)
+
+		self.assertRaises(NoSuchElementException, func)
 
 
 	# Click the element. Just a convinience method. 
@@ -1638,6 +1661,207 @@ class TestNotificationMessage(TestCase):
 				expected_message = self.EXPECTED_MESSAGES[pointer]
 				pointer += 1
 				self.assertEqual(found_message, expected_message)
+
+
+class TestLogin(SeleniumTestCase):
+
+	'''
+		Tests the login forms -- both the ajax and syncronous form.
+		Ensures that errors are shown, and that logging in with username
+		or email are allowed
+	'''
+
+	def test_ajax_login(self):
+		# try logging in normally, this should work
+		self.go(reverse('mainPage'))
+		self.click('login_div')
+		self.puts({
+			'username': 'regularuser',
+			'password': 'regularuser'
+		})
+		self.click('submit_login')
+
+		# The user's avatar should appear showing that the user is logged in
+		self.wait.until(lambda driver: self.find('logged_in_div'))
+
+
+	def test_ajax_login_email(self):
+
+		# try logging in using email, this should work
+		self.go(reverse('mainPage'))
+		self.click('login_div')
+		self.puts({
+			'username': 'regular@example.com',
+			'password': 'regularuser'
+		})
+		self.click('submit_login')
+
+		# The user's avatar should appear showing that the user is logged in
+		self.wait.until(lambda driver: self.find('logged_in_div'))
+
+
+	def test_ajax_login_incorrect(self):
+
+		# try leaving username blank
+		self.go(reverse('mainPage'))
+		self.click('login_div')
+		self.puts({
+			#'username': 'regular@example.com',
+			'password': 'regularuser'
+		})
+		self.click('submit_login')
+
+		# An error message should display
+		self.assertTrue(
+			self.wait.until( lambda driver: 
+				'Incorrect username or password' in
+				self.find('ajax_login_error').text
+			)
+		)
+
+		# The logged in div should not be shown 
+		self.assertNotFound('logged_in_div')
+
+		# try leaving username blank
+		self.go(reverse('mainPage'))
+		self.click('login_div')
+		self.puts({
+			'username': 'regularuser',
+			#'password': 'regularuser'
+		})
+		self.click('submit_login')
+
+		# An error message should display
+		self.assertTrue(
+			self.wait.until( lambda driver: 
+				'Incorrect username or password' in
+				self.find('ajax_login_error').text
+			)
+		)
+
+		# The logged in div should not be shown 
+		self.assertNotFound('logged_in_div')
+
+		# try submitting incorrect credentials
+		self.go(reverse('mainPage'))
+		self.click('login_div')
+		self.puts({
+			'username': 'regularuser',
+			'password': 'wrong_password'
+		})
+		self.click('submit_login')
+
+		# An error message should display
+		self.assertTrue(
+			self.wait.until( lambda driver: 
+				'Incorrect username or password' in
+				self.find('ajax_login_error').text
+			)
+		)
+
+		# The logged in div should not be shown 
+		self.assertNotFound('logged_in_div')
+
+
+
+	def test_login(self):
+		# Try logging in normally, this should work
+		self.go(reverse('login_required'))
+		self.puts({
+			'LoginForm__username': 'regularuser',
+			'LoginForm__password': 'regularuser'
+		})
+		self.click('LoginForm__submit')
+
+		# We should have been redirected to the home page
+		self.assertEqual(
+			self.driver.current_url,
+			self.full_url(reverse('mainPage'))
+		)
+
+		# The logged in div should be shown at upper right of the status bar
+		self.find('logged_in_div')
+
+
+	def test_login_email(self):
+		# Try logging in using email, this should work
+		self.go(reverse('login_required'))
+		self.puts({
+			'LoginForm__username': 'regular@example.com',
+			'LoginForm__password': 'regularuser'
+		})
+		self.click('LoginForm__submit')
+
+		# We should have been redirected to the home page
+		self.assertEqual(
+			self.driver.current_url,
+			self.full_url(reverse('mainPage'))
+		)
+
+		# The logged in div should be shown at upper right of the status bar
+		self.find('logged_in_div')
+
+
+	def test_login_incorrect(self):
+		# Try ommitting username on login 
+		self.go(reverse('login_required'))
+		self.puts({
+			#'LoginForm__username': 'regular@example.com',
+			'LoginForm__password': 'regularuser'
+		})
+		self.click('LoginForm__submit')
+
+		# We should still face the login form, with an error message
+		self.assertEqual(
+			self.driver.current_url,
+			self.full_url(reverse('login_required'))
+		)
+		self.assertTrue(
+			'Incorrect username or password' in self.find('middle').text
+		)
+
+		# The logged in div should not be shown
+		self.assertNotFound('logged_in_div')
+
+		# Try ommitting password on login 
+		self.go(reverse('login_required'))
+		self.puts({
+			'LoginForm__username': 'regular@example.com',
+			#'LoginForm__password': 'regularuser'
+		})
+		self.click('LoginForm__submit')
+
+		# We should still face the login form, with an error message
+		self.assertEqual(
+			self.driver.current_url,
+			self.full_url(reverse('login_required'))
+		)
+		self.assertTrue(
+			'Incorrect username or password' in self.find('middle').text
+		)
+
+		# The logged in div should not be shown
+		self.assertNotFound('logged_in_div')
+
+		# Try using an incorrect pair
+		self.go(reverse('login_required'))
+		self.puts({
+			'LoginForm__username': 'regularuser',
+			'LoginForm__password': 'wrong_password'
+		})
+		self.click('LoginForm__submit')
+
+		# We should still face the login form, with an error message
+		self.assertEqual(
+			self.driver.current_url,
+			self.full_url(reverse('login_required'))
+		)
+		self.assertTrue(
+			'Incorrect username or password' in self.find('middle').text
+		)
+
+		# The logged in div should not be shown
+		self.assertNotFound('logged_in_div')
 
 
 class TestLoginRequired(TestCase):
