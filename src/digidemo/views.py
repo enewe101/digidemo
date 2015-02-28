@@ -1611,6 +1611,31 @@ def userRegistration(request):
 			endpoint=reverse('userRegistration')
 		)
 		
+		# before validating the form, check if the email already exists
+		# if so, we show the user an option to recover their credentials.
+		try:
+			email = request.POST['email']
+
+		# if blank, forget about this check
+		except KeyError:
+			pass
+
+		else:
+			email_exists = User.objects.filter(email=email).count() > 0
+			if email_exists:
+
+				return render(
+					request,
+					'digidemo/register.html',
+					{
+						'GLOBALS': get_globals(request),
+						'form': None,
+						'email_exists': True, # changes how template displays
+						'django_vars_js': get_django_vars_JSON(
+							request=request)
+					}
+				)
+
 		if reg_form.is_valid():
 
 			new_user = User.objects.create_user(
@@ -1663,6 +1688,7 @@ def userRegistration(request):
 		{
 			'GLOBALS': get_globals(request),
 			'form' : reg_form,
+			'email_exists': False,
 			'django_vars_js': get_django_vars_JSON(request=request)
 		}
 	)

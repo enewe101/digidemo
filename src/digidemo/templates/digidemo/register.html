@@ -4,83 +4,110 @@
 
 {% block middle %}
 
-<div class="mid_form_tall">
-	<h1 class="computerModern">Register Now</h1></br> 
-	{% include "digidemo/_w_simple_form_wrapped.html" with form=form %}
-</div>
+{% if email_exists %}
+	<div class="mid_form_med">
+		<h1 class="computerModern">Have we met before?</h1></br> 
+		Hey!  You've signed up before.  Did you forget? <br/>
+		<a href="{% url "resetPassword" %}">I forgot my password</a>
+	</div>
 
-<script> 
+{% else %}
+	<div class="mid_form_tall">
+		<h1 class="computerModern">Register Now</h1></br> 
+			{% include "digidemo/_w_simple_form_wrapped.html" with form=form %}
+	</div>
 
-	// The id for some form elements, defined in template, are passed to js:
-	var USERNAME_INPUT_ID = "{{form.form_class}}_{{form.id_prefix}}_username";
-	var PASSWORD1_INPUT_ID = "{{form.form_class}}_{{form.id_prefix}}_password";
-	var PASSWORD2_INPUT_ID = "{{form.form_class}}_{{form.id_prefix}}_confirm_password";
+	<script> 
 
-	// Get those form elements
-	var username_input = $('#'+USERNAME_INPUT_ID);
-	var password1_input = $('#'+PASSWORD1_INPUT_ID);
-	var password2_input = $('#'+PASSWORD2_INPUT_ID);
+		// The id for some form elements, defined in template, are passed to js:
+		var USERNAME_INPUT_ID = "{{form.form_class}}_{{form.id_prefix}}_username";
+		var PASSWORD1_INPUT_ID = "{{form.form_class}}_{{form.id_prefix}}_password";
+		var PASSWORD2_INPUT_ID = "{{form.form_class}}_{{form.id_prefix}}_confirm_password";
 
-	// Add a notification element beside the username input
-	var username_status = $('<span id="username_notification_target"></span>');
-	username_input.after(username_status);
+		// Get those form elements
+		var username_input = $('#'+USERNAME_INPUT_ID);
+		var password1_input = $('#'+PASSWORD1_INPUT_ID);
+		var password2_input = $('#'+PASSWORD2_INPUT_ID);
 
-	// Add notifications element beside password inputs
-	var pwd_length_status = $('<span id="pwd1_notification_target"></span>');
-	password1_input.after(pwd_length_status);
-	var pwd_match_status = $('<span id="pwd2_notification_target"></span>');
-	password2_input.after(pwd_match_status);
+		// Add a notification element beside the username input
+		var username_status = $('<span id="username_notification_target"></span>');
+		username_input.after(username_status);
 
-	// Enable username verification on the username field
-	username_input.keyup(check_username_available);
+		// Add notifications element beside password inputs
+		var pwd_length_status = $('<span id="pwd1_notification_target"></span>');
+		password1_input.after(pwd_length_status);
+		var pwd_match_status = $('<span id="pwd2_notification_target"></span>');
+		password2_input.after(pwd_match_status);
 
-	// Enable verification that passwords match on password fields
-	password1_input.keyup(check_passwords);
-	password2_input.keyup(check_passwords);
+		// Enable username verification on the username field
+		username_input.keyup(check_username_available);
 
-	// A callback function that updates the status indicator for password2
-	function check_passwords() {
+		// Enable verification that passwords match on password fields
+		password1_input.keyup(check_passwords);
+		password2_input.keyup(check_passwords);
 
-		// check what the passwords look like
-		is_pwd1_blank = password1_input.val() == '';
-		is_pwd2_blank = password2_input.val() == '';
-		do_pwds_match = password1_input.val() == password2_input.val();
-		pwd1_length = password1_input.val().length;
+		// A callback function that updates the status indicator for password2
+		function check_passwords() {
 
-		// if pwd1 is too short, but not blank, notify "too short".
-		if(pwd1_length < 8 && !is_pwd1_blank) {
-			pwd_length_status.text('too short!');
-		} else {
-			pwd_length_status.text('');
+			// check what the passwords look like
+			is_pwd1_blank = password1_input.val() == '';
+			is_pwd2_blank = password2_input.val() == '';
+			do_pwds_match = password1_input.val() == password2_input.val();
+			pwd1_length = password1_input.val().length;
+
+			// if pwd1 is too short, but not blank, notify "too short".
+			if(pwd1_length < 8 && !is_pwd1_blank) {
+				pwd_length_status.text('too short!');
+			} else {
+				pwd_length_status.text('');
+			}
+
+			// if pwd1 and pwd2 don't match, and pwd2 isn't blank, notify
+			if(!do_pwds_match && !is_pwd2_blank) {
+				pwd_match_status.text("Passwords don't match!");
+			} else {
+				pwd_match_status.text("");
+			}
 		}
 
-		// if pwd1 and pwd2 don't match, and pwd2 isn't blank, notify
-		if(!do_pwds_match && !is_pwd2_blank) {
-			pwd_match_status.text("Passwords don't match!");
-		} else {
-			pwd_match_status.text("");
+		// A callback function that updates the status indicator for username.
+		function success_func(data) {
+			if(data['available']) {
+				username_status.text("available!");
+			} else {
+				username_status.text("sorry... it's taken");
+			}
 		}
-	}
 
-	// A callback function that updates the status indicator for username.
-	function success_func(data) {
-		if(data['available']) {
-			username_status.text("available!");
-		} else {
-			username_status.text("sorry... it's taken");
-		}
-	}
+		// A callback function that uses ajax to check if the username is taken
+		function check_username_available() {
+			var username = $(this).val()
 
-	// A callback function that uses ajax to check if the username is taken
-	function check_username_available() {
-		var username = $(this).val()
-		ajax( 
-			'checkValidUserName', 
-			{ username: username },
-			{ success: success_func }
-		);
-	};
+			// Nevermind checking the username when the field is blank
+			if(username==''){
+				username_status.text('');
+				return;
+			}
 
-</script>
+			// Ensure the username uses legal characters
+			var legal_usernames = /^\w+$/;
+			if(!legal_usernames.test(username)){
+				username_status.text(
+					'Please stick to letters, numbers, and underscore ("_")!');
+				return;
+			}
+
+			// Check if the username is available
+			ajax( 
+				'checkValidUserName', 
+				{ username: username },
+				{ success: success_func }
+			);
+		};
+
+	</script>
+
+{% endif %}
+
 
 {% endblock middle %}

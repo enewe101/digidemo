@@ -1,4 +1,7 @@
 import logging
+import os
+import re
+
 from django.contrib.auth.models import User
 from django.http import HttpResponse, HttpResponseRedirect
 from django.template import Context
@@ -10,11 +13,11 @@ from django import forms
 from django.forms.formsets import formset_factory
 from django.forms.models import modelformset_factory
 from django.core.exceptions import ObjectDoesNotExist
+
 from digidemo.choices import *
 from digidemo.models import *
 from digidemo.settings import PROJECT_DIR
 from digidemo import utils
-import os
 
 
 USERNAME_MAX_LENGTH = 32
@@ -620,27 +623,78 @@ class UserRegisterForm(AugmentedFormMixin, ModelForm):
 
 
 	def clean(self):
+
+		# standard error checking by super.clean.  This already prevents
+		# empty fields and using a username that's already taken.
 		cleaned = super(UserRegisterForm, self).clean()
-		pwd1 = cleaned['password']
-		pwd2 = cleaned['confirm_password']
 
-		pwd_too_short = len(pwd1) < PASSWORD_MIN_LENGTH
-		pwd_no_match = pwd1 != pwd2
+		# check that the email isn't already being used
+		try:
+			email = cleaned['email']
 
-		if pwd_too_short:
-			self._errors['password'] = self.error_class(
-				["Password too short"])
+		# if the email is blank, nevermind
+		except KeyError:
+			pass
+		
+		else:
+			email_exists = User.objects.filter(email=email).count()>0
+			if email_exists:
+				self._errors['email'] = self.error_class(
+					["Hmm... looks like you've signed up before..."]
+				)
+				del cleaned['email']
 
-		if pwd_no_match:
-			if 'password' in self._errors:
-				self._errors['password'].append("Passwords didn't match!")
+		# check that the username is valid
+		try:
+			username = cleaned['username']
+
+		# if the username is blank, nevermind
+		except KeyError:
+			pass
+
+		else:
+			LEGAL_USERNAME = re.compile(r'^\w+$')
+			illegal_username = LEGAL_USERNAME.search(username) is None
+			if illegal_username:
+				self._errors['username'] = self.error_class(
+					["Please stick to letters, numbers, and underscore!"])
+				del cleaned['username']
+
+		# check that passwords are long enough and match
+		try:
+			pwd1 = cleaned['password']
+
+		# If the password is blank, nevermind: already caught by super.clean()
+		except KeyError:
+			pass
+
+		else:
+			try:
+				pwd2 = cleaned['confirm_password']
+
+			# If pwd confirmation blank, nevermind: already caught by super
+			except KeyError:
+				pass
+
 			else:
-				self._errors['password'] = self.error_class(
-					["Passwords didn't match!"])
+				pwd_too_short = len(pwd1) < PASSWORD_MIN_LENGTH
+				pwd_no_match = pwd1 != pwd2
 
-		if pwd_no_match or pwd_too_short:
-			del cleaned['password']
-			del cleaned['confirm_password']
+				if pwd_too_short:
+					self._errors['password'] = self.error_class(
+						["Password too short"])
+
+				if pwd_no_match:
+					if 'password' in self._errors:
+						self._errors['password'].append(
+							"Passwords didn't match!")
+					else:
+						self._errors['password'] = self.error_class(
+							["Passwords didn't match!"])
+
+				if pwd_no_match or pwd_too_short:
+					del cleaned['password']
+					del cleaned['confirm_password']
 
 		return cleaned
 
