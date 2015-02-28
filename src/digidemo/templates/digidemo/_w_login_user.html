@@ -236,6 +236,8 @@
 		(function(){
 			var login_div = $('#login_div');
 			var login_form_div = $('#login_form_div');
+			var login_username = $('#username');
+			var login_password = $('#password');
 
 			// clicking in the search form doesn't bubble up to be a 
 			// click on the search button
@@ -243,10 +245,13 @@
 				e.stopPropagation();
 			});
 
+			// Arm the login form to show / hide
 			var tog = new ToggleHidden(login_div, login_form_div);
 			function style_login_div() {
 				login_div.addClass('login_div_active');
 				login_div.removeClass('login_div');
+				// place the cursor in the username field
+				login_username.focus();
 			}
 			function unstyle_login_div() {
 				login_div.addClass('login_div');
@@ -259,6 +264,8 @@
 			// clicking out of the search area gets rid of search form
 			doc_event_registrar.on('click', function(e){
 				tog.hide();
+				// clear the password field when login form is hidden
+				login_password.val('');
 			});
 			// ensure that clicking the search button doesn't bubble
 			// up to the document.click we just established
@@ -285,6 +292,7 @@
 (function(){
 
 	RELOAD_URL = '{% url "do_reload" %}';
+	INVALID_EMAIL_URL = '{% url "invalid_email" %}';
 
 	// arm the login triger to slide open / closed the login form
 	$('#login-trigger').click(function(){
@@ -302,10 +310,31 @@
 	// register the login as an ajax form widget
 	register_form('login_form', 'ajax_login', 'login_form', 'submit_login')
 
+	// This makes the login failed message clear (if it was already showing)
+	// upon next submission
+	$('#submit_login').click(function() {
+		$('#login_error').html('');
+	});
+
+	// make it so that hitting the enter key submits the ajax login form
+	$('#username').keydown(function(e){
+		if(e.which == 13) {
+			widgets['login_form'].widget.submit();
+		}
+	});
+	$('#password').keydown(function(e){
+		if(e.which == 13) {
+			widgets['login_form'].widget.submit();
+		}
+	});
+
 	// define a callback to be executed after a successful login
 	var login_success_callback = function(data) {
-		$('#login_error').html('');
-		window.location = RELOAD_URL;
+		if(data.email_valid) {
+			window.location = RELOAD_URL;
+		} else {
+			window.location = INVALID_EMAIL_URL;
+		}
 	}
 
 	// define a callback to be executed when login fails

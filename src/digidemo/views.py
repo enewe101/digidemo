@@ -246,10 +246,16 @@ def feedback(request):
 	
 def get_globals(request):
 
+	email_validated = True if (
+			request.user.is_authenticated() 
+			and get_profile(request.user).email_validated
+		) else False
+
 	GLOBALS = {
 		'DEBUG': DEBUG,
 		'SECTORS': Sector.objects.all(),
 		'IS_USER_AUTHENTICATED': request.user.is_authenticated(),
+		'IS_EMAIL_VALIDATED': email_validated,
 		'USER': request.user,
 		'FEEDBACK_FORM': FeedbackForm()
 	}
@@ -293,9 +299,16 @@ def get_django_vars_JSON(additional_vars={}, request=None):
 
 
 def get_django_vars(request, additional_vars={}):
+
+	email_validated = True if (
+			request.user.is_authenticated() 
+			and get_profile(request.user).email_validated
+		) else False
+
 	django_vars = {
 		'DEBUG': DEBUG,
-		'IS_USER_AUTHENTICATED': request.user.is_authenticated()
+		'IS_USER_AUTHENTICATED': request.user.is_authenticated(),
+		'IS_EMAIL_VALIDATED': email_validated
 	}
 
 	django_vars.update(additional_vars)
@@ -455,6 +468,10 @@ def get_vote_form(VoteModel, VoteForm, user, target, id_prefix=''):
 		if (target.user == user):
 			is_enabled = False
 			tooltip = r"You can\'t vote on your own post!"
+
+		if not get_profile(user).email_validated:
+			is_enabled = False
+			tooltip = r"You need to validate your email!"
 
 
 	if existing_vote:

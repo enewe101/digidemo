@@ -216,7 +216,8 @@ function FormWidget(form_id, endpoint, submit_id) {
 	var hooks = make_page_hooks(this, events) 
 	hooks.error = alert_ajax_error;
 
-	submit_button.click( $.proxy(
+	// note this is public
+	this.submit = $.proxy(
 		function() {
 			ajaxForm(
 				endpoint,
@@ -247,8 +248,10 @@ function FormWidget(form_id, endpoint, submit_id) {
 					}, this)
 				}
 			);
-		}, this)
+		}, this
 	);
+
+	submit_button.click(this.submit);
 }
 
 

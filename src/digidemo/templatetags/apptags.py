@@ -4,6 +4,7 @@ from django.utils.html import conditional_escape
 from django.utils.safestring import mark_safe
 from digidemo.models import *
 from digidemo import markdown as md
+from digidemo.shortcuts import get_profile
 
 register = template.Library()
 
@@ -33,6 +34,29 @@ def getTags(proposal):
     if(len(returnString)>0):
         returnString = returnString[:-1]
     return returnString
+
+@register.filter(name='user_authenticated')
+def user_authenticated(request):
+	if request.user.is_authenticated():
+		return True
+
+@register.filter(name='email_validated')
+def user_authenticated(request):
+	if get_profile(request.user).email_validated:
+		return True
+
+
+@register.filter(name='login_tip')
+def login_tip(request):
+	if request.user.is_authenticated():
+		if get_profile(request.user).email_validated:
+			return ''
+		else:
+			return mark_safe('title="You need to validate your email!"')
+
+	else:
+		return mark_safe('title="You need to login!"')
+
 
 
 @register.filter(name='getLoggedInUser')

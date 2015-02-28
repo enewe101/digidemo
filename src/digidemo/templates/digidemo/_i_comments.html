@@ -1,3 +1,5 @@
+{% load apptags %}
+
 <!-- start of the comments area -->
 <div id="comments_{{ comments_section.id_prefix }}" class="comments">
 
@@ -14,10 +16,7 @@
 		It will be disabled if the user is not authenticated.  Here we add a 
 		tooltip telling unauthenticated users they can't comment 
 	-->
-	<a {% if user.is_authenticated %}
-		{%else%}
-			title="You must login to comment!"
-		{% endif %}
+	<a {{ request|login_tip }}
 		id="_w_toggle_hidden_comment_{{ comments_section.id_prefix }}" 
 		class="pointer"> 
 		add comment
@@ -40,7 +39,7 @@
  //
  // However, if the user is not logged in, we don't do any of this.
 
-	if(django.IS_USER_AUTHENTICATED) {
+	if(django.IS_USER_AUTHENTICATED && django.IS_EMAIL_VALIDATED) {
 
 		var COMMENT_FORM_ID_PREFIX = '{{ comments_section.comment_form.form_class }}_{{ comments_section.comment_form.id_prefix }}';
 		var COMMENT_TEXTAREA_ID = (

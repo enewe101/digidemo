@@ -186,7 +186,7 @@ class SeleniumTestCase(LiveServerTestCase):
 	# login as a user whose email has not yet been validated
 	# 
 	@classmethod
-	def login_regularuser(cls):
+	def login_notvalidateduser(cls):
 		cls.login('notvalidated', 'notvalidated')
 
 

@@ -51,10 +51,7 @@
 	-->
 	<a id="_w_toggle_hidden_subpost_form_switch" class="pointer"></a>
 
-	<div {% if user.is_authenticated %}
-		{% else %}
-			title="You must login to post!"
-		{% endif %}
+	<div {{ request|login_tip }}
 		id="_w_toggle_hidden_subpost_form_content">
 		<h2>Your {% block subpost_type %}Answer{% endblock %}</h2>
 		{% include "digidemo/_w_ajax_form.html" with form=subpost_form %}

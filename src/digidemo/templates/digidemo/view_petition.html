@@ -97,10 +97,7 @@
 				{% if not signed %}
 				<div class="sign_petition">
 					<a 
-						{% if GLOBALS.IS_USER_AUTHENTICATED %}
-						{% else %}
-							title='You must login to sign!'
-						{% endif %}
+						{{ request|login_tip }}
 						id="_w_toggle_hidden_{{ letter_section.id_prefix }}"><img 
 						src="{% static "digidemo/images/feather_sign.png" %}" 
 						/> sign the petition
@@ -171,6 +168,7 @@
 
 
 						{% if GLOBALS.IS_USER_AUTHENTICATED %}
+						{% if GLOBALS.IS_EMAIL_VALIDATED %}
 						{% if not signed %}
 	//
 	// Create a toggler to show / hide the resend letter form
@@ -189,6 +187,7 @@
 	register_widget('toggle_hidden_{{ letter_section.id_prefix }}', 
 		toggler, 'toggle_hidden');
 
+						{% endif %}
 						{% endif %}
 						{% endif %}
 

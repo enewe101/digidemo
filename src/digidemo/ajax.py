@@ -473,17 +473,19 @@ def ajax_login(request):
 	password = request.POST['password']
 	login_success = login_user(username, password, request)
 
+
 	# successful login
 	if login_success == 'LOGIN_VALID_EMAIL':
 		return {'success':True, 'email_valid': True, 'username':username}
 
 	# successful login but invalid email
 	elif login_success == 'LOGIN_INVALID_EMAIL':
-		return {'success':False, 'email_valid': False}
+		return {'success':True, 'email_valid': False}
 
 	# failed login
-	elif login_success == 'LOGIN_INVALID_EMAIL':
+	else: # login_success == 'LOGIN_FAILED':
 		return {'success':False, 'email_valid': False}
+
 
 
 # TODO: replace this with a post login
