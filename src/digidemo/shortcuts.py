@@ -11,6 +11,10 @@ def get_profile(user):
 
 def login_user(username, password, request):
 
+		# if the username contains an '@', then its actually an email
+		if '@' in username:
+			username = User.objects.get(email=username).username
+
 		# try to authenticate the user
 		user = authenticate(
 			username=username,
