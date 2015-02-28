@@ -2,19 +2,15 @@ import difflib
 import collections as c
 
 from uuid import uuid4
-import hashlib
-
 from django.core import serializers
 from django.core.files.storage import default_storage
 from django.core.files.base import ContentFile
 from django.core.files import File
 from django.core.urlresolvers import reverse
-from django.core.mail import send_mail
 from django.shortcuts import render, get_object_or_404, redirect
 from django.template import Context, RequestContext
 from django.template.loader import get_template
-from django.http import Http404, HttpResponse, HttpResponseRedirect
-from django.contrib.auth import authenticate, login, logout
+from django.http import Http404, HttpResponse, HttpResponseRedirect, HttpResponseForbidden
 from django.contrib.staticfiles.templatetags.staticfiles import static
 from django.forms.formsets import formset_factory
 from django import http
@@ -26,6 +22,9 @@ from digidemo.abstract_models import *
 from digidemo.forms import *
 from digidemo import utils
 from digidemo.utils import force_logout
+from digidemo.shortcuts import get_profile, login_user, send_email_confirmation
+
+
 from forms import ProposalSearchForm
 from settings import DEBUG
 from settings import TEMP_DIR
@@ -739,6 +738,9 @@ class AbstractLoginRequiredView(AbstractView):
 		if not request.user.is_authenticated():
 			return redirect(self.get_login_url(request))
 
+		elif not get_profile(request.user).email_validated:
+			return redirect(reverse('invalid_email'))
+
 		# if the form_class is set, we'll do an extra check when form data
 		# has been posted, to make sure that the logged in user is the same
 		# as the user in the form's user field.  If not, force a logout
@@ -767,7 +769,7 @@ class AbstractLoginRequiredView(AbstractView):
 
 class Login(AbstractView):
 	template = 'digidemo/login_page.html'
-	error = ''
+	error = False
 
 
 	# By default (if `next_url` is not set), send the user to the front page.
@@ -775,7 +777,6 @@ class Login(AbstractView):
 	def view(self, *args, **kwargs):
 		next_url = kwargs.pop('next_url', reverse('mainPage'))
 		return super(Login, self).view(*args, next_url=next_url, **kwargs)
-
 
 
 	# Unauthenticated users get this page when accessing a login-required view
@@ -791,25 +792,43 @@ class Login(AbstractView):
 			'error': self.error
 		}
 
+
+	# Handles displaying the empty form, ensures no error is printed
+	def handle_get(self):
+		self.error = False
+		return super(Login,self).handle_get()
+
+
 	# This handles the users login attempt
 	def handle_post(self):
 
-		# try to authenticate the user
-		user = authenticate(
-			username=self.request.POST['username'],
-			password=self.request.POST['password']
+		login_success = login_user(
+			self.request.POST['username'],
+			self.request.POST['password'],
+			self.request
 		)
 
-		# If successful, get the original login-required url, which was
-		# concatenated onto the login-required url, as the 'next' kwarg.
-		if user:
-			login(self.request, user)
+		if login_success == 'LOGIN_VALID_EMAIL':
 			return redirect(self.kwargs['next_url'])
 
+		elif login_success == 'LOGIN_INVALID_EMAIL':
+			return redirect(reverse('invalid_email'))
+
 		# Otherwise, show login form, but with an error message
-		else:
-			self.error = 'Oops, try again...'
-			return self.handle_get()
+		elif login_success == 'LOGIN_FAILED':
+			self.error = True
+			return super(Login, self).handle_get()
+
+
+
+class InvalidEmail(AbstractView):
+	template = 'digidemo/invalid_email.html'
+
+	def get_context_data(self):
+		return {}
+
+		
+
 
 
 # TODO: the cancel button won't work after an invalid form post
@@ -1613,24 +1632,7 @@ def userRegistration(request):
 				'%s.png' % new_user.username,
 				File(f)
 			)
-
-			# send registration email
-			random_hash = hashlib.sha256(
-				'af612da003486b687' + new_user.username
-			).hexdigest()[:32]
-
-			# make a verification entry
-			verification = EmailVerification(user=new_user, code=random_hash)
-			verification.save()
-
-			# send an email
-			message = ('To verify your account, click this link: '
-				'http://luminocracy.org/email-verify/%s' % random_hash)
-			send_mail('Welcome to luminocracy', message, 
-				'welcome@luminocracy.org', [new_user.email], 
-				fail_silently=False
-			)
-
+			send_email_confirmation(new_user)
 			return redirect(reverse('mail_sent'))
 
 	else:
@@ -1649,6 +1651,21 @@ def userRegistration(request):
 	)
 
 
+def resend_email_confirmation(request):
+
+		# only logged in users should be able to resend the verification email
+		user = request.user
+		if not user.is_authenticated():
+			return HttpResponseForbidden()
+
+		# only send the verification email if their email isn't validated
+		if not get_profile(user).email_validated:
+			send_email_confirmation(user)
+
+		# Show the mail sent page
+		return mail_sent(request)
+
+
 def mail_sent(request):
 	return render(
 		request,
@@ -1662,8 +1679,9 @@ def mail_sent(request):
 
 def verify_email(request, code):
 	user = get_object_or_404(EmailVerification, code=code).user
-	user.email_validate = True
-	user.save()
+	user_profile = get_profile(user)
+	user_profile.email_validated = True
+	user_profile.save()
 
 	return render(
 		request,

@@ -10,6 +10,7 @@ from digidemo.forms import *
 from digidemo.settings import DEBUG
 from digidemo.utils import get_or_none, force_logout
 from digidemo.views import get_vote_form, AnswerSection, ReplySection
+from digidemo.shortcuts import get_profile, login_user
 from django.utils import timezone
 from django.views.decorators.csrf import csrf_exempt
 from django.contrib.auth import authenticate, login, logout
@@ -80,6 +81,14 @@ def ajax_endpoint_login_required(error_msg=None, form_class=None):
 					'msg': 'user did not authenticate',
 					'errors': {'__all__': 
 						[error_msg]}
+				}
+
+			elif not get_profile(request.user).email_validated:
+				return {
+					'success':False,
+					'msg': 'user email not validated',
+					'errors': {'__all__': 
+						['You must validate your email first!']}
 				}
 
 			# if the decoration was passed a form, then verify that the 
@@ -456,24 +465,25 @@ def get_resender_avatar(request):
 	return {'success': True, 'html': reply_html}
 
 
-
-# TODO: replace this with a post login
 @ajax_endpoint
 def ajax_login(request):
 
 	# attempt to authenticate the user
 	username = request.POST['username']
 	password = request.POST['password']
-	user = authenticate(username=username, password=password)
+	login_success = login_user(username, password, request)
 
-	# if authenticated, log the user in, and return a success message
-	if user is not None:
-		login(request, user)
-		return {'success':True, 'username':username}
+	# successful login
+	if login_success == 'LOGIN_VALID_EMAIL':
+		return {'success':True, 'email_valid': True, 'username':username}
 
-	# otherwise return a failure message
-	else:
-		return {'success':False}
+	# successful login but invalid email
+	elif login_success == 'LOGIN_INVALID_EMAIL':
+		return {'success':False, 'email_valid': False}
+
+	# failed login
+	elif login_success == 'LOGIN_INVALID_EMAIL':
+		return {'success':False, 'email_valid': False}
 
 
 # TODO: replace this with a post login

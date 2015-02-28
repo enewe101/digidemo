@@ -6,12 +6,14 @@ import copy
 import unittest
 from django.core.urlresolvers import reverse
 from django.core.files import File
+from django.core import mail
 from django.test import TestCase, LiveServerTestCase
 from django.utils.html import escape
 from digidemo import settings, markdown as md
 from digidemo.models import *
 from digidemo.abstract_models import *
 from digidemo.views import get_notification_message
+from digidemo.shortcuts import get_profile
 from selenium import webdriver
 from selenium.common.exceptions import TimeoutException
 from selenium.webdriver.support.ui import WebDriverWait 
@@ -146,6 +148,11 @@ class SeleniumTestCase(LiveServerTestCase):
 	def click(cls, element_id):
 		cls.driver.find_element('id', element_id).click()
 
+	# Find the element based on html id attribute
+	#
+	@classmethod
+	def find(cls, element_id):
+		return cls.driver.find_element('id', element_id)
 
 	# fill out the text (form) input with the string
 	# 
@@ -176,7 +183,14 @@ class SeleniumTestCase(LiveServerTestCase):
 		cls.login('regularuser', 'regularuser')
 
 
-	# login as a super user (actually same as regular user right now)
+	# login as a user whose email has not yet been validated
+	# 
+	@classmethod
+	def login_regularuser(cls):
+		cls.login('notvalidated', 'notvalidated')
+
+
+	# login as a super user (is_staff == True; is_superuser == True)
 	#
 	@classmethod
 	def login_superuser(cls):
@@ -216,6 +230,117 @@ class SeleniumTestCase(LiveServerTestCase):
 		cls.click('logout')
 	
 		
+
+class EmailValidation(SeleniumTestCase):
+
+	def test_email_validated(self):
+
+		'''
+			Checks that, when a new user signs up:
+
+				- initially their email is not validated
+				- they get sent an email to confirm their email address
+				- when their email is not validated, they are forwarded
+					to the invalid_email page
+				- they can resend the email confirmation mail from the 
+					invalid email page
+				- following the link in the email confirmation page makes 
+					their email validated
+				- loging in with a valid email forwards to the home page
+		'''
+
+		# register a new user
+		self.driver.get(self.live_server_url + reverse('userRegistration'))
+		self.puts({
+			'UserRegisterForm__first_name': 'new',
+			'UserRegisterForm__last_name': 'user',
+			'UserRegisterForm__username': 'newuser',
+			'UserRegisterForm__email': 'newuser@example.com',
+			'UserRegisterForm__password': 'password',
+			'UserRegisterForm__confirm_password': 'password',
+		})
+		self.click('UserRegisterForm__submit')
+
+		# verify that the new user's email isn't validated
+		user = User.objects.get(username='newuser')
+		user_profile = get_profile(user)
+		self.assertFalse(user_profile.email_validated)
+
+		# verify that an entry was made into the EmailVerification table
+		verification = EmailVerification.objects.get(user=user)
+
+		# check whether a confirmation email was sent to the user
+		self.assertEqual(len(mail.outbox),1)
+		sent_mail = mail.outbox[0]
+		self.assertEqual(sent_mail.subject, 'Welcome to luminocracy')
+		self.assertEqual(sent_mail.to, ['newuser@example.com'])
+
+		email_link = reverse(
+			'verify_email', kwargs={'code': verification.code})
+
+		body = (
+			'To verify your account, click this link: https:/'
+			+ email_link
+		)
+		self.assertEqual(sent_mail.body, body)
+
+		# try logging in without validating email
+		self.driver.get(self.live_server_url + reverse('login_required'))
+		self.puts({
+			'LoginForm__username': 'newuser',
+			'LoginForm__password': 'password'
+		})
+		self.click('LoginForm__submit')
+		self.assertEqual(
+			self.driver.current_url,
+			self.live_server_url + reverse('invalid_email')
+		)
+
+		# try clicking the resend email link
+		self.click('resend_link')
+
+		# check that we wound up at the send email page
+		message_text = self.find('mail_sent_message').text
+		expected_message_text = (
+			'Nice! Check your mail for a link to confirm registration.')
+		self.assertTrue(text_is_similar(message_text, expected_message_text))
+
+		# check that another email was sent
+		self.assertEqual(len(mail.outbox), 2)
+		sent_mail = mail.outbox[1]
+		self.assertEqual(sent_mail.subject, 'Welcome to luminocracy')
+		self.assertEqual(sent_mail.to, ['newuser@example.com'])
+
+		body = (
+			'To verify your account, click this link: https:/'
+			+ email_link
+		)
+		self.assertEqual(sent_mail.body, body)
+		
+		# simulate following the link in the email 
+		self.driver.get(self.live_server_url + email_link)
+
+		# now check that the user's email has been verified
+		user_profile = get_profile(user)
+		self.assertTrue(user_profile.email_validated)
+
+		# now try logging in, and check that user is sent to home page
+		self.driver.get(self.live_server_url + reverse('login_required'))
+		self.puts({
+			'LoginForm__username': 'newuser',
+			'LoginForm__password': 'password'
+		})
+		self.click('LoginForm__submit')
+		self.assertEqual(
+			self.driver.current_url,
+			self.live_server_url + reverse('mainPage')
+		)
+
+
+
+
+
+
 
 
 # Tests the leaving comments.  Tests the comment forms for all the various
@@ -1523,9 +1648,7 @@ class TestLoginRequired(TestCase):
 
 	# This is a list of views that require logins to respond to a get request
 	# They will be accessed by get request.  Each is a tuple, where the first
-	# elment is a view's name (i.e. third argument in urls.py), and the 
-	# second is a dictionary of keyword arguments.  (positional arguments 
-	# aren't supported right now because we don't use them.
+	# elment is a view's name, followed by a dictionary of keyword arguments.
 	login_get_views = [
 		('add_proposal',{}),
 		('start_discussion', {'target_id': 1})
@@ -1650,35 +1773,53 @@ class TestLoginRequired(TestCase):
 			# since posting should have failed, the object should not exist
 			self.assertRaises(post_class.DoesNotExist, func)
 
+		# this time we'll login, but the user will not have a validated 
+		# email
+		for view_name, kwargs, post_data, post_class in self.login_post_views:
+			url = reverse(view_name, kwargs=kwargs)
+
+			self.client.login(
+				username='notvalidated', password='notvalidated')
+
+			# make sure the logged in user and posted user are the same
+			post_data['user'] = User.objects.get(username='notvalidated').pk
+
+			response = self.client.post(url, post_data, follow=True)
+
+			# check that we were redirected to invalid_email page
+			self.assert_was_redirected_to_invalid_email(response)
+
+			# this function tries to retrieve the object we posted 
+			def func():
+				post_class.objects.get(title=post_data['title'])
+
+			# since posting should have failed, the object should not exist
+			self.assertRaises(post_class.DoesNotExist, func)
+
 		# this time we'll login before posting, but the logged in user
 		# won't match the user indicated in the form, so we'll still get
 		# redirected to the login page
 		for view_name, kwargs, post_data, post_class in self.login_post_views:
 
-			if 'user' in post_data:
+			self.client.login(
+				username='regularuser', password='regularuser')
 
-				self.client.login(
-					username='regularuser', password='regularuser')
+			# make sure the logged in user and pasted user are different
+			post_data['user'] = User.objects.get(username='superuser').pk
 
-				# ensure that we have posted {user:1}, to be sure that we
-				# correctly test that the logged in user matches the posted 
-				# user
-				self.assertTrue(post_data['user']==1,
-					"In the post_data you need to set the user to be 1 so "
-					"that identity matching can be tested!")
+			url = reverse(view_name, kwargs=kwargs)
+			response = self.client.post(url, post_data, follow=True)
 
-				url = reverse(view_name, kwargs=kwargs)
-				response = self.client.post(url, post_data, follow=True)
+			# verify we got redirected
+			self.assert_was_redirected_to_login(response)
 
-				# verify we got redirected
-				self.assert_was_redirected_to_login(response)
+			# this function tries to retrieve the object we posted 
+			def func():
+				post_class.objects.get(title=post_data['title'])
 
-				# this function tries to retrieve the object we posted 
-				def func():
-					post_class.objects.get(title=post_data['title'])
+			# since posting would have failed, the object should not exist
+			self.assertRaises(post_class.DoesNotExist, func)
 
-				# since posting would have failed, the object should not exist
-				self.assertRaises(post_class.DoesNotExist, func)
 
 		# This time we'll login as the same user that is posted in the
 		# form, so the post should be successful.  We will not be sent
@@ -1706,10 +1847,21 @@ class TestLoginRequired(TestCase):
 
 
 	def test_get_login_required(self):
+
+		# Trying to navigate to these views without logging in causes 
+		# redirection to the login page
 		for view_name, kwargs in self.login_get_views:
 			url = reverse(view_name, kwargs=kwargs)
 			response = self.client.get(url, follow=True)
 			self.assert_was_redirected_to_login(response)
+
+		# Trying to navigate to these views when logged in without validated
+		# email causes redirection to the invalid_email page
+		self.client.login(username='notvalidated', password='notvalidated')
+		for view_name, kwargs in self.login_get_views:
+			url = reverse(view_name, kwargs=kwargs)
+			response = self.client.get(url, follow=True)
+			self.assert_was_redirected_to_invalid_email(response)
 
 
 	def test_ajax_login_required(self):
@@ -1726,8 +1878,6 @@ class TestLoginRequired(TestCase):
 			self.assertEqual(
 				post_class.objects.filter(**post_data).count(), 0)
 
-
-		# TODO: show that attempt to retrieve from db gives DoesNotExist
 
 		# Now attempt any posts that had a user field.  This time, login
 		# but login as a different user than what is posted in the user field
@@ -1758,6 +1908,29 @@ class TestLoginRequired(TestCase):
 				self.assertEqual(
 					post_class.objects.filter(**post_data).count(), 0)
 
+
+		# Now attempt posts that had a user field.  This time, login
+		# as a user that has not validated their email
+		for endpoint, post_data, post_class in self.ajax_posts:
+
+			# This part of the test only applies when the post data contains
+			# a 'user' field.
+			if 'user' in post_data:
+
+				# Login as user regularuser
+				self.client.login(
+					username='notvalidated', password='notvalidated')
+
+				post_data['user'] = User.objects.get(username='notvalidated').pk
+				url = reverse('handle_ajax_json', kwargs={'view':endpoint})
+				response = self.client.post(url, post_data)
+
+				self.assert_caught_non_validated_user(response)
+
+				# since the post failed, the object is not in the database
+				self.assertEqual(
+					post_class.objects.filter(**post_data).count(), 0)
+
 		# logout regular user
 		self.client.logout()
 
@@ -1768,6 +1941,8 @@ class TestLoginRequired(TestCase):
 
 			# Login as user superuser
 			self.client.login(username='superuser', password='superuser')
+			# make sure that the posted user is superuser too
+			post_data['user'] = User.objects.get(username='superuser').pk
 
 			url = reverse('handle_ajax_json', kwargs={'view':endpoint})
 			response = self.client.post(url, post_data)
@@ -1788,6 +1963,10 @@ class TestLoginRequired(TestCase):
 		self.assertTrue(
 			reverse('login_required') in request.redirect_chain[-1][0])
 
+	def assert_was_redirected_to_invalid_email(self, request):
+		self.assertTrue(
+			reverse('invalid_email') in request.redirect_chain[-1][0])
+
 
 	def assert_ajax_post_accepted(self, response, endpoint):
 		reply_data = json.loads(response.content)
@@ -1804,6 +1983,16 @@ class TestLoginRequired(TestCase):
 		self.assertFalse(reply_data['success'])
 		self.assertEqual(reply_data['msg'], "authenticated user did not "
 			"match the user that requested the form")
+
+
+	def assert_caught_non_validated_user(self, repsonse):
+		# the response is JSON formatted
+		reply_data = json.loads(repsonse.content)
+
+		# assert that the reply was denied, and the reason was a lack of
+		# authentication
+		self.assertFalse(reply_data['success'])
+		self.assertEqual(reply_data['msg'], "user email not validated")
 
 
 	def assert_ajax_post_denied(self, response, endpoint):

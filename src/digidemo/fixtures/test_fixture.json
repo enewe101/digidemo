@@ -1594,6 +1594,24 @@
 },
 {
   "fields": {
+    "username": "notvalidated",
+    "first_name": "notvalidated",
+    "last_name": "user",
+    "is_active": true,
+    "is_superuser": false,
+    "is_staff": false,
+    "last_login": "2015-02-28T03:23:30Z",
+    "groups": [],
+    "user_permissions": [],
+    "password": "pbkdf2_sha256$15000$4dCpoSIrCZ90$GKyqEEz4911jcfIG1fZPafk5es2fH76qNKYUPkVHuD0=",
+    "email": "notvalidated@example.com",
+    "date_joined": "2015-02-28T03:23:30Z"
+  },
+  "model": "auth.user",
+  "pk": 3
+},
+{
+  "fields": {
     "target": 1,
     "text": "It would be interesting to see some stats on the relevant frequencies of the different classes of breaches. Have you seen anything like that?",
     "creation_date": "2015-02-27T00:12:02Z",
@@ -1762,6 +1780,16 @@
 },
 {
   "fields": {
+    "code": "e6ffc74a14b4589443c94b49ef0ea032",
+    "last_modified": "2015-02-28T03:23:31Z",
+    "user": 3,
+    "creation_date": "2015-02-28T03:23:31Z"
+  },
+  "model": "digidemo.emailverification",
+  "pk": 1
+},
+{
+  "fields": {
     "email_validated": true,
     "province": "",
     "street": "",
@@ -1801,6 +1829,27 @@
   },
   "model": "digidemo.userprofile",
   "pk": 2
+},
+{
+  "fields": {
+    "email_validated": false,
+    "province": "",
+    "street": "",
+    "do_email_responses": true,
+    "country": "",
+    "rep": 0,
+    "creation_date": "2015-02-28T03:23:31Z",
+    "followedProposals": [],
+    "do_email_watched": true,
+    "last_modified": "2015-02-28T03:23:31Z",
+    "user": 3,
+    "avatar_img": "avatars/notvalidated_nuvojIu.png",
+    "do_email_news": true,
+    "do_email_petitions": true,
+    "zip_code": ""
+  },
+  "model": "digidemo.userprofile",
+  "pk": 3
 },
 {
   "fields": {

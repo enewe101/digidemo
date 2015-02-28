@@ -133,6 +133,14 @@ hr {
 	margin: 30px 0 30px 0;
 }
 
+.no_love {
+	background: no-repeat url('../images/no_love.png');
+	height: 100px;
+	width: 135px;
+	margin: 18px 16px 0 0;
+	float:left;
+}
+
 .mail_sent {
 	background: no-repeat url('../images/mail.png');
 	height: 100px;

@@ -14,6 +14,13 @@
 
 <div class="mid_form">
 	<h1 class="computerModern">Login</h1></br> 
+
+	{% if error %}
+		<span class="field_errors" id="login_error">
+			Incorrect username or password
+		</span>
+	{% endif %}
+
 	{% include "digidemo/_w_simple_form_wrapped.html" with form=login_form %}
 </div>
 

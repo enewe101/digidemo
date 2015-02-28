@@ -37,10 +37,19 @@ urlpatterns = patterns('',
 	url(r'^login_required/', Login().view, name='login_required'),
 	url(r'^login_required/(?P<next_url>.+)', Login().view, name='login_required'),
 	url(r'^do_reload/', do_reload, name='do_reload'),
+	url(r'^email_not_validated/', InvalidEmail().view, name='invalid_email'),
 
 	# email verification
+	url(r'^resend_email_confirmation/', resend_email_confirmation, 
+		name='resend_email_confirmation'),
 	url(r'^email-verify/(?P<code>\w*)', verify_email, name='verify_email'),
 	url(r'^mail-sent', mail_sent, name='mail_sent'),
+
+	# Registration
+	url(r'^userRegistration/$', userRegistration,name='userRegistration'),
+
+    # Password Reset
+	url(r'^resetPassword/$', resetPassword,name='resetPassword'),
 
 	# main tabs
 	url(r'^petition_list', AllPetitionListView().view, name="petition_list"),
@@ -71,11 +80,6 @@ urlpatterns = patterns('',
 	url(r'^userProfile/(?P<userName>\w+)/$', userProfile,name='userProfile'),
 	url(r'^userProfile/(?P<userName>\w+)/edit$',userProfileEdit,name='userProfileEdit'),
 
-	# Registration
-	url(r'^userRegistration/$', userRegistration,name='userRegistration'),
-
-    # Password Reset
-	url(r'^resetPassword/$', resetPassword,name='resetPassword'),
 
 	# proposal-centric urls
 	url(r'^add_proposal/$', AddProposalView().view, name='add_proposal'),
