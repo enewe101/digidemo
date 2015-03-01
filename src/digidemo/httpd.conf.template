@@ -1,25 +1,77 @@
-LoadModule wsgi_module /usr/local/Cellar/mod_wsgi/3.3/libexec/mod_wsgi.so
+LoadModule ssl_module /usr/lib/apache2/modules/mod_ssl.so
 
-<VirtualHost *:80>
-	
+Listen 80
+Listen 443 
+WSGIDaemonProcess digidemo processes=2 threads=15 display-name=%{GROUP}
+WSGIProcessGroup digidemo
+
+<VirtualHost  *:443>
+    ServerName luminocracy.org
+    SSLEngine on
+    SSLCertificateFile /etc/ssl/ssl.crt/luminocracy_org.crt
+    SSLCertificateKeyFile /etc/ssl/ssl.key/luminocracy.org_secure.key
+    SSLCertificateChainFile /etc/ssl/ssl.crt/luminocracy_org.ca-bundle
+
     LogLevel info
-    ServerName <name-of-your-server-box>
-    ServerAdmin <your-full-email-address>
-
-    DocumentRoot /path/to/directory/to/mount/as/public/html
+    ServerAdmin webmaster@luminocracy.org
+    DocumentRoot /var/www/luminocracy/static
 
     # These directories become publicly available!
-	Alias /resources 	/path/to/digidemo/resources/
-    Alias /robots.txt 	/path/to/digidemo/resources/robots.txt
-    Alias /favicon.ico 	/path/to/digidemo/resources/favicon.ico
-	# Note '/static/' should match STATIC_ROOT in your settings.py file
-    Alias /static/ 		/path/to/digidemo/static/
-	# Note '/media/' should match STATIC_ROOT in your settings.py file
-    Alias /media/ 		/path/to/digidemo/media/
+    Alias /robots.txt   /var/www/luminocracy/static/robots.txt
+    Alias /favicon.ico  /var/www/luminocracy/static/digidemo/images/favicon.ico
+    # Note '/static/' should match STATIC_ROOT in your settings.py file
+    Alias /static/      /var/www/luminocracy/static/
+    # Note '/media/' should match STATIC_ROOT in your settings.py file
+    Alias /media/       /var/www/luminocracy/media/
 
-    WSGIDaemonProcess digidemo processes=2 threads=15 display-name=%{GROUP}
-    WSGIProcessGroup digidemo
+    <Directory /var/www/luminocracy/media/ >
+        Order Deny,Allow
+        Allow from all
+    </Directory> 
+    <Directory var/wwws/luminocracy/static >
+        Order Deny,Allow
+        Allow from all
+    </Directory> 
+    <Directory var/www/luminocracy/src/digidemo >
+        Order Deny,Allow
+        Allow from all
+    </Directory> 
 
-    WSGIScriptAlias / /path/to/digidemo/src/digidemo/wsgi.py
+    WSGIScriptAlias / /var/www/luminocracy/src/digidemo/wsgi.py
+</VirtualHost>
+
+<VirtualHost *:80>
+	ServerName luminocracy.org
+	Redirect permanent / https://luminocracy.org/
+
+#    LogLevel info
+#    ServerName luminocracy.org
+#    ServerAdmin webmaster@luminocracy.org
+#
+#    DocumentRoot /var/www/luminocracy/static/
+#
+#    # These directories become publicly available!
+#    Alias /robots.txt   /var/www/luminocracy/static/robots.txt
+#    Alias /favicon.ico  /var/www/luminocracy/static/digidemo/images/favicon.ico
+#    # Note '/static/' should match STATIC_ROOT in your settings.py file
+#    Alias /static/      /var/www/luminocracy/static/
+#    # Note '/media/' should match STATIC_ROOT in your settings.py file
+#    Alias /media/       /var/www/luminocracy/media/
+#
+#    <Directory /var/www/luminocracy/media/ >
+#        Order Deny,Allow
+#        Allow from all
+#    </Directory> 
+#    <Directory /var/www/luminocracy/static/ >
+#        Order Deny,Allow
+#        Allow from all
+#    </Directory> 
+#    <Directory /var/www/luminocracy/src/digidemo/ >
+#        Order Deny,Allow
+#        Allow from all
+#    </Directory> 
+#
+#    WSGIScriptAlias / /var/www/luminocracy/src/digidemo/wsgi.py
 
 </VirtualHost>
+
