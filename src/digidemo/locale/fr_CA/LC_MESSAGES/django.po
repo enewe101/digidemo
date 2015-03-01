@@ -1,0 +1,61 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2015-02-28 20:55-0500\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: digidemo/forms.py:360
+msgid "Resent letter must have same valence as original letter"
+msgstr ""
+
+#: digidemo/settings.py:105
+msgid "English"
+msgstr "Anglais"
+
+#: digidemo/settings.py:106
+msgid "French"
+msgstr "Francais"
+
+#: digidemo/views.py:40
+msgid "issue"
+msgstr "enjeux"
+
+#: digidemo/views.py:41 digidemo/views.py:49
+msgid "questions"
+msgstr "questions"
+
+#: digidemo/views.py:42 digidemo/views.py:50
+msgid "letters"
+msgstr "lettres"
+
+#: digidemo/views.py:43
+msgid "edit / discuss"
+msgstr "modifier / discuter"
+
+#: digidemo/views.py:46
+msgid "issues"
+msgstr "enjeux"
+
+#: digidemo/views.py:47
+msgid "topics"
+msgstr "sujects"
+
+#: digidemo/views.py:48
+msgid "create"
+msgstr "creer"
+
+#: digidemo/views.py:51
+msgid "users"
+msgstr "usagees"

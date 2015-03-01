@@ -2,6 +2,7 @@ import difflib
 import collections as c
 
 from uuid import uuid4
+from django.utils.translation import ugettext_lazy as _
 from django.core import serializers
 from django.core.files.storage import default_storage
 from django.core.files.base import ContentFile
@@ -36,18 +37,18 @@ from choices import *;
 
 
 # Names we use for the tabs in proposal sections
-OVERVIEW_TAB_NAME = 'issue'
-QUESTIONS_TAB_NAME = 'questions'
-OPINION_TAB_NAME = 'letters'
-EDIT_TAB_NAME = 'edit / discuss'
+OVERVIEW_TAB_NAME = _('issue')
+QUESTIONS_TAB_NAME = _('questions')
+OPINION_TAB_NAME = _('letters')
+EDIT_TAB_NAME = _('edit / discuss')
 
 # Names we use for the top level "button" navigation
-ISSUE_NAV_NAME = 'issues'
-TOPICS_NAV_NAME = 'topics'
-CREATE_NAV_VAME = 'create'
-QUESTIONS_NAV_NAME = 'questions'
-OPINION_NAV_NAME = 'letters'
-USERS_NAV_NAME = 'users'
+ISSUE_NAV_NAME = _('issues')
+TOPICS_NAV_NAME = _('topics')
+CREATE_NAV_VAME = _('create')
+QUESTIONS_NAV_NAME = _('questions')
+OPINION_NAV_NAME = _('letters')
+USERS_NAV_NAME = _('users')
 
 
 def get_user_notifications(user):
