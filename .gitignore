@@ -3,6 +3,7 @@ static/*
 media/*
 temp/*
 docs/*
+*.mo
 *.svg
 *.pyc
 *.swp
