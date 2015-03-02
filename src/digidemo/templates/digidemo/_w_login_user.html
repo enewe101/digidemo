@@ -208,7 +208,12 @@
 				<a>{% trans "login" %} </a>
 
 				<div id="login_form_div">
-					<div class="border_cover_med_short"></div>
+					{% if GLOBALS.IS_ENGLISH %}
+						<div class="border_cover_med_short"></div>
+					{% else %}
+						<div class="border_cover_very_long"></div>
+					{% endif %}
+
 					<form id="login_form">
 						<div id="ajax_login_error"></div>
 						<label for="username">

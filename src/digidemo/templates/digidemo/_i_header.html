@@ -5,7 +5,11 @@
 	<div id="header_bg">
 
 	<div class="outer_center">
-		<div class="inner_center">
+		{% if GLOBALS.IS_ENGLISH %}
+			<div class="inner_center">
+		{% else %}
+			<div class="fr_inner_center">
+		{% endif %}
 
 			<a href="{% url "mainPage" %}">
 				<div class="short_nav_button_first">

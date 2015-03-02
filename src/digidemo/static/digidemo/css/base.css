@@ -319,9 +319,6 @@ div#navbar {
 	border: solid 2px black;
 }
 
-#login_div {
-}
-
 #login_row .sender_avatar_image {
 	margin: 0;
 }
@@ -419,7 +416,6 @@ div#navbar {
 	border: solid 1px black;
 	border-radius: 3px;
 	background: rgb(250, 250, 250);
-	width: 80px;
 	margin: 4px 12px 4px 4px;
 }
 
@@ -504,6 +500,16 @@ input[type="text"], input[type="password"], input[type="email"] {
 	border-right: solid 2px black;
 }
 
+.border_cover_very_long {
+	top:-2px;
+	right:-2px;
+	position: absolute;
+	width: 82px;
+	height: 5px;
+	background: white;
+	border-right: solid 2px black;
+}
+
 .border_cover_med_short {
 	top:-2px;
 	right:-2px;
@@ -524,20 +530,23 @@ input[type="text"], input[type="password"], input[type="email"] {
 }
 .login_div {
 	border: solid 2px white;
+	padding: 13px 6px 0 6px;
+	height: 33px;
+	float: left;
 }
 .login_div_active {
 	border: solid 2px black;
+	padding: 13px 6px 0 6px;
+	height: 33px;
+	float: left;
 }
 
-#login_div {
-	width: 34px;
-}
 #login_div, #register_div {
 	cursor: pointer;
 	position: relative;
 	border-radius: 6px;
 }
-#login_div, #separator_div, #register_div {
+#separator_div, #register_div {
 	padding: 15px 6px 0 6px;
 	height: 31px;
 	float: left;
@@ -551,6 +560,11 @@ input[type="text"], input[type="password"], input[type="email"] {
 	text-align: left;
 	margin: auto;
 	width: 1100px;
+}
+.fr_inner_center {
+	text-align: left;
+	margin: auto;
+	width: 1200px;
 }
 
 #user {

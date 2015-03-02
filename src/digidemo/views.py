@@ -254,6 +254,7 @@ def get_globals(request):
 		) else False
 
 	GLOBALS = {
+		'IS_ENGLISH': request.LANGUAGE_CODE.startswith('en'),
 		'DEBUG': DEBUG,
 		'SECTORS': Sector.objects.all(),
 		'IS_USER_AUTHENTICATED': request.user.is_authenticated(),
