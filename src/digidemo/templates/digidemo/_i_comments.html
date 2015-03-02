@@ -1,4 +1,5 @@
 {% load apptags %}
+{% load i18n %}
 
 <!-- start of the comments area -->
 <div id="comments_{{ comments_section.id_prefix }}" class="comments">
@@ -19,7 +20,7 @@
 	<a {{ request|login_tip }}
 		id="_w_toggle_hidden_comment_{{ comments_section.id_prefix }}" 
 		class="pointer"> 
-		add comment
+		{% trans "add comment" %}
 	</a>
 	<div id="_w_toggle_hidden_content_comment_{{ comments_section.id_prefix }}"
 		class="add_comment_toggle_content" >

@@ -6,11 +6,10 @@
 {% endblock title %}
 
 {% block  headline_title %}
-	<img class="headline_icon"
-	src="{{ headline_icon_url }}" />
 	{{ target.title }}
 {% endblock headline_title %}
 
 {% block maincol %}
+	<h2>{{ subtitle }}</h2><br />
 		{% include "digidemo/_w_simple_form_wrapped.html" with form=form %}
 {% endblock maincol %}

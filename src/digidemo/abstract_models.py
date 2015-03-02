@@ -2,11 +2,12 @@ from digidemo.utils import *
 from django.db import models
 from digidemo.choices import *
 from django.contrib.auth.models import User
+from django.contrib.staticfiles.templatetags.staticfiles import static
 from django.utils import timezone 
+from django.utils.translation import ugettext_lazy as _
+from django.utils.safestring import mark_safe
 from django.core.urlresolvers import reverse
 from django.template.defaultfilters import slugify
-from django.utils.safestring import mark_safe
-from django.contrib.staticfiles.templatetags.staticfiles import static
 import re
 import os
 
@@ -40,8 +41,10 @@ REASON_CHOICES = (
 # *** Abstract Models *** #
 
 class TimeStamped(models.Model):
-	creation_date = models.DateTimeField(editable=False)
-	last_modified = models.DateTimeField(editable=False)
+	creation_date = models.DateTimeField(editable=False, 
+		verbose_name=_('creation date'))
+	last_modified = models.DateTimeField(editable=False, 
+		verbose_name=_('last modified'))
 
 	def save(self, *args, **kwargs):
 		if not self.creation_date:
@@ -53,11 +56,12 @@ class TimeStamped(models.Model):
 	class Meta:
 		abstract = True
 
-
 class ScoredPost(models.Model):
-	user = models.ForeignKey(User)
-	score = models.SmallIntegerField(default=0, editable=False)
-	text = models.CharField(max_length=DEFAULT_TEXT_LENGTH)
+	user = models.ForeignKey(User, verbose_name=_('user'))
+	score = models.SmallIntegerField(default=0, editable=False, 
+		verbose_name=_('score'))
+	text = models.CharField(max_length=DEFAULT_TEXT_LENGTH, 
+		verbose_name=_('text'))
 
 	def __unicode__(self):
 		return self.text[:20]
@@ -195,7 +199,8 @@ class Subscribable(TriggersNotification):
 		by overriding the method get_targets to return an empty list.
 	'''
 
-	subscription_id = models.ForeignKey('SubscriptionId', editable=False)
+	subscription_id = models.ForeignKey('SubscriptionId', editable=False, 
+		verbose_name=_('subscription id'))
 
 	def _get_subscription_id(self):
 		s = SubscriptionId()
@@ -286,8 +291,9 @@ class AbstractComment(ScoredPost, Subscribable):
 	
 
 class Vote(TriggersNotification):
-	user = models.ForeignKey(User)
-	valence = models.SmallIntegerField(choices=VOTE_CHOICES)
+	user = models.ForeignKey(User, verbose_name=_('user'))
+	valence = models.SmallIntegerField(choices=VOTE_CHOICES, 
+		verbose_name=_('valence'))
 
 	def get_event_data(self):
 		return str(self.valence)
@@ -318,28 +324,48 @@ class Notification(TimeStamped):
 		passed since the notification was first inserted.
 	'''
 	source_user = models.ForeignKey(
-		User, related_name='triggered_notifications', null=True)
+		User, related_name='triggered_notifications', null=True,
+		verbose_name=_('source user'))
 	target_user = models.ForeignKey(
-		User, related_name='received_notifications', null=True)
+		User, related_name='received_notifications', null=True, 
+		verbose_name=_('target user'))
 	event_type = models.CharField(
-			max_length=20, choices=EVENT_TYPE_CHOICES)
-	reason = models.CharField(max_length=20, choices=REASON_CHOICES)
-	event_data = models.CharField(max_length=2048)
-	link_back = models.URLField(max_length=512, null=True)
-	was_seen = models.BooleanField(default=False)
-	was_checked = models.BooleanField(default=False)
-	was_mailed = models.BooleanField(default=False)
+		max_length=20, choices=EVENT_TYPE_CHOICES,
+		verbose_name=_('event type'))
+	reason = models.CharField(max_length=20, choices=REASON_CHOICES, 
+		verbose_name=_('reason'))
+	event_data = models.CharField(max_length=2048, 
+		verbose_name=_('event data'))
+	link_back = models.URLField(max_length=512, null=True, 
+		verbose_name=_('link back'))
+	was_seen = models.BooleanField(default=False, verbose_name=_('was seen'))
+	was_checked = models.BooleanField(default=False, 
+		verbose_name=_('was checked'))
+	was_mailed = models.BooleanField(default=False, 
+		verbose_name=_('was mailed'))
+
+	class Meta:
+		verbose_name = _('notification')
+		verbose_name_plural = _('notifications')
+
+
 
 
 class Subscription(TimeStamped):
 	'''
 		Lists the objects that users are subscribed to.
 	'''
-	user = models.ForeignKey(User, related_name='subscriptions')
-	reason = models.CharField(max_length=20, choices=REASON_CHOICES)
-	subscription_id = models.ForeignKey('SubscriptionId', 
-		related_name='subscriptions')
+	user = models.ForeignKey(User, related_name='subscriptions', 
+		verbose_name=_('user'))
+	reason = models.CharField(max_length=20, choices=REASON_CHOICES, 
+		verbose_name=_('reason'))
+	subscription_id = models.ForeignKey('SubscriptionId',
+		verbose_name=_('subscription id'), related_name='subscriptions')
 
+
+	class Meta:
+		verbose_name = _('subscription')
+		verbose_name_plural = _('subscriptions')
 
 
 class SubscriptionId(TimeStamped):
@@ -354,10 +380,15 @@ class SubscriptionId(TimeStamped):
 			1) We rely on the db's autoincrement to give out unique 
 				subscription id's.
 	'''
-	subscription_id = models.AutoField(primary_key=True)
+	subscription_id = models.AutoField(primary_key=True, 
+		verbose_name=_('subscription id'))
 
 	def __unicode__(self):
 		return str(self.subscription_id)
+
+	class Meta:
+		verbose_name = _('subscription id')
+		verbose_name_plural = _('subscription ids')
 
 
 class Publication(TimeStamped):
@@ -370,12 +401,21 @@ class Publication(TimeStamped):
 	'''
 
 	source_user = models.ForeignKey(
-		User, related_name='publications', null=True)
+		User, related_name='publications', null=True, 
+		verbose_name=_('source user'))
 	subscription_id = models.ForeignKey('SubscriptionId', 
-		related_name='publications')
+		related_name='publications', verbose_name=_('subscription id'))
 	event_type = models.CharField(
-		max_length=20, choices=EVENT_TYPE_CHOICES)
-	was_posted = models.BooleanField(default=False)
-	event_data = models.CharField(max_length=2048)
-	link_back = models.URLField(max_length=512, null=True)
+		max_length=20, choices=EVENT_TYPE_CHOICES, 
+		verbose_name=_('event type'))
+	was_posted = models.BooleanField(default=False, 
+		verbose_name=_('was posted'))
+	event_data = models.CharField(max_length=2048, 
+		verbose_name=_('event data'))
+	link_back = models.URLField(max_length=512, null=True, 
+		verbose_name=_('link back'))
+
+	class Meta:
+		verbose_name = _('publication')
+		verbose_name_plural = _('publications')
 

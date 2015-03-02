@@ -1,3 +1,4 @@
+{% load i18n %}
 <!-- start the left navigation bar -->
 
 <!-- The login template exists on the navigation bar , existed in the "__tabbed.html" previously , now moved to the new location -->
@@ -6,32 +7,32 @@
 <div id="navbar">
 	<a class="{% if active_navitem == "issues" %}navitem_active{% else %}navitem{% endif %}"
 		href="{% url "issue_list" order_by="interesting" %}">
-			Issues
+		{% trans "Issues" %}
 	</a>
 
 	<a class="{% if active_navitem == "topics" %}navitem_active{% else %}navitem{% endif %}"
 		href="{% url "topics" %}">
-		Topics
+		{% trans "Topics" %}
 	</a>
 
 	<a class="{% if active_navitem == "questions" %}navitem_active{% else %}navitem{% endif %}"
 		href="{% url "all_questions_list" order_by="interesting" %}">
 
-		Questions
+		{% trans "Questions" %}
 	</a>
 
 	<a class="{% if active_navitem == "petitions" %}navitem_active{% else %}navitem{% endif %}"
 		href="{% url "all_petitions_list" order_by="interesting" %}">
-		Letters
+		{% trans "Letters" %}
 	</a>
 
 	<a title="not implemented" class="{% if active_navitem == "users" %}navitem_active{% else %}navitem{% endif %}">
-		Users
+		{% trans "Users" %}
 	</a>
 
 	<a class="create_navitem {% if active_navitem == "create" %}navitem_active{% else %}navitem{% endif %}"
 		href="{% url "add_proposal" %}" >
-		+ create
+		+ {% trans "Create" %}
 	</a>
 
 </div>

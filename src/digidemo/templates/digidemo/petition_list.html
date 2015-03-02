@@ -30,13 +30,16 @@
 
 	<div class="section_header">
 		<h2 class="subtitle float_left">	
-			{{letter_sections|length}}
-			Letter{{letter_sections|length|pluralize}}
+			{% blocktrans count num_letters=letter_sections|length %}
+				{{ num_letters }} Letter
+			{% plural %}
+				{{ num_letters }} Letters
+			{% endblocktrans %}
 		</h2>
 
 		<div class="section_buttons_right">
 			<a class="go_button_inline" href="{{ proposal.get_start_petition_url }}">
-				start a letter
+				{% trans "start a letter" %}
 			</a>
 		</div>
 
@@ -79,7 +82,7 @@
 						{{ letter_section.post.text|truncatewords:100 }}
 						<br />
 						<a href="{{letter_section.post.get_url}}">
-							go to letter...
+							{% trans "go to letter..." %}
 						</a>
 					</div>
 

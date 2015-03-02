@@ -4,6 +4,11 @@ from django.shortcuts import render, get_object_or_404
 from django.http import HttpResponse, HttpResponseRedirect
 from django.template import Context, RequestContext
 from django.template.loader import get_template
+from django.utils.translation import ugettext_lazy as _
+from django.utils.translation import ugettext as __
+from django.utils import timezone
+from django.views.decorators.csrf import csrf_exempt
+from django.contrib.auth import authenticate, login, logout
 from digidemo.models import *
 from digidemo.abstract_models import *
 from digidemo.forms import *
@@ -11,9 +16,6 @@ from digidemo.settings import DEBUG
 from digidemo.utils import get_or_none, force_logout
 from digidemo.views import get_vote_form, AnswerSection, ReplySection
 from digidemo.shortcuts import get_profile, login_user
-from django.utils import timezone
-from django.views.decorators.csrf import csrf_exempt
-from django.contrib.auth import authenticate, login, logout
 
 # json responders should return a python dict
 _json_responders = {}
@@ -101,8 +103,8 @@ def ajax_endpoint_login_required(error_msg=None, form_class=None):
 					force_logout(request) # this is not implemented yet!
 					return {
 						'success':False,
-						'msg': 'authenticated user did not match the user ' \
-							'that requested the form',
+						'msg': 'authenticated user did not match the '
+							'user that requested the form',
 						'errors':{'__all__':
 							['Sorry, your session has expired...']}
 					}
@@ -138,12 +140,11 @@ def handle_ajax_json(request, view='test', *args, **kwargs):
 
 	except Exception, e:
 		return HttpResponse(content=screen_ajax_error(e), status=500, 
-			reason='Internal Server Error')
+			reason= 'Internal Server Error')
 
 	# render and return the HttpResponse
 	data = json.dumps(data)
 	return render(request, 'digidemo/ajax.html', {'json_data':data})
-
 
 
 def screen_ajax_error(e):
@@ -155,9 +156,6 @@ def screen_ajax_error(e):
 		err_msg = "error"
 
 	return err_msg
-
-
-
 
 
 def vote(vote_spec, request):
@@ -367,7 +365,7 @@ def reply(request):
 
 	return {
 		'success':False,
-		'msg':'ajax.py: answer(): ReplyForm was not valid',
+		'msg': 'ajax.py: answer(): ReplyForm was not valid',
 		'errors': reply_form.json_errors()
 	}
 
@@ -404,7 +402,7 @@ def answer(request):
 
 	return {
 		'success':False,
-		'msg':'ajax.py: answer(): AnswerForm was not valid',
+		'msg': 'ajax.py: answer(): AnswerForm was not valid',
 		'errors': answer_form.json_errors()
 	}
 
@@ -424,7 +422,7 @@ def send_letter(request):
 
 	return {
 		'success':False,
-		'msg':'ajax.py: send_letter(): LetterForm was not valid'
+		'msg': 'ajax.py: send_letter(): LetterForm was not valid'
 	}
 
 
@@ -544,7 +542,7 @@ def process_comment(request, comment_form_class):
 
 	return {
 		'success': False,
-		'msg':'ajax.py: comment(): comment form was not valid',
+		'msg': 'ajax.py: comment(): comment form was not valid',
 		'errors': comment_form.json_errors()
 	}
 

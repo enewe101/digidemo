@@ -1,19 +1,25 @@
 {% extends "digidemo/__two_column.html" %}
 {% load staticfiles %}
+{% load i18n %}
 
 {% block  headline_title %}
-	Issues{{sector_title}}{{ tag_title }}
+	{% trans "Issues" %}{{sector_title}}{{ tag_title }}
 {% endblock headline_title %}
 
 {% block maincol %}
 	<!-- start the section title and section-specific buttons -->
 	<div class="section_header">
-		<h2 class="subtitle float_left">{{issues.count}} Issue{{issues.count|pluralize}}</h2>
-
+		<h2 class="subtitle float_left">
+			{% blocktrans count num_issues=issues.count %}
+				{{num_issues}} Issue
+			{% plural %}
+				{{num_issues}} Issues
+			{% endblocktrans %}
+		</h2>
 
 		<div class="section_buttons_right">
 			<a class="go_button_inline" href="{% url "add_proposal" %}">
-				create an issue
+				{% trans "create an issue" %}
 			</a>
 		</div>
 
@@ -31,8 +37,11 @@
 						{{ issue.letter_set.count }}
 					</div>
 					<div class="num_replies">
-						{{ issue.question_set.count }} 
-						questions
+						{% blocktrans count num_questions=issue.question_set.count %}
+							{{num_questions}} question
+						{% plural %}
+							{{num_questions}} questions
+						{% endblocktrans %}
 					</div>
 				</div>
 				<div class="list_body">
@@ -55,6 +64,8 @@
 	<div class="take_note">
 		<img src="{% static "digidemo/images/bulb_icon.png" %}" 
 			class="note_icon" />
+
+		{% blocktrans %}
 		<p>
 			An issue 
 			collects the relevant facts and
@@ -72,5 +83,6 @@
 			"British Columbia Pine Beetle Infestation" or
 			"Sustainable Forestry" are better.
 		</p>
+		{% endblocktrans %}
 	</div>
 {% endblock rightcol %}

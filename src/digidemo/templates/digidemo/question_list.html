@@ -1,19 +1,29 @@
 {% extends "digidemo/__two_column.html" %}
 {% load staticfiles %}
+{% load i18n %}
 
 {% block  headline_title %}
 	{{ proposal.get_latest.title }}
+	<div id="follow">
+		{% include "digidemo/_w_follow_post.html" with proposal=proposal %}
+	</div>
 {% endblock headline_title %}
 
 {% block maincol %}
 	<!-- start the section title and section-specific buttons -->
 	<div class="section_header">
-		<h2 class="subtitle float_left">{{items.count}} Question{{items.count|pluralize}}</h2>
+		<h2 class="subtitle float_left">
+			{% blocktrans count num_questions=items.count %}
+				{{ num_questions }} Question
+			{% plural %}
+				{{ num_questions }} Questions
+			{% endblocktrans %}
+		</h2>
 
 
 		<div class="section_buttons_right">
 			<a class="go_button_inline" href="{{ proposal.get_question_url }}">
-				ask a question
+				{% trans "ask a question" %}
 			</a>
 		</div>
 
@@ -31,8 +41,11 @@
 						{{ item.score }}
 					</div>
 					<div class="num_replies">
-						{{ item.replies.count }} 
-						answers
+						{% blocktrans count num_answers=item.replies.count %}
+							{{ num_answers }} Answer
+						{% plural %}
+							{{ num_answers }} Answers
+						{% endblocktrans %}
 					</div>
 				</div>
 				<div class="list_body">
@@ -50,24 +63,23 @@
 {% endblock maincol %}
 
 {% block rightcol %}
-	
-	<div class="section">
-		{% include "digidemo/_w_follow_post.html" %}
-	</div>
-
 	<div class="take_note">
 		<img src="{% static "digidemo/images/bulb_icon.png" %}" 
 			class="note_icon" />
 		<p>
+			{% blocktrans %}
 			Note: Post your questions about the issue here.  If you want to
 			contribute to the writing of the issue (it is a wiki after all!),
 			then you can post contstructive comments about the 
 			<span class="italic">content of the proposal</span> in the
 			discussion area.
+			{% endblocktrans %}
 		</p>
 		<p>
+			{% blocktrans %}
 			Make sure to read the <a href="#">asking good questions</a> 
 			guideline before contributing :)
+			{% endblocktrans %}
 		</p>
 	</div>
 {% endblock rightcol %}

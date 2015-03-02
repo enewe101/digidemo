@@ -1,5 +1,6 @@
 {% extends "digidemo/__two_column.html" %}
 {% load staticfiles %}
+{% load i18n %}
 
 
 {% block maincol %}
@@ -24,9 +25,9 @@
 
 {% block rightcol %}	
 	<div class="info"> 
-		Last Modified {{proposal.last_modified}} 
+		{% trans "Last Modified" %} {{proposal.last_modified}} 
 	</div>
 	<a class="go_button" href="{{proposal.get_open_discussions_url}}">
-		cancel
+		{% trans "cancel" %}
 	</a>
 {% endblock rightcol %}	

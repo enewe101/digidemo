@@ -3,6 +3,7 @@
 # This file is distributed under the same license as the PACKAGE package.
 # FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
 #
+#, fuzzy
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
@@ -18,173 +19,173 @@ msgstr ""
 
 #: abstract_models.py:45
 msgid "creation date"
-msgstr "date de création"
+msgstr ""
 
 #: abstract_models.py:47
 msgid "last modified"
-msgstr "date de la dernière modification"
+msgstr ""
 
 #: abstract_models.py:60 abstract_models.py:294 abstract_models.py:359
 #: models.py:337 models.py:361 models.py:449 models.py:514
 msgid "user"
-msgstr "utilisateur"
+msgstr ""
 
 #: abstract_models.py:62 models.py:220 models.py:515
 msgid "score"
-msgstr "pointage"
+msgstr ""
 
 #: abstract_models.py:64 models.py:223 models.py:336 models.py:519
 msgid "text"
-msgstr "texte"
+msgstr ""
 
 #: abstract_models.py:203 abstract_models.py:363 abstract_models.py:384
 #: abstract_models.py:390 abstract_models.py:407
 msgid "subscription id"
-msgstr "subcription id"
+msgstr ""
 
 #: abstract_models.py:296 models.py:513
 msgid "valence"
-msgstr "résultat"
+msgstr ""
 
 #: abstract_models.py:328 abstract_models.py:405
 msgid "source user"
-msgstr "utilisateur d'origine"
+msgstr ""
 
 #: abstract_models.py:331
 msgid "target user"
-msgstr "utilisateur cible"
+msgstr ""
 
 #: abstract_models.py:334 abstract_models.py:410
 msgid "event type"
-msgstr "type d'événement"
+msgstr ""
 
 #: abstract_models.py:336 abstract_models.py:361
 msgid "reason"
-msgstr "raison"
+msgstr ""
 
 #: abstract_models.py:338 abstract_models.py:414
 msgid "event data"
-msgstr "information de l'événement"
+msgstr ""
 
 #: abstract_models.py:340 abstract_models.py:416
 msgid "link back"
-msgstr "lien"
+msgstr ""
 
 #: abstract_models.py:341
 msgid "was seen"
-msgstr "vu"
+msgstr ""
 
 #: abstract_models.py:343
 msgid "was checked"
-msgstr "vérifé"
+msgstr ""
 
 #: abstract_models.py:345
 msgid "was mailed"
-msgstr "envoyé"
+msgstr ""
 
 #: abstract_models.py:348
 msgid "notification"
-msgstr "notification"
+msgstr ""
 
 #: abstract_models.py:349
 msgid "notifications"
-msgstr "notifications"
+msgstr ""
 
 #: abstract_models.py:367
 msgid "subscription"
-msgstr "abonnement"
+msgstr ""
 
 #: abstract_models.py:368
 msgid "subscriptions"
-msgstr "abonnements"
+msgstr ""
 
 #: abstract_models.py:391
 msgid "subscription ids"
-msgstr "subscription ids"
+msgstr ""
 
 #: abstract_models.py:412
 msgid "was posted"
-msgstr "affiché"
+msgstr ""
 
 #: abstract_models.py:419
 msgid "publication"
-msgstr "publication"
+msgstr ""
 
 #: abstract_models.py:420
 msgid "publications"
-msgstr "publications"
+msgstr ""
 
 #: choices.py:35
 msgid "non profit"
-msgstr "organisation à but non lucratif"
+msgstr ""
 
 #: choices.py:36
 msgid "not for profit"
-msgstr "organization à but non lucratif"
+msgstr ""
 
 #: choices.py:37
 msgid "charity"
-msgstr "fondation charitable"
+msgstr ""
 
 #: choices.py:38
 msgid "corporation"
-msgstr "entreprise"
+msgstr ""
 
 #: choices.py:39
 msgid "crown corporation"
-msgstr "société d'État"
+msgstr ""
 
 #: choices.py:40
 msgid "government agency"
-msgstr "agence gouvernementale"
+msgstr ""
 
 #: choices.py:41
 msgid "national political party"
-msgstr "parti politique fédéral"
+msgstr ""
 
 #: choices.py:42
 msgid "provincial political party"
-msgstr "parti politique provincial"
+msgstr ""
 
 #: choices.py:43
 msgid "city / municipal administration"
-msgstr "administration municipale"
+msgstr ""
 
 #: choices.py:44
 msgid "foundation"
-msgstr "fondation"
+msgstr ""
 
 #: choices.py:45
 msgid "university or college"
-msgstr "université ou collège (CEGEP)"
+msgstr ""
 
 #: choices.py:46
 msgid "professional standards body"
-msgstr "ordre professionnel"
+msgstr ""
 
 #: choices.py:47
 msgid "provincial regulatory association"
-msgstr "organisme de normalisation provincial"
+msgstr ""
 
 #: choices.py:48
 msgid "national regulatory association"
-msgstr "organisme de normalisation national"
+msgstr ""
 
 #: choices.py:49
 msgid "non-governmental organization"
-msgstr "organization non-gouvernementale"
+msgstr ""
 
 #: choices.py:50
 msgid "industry group"
-msgstr "groupe industriel"
+msgstr ""
 
 #: choices.py:51
 msgid "labour union"
-msgstr "syndicat"
+msgstr ""
 
 #: choices.py:52
 msgid "other interest group"
-msgstr "autre groupe d'influence"
+msgstr ""
 
 #: choices.py:56
 msgid "Alberta"
@@ -658,6 +659,10 @@ msgstr ""
 msgid "British Indian Ocean Territory"
 msgstr ""
 
+#: choices.py:178
+msgid "Ireland"
+msgstr ""
+
 #: choices.py:179
 msgid "Iran, Islamic Republic of"
 msgstr ""
@@ -1058,6 +1063,10 @@ msgstr ""
 msgid "Sao Tome and Principe"
 msgstr ""
 
+#: choices.py:279
+msgid "Suriname"
+msgstr ""
+
 #: choices.py:280
 msgid "Slovakia"
 msgstr ""
@@ -1224,452 +1233,448 @@ msgstr ""
 
 #: forms.py:333 models.py:518
 msgid "recipients"
-msgstr "destinataires"
+msgstr ""
 
 #: forms.py:362
 msgid "Resent letter must have same valence as original letter"
 msgstr ""
-"Les lettres ré-expédiées doivent avoir la même valence que les lettres "
-"originelles"
 
 #: forms.py:598 models.py:117
 msgid "username"
-msgstr "nom d'utilisateur"
+msgstr ""
 
 #: forms.py:601
 msgid "password"
-msgstr "mot de passe"
+msgstr ""
 
 #: forms.py:613
 msgid "Confirm password"
-msgstr "confirmation du mot de passe"
+msgstr ""
 
 #: models.py:92 models.py:103 models.py:115 models.py:496
 msgid "email"
-msgstr "courriel"
+msgstr ""
 
 #: models.py:93
 msgid "message"
-msgstr "message"
+msgstr ""
 
 #: models.py:104
 msgid "active"
-msgstr "actif"
+msgstr ""
 
 #: models.py:107
 msgid "user on our email list"
-msgstr "utilisateur sur nos listes d'envoi"
+msgstr ""
 
 #: models.py:108
 msgid "users on our email list"
-msgstr "utilisateurs sur nos listes d'envoi"
+msgstr ""
 
 #: models.py:120
 msgid "Password reset request"
-msgstr "Demande de réinitialisation de mot de passe"
+msgstr ""
 
 #: models.py:121
 msgid "Password reset requests"
-msgstr "Demandes de réinitialisation de mot de passe"
+msgstr ""
 
 #: models.py:135 models.py:472
 msgid "short name"
-msgstr "version courte du nom"
+msgstr ""
 
 #: models.py:136 models.py:181 models.py:488
 msgid "name"
-msgstr "nom"
+msgstr ""
 
 #: models.py:166
 msgid "sector"
-msgstr "secteur d'impact"
+msgstr ""
 
 #: models.py:167 models.py:243 models.py:343
 msgid "sectors"
-msgstr "secteurs d'impact"
+msgstr ""
 
 #: models.py:213
 msgid "tag"
-msgstr "sujet"
+msgstr ""
 
 #: models.py:214 models.py:240 models.py:340
 msgid "tags"
-msgstr "sujets"
+msgstr ""
 
 #: models.py:219
 msgid "is published"
-msgstr "publié"
+msgstr ""
 
 #: models.py:221 models.py:334 models.py:516 models.py:551 models.py:590
 msgid "title"
-msgstr "titre"
+msgstr ""
 
 #: models.py:222 models.py:335
 msgid "summary"
-msgstr "résumé"
+msgstr ""
 
 #: models.py:230
 msgid "original author"
-msgstr "auteur originel"
+msgstr ""
 
 #: models.py:233
 msgid "last author"
-msgstr "dernier auteur"
+msgstr ""
 
 #: models.py:237
 msgid "issue image"
-msgstr "image de l'enjeu"
+msgstr ""
 
 #: models.py:327 models.py:333 templates/digidemo/index.html:52
 #: templates/digidemo/index.html.py:99 views.py:41
 msgid "issue"
-msgstr "enjeu"
+msgstr ""
 
 #: models.py:328
 msgid "issues"
-msgstr "enjeux"
+msgstr ""
 
 #: models.py:346
 msgid "issue version"
-msgstr "version"
+msgstr ""
 
 #: models.py:347
 msgid "issue versions"
-msgstr "versions"
+msgstr ""
 
 #: models.py:363
 msgid "email validated"
-msgstr "courriel vérifié"
+msgstr ""
 
 #: models.py:365
 msgid "avatar image"
-msgstr "image d'utilisateur"
+msgstr ""
 
 #: models.py:366
 msgid "reputation"
-msgstr "réputation"
+msgstr ""
 
 #: models.py:367
 msgid "street"
-msgstr "rue"
+msgstr ""
 
 #: models.py:368
 msgid "zip_code"
-msgstr "code postal"
+msgstr ""
 
 #: models.py:370
 msgid "country"
-msgstr "pays"
+msgstr ""
 
 #: models.py:372
 msgid "province"
-msgstr "province"
+msgstr ""
 
 #: models.py:375
 msgid "do email news"
-msgstr "Recevoir l'infolettre par courriel"
+msgstr ""
 
 #: models.py:377
 msgid "do email responses"
-msgstr "Recevoir un courriel de notification lors de réponses à une question"
+msgstr ""
 
 #: models.py:379
 msgid "do email petitions"
 msgstr ""
-"Recevoir un courriel de notification lors de la signature d'une lettre "
-"ouverte"
 
 #: models.py:381
 msgid "do email watched"
-msgstr "Recevoir un courriel de notification par rapport à vos abonnements"
+msgstr ""
 
 #: models.py:384
 msgid "user profile"
-msgstr "profil d'utilisateur"
+msgstr ""
 
 #: models.py:385
 msgid "user profiles"
-msgstr "profils d'utilisateur"
+msgstr ""
 
 #: models.py:450
 msgid "code"
-msgstr "code"
+msgstr ""
 
 #: models.py:453
 msgid "email verification"
-msgstr "vérification de courriel"
+msgstr ""
 
 #: models.py:454
 msgid "email verifications"
-msgstr "vérifications de courriel"
+msgstr ""
 
 #: models.py:458
 msgid "first name"
-msgstr "prénom"
+msgstr ""
 
 #: models.py:460
 msgid "last name"
-msgstr "nom"
+msgstr ""
 
 #: models.py:462
 msgid "portrait url"
-msgstr "url de l'image"
+msgstr ""
 
 #: models.py:464
 msgid "wikipedia url"
-msgstr "url wikipédia"
+msgstr ""
 
 #: models.py:465
 msgid "bio summary"
-msgstr "biographie"
+msgstr ""
 
 #: models.py:468 models.py:490
 msgid "person"
-msgstr "individu"
+msgstr ""
 
 #: models.py:469
 msgid "people"
-msgstr "individus"
+msgstr ""
 
 #: models.py:473
 msgid "legal name"
-msgstr "nom complet"
+msgstr ""
 
 #: models.py:476
 msgid "legal classification"
-msgstr "type d'organisme"
+msgstr ""
 
 #: models.py:477
 msgid "revenue"
-msgstr "chiffre d'affaires"
+msgstr ""
 
 #: models.py:478
 msgid "operations summary"
-msgstr "résumé des opérations"
+msgstr ""
 
 #: models.py:481 models.py:492
 msgid "organization"
-msgstr "organisation ou entreprise"
+msgstr ""
 
 #: models.py:482
 msgid "organizations"
-msgstr "organisations ou entreprises"
+msgstr ""
 
 #: models.py:494
 msgid "salary"
-msgstr "salaire"
+msgstr ""
 
 #: models.py:495
 msgid "telephone"
-msgstr "numéro de téléphone"
+msgstr ""
 
 #: models.py:497
 msgid "mandate summary"
-msgstr "mandat"
+msgstr ""
 
 #: models.py:500
 msgid "position"
-msgstr "poste"
+msgstr ""
 
 #: models.py:501
 msgid "positions"
-msgstr "postes"
+msgstr ""
 
 #: models.py:510
 msgid "parent letter"
-msgstr "lettre originelle"
+msgstr ""
 
 #: models.py:511 models.py:550 models.py:571 models.py:591 models.py:607
 #: models.py:630 models.py:638 models.py:646 models.py:654 models.py:662
 #: models.py:673 models.py:681 models.py:689 models.py:697 models.py:705
 #: models.py:713 models.py:721
 msgid "target"
-msgstr "parent"
+msgstr ""
 
 #: models.py:522
 msgid "letter"
-msgstr "lettre"
+msgstr ""
 
 #: models.py:523 views.py:43
 msgid "letters"
-msgstr "lettres"
+msgstr ""
 
 #: models.py:552 models.py:572
 msgid "is open"
-msgstr "ouvert"
+msgstr ""
 
 #: models.py:555
 msgid "discussion"
-msgstr "discussion"
+msgstr ""
 
 #: models.py:556
 msgid "discussions"
-msgstr "discussions"
+msgstr ""
 
 #: models.py:575
 msgid "reply"
-msgstr "réponse"
+msgstr ""
 
 #: models.py:576
 msgid "replies"
-msgstr "réponses"
+msgstr ""
 
 #: models.py:594
 msgid "question"
-msgstr "question"
+msgstr ""
 
 #: models.py:595 views.py:42
 msgid "questions"
-msgstr "questions"
+msgstr ""
 
 #: models.py:610
 msgid "answer"
-msgstr "réponse"
+msgstr ""
 
 #: models.py:611
 msgid "answers"
-msgstr "réponses"
+msgstr ""
 
 #: models.py:633 models.py:641 models.py:649 models.py:657 models.py:665
 msgid "comment"
-msgstr "commentaire"
+msgstr ""
 
 #: models.py:634 models.py:642 models.py:650 models.py:658 models.py:666
 msgid "comments"
-msgstr "commentaires"
+msgstr ""
 
 #: models.py:677 models.py:678 models.py:685 models.py:686 models.py:693
 #: models.py:694 models.py:701 models.py:702 models.py:709 models.py:710
 #: models.py:717 models.py:718 models.py:725 models.py:726
 msgid "vote"
-msgstr "vote"
+msgstr ""
 
 #: settings.py:98
 msgid "English"
-msgstr "anglais"
+msgstr ""
 
 #: settings.py:99
 msgid "French"
-msgstr "français"
+msgstr ""
 
 #: templates/digidemo/_i_comments.html:23
 msgid "add comment"
-msgstr "ajouter un commentaire"
+msgstr ""
 
 #: templates/digidemo/_i_header.html:81
 msgid "feedback"
-msgstr "rétroaction"
+msgstr ""
 
 #: templates/digidemo/_i_header.html:84
 msgid "Feedback"
-msgstr "Rétroaction"
+msgstr ""
 
 #: templates/digidemo/_i_main_nav_bar.html:10
 #: templates/digidemo/issue_list.html:6
 msgid "Issues"
-msgstr "Enjeux"
+msgstr ""
 
 #: templates/digidemo/_i_main_nav_bar.html:15
 msgid "Topics"
-msgstr "Sujets"
+msgstr ""
 
 #: templates/digidemo/_i_main_nav_bar.html:21
 #: templates/digidemo/all_questions_list.html:6
 msgid "Questions"
-msgstr "Questions"
+msgstr ""
 
 #: templates/digidemo/_i_main_nav_bar.html:26
 msgid "Letters"
-msgstr "Lettres"
+msgstr ""
 
 #: templates/digidemo/_i_main_nav_bar.html:30
 msgid "Users"
-msgstr "Usagers"
+msgstr ""
 
 #: templates/digidemo/_i_main_nav_bar.html:35
 msgid "Create"
-msgstr "Nouvel"
+msgstr ""
 
 #: templates/digidemo/_w_follow_post.html:13
 #: templates/digidemo/_w_follow_post.html:18
 msgid "Unfollow Post"
-msgstr "Désabonnement"
+msgstr ""
 
 #: templates/digidemo/_w_login_user.html:22
 msgid "profile"
-msgstr "profil"
+msgstr ""
 
 #: templates/digidemo/_w_login_user.html:25
 msgid "logout"
-msgstr "déconnexion"
+msgstr ""
 
 #: templates/digidemo/_w_login_user.html:28
 msgid "my questions"
-msgstr "mes questions"
+msgstr ""
 
 #: templates/digidemo/_w_login_user.html:31
 msgid "my issues"
-msgstr "mes enjeux"
+msgstr ""
 
 #: templates/digidemo/_w_login_user.html:34
 msgid "recent stuff"
-msgstr "événements récents"
+msgstr ""
 
 #: templates/digidemo/_w_login_user.html:64
 msgid "no notifications!"
-msgstr "aucune notification"
+msgstr ""
 
 #: templates/digidemo/_w_login_user.html:208
 msgid "login"
-msgstr "connexion"
+msgstr ""
 
 #: templates/digidemo/_w_login_user.html:215
 msgid "Email or username"
-msgstr "courriel ou nom d'utilisateur"
+msgstr ""
 
 #: templates/digidemo/_w_login_user.html:218
 msgid "you"
-msgstr "vous"
+msgstr ""
 
 #: templates/digidemo/_w_login_user.html:221
 msgid "Password"
-msgstr "Mot de passe"
+msgstr ""
 
 #: templates/digidemo/_w_login_user.html:224
 msgid "super-secret"
-msgstr "confidentiel"
+msgstr ""
 
 #: templates/digidemo/_w_login_user.html:227
 msgid "Log in"
-msgstr "Se connecter"
+msgstr ""
 
 #: templates/digidemo/_w_login_user.html:229
 msgid "forgot?"
-msgstr "oublié?"
+msgstr ""
 
 #: templates/digidemo/_w_login_user.html:240
 msgid "register"
-msgstr "Devenir membre"
+msgstr ""
 
 #: templates/digidemo/_w_login_user.html:353
 msgid "Incorrect username or password"
-msgstr "Nom d'utilisateur ou mot de passe inexact"
+msgstr ""
 
 #: templates/digidemo/_w_simple_form_wrapped.html:12
 msgid "submit"
-msgstr "soumettre"
+msgstr ""
 
 #: templates/digidemo/add_proposal.html:7
 msgid "New Issue"
-msgstr "Nouvel enjeu"
+msgstr ""
 
 #: templates/digidemo/add_proposal.html:32 templates/digidemo/edit.html:31
 msgid "cancel"
-msgstr "annuler"
+msgstr ""
 
 #: templates/digidemo/add_proposal.html:35
 msgid "preview"
-msgstr "aperçu"
+msgstr ""
 
 #: templates/digidemo/all_questions_list.html:13
 #: templates/digidemo/overview.html:111
@@ -1684,18 +1689,12 @@ msgid_plural ""
 "\t\t\t\t%(num_questions)s Questions\n"
 "\t\t\t"
 msgstr[0] ""
-"\n"
-"\t\t\t\t%(num_questions)s Question\n"
-"\t\t\t"
 msgstr[1] ""
-"\n"
-"\t\t\t\t%(num_questions)s Questions\n"
-"\t\t\t"
 
 #: templates/digidemo/all_questions_list.html:23
 #: templates/digidemo/question_list.html:26
 msgid "ask a question"
-msgstr "poser une question"
+msgstr ""
 
 #: templates/digidemo/all_questions_list.html:40
 #, python-format
@@ -1708,15 +1707,10 @@ msgid_plural ""
 "\t\t\t\t\t\t\t%(num_replies)s Answers\n"
 "\t\t\t\t\t\t"
 msgstr[0] ""
-"\n"
-"\t\t\t\t\t\t\t%(num_replies)s Réponse\n"
-"\t\t\t\t\t\t"
 msgstr[1] ""
-"\n"
-"\t\t\t\t\t\t\t%(num_replies)s Réponses\n"
-"\t\t\t\t\t\t"
 
 #: templates/digidemo/all_questions_list.html:68
+#, python-format
 msgid ""
 "\n"
 "\t\t\tNote: Post your questions about the issue here.  If you want to\n"
@@ -1726,12 +1720,6 @@ msgid ""
 "\t\t\t<a href=\"%(link)s\">discussion area</a>.\n"
 "\t\t\t"
 msgstr ""
-"\n"
-"\t\t\tN.B.: Poser vos questions par rapport à l'enjeu ici.  Si vous\n"
-"\t\t\tvouliez contribuer a l'ecriture de l'enjeu ou en discuter\n"
-"\t\t\tson contenu vous pouvier le faire dans le\n"
-"\t\t\t<a href=\"%(link)s\">zone de discussion</a>.\n"
-"\t\t\t"
 
 #: templates/digidemo/all_questions_list.html:77
 #: templates/digidemo/question_list.html:79
@@ -1741,23 +1729,18 @@ msgid ""
 "\t\t\tguideline before contributing :)\n"
 "\t\t\t"
 msgstr ""
-"\n"
-"\t\t\tSoyez certain de lire <a href=\"#\">le guide pour poser des bonnes "
-"questions</a> \n"
-"\t\t\tavant de contribuer!\n"
-"\t\t\t"
 
 #: templates/digidemo/discussion_list.html:19
 msgid "Discussion area"
-msgstr "Zone de discussion"
+msgstr ""
 
 #: templates/digidemo/discussion_list.html:23
 msgid "edit issue"
-msgstr "modifier l'enjeu"
+msgstr ""
 
 #: templates/digidemo/discussion_list.html:26
 msgid "start a discussion"
-msgstr "commencer une discussion"
+msgstr ""
 
 #: templates/digidemo/discussion_list.html:55
 #, python-format
@@ -1770,13 +1753,7 @@ msgid_plural ""
 "\t\t\t\t\t\t\t%(num_replies)s Replies\n"
 "\t\t\t\t\t\t"
 msgstr[0] ""
-"\n"
-"\t\t\t\t\t\t\t%(num_replies)s Réponse\n"
-"\t\t\t\t\t\t"
 msgstr[1] ""
-"\n"
-"\t\t\t\t\t\t\t%(num_replies)s Réponses\n"
-"\t\t\t\t\t\t"
 
 #: templates/digidemo/discussion_list.html:92
 msgid ""
@@ -1798,57 +1775,38 @@ msgid ""
 "\t\t\t</p>\n"
 "\t\t"
 msgstr ""
-"\n"
-"\t\t\t<p>\n"
-"\t\t\tMerci de contribuer à maintenir des contenus neutres, exacts et "
-"complet. Ce sont vos contributions qui font le succès de ce site!\n"
-"\t\t\t</p>\n"
-"\n"
-"\t\t\t<!--p>\n"
-"\t\t\tBienvenu à tous! S'il s'agit de votre première contribution, veuillez "
-"vous assurer de consulter le \n"
-"\t\t\t<a href=\"#\">manuel de rédaction</a> avant de commencer à écrire.\n"
-"\t\t\t</p-->\n"
-"\n"
-"\t\t\t<p>\n"
-"\t\t\t\tLes contributeurs peuvent discuter de la rédaction des enjeux dans "
-"la section \"discussions\".\n"
-"\t\t\t\tAvant de modifier quoi que ce soit, veuillez consulter les plus "
-"récentes discussions. \n"
-"\t\t\t</p>\n"
-"\t\t"
 
 #: templates/digidemo/edit.html:28
 msgid "Last Modified"
-msgstr "Dernière modification"
+msgstr ""
 
 #: templates/digidemo/index.html:20
 msgid "What's this all about?"
-msgstr "Mais qu'est-ce?"
+msgstr ""
 
 #: templates/digidemo/index.html:24
 msgid "Find issues you care about"
-msgstr "Enjeux par sujets"
+msgstr ""
 
 #: templates/digidemo/index.html:35
 msgid "Featured Issue"
-msgstr "Enjeu du moment"
+msgstr ""
 
 #: templates/digidemo/index.html:37 templates/digidemo/index.html.py:85
 msgid "See all"
-msgstr "Voir tous les enjeux"
+msgstr ""
 
 #: templates/digidemo/index.html:62 templates/digidemo/overview.html:156
 msgid "In brief"
-msgstr "En résumé"
+msgstr ""
 
 #: templates/digidemo/index.html:67
 msgid "read more"
-msgstr "continuer à lire"
+msgstr ""
 
 #: templates/digidemo/index.html:83
 msgid "Trending"
-msgstr "À la hausse"
+msgstr ""
 
 #: templates/digidemo/issue_list.html:13
 #, python-format
@@ -1861,28 +1819,14 @@ msgid_plural ""
 "\t\t\t\t%(num_issues)s Issues\n"
 "\t\t\t"
 msgstr[0] ""
-"\n"
-"\t\t\t\t%(num_issues)s Enjeu\n"
-"\t\t\t"
 msgstr[1] ""
-"\n"
-"\t\t\t\t%(num_issues)s Enjeux\n"
-"\t\t\t"
 
 #: templates/digidemo/issue_list.html:22
 msgid "create an issue"
-msgstr "nouvel enjeu"
+msgstr ""
 
 #: templates/digidemo/issue_list.html:40
-#, fuzzy, python-format
-#| msgid ""
-#| "\n"
-#| "\t\t\t\t\t\t\t%(num_questions)s Question\n"
-#| "\t\t\t\t\t\t"
-#| msgid_plural ""
-#| "\n"
-#| "\t\t\t\t\t\t\t%(num_questions)s Questions\n"
-#| "\t\t\t\t\t\t"
+#, python-format
 msgid ""
 "\n"
 "\t\t\t\t\t\t\t%(num_questions)s question\n"
@@ -1892,13 +1836,7 @@ msgid_plural ""
 "\t\t\t\t\t\t\t%(num_questions)s questions\n"
 "\t\t\t\t\t\t"
 msgstr[0] ""
-"\n"
-"\t\t\t\t\t\t\t%(num_questions)s Question\n"
-"\t\t\t\t\t\t"
 msgstr[1] ""
-"\n"
-"\t\t\t\t\t\t\t%(num_questions)s Questions\n"
-"\t\t\t\t\t\t"
 
 #: templates/digidemo/issue_list.html:68
 msgid ""
@@ -1922,34 +1860,10 @@ msgid ""
 "\t\t</p>\n"
 "\t\t"
 msgstr ""
-"\n"
-"\t\t<p>\n"
-"\t\t\tLes enjeux \n"
-"\t\t\tfont état des faits saillants ainsi que de\n"
-"\t\t\t<span class=\"italic\">l'impact</span> social\n"
-"\t\t\tou collectif des décisions auxquelles nous faisons face.\n"
-"\t\t\tLes enjeux énoncés doivent être spécifiques et concrets.\n"
-"\t\t</p>\n"
-"\t\t<p>\n"
-"\t\t\tLa section Enjeux a pour objectif de faire état des faits. Les "
-"opinions,\n"
-"\t\t\tles jugements de valeur, et le militantisme en faveur de groupes ou "
-"d'actions particulières\n"
-"\t\t\tn'ont pas leur place ici.\n"
-"\t\t</p>\n"
-"\t\t<p>\n"
-"\t\t\tPar example, \"La déforestation\" est une problématique trop vaste "
-"pour faire l'objet d'un enjeu.\n"
-"\t\t\t\"Les pullulations de dendoctrone du pin de montagne en Colombie-"
-"Britannique\" or\n"
-"\t\t\t\"La gestation durable des forêts de Colombie-Britannique\" sont des "
-"exemples d'enjeux acceptables.\n"
-"\t\t</p>\n"
-"\t\t"
 
 #: templates/digidemo/overview.html:32
 msgid "go to editing room"
-msgstr "forum de discussion et salle de rédaction"
+msgstr ""
 
 #: templates/digidemo/overview.html:38
 #: templates/digidemo/petition_list.html:33
@@ -1963,17 +1877,11 @@ msgid_plural ""
 "\t\t\t\t%(num_letters)s Letters\n"
 "\t\t\t"
 msgstr[0] ""
-"\n"
-"\t\t\t\t%(num_letters)s Lettre\n"
-"\t\t\t"
 msgstr[1] ""
-"\n"
-"\t\t\t\t%(num_letters)s Lettres\n"
-"\t\t\t"
 
 #: templates/digidemo/overview.html:45 templates/digidemo/overview.html:118
 msgid "see all"
-msgstr "en voir davantage"
+msgstr ""
 
 #: templates/digidemo/overview.html:130
 #, python-format
@@ -1986,21 +1894,15 @@ msgid_plural ""
 "\t\t\t\t\t\t\t\t%(num_answers)s Answers\n"
 "\t\t\t\t\t\t\t"
 msgstr[0] ""
-"\n"
-"\t\t\t\t\t\t\t\t%(num_answers)s Répsonse\n"
-"\t\t\t\t\t\t\t"
 msgstr[1] ""
-"\n"
-"\t\t\t\t\t\t\t\t%(num_answers)s Réponses\n"
-"\t\t\t\t\t\t\t"
 
 #: templates/digidemo/petition_list.html:42
 msgid "start a letter"
-msgstr "rédiger une lettre"
+msgstr ""
 
 #: templates/digidemo/petition_list.html:85
 msgid "go to letter..."
-msgstr "lire la suite"
+msgstr ""
 
 #: templates/digidemo/question_list.html:44
 #, python-format
@@ -2013,70 +1915,75 @@ msgid_plural ""
 "\t\t\t\t\t\t\t%(num_answers)s Answers\n"
 "\t\t\t\t\t\t"
 msgstr[0] ""
-"\n"
-"\t\t\t\t\t\t\t%(num_answers)s Réponse\n"
-"\t\t\t\t\t\t"
 msgstr[1] ""
+
+#: templates/digidemo/question_list.html:70
+msgid ""
 "\n"
-"\t\t\t\t\t\t\t%(num_answers)s Réponses\n"
-"\t\t\t\t\t\t"
+"\t\t\tNote: Post your questions about the issue here.  If you want to\n"
+"\t\t\tcontribute to the writing of the issue (it is a wiki after all!),\n"
+"\t\t\tthen you can post contstructive comments about the \n"
+"\t\t\t<span class=\"italic\">content of the proposal</span> in the\n"
+"\t\t\tdiscussion area.\n"
+"\t\t\t"
+msgstr ""
 
 #: templates/digidemo/view_petition.html:70
 msgid "Attention:"
-msgstr "À l'attention de:"
+msgstr ""
 
 #: templates/digidemo/view_petition.html:118
 msgid "sign the petition"
-msgstr "signer cette lettre"
+msgstr ""
 
 #: templates/digidemo/view_petition.html:198
 msgid "Cancel"
-msgstr "Annuler"
+msgstr ""
 
 #: views.py:44
 msgid "edit / discuss"
-msgstr "modifier / discuter"
+msgstr ""
 
 #: words.py:10
 msgid "economy"
-msgstr "économie"
+msgstr ""
 
 #: words.py:11
 msgid "health"
-msgstr "santé"
+msgstr ""
 
 #: words.py:12
 msgid "education"
-msgstr "éducation"
+msgstr ""
 
 #: words.py:13
 msgid "democracy"
-msgstr "démocratie"
+msgstr ""
 
 #: words.py:14
 msgid "environment"
-msgstr "environnement"
+msgstr ""
 
 #: words.py:15
 msgid "culture"
-msgstr "culture"
+msgstr ""
 
 #: words.py:16
 msgid "readiness"
-msgstr "sécurité et défense"
+msgstr ""
 
 #: words.py:17
 msgid "relations"
-msgstr "relations"
+msgstr ""
 
 #: words.py:18
 msgid "interesting"
-msgstr "intéressants"
+msgstr ""
 
 #: words.py:19
 msgid "activity"
-msgstr "actifs"
+msgstr ""
 
 #: words.py:20
 msgid "newest"
-msgstr "récents"
+msgstr ""

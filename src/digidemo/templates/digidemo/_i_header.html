@@ -1,3 +1,4 @@
+{% load i18n %}
 {% load staticfiles %}
 <div id="header">
 
@@ -62,7 +63,7 @@
 				{% for sector in GLOBALS.SECTORS %}
 				<a href="{% url "issue_list_sector" sector=sector.name order_by="interesting" %}"
 					class='sector_links{% if forloop.first %}_first{%endif%}'>
-						{{ sector.name }}
+						{% trans sector.name %}
 				</a>
 				{% endfor %}
 			</div>
@@ -77,10 +78,10 @@
 
 			<!-- feedback form -->
 			<div id="feedback_area">
-				<a id="toggle_feedback">feedback</a>
+				<a id="toggle_feedback">{% trans "feedback" %}</a>
 
 				<div id="feedback_form_wrapper">
-					<h2>Feedback</h2>
+					<h2>{% trans "Feedback" %}</h2>
 					{% include "digidemo/_w_simple_form_wrapped.html" with form=GLOBALS.FEEDBACK_FORM %}
 				</div>
 			</div>

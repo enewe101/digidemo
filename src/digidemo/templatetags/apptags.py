@@ -1,17 +1,79 @@
-from django import template
+import os
 from datetime import date, timedelta
+from django import template
+from django.contrib.staticfiles.templatetags.staticfiles import static
 from django.utils.html import conditional_escape
 from django.utils.safestring import mark_safe
+from django.utils.translation import ugettext_lazy as _
+from django.utils.translation import ugettext as __
 from digidemo.models import *
 from digidemo import markdown as md
 from digidemo.shortcuts import get_profile
 
 register = template.Library()
 
-
 @register.filter(name='getAuthor')
 def getAuthor(users, proposal):
     return users.get(id=proposal.user_id).user.first_name
+
+
+@register.tag(name="localize_static")
+def localize_image(parser, token):
+	'''
+		Supports a template tag that is similar to "static", but it 
+		inserts the langage code in front of the file name so that
+		to serve localized resources.  The path given should be the path to 
+		the resource but where the language code is missing.
+
+		e.g. {% localize_static "/path/to/resource.jpg" %}
+		becomes /static-dir/path/to/en-ca_resource.jpg
+		if the viewer's language code is en-ca
+	'''
+
+	try:
+		tag_name, url = token.split_contents()
+
+	except ValueError:
+		raise template.TemplateSyntaxError(
+			"%r tag requires an image url as its only argument" 
+			% token.contents.split()[0]
+	)
+
+
+	return ImageUrlNode(url)
+
+
+class ImageUrlNode(template.Node):
+	'''
+		Supports a template tag that is similar to "static", but it 
+		inserts the langage code in front of the file name so that
+		to serve localized resources.  The path given should be the path to 
+		the resource but where the language code is missing.
+
+		e.g. {% localize_static "/path/to/resource.jpg" %}
+		becomes /static-dir/path/to/en-ca_resource.jpg
+		if the viewer's language code is en-ca
+	'''
+
+
+	def __init__(self, url):
+	    self.url = url
+	
+	def render(self, context):
+		url = self.url
+	
+		# strip the quotes if the image url is enquoted
+		double_quoted = url.startswith('"') and url.endswith('"')
+		single_quoted = url.startswith("'") and url.endswith("'")
+		if double_quoted or single_quoted:
+			url = url[1:-1]
+		
+		# tag on the language code to the filename part of the resource
+		language_code = context['request'].LANGUAGE_CODE
+		base_name =  language_code + '_' + os.path.basename(url)
+		dir_name = os.path.dirname(url)
+		return static(os.path.join(dir_name,base_name))
+
 
 
 @register.filter(name='getSummary')
@@ -52,10 +114,12 @@ def login_tip(request):
 		if get_profile(request.user).email_validated:
 			return ''
 		else:
-			return mark_safe('title="You need to validate your email!"')
+			msg = __('You need to validate your email!')
+			return mark_safe('title="%s"' % msg)
 
 	else:
-		return mark_safe('title="You need to login!"')
+		msg = __('You need to login!')
+		return mark_safe('title="%s"' % msg)
 
 
 

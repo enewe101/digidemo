@@ -1,6 +1,7 @@
 {% extends "digidemo/__two_column.html" %}
 {% load apptags %}
 {% load staticfiles %}
+{% load i18n %}
 
 {% block css %}
 
@@ -25,7 +26,7 @@
 
 <div id="letter_{{ letter_section.id_prefix }}" class="letter">
 
-	<div class="status_indicator">
+	<!--div class="status_indicator">
 		<div class="score">
 			{{ letter_section.post.score }}<img 
 				class="resend_widget" 
@@ -36,6 +37,20 @@
 				{{ letter_section.comments_section.comments|length }}
 			</span>
 			comments
+		</div>
+	</div-->
+
+	<div class="status_indicator">
+		<div class="score">
+			{{ letter_section.post.score }}<img 
+				class="resend_widget" 
+				src="{% static "digidemo/images/feather_sign.png" %}" />
+		</div>
+		<div class="num_replies">
+			<span class="num">
+				{{ letter_section.comments_section.comments|length }}
+			</span><img 
+				src="{% static "digidemo/images/comment_icon.png" %}"/>
 		</div>
 	</div>
 
@@ -52,7 +67,7 @@
 				</h2>
 
 				<div class="recipients">
-					Attention:
+					{% trans "Attention:" %}
 					{% for recipient in letter_section.post.recipients.all %}
 					<br \><span class="recipient_title">
 						{{ recipient.name }}</span>,
@@ -100,7 +115,7 @@
 						{{ request|login_tip }}
 						id="_w_toggle_hidden_{{ letter_section.id_prefix }}"><img 
 						src="{% static "digidemo/images/feather_sign.png" %}" 
-						/> sign the petition
+						/> {% trans "sign the petition" %}
 					</a>
 				</div>
 				{% endif %}
@@ -180,7 +195,7 @@
 		'<img src="{% static "digidemo/images/feather_sign.png" %}" />'
 		+ ' sign the petition'
 	);
-	var message_2 = 'x Cancel';
+	var message_2 = 'x {% trans "Cancel" %}';
 
 	var toggler = new ToggleHidden(toggle_div, content_1, content_2, 
 		message_1, message_2);

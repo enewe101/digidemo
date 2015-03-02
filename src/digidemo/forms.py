@@ -6,7 +6,8 @@ from django.contrib.auth.models import User
 from django.http import HttpResponse, HttpResponseRedirect
 from django.template import Context
 from django.template.loader import get_template
-from django.utils.translation import ugettext as _
+from django.utils.translation import ugettext_lazy as _
+from django.utils.translation import ugettext as __
 from django.db import models
 from django.forms import Form, ModelForm
 from django import forms
@@ -328,7 +329,8 @@ class LetterForm(AugmentedFormMixin, ModelForm):
 
 	recipients = forms.ModelMultipleChoiceField(
 		widget=forms.CheckboxSelectMultiple(),
-		queryset=Position.objects.all())
+		queryset=Position.objects.all(),
+		label=_('recipients'))
 		
 	class Meta:
 		model = Letter
@@ -543,7 +545,7 @@ class VoteForm(ModelForm):
 	def __init__(self, *args, **kwargs):
 		self.cur_score = kwargs.pop('cur_score', 0)
 		self.is_enabled = kwargs.pop('is_enabled', False)
-		self.tooltip = kwargs.pop('tooltip', 'You must login to vote!')
+		self.tooltip = kwargs.pop('tooltip', __('You must login to vote!'))
 
 		super(VoteForm, self).__init__(*args, **kwargs)
 
@@ -592,9 +594,11 @@ class ReplyVoteForm(VoteForm):
 
 class LoginForm(AugmentedFormMixin, Form):
 	endpoint = 'ajax_login'
-	username = forms.CharField(max_length=USERNAME_MAX_LENGTH)
+	username = forms.CharField(max_length=USERNAME_MAX_LENGTH,
+		label=_('username'))
 	password = forms.CharField(
-		widget=forms.PasswordInput(), max_length=PASSWORD_MAX_LENGTH)
+		widget=forms.PasswordInput(), max_length=PASSWORD_MAX_LENGTH,
+		label=_('password'))
 
 	class Meta:
 		fields = ['username', 'password']
@@ -605,7 +609,8 @@ class LoginForm(AugmentedFormMixin, Form):
 
 class UserRegisterForm(AugmentedFormMixin, ModelForm):
 	confirm_password = forms.CharField(
-			widget=forms.PasswordInput(), max_length=PASSWORD_MAX_LENGTH)
+		widget=forms.PasswordInput(), max_length=PASSWORD_MAX_LENGTH,
+		label=_('Confirm password'))
 
 	class Meta:
 		model = User
@@ -640,7 +645,7 @@ class UserRegisterForm(AugmentedFormMixin, ModelForm):
 			email_exists = User.objects.filter(email=email).count()>0
 			if email_exists:
 				self._errors['email'] = self.error_class(
-					["Hmm... looks like you've signed up before..."]
+					[__("Hmm... looks like you've signed up before...")]
 				)
 				del cleaned['email']
 
@@ -657,7 +662,7 @@ class UserRegisterForm(AugmentedFormMixin, ModelForm):
 			illegal_username = LEGAL_USERNAME.search(username) is None
 			if illegal_username:
 				self._errors['username'] = self.error_class(
-					["Please stick to letters, numbers, and underscore!"])
+					[__("Please stick to letters, numbers, and underscore!")])
 				del cleaned['username']
 
 		# check that passwords are long enough and match
@@ -682,15 +687,15 @@ class UserRegisterForm(AugmentedFormMixin, ModelForm):
 
 				if pwd_too_short:
 					self._errors['password'] = self.error_class(
-						["Password too short"])
+						[__("Password too short")])
 
 				if pwd_no_match:
 					if 'password' in self._errors:
 						self._errors['password'].append(
-							"Passwords didn't match!")
+							__("Passwords didn't match!"))
 					else:
 						self._errors['password'] = self.error_class(
-							["Passwords didn't match!"])
+							[__("Passwords didn't match!")])
 
 				if pwd_no_match or pwd_too_short:
 					del cleaned['password']
@@ -718,7 +723,7 @@ class ResetPasswordForm(AugmentedFormMixin,ModelForm):
 		    user_email_match = False
 		
 		if not user_email_match:
-		    self._errors['username'] = self.error_class(["Username doesn't exist or email doesn't match."])
+		    self._errors['username'] = self.error_class([__("Username doesn't exist or email doesn't match.")])
 		
 		return cleaned
 

@@ -1,19 +1,26 @@
 {% extends "digidemo/__two_column.html" %}
 {% load staticfiles %}
+{% load i18n %}
 
 {% block  headline_title %}
-	Questions
+	{% trans "Questions" %}
 {% endblock headline_title %}
 
 {% block maincol %}
 	<!-- start the section title and section-specific buttons -->
 	<div class="section_header">
-		<h2 class="subtitle float_left">{{questions.count}} Question{{questions.count|pluralize}}</h2>
+		<h2 class="subtitle float_left">
+			{% blocktrans count num_questions=questions.count %}
+				{{ num_questions }} Question
+			{% plural %}
+				{{ num_questions }} Questions
+			{% endblocktrans %}
+		</h2>
 
 		<div class="section_buttons_right">
 			<a class="go_button_inline" 
 				href="#">
-				ask a question
+				{% trans "ask a question" %}
 			</a>
 		</div>
 
@@ -30,8 +37,11 @@
 						{{ question.score }}
 					</div>
 					<div class="num_replies">
-						{{ question.replies.count }} 
-						answers
+						{% blocktrans count num_replies=question.replies.count %}
+							{{ num_replies }} Answer
+						{% plural %}
+							{{ num_replies }} Answers
+						{% endblocktrans %}
 					</div>
 				</div>
 				<div class="list_body">
@@ -50,20 +60,23 @@
 
 {% block rightcol %}
 	
-
 	<div class="take_note">
 		<img src="{% static "digidemo/images/bulb_icon.png" %}" 
 			class="note_icon" />
 		<p>
+			{% blocktrans with link=proposal.get_open_discussion_url %}
 			Note: Post your questions about the issue here.  If you want to
 			contribute to the writing of the issue (it is a wiki after all!),
 			then you can post contstructive comments about the 
 			<span class="italic">content of the proposal</span> in the
 			discussion area.
+			{% endblocktrans %}
 		</p>
 		<p>
+			{% blocktrans %}
 			Make sure to read the <a href="#">asking good questions</a> 
 			guideline before contributing :)
+			{% endblocktrans %}
 		</p>
 	</div>
 {% endblock rightcol %}

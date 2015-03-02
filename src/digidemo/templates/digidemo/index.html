@@ -1,6 +1,7 @@
 {% extends "digidemo/__base.html" %}
 {% load staticfiles %}
 {% load apptags %}
+{% load i18n %}
 
 {% block css %}
 	{{ block.super }}
@@ -13,11 +14,15 @@
 	<div id="center_banner">
 		<div id="banner" class="centered">
 			<img id="big_logo"
-				src="{% static "digidemo/images/big_logo.png" %}" />
+				src="{% localize_static "digidemo/images/big_logo.png" %}" />
 			<a href="{% url "what_about" %}" 
-				id="what_about" class="cta">What's this all about?</a>
+				id="what_about" class="cta">
+				{% trans "What's this all about?" %}
+			</a>
 			<a href="{% url "topics" %}" 
-				id="find_issues" class="cta">Find issues you care about</a>
+				id="find_issues" class="cta">
+				{% trans "Find issues you care about" %}
+			</a>
 			<div class="clear"></div>
 		</div>
 	</div>
@@ -27,9 +32,9 @@
 			<div id="featured_issue" >
 
 				<h2 class="featured_heading">
-					Featured Issue
+					{% trans "Featured Issue" %}
 					<a href="{% url "issue_list" order_by="interesting" %}" class="marquee_see_more">
-						<span class="orange">See all</span>
+						<span class="orange">{% trans "See all" %}</span>
 					</a>
 				</h2>
 
@@ -43,7 +48,9 @@
 								<span class="black">{{featured_post.title}}</span>
 							</a>
 						</h2>
-						<span class="gray smallcaps ubuntu">issue</span>
+						<span class="gray smallcaps ubuntu">
+							{% trans "issue" %}
+						</span>
 
 						<div class="info_line">
 							<!--span class="last_modified">
@@ -52,10 +59,13 @@
 						</div>
 
 						<div class="preview_summary">
-							<span class="bold">In brief:</span> {{featured_post.summary}} 
+							<span class="bold">{% trans "In brief" %}:</span> 
+							{{featured_post.summary}} 
 							
 							<a href="{{featured_post.get_proposal_url}}">
-								<span class="orange">read more</span>
+								<span class="orange">
+									{% trans "read more" %}
+								</span>
 							</a>
 						</div>
 					</div>
@@ -70,9 +80,9 @@
 			<!-- begin more articles -->
 			<div id="trending">
 				<h2 class="featured_headin">
-					Trending
+					{% trans "Trending" %}
 					<a href="{% url "issue_list" order_by="activity" %}" class="marquee_see_more">
-						<span class="orange">See all</span>
+						<span class="orange">{% trans "See all" %}</span>
 					</a>
 				</h2>
 
@@ -85,7 +95,9 @@
 									{{proposal.title}}
 								</a> 
 							</h3>
-							<span class="gray smallcaps">issue</span>
+							<span class="gray smallcaps">
+								{% trans "issue" %}
+							</span>
 							<!--span class="last_modified">
 								(Last mod {{ featured_post.last_modified }})
 							</span-->

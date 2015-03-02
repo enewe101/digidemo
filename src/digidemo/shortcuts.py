@@ -1,5 +1,7 @@
 import hashlib
 from django.core.mail import send_mail
+from django.utils.translation import ugettext_lazy as _
+from django.utils.translation import ugettext as __
 from django.contrib.auth import authenticate, login
 from django.core.urlresolvers import reverse
 from digidemo.models import *
@@ -49,12 +51,12 @@ def send_email_confirmation(user):
 
 	# send an email
 	message = (
-		'To verify your account, click this link: https:/'
-		+ reverse('verify_email', kwargs={'code': random_hash})
+		__('To verify your account, click this link: https:/'
+		+ reverse('verify_email', kwargs={'code': random_hash}))
 	)
 
-	send_mail('Welcome to luminocracy', message, 
-		'welcome@luminocracy.org', [user.email], 
+	send_mail(__('Welcome to luminocracy'), message, 
+		__('welcome@luminocracy.org'), [user.email], 
 		fail_silently=False
 	)
 

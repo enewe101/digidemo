@@ -1,9 +1,10 @@
 {% extends "digidemo/__two_column.html" %}
 {% load staticfiles %}
+{% load i18n %}
 
 {% block  headline_title %}
 	<img src="{% static "digidemo/images/add_proposal_icon.png" %}" />
-	New Issue
+	{% trans "New Issue" %}
 {% endblock headline_title %}
 
 {% block maincol %}
@@ -28,9 +29,9 @@
 
 {% block rightcol %}	
 <a class="go_button" href="{{ cancel_url }}">
-		cancel
+	{% trans "cancel" %}
 	</a>
 	<a class="go_button" href="#">
-		preview
+		{% trans "preview" %}
 	</a>
 {% endblock rightcol %}	

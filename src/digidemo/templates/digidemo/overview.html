@@ -1,6 +1,7 @@
 {% extends "digidemo/__tabbed.html" %}
 {% load apptags %}
 {% load staticfiles %}
+{% load i18n %}
 
 {% block title %}
 	{{ proposal.title }} | {{ block.super }} 
@@ -28,16 +29,21 @@
 <div id="previews">
 	<div>
 		<a href="{% url "editors_area" issue_id=proposal.id open_status="open" %}" class="go_button">
-			go to editing room
+			{% trans "go to editing room" %}
 		</a>
 	</div>
 
 	<div class="marquee_section">
 		<h2 class="marquee_heading">
-			{{letter_sections|length}} 
-			Letter{{letter_sections|length|pluralize}}
+			{% blocktrans count num_letters=letter_sections|length %}
+				{{ num_letters }} Letter
+			{% plural %}
+				{{ num_letters }} Letters
+			{% endblocktrans %}
 			<a class="marquee_see_more" 
-				href="{{proposal.get_petitions_url}}">see all</a>
+				href="{{proposal.get_petitions_url}}">
+				{% trans "see all" %}
+			</a>
 		</h2>
 		<div class="marquee_body">
 
@@ -102,9 +108,15 @@
 	<div class="clear"></div>
 	<div class="marquee_section">
 		<h2 class="marquee_heading">
-			{{num_questions}} Question{{num_questions|pluralize}}
+			{% blocktrans count num_questions=num_questions %}
+				{{num_questions}} Question
+			{% plural %}
+				{{num_questions}} Questions
+			{% endblocktrans %}
 			<a class="marquee_see_more" 
-				href="{{proposal.get_question_list_url}}">see all</a>
+				href="{{proposal.get_question_list_url}}">
+				{% trans "see all"%}
+			</a>
 		</h2>
 		<div class="marquee_body">
 			{% for question in questions %}
@@ -115,8 +127,11 @@
 							{{ question.score }}
 						</div>
 						<div class="num_replies">
-							{{ question.replies.count }} 
-							answers
+							{% blocktrans count num_answers=question.replies.count %}
+								{{ num_answers }} Answer
+							{% plural %}
+								{{ num_answers }} Answers
+							{% endblocktrans %}
 						</div>
 					</div>
 					<div class="list_body">
@@ -138,12 +153,11 @@
 <!-- start the proposal -->
 <div id="article">
 	<div id="inbrief" class="inbrief">
-		<h1>In brief</h1>
+		<h1>{% trans "In brief" %}</h1>
 		<span id="proposal_summary">
 			{{ proposal.summary|markdown }}
 		</span>
 	</div>
-
 
 	<!-- start of proposal sectors -->
 

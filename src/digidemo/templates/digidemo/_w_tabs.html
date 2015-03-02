@@ -1,3 +1,4 @@
+{% load i18n %}
 <!-- start tabs at the top of the proposal -->
 <div id="tabs_{{include_id}}" class="tabs">
 
@@ -10,7 +11,7 @@
 
 				<a href="{{ tab.url }}"
 				class="{% if tab.active %}tab_active{% else %}tab{% endif %}">
-					{{ tab.name }}
+					{% trans tab.name %}
 				</a>
 
 				<div class="tab_thin_space"></div>

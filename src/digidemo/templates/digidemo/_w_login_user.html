@@ -1,5 +1,6 @@
 {% load staticfiles %}
 {% load apptags %}
+{% load i18n %}
 
 
 	<!-- if user logged in, show greeting, profile link, and logout button -->
@@ -18,19 +19,19 @@
 				<div class="border_cover_med"></div>
 				<a 
 					href="{% url "userProfile" request|getLoggedInUser %}">
-					profile
+					{% trans "profile" %}
 				</a>	
 				<a id="logout">
-					logout
+					{% trans "logout" %}
 				</a>	
 				<a>
-					my questions
+					{% trans "my questions" %}
 				</a>	
 				<a>
-					my issues
+					{% trans "my issues" %}
 				</a>	
 				<a>
-					recent stuff
+					{% trans "recent stuff" %}
 				</a>	
 			</div>
 
@@ -60,7 +61,7 @@
 				{% endfor %}
 				{% if GLOBALS.NOTIFICATIONS|length < 1 %}
 					<div class="empty_notifications_div"> 
-						no notifications!
+						{% trans "no notifications!" %}
 					</div>
 				{% endif %}
 				<form id="register_notifications_seen_form">
@@ -204,23 +205,29 @@
 		<div id="log_or_register_div">
 			<div id="login_div" class="login_div">
 
-				<a>login </a>
+				<a>{% trans "login" %} </a>
 
 				<div id="login_form_div">
 					<div class="border_cover_med_short"></div>
 					<form id="login_form">
 						<div id="ajax_login_error"></div>
-						<label for="username">Username</label><br/>
+						<label for="username">
+							{% trans "Email or username" %}
+						</label><br/>
 						<input class='text_input' id="username" type="text"
-							name="username" placeholder="username" />
+						name="username" placeholder="{% trans "you" %}@example.com" />
 
-						<label for="password">Password</label><br/>
+							<label for="password">
+								{% trans "Password" %}
+							</label><br/>
 						<input class='text_input' id="password" type="password"
-							name="password" placeholder="password" />
+						name="password" placeholder="{% trans "super-secret" %}" />
 
 						<input type="button" id="submit_login" 
-							value="Log in" />
-						<a href="{% url "resetPassword" %}">forgot?</a>
+							value="{% trans "Log in" %}" />
+							<a href="{% url "resetPassword" %}">
+								{% trans "forgot?" %}
+							</a>
 					</form>
 				</div>
 
@@ -229,7 +236,9 @@
 			<div id="separator_div" class="float_left">|</div>
 
 			<div id="register_div" class="float_left">
-				<a href="{% url "userRegistration" %}">register</a>
+				<a href="{% url "userRegistration" %}">
+					{% trans "register" %}
+				</a>
 			</div>
 		</div>
 		<script type="text/javascript">
@@ -340,7 +349,9 @@
 	// define a callback to be executed when login fails
 	var login_error_callback = function(data) {
 		$('#ajax_login_error').html(
-			'<span class="form_errors">Incorrect username or password<span>');
+		'<span class="form_errors">'
+			+ '{% trans "Incorrect username or password" %}'
+		+ '<span>');
 	}
 
 	// bind the callbacks to the login widget
@@ -351,8 +362,4 @@
 
 
 }());
-
-
-
-
 </script>

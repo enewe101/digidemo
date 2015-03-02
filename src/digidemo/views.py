@@ -3,6 +3,7 @@ import collections as c
 
 from uuid import uuid4
 from django.utils.translation import ugettext_lazy as _
+from django.utils.translation import ugettext as __
 from django.core import serializers
 from django.core.files.storage import default_storage
 from django.core.files.base import ContentFile
@@ -43,12 +44,12 @@ OPINION_TAB_NAME = _('letters')
 EDIT_TAB_NAME = _('edit / discuss')
 
 # Names we use for the top level "button" navigation
-ISSUE_NAV_NAME = _('issues')
-TOPICS_NAV_NAME = _('topics')
-CREATE_NAV_VAME = _('create')
-QUESTIONS_NAV_NAME = _('questions')
-OPINION_NAV_NAME = _('letters')
-USERS_NAV_NAME = _('users')
+ISSUE_NAV_NAME = 'issues'
+TOPICS_NAV_NAME = 'topics'
+CREATE_NAV_VAME = 'create'
+QUESTIONS_NAV_NAME = 'questions'
+OPINION_NAV_NAME = 'letters'
+USERS_NAV_NAME = 'users'
 
 
 def get_user_notifications(user):
@@ -111,15 +112,15 @@ def get_edit_tabs(active_tab, issue):
 	# This is the basic tabs definition for the proposal views
 	tabs = [
 		{
-			'name': 'discuss',
+			'name': __('discuss'),
 			'url': issue.get_open_discussions_url()
 		},
 		{
-			'name': 'edit',
+			'name': __('edit'),
 			'url': reverse('edit', kwargs={'issue_id':issue.pk})
 		},
 		{
-			'name': 'preview',
+			'name': __('preview'),
 			'url': reverse('edit', kwargs={'issue_id':issue.pk})
 		},
 	]
@@ -135,15 +136,15 @@ def get_issue_list_tabs(active_tab):
 	# This is the basic tabs definition for the proposal views
 	tabs = [
 		{
-			'name': 'interesting',
+			'name': __('interesting'),
 			'url': reverse('issue_list', kwargs={'order_by':'interesting'})
 		},
 		{
-			'name': 'activity',
+			'name': __('activity'),
 			'url': reverse('issue_list', kwargs={'order_by':'activity'})
 		},
 		{
-			'name': 'newest',
+			'name': __('newest'),
 			'url': reverse('issue_list', kwargs={'order_by':'newest'})
 		},
 		#{
@@ -164,17 +165,17 @@ def get_petition_list_tabs(active_tab):
 	# This is the basic tabs definition for the proposal views
 	tabs = [
 		{
-			'name': 'interesting',
+			'name': __('interesting'),
 			'url': reverse('all_petitions_list',
 				kwargs={'order_by':'interesting'})
 		},
 		{
-			'name': 'activity',
+			'name': __('activity'),
 			'url': reverse('all_petitions_list',
 				kwargs={'order_by':'activity'})
 		},
 		{
-			'name': 'newest',
+			'name': __('newest'),
 			'url': reverse('all_petitions_list', kwargs={'order_by':'newest'})
 		},
 		#{
@@ -1048,7 +1049,7 @@ class IssueListView(AbstractView):
 		sector_title = ''
 		if sector is not None:
 			sector = Sector.objects.get(name=sector)
-			sector_title = ' : ' + sector.name if sector is not None else ''
+			sector_title = ' : ' + __(sector.name) if sector is not None else ''
 			issue_list = issue_list.filter(sectors=sector)
 
 		tag = self.kwargs.pop('tag', None)
@@ -1155,6 +1156,7 @@ class MakePost(AbstractLoginRequiredView):
 	form_class = None
 	target_class = None
 	active_navitem = None
+	subtitle = None
 
 	def get_headline_icon_url(self):
 		raise NotImplementedError
@@ -1183,7 +1185,8 @@ class MakePost(AbstractLoginRequiredView):
 			'tabs': self.get_tabs(),
 			'form': form,
 			'active_navitem': self.active_navitem,
-			'headline_icon_url': self.get_headline_icon_url()
+			'headline_icon_url': self.get_headline_icon_url(),
+			'subtitle': self.subtitle
 		}
 
 
@@ -1213,7 +1216,8 @@ class MakePost(AbstractLoginRequiredView):
 			'tabs': self.get_tabs(),
 			'form': form,
 			'active_navitem': self.active_navitem,
-			'headline_icon_url': self.get_headline_icon_url()
+			'headline_icon_url': self.get_headline_icon_url(),
+			'subtitle': self.subtitle
 		}
 
 		context = RequestContext(self.request, context_data)
@@ -1229,6 +1233,7 @@ class AskQuestionView(MakePost):
 	form_class = QuestionForm
 	target_class = Proposal
 	active_navitem = QUESTIONS_NAV_NAME
+	subtitle = __('Ask a question')
 
 	def get_headline_icon_url(self):
 		return static('digidemo/images/question_icon.png')
@@ -1244,6 +1249,7 @@ class StartDiscussionView(MakePost):
 	form_class = DiscussionForm
 	target_class = Proposal
 	active_navitem = ISSUE_NAV_NAME
+	subtitle = __('Start a discussion')
 
 	def get_headline_icon_url(self):
 		return static('digidemo/images/comment_icon_med.png')
@@ -1259,6 +1265,7 @@ class StartPetitionView(MakePost):
 	form_class = LetterForm
 	target_class = Proposal
 	active_navitem = OPINION_NAV_NAME
+	subtitle = __('Write an open letter')
 
 	def get_headline_icon_url(self):
 		return static('digidemo/images/petition_icon.png')

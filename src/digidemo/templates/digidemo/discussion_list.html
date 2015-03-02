@@ -1,5 +1,6 @@
 {% extends "digidemo/__two_column.html" %}
 {% load staticfiles %}
+{% load i18n %}
 
 {% block  headline_title %}
 	{{ issue.title }}
@@ -15,14 +16,14 @@
 
 	<!-- start the section title and section-specific buttons -->
 	<div class="section_header">
-		<h2 class="subtitle float_left">Discussion area</h2>
+		<h2 class="subtitle float_left">{% trans "Discussion area" %}</h2>
 
 		<div class="section_buttons_right">
 			<a class="go_button_inline" href="{{issue.get_edit_url}}">
-				edit issue
+				{% trans "edit issue" %}
 			</a>
 			<a class="go_button_inline" href="{{ issue.get_start_discussion_url }}">
-				start a discussion
+				{% trans "start a discussion" %}
 			</a>
 
 			<div class="clear"></div>
@@ -51,8 +52,11 @@
 						{{ item.score }}
 					</div>
 					<div class="num_replies">
-						{{ item.replies.count }} 
-						replies
+						{% blocktrans count num_replies=item.replies.count %}
+							{{ num_replies }} Reply
+						{% plural %}
+							{{ num_replies }} Replies
+						{% endblocktrans %}
 					</div>
 				</div>
 				<div id="discussion_{{ item.pk }}" class="list_body">
@@ -85,20 +89,23 @@
 	<div class="take_note">
 		<img src="{% static "digidemo/images/icon_info.png" %}" 
 			class="note_icon" />
-		<p>
-		Thank you for helping to maintain our high standards of neutrality, 
-		accuracy, and completeness! Your contributions make this site work!
-		</p>
+		{% blocktrans %}
+			<p>
+			Thank you for helping to maintain our high standards of neutrality, 
+			accuracy, and completeness! Your contributions make this site work!
+			</p>
 
-		<!--p>
-		If this is your first time contributing, welcome :) Before you start 
-		editing, please read the the <a href="#">content guidelines</a>
-		</p-->
+			<!--p>
+			If this is your first time contributing, welcome :) Before you 
+			start editing, please read the the 
+			<a href="#">content guidelines</a>
+			</p-->
 
-		<p>
-			Editor's discuss the issue write-up by opening "discussions".
-			Before editing, catch up on the latest discussions.
-		</p>
+			<p>
+				Editor's discuss the issue write-up by opening "discussions".
+				Before editing, catch up on the latest discussions.
+			</p>
+		{% endblocktrans %}
 
 	</div>
 
