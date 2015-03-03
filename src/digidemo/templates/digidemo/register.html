@@ -1,6 +1,7 @@
 {% extends "digidemo/__base.html" %}
 {% load staticfiles %}
 {% load apptags %}
+{% load i18n %}
 
 {% block middle %}
 
@@ -57,14 +58,14 @@
 
 			// if pwd1 is too short, but not blank, notify "too short".
 			if(pwd1_length < 8 && !is_pwd1_blank) {
-				pwd_length_status.text('too short!');
+				pwd_length_status.text('{% trans "too short!" %}');
 			} else {
 				pwd_length_status.text('');
 			}
 
 			// if pwd1 and pwd2 don't match, and pwd2 isn't blank, notify
 			if(!do_pwds_match && !is_pwd2_blank) {
-				pwd_match_status.text("Passwords don't match!");
+				pwd_match_status.text("{% trans "Passwords don't match!" %}");
 			} else {
 				pwd_match_status.text("");
 			}
@@ -73,9 +74,9 @@
 		// A callback function that updates the status indicator for username.
 		function success_func(data) {
 			if(data['available']) {
-				username_status.text("available!");
+				username_status.text("{% trans "available!" %}");
 			} else {
-				username_status.text("sorry... it's taken");
+				username_status.text("{% trans "sorry... it's taken" %}");
 			}
 		}
 
@@ -93,7 +94,7 @@
 			var legal_usernames = /^\w+$/;
 			if(!legal_usernames.test(username)){
 				username_status.text(
-					'Please stick to letters, numbers, and underscore ("_")!');
+				'{% trans "Please stick to letters, numbers, and underscore (\"_\")!" %}');
 				return;
 			}
 

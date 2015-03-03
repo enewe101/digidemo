@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-03-02 21:49-0500\n"
+"POT-Creation-Date: 2015-03-03 10:42-0500\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -1556,11 +1556,11 @@ msgstr "commentaires"
 msgid "vote"
 msgstr "vote"
 
-#: settings.py:89 ~settings.py:98
+#: settings.py:137 ~settings.py:98
 msgid "English"
 msgstr "anglais"
 
-#: settings.py:90 ~settings.py:99
+#: settings.py:138 ~settings.py:99
 msgid "French"
 msgstr "français"
 
@@ -2067,6 +2067,26 @@ msgstr ""
 "\t\t\tavant de contribuer!\n"
 "\t\t\t"
 
+#: templates/digidemo/register.html:60
+msgid "too short!"
+msgstr ""
+
+#: templates/digidemo/register.html:67
+msgid "Passwords don't match!"
+msgstr ""
+
+#: templates/digidemo/register.html:76
+msgid "available!"
+msgstr ""
+
+#: templates/digidemo/register.html:78
+msgid "sorry... it's taken"
+msgstr ""
+
+#: templates/digidemo/register.html:96
+msgid "Please stick to letters, numbers, and underscore (\\"
+msgstr ""
+
 #: templates/digidemo/view_discussion.html:10
 msgid "Your Reply"
 msgstr "Votre réponse"
@@ -2083,14 +2103,6 @@ msgstr "signer cette lettre"
 msgid "Cancel"
 msgstr "Annuler"
 
-#: templatetags/apptags.py:117 views.py:477
-msgid "You need to validate your email!"
-msgstr "Vous deviez valider votre addresse de couriel"
-
-#: templatetags/apptags.py:121
-msgid "You need to login!"
-msgstr "Vous deviez connexionner"
-
 #: views.py:44
 msgid "edit / discuss"
 msgstr "modifier / discuter"
@@ -2100,8 +2112,14 @@ msgid "You must login to vote!"
 msgstr "Vous deviez connexionner pour voter"
 
 #: views.py:473
-msgid "You can't vote on your own post!"
+#, fuzzy
+#| msgid "You can't vote on your own post!"
+msgid "You can\\'t vote on your own post!"
 msgstr "Vous ne pouviez pas votez sur votre contribution propre!"
+
+#: views.py:477
+msgid "You need to validate your email!"
+msgstr "Vous deviez valider votre addresse de couriel"
 
 #: views.py:1237
 msgid "Ask a question"
@@ -2171,3 +2189,6 @@ msgstr "actifs"
 #: words.py:20
 msgid "newest"
 msgstr "récents"
+
+#~ msgid "You need to login!"
+#~ msgstr "Vous deviez connexionner"

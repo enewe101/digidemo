@@ -1,19 +1,19 @@
 """
-Django settings for digidemo project.
-
-For more information on this file, see
-https://docs.djangoproject.com/en/1.6/topics/settings/
-
-For the full list of settings and their values, see
-https://docs.djangoproject.com/en/1.6/ref/settings/
+	Django settings for the digidemo project.
 """
+
 import os
 import sys
 from digidemo import local_settings
 from django.utils.translation import ugettext_lazy as _
 
 
-# DEFINE PATHS
+	####################
+	#                  #
+	#   DEFINE PATHS   #
+	#                  #
+	####################
+
 PROJECT_DIR = local_settings.PROJECT_DIR
 BASE_DIR = os.path.join(PROJECT_DIR, 'src')
 TEMP_DIR = os.path.join(PROJECT_DIR, 'temp')
@@ -24,8 +24,12 @@ MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(PROJECT_DIR, 'media/')
 
 
+	##########################################
+	#                                        #
+	#   TESTING, DEBUGGING, AND STRICTNESS   #
+	#                                        #
+	##########################################
 
-# DEFINE TESTING, DEBUGGING, AND STRICTNESS
 TEST_MODE = 'test' in sys.argv
 TEMPLATE_DEBUG = not TEST_MODE
 DEBUG =  local_settings.DEBUG_TEST if TEST_MODE else local_settings.DEBUG
@@ -43,14 +47,22 @@ else:
 	TEMPLATE_STRING_IF_INVALID = ''
 
 
+	################
+	#              #
+	#   SECURITY   #
+	#              #
+	################
 
-# SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = local_settings.SECRET_KEY
 ALLOWED_HOSTS = local_settings.ALLOWED_HOSTS
 
 
+	#########################
+	#                       #
+	#   LOADED COMPONENTS   #
+	#                       #
+	#########################
 
-# LOADED COMPONENTS
 TEMPLATE_CONTEXT_PROCESSORS = (
 	'django.contrib.messages.context_processors.messages',
 	'django.core.context_processors.request',
@@ -58,7 +70,6 @@ TEMPLATE_CONTEXT_PROCESSORS = (
 	'django.core.context_processors.i18n'	
 )
 
-# Application definition
 INSTALLED_APPS = (
 	'django.contrib.admin',
 	'django.contrib.auth',
@@ -83,13 +94,22 @@ MIDDLEWARE_CLASSES = (
 
 
 
-# THIS APPS URLS AND WSGI
+	#####################
+	#                   #
+	#   URLS AND WSGI   #
+	#                   #
+	#####################
+
 ROOT_URLCONF = 'digidemo.urls'
 WSGI_APPLICATION = 'digidemo.wsgi.application'
 
 
+	#####################################
+	#                                   #
+	#   CONNECTIONS TO OTHER SOFTWARE   #
+	#                                   #
+	#####################################
 
-# CONNECTIONS TO OTHER SOFTWARE
 DATABASES = local_settings.DATABASES
 
 HAYSTACK_CONNECTIONS = {
@@ -106,9 +126,12 @@ EMAIL_PORT = 587
 EMAIL_USE_TLS = True
 
 
+	#########################################
+	#                                       #
+	#   LANGUAGE AND INTERNATIONALIZATION   #
+	#                                       #
+	#########################################
 
-
-# LANGUAGE AND INTERNATIONALIZATION
 LANGUAGE_CODE = 'en-ca'
 LANGUAGES = (
 		('en-ca', _('English')),

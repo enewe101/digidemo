@@ -114,11 +114,11 @@ def login_tip(request):
 		if get_profile(request.user).email_validated:
 			return ''
 		else:
-			msg = _('You need to validate your email!')
+			msg = __('You need to validate your email!')
 			return mark_safe('title="%s"' % msg)
 
 	else:
-		msg = _('You need to login!')
+		msg = __('You need to login!')
 		return mark_safe('title="%s"' % msg)
 
 

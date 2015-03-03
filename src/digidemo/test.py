@@ -253,6 +253,13 @@ class SeleniumTestCase(LiveServerTestCase):
 		cls.click('logout')
 	
 		
+class RegistrationFormTest(SeleniumTestCase):
+
+	def test_client_side(self):
+		self.driver
+
+	def test_server_side(self):
+		pass
 
 class EmailValidation(SeleniumTestCase):
 
