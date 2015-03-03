@@ -12,6 +12,20 @@ import sys
 from digidemo import local_settings
 from django.utils.translation import ugettext_lazy as _
 
+
+# DEFINE PATHS
+PROJECT_DIR = local_settings.PROJECT_DIR
+BASE_DIR = os.path.join(PROJECT_DIR, 'src')
+TEMP_DIR = os.path.join(PROJECT_DIR, 'temp')
+STATIC_URL = '/static/'
+STATIC_ROOT = os.path.join(PROJECT_DIR, 'static/')
+#STATICFILES_DIRS = (PROJECT_DIR, 'static/',)
+MEDIA_URL = '/media/'
+MEDIA_ROOT = os.path.join(PROJECT_DIR, 'media/')
+
+
+
+# DEFINE TESTING, DEBUGGING, AND STRICTNESS
 TEST_MODE = 'test' in sys.argv
 TEMPLATE_DEBUG = not TEST_MODE
 DEBUG =  local_settings.DEBUG_TEST if TEST_MODE else local_settings.DEBUG
@@ -27,17 +41,16 @@ if STRICT_TEMPLATE:
 	TEMPLATE_STRING_IF_INVALID = InvalidString("%s")
 else:
 	TEMPLATE_STRING_IF_INVALID = ''
-	
-PROJECT_DIR = local_settings.PROJECT_DIR
-BASE_DIR = PROJECT_DIR + '/src'
-TEMP_DIR = PROJECT_DIR + '/temp'
-AUTH_USER_MODEL = 'auth.User'
+
+
 
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = local_settings.SECRET_KEY
-
 ALLOWED_HOSTS = local_settings.ALLOWED_HOSTS
 
+
+
+# LOADED COMPONENTS
 TEMPLATE_CONTEXT_PROCESSORS = (
 	'django.contrib.messages.context_processors.messages',
 	'django.core.context_processors.request',
@@ -56,6 +69,7 @@ INSTALLED_APPS = (
 	'digidemo',
 	'haystack',
 )
+AUTH_USER_MODEL = 'auth.User'
 
 MIDDLEWARE_CLASSES = (
 	'django.contrib.sessions.middleware.SessionMiddleware',
@@ -67,8 +81,15 @@ MIDDLEWARE_CLASSES = (
 	'django.middleware.clickjacking.XFrameOptionsMiddleware',
 )
 
+
+
+# THIS APPS URLS AND WSGI
 ROOT_URLCONF = 'digidemo.urls'
 WSGI_APPLICATION = 'digidemo.wsgi.application'
+
+
+
+# CONNECTIONS TO OTHER SOFTWARE
 DATABASES = local_settings.DATABASES
 
 HAYSTACK_CONNECTIONS = {
@@ -84,13 +105,17 @@ EMAIL_HOST_PASSWORD = local_settings.EMAIL_HOST_PASSWORD
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
 
+
+
+
+# LANGUAGE AND INTERNATIONALIZATION
 LANGUAGE_CODE = 'en-ca'
 LANGUAGES = (
 		('en-ca', _('English')),
 		('fr-ca', _('French'))
 )
 LOCALE_PATHS = (
-	os.path.join(BASE_DIR, '/digidemo/locale/')
+	os.path.join(BASE_DIR, 'digidemo/locale/')
 )
 
 TIME_ZONE = 'UTC'
@@ -98,8 +123,3 @@ USE_I18N = True
 USE_L10N = True
 USE_TZ = True
 
-STATIC_URL = '/static/'
-STATICFILES_DIRS = (BASE_DIR + '/digidemo/static',)
-STATIC_ROOT = PROJECT_DIR + '/static'
-MEDIA_URL = '/media/'
-MEDIA_ROOT = PROJECT_DIR + '/media/'
