@@ -12,10 +12,9 @@ import sys
 from digidemo import local_settings
 from django.utils.translation import ugettext_lazy as _
 
-TESTING_MODE = 'test' in sys.argv
-TEMPLATE_DEBUG = not TESTING_MODE
-# SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = local_settings.DEBUG
+TEST_MODE = 'test' in sys.argv
+TEMPLATE_DEBUG = not TEST_MODE
+DEBUG =  local_settings.DEBUG_TEST if TEST_MODE else local_settings.DEBUG
 
 class InvalidString(str):
     def __mod__(self, other):

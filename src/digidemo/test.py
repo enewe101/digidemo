@@ -629,7 +629,7 @@ class CommentTest(SeleniumTestCase):
 		comment_form_toggler.click()
 		self.assertTrue(comment_textarea.is_displayed())
 		self.assertEqual(comment_textarea.text, '')
-		
+
 		# Attempt to submit blank comment.  But first check how many 
 		# comments there are.
 		comments_wrapper = self.driver.find_element('id', comments_wrapper_id)

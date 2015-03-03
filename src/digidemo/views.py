@@ -112,15 +112,15 @@ def get_edit_tabs(active_tab, issue):
 	# This is the basic tabs definition for the proposal views
 	tabs = [
 		{
-			'name': __('discuss'),
+			'name': 'discuss',
 			'url': issue.get_open_discussions_url()
 		},
 		{
-			'name': __('edit'),
+			'name': 'edit',
 			'url': reverse('edit', kwargs={'issue_id':issue.pk})
 		},
 		{
-			'name': __('preview'),
+			'name': 'preview',
 			'url': reverse('edit', kwargs={'issue_id':issue.pk})
 		},
 	]
@@ -136,15 +136,15 @@ def get_issue_list_tabs(active_tab):
 	# This is the basic tabs definition for the proposal views
 	tabs = [
 		{
-			'name': __('interesting'),
+			'name': 'interesting',
 			'url': reverse('issue_list', kwargs={'order_by':'interesting'})
 		},
 		{
-			'name': __('activity'),
+			'name': 'activity',
 			'url': reverse('issue_list', kwargs={'order_by':'activity'})
 		},
 		{
-			'name': __('newest'),
+			'name': 'newest',
 			'url': reverse('issue_list', kwargs={'order_by':'newest'})
 		},
 		#{
@@ -165,17 +165,17 @@ def get_petition_list_tabs(active_tab):
 	# This is the basic tabs definition for the proposal views
 	tabs = [
 		{
-			'name': __('interesting'),
+			'name': 'interesting',
 			'url': reverse('all_petitions_list',
 				kwargs={'order_by':'interesting'})
 		},
 		{
-			'name': __('activity'),
+			'name': 'activity',
 			'url': reverse('all_petitions_list',
 				kwargs={'order_by':'activity'})
 		},
 		{
-			'name': __('newest'),
+			'name': 'newest',
 			'url': reverse('all_petitions_list', kwargs={'order_by':'newest'})
 		},
 		#{
