@@ -1,6 +1,7 @@
 {% extends "digidemo/__two_column.html" %}
 {% load staticfiles %}
 {% load apptags %}
+{% load i18n %}
 
 {% block css %}
 	{{block.super}}
@@ -53,7 +54,7 @@
 
 	<div {{ request|login_tip }}
 		id="_w_toggle_hidden_subpost_form_content">
-		<h2>Your {% block subpost_type %}Answer{% endblock %}</h2>
+		<h2>{% block subpost_type %}{% trans "Your Answer" %}{% endblock %}</h2>
 		{% include "digidemo/_w_ajax_form.html" with form=subpost_form %}
 	</div>
 

@@ -1,10 +1,11 @@
 {% extends "digidemo/post_area.html" %}
 {% load staticfiles %}
 {% load apptags %}
+{% load i18n %}
 
 {% block  headline_title %}
 	{{ proposal.get_latest.title }}
 {% endblock headline_title %}
 
-{% block subpost_type %}Reply{% endblock %}
+{% block subpost_type %}{% trans "Your Reply" %}{% endblock %}
 

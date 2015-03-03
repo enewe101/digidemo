@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-03-02 00:45-0500\n"
+"POT-Creation-Date: 2015-03-02 21:49-0500\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -1549,11 +1549,11 @@ msgstr ""
 msgid "vote"
 msgstr ""
 
-#: settings.py:98
+#: settings.py:89 ~settings.py:98
 msgid "English"
 msgstr ""
 
-#: settings.py:99
+#: settings.py:90 ~settings.py:99
 msgid "French"
 msgstr ""
 
@@ -1561,11 +1561,11 @@ msgstr ""
 msgid "add comment"
 msgstr ""
 
-#: templates/digidemo/_i_header.html:81
+#: templates/digidemo/_i_header.html:85
 msgid "feedback"
 msgstr ""
 
-#: templates/digidemo/_i_header.html:84
+#: templates/digidemo/_i_header.html:88
 msgid "Feedback"
 msgstr ""
 
@@ -1595,8 +1595,15 @@ msgstr ""
 msgid "Create"
 msgstr ""
 
+#: templates/digidemo/_w_follow_post.html:12
+#: templates/digidemo/_w_follow_post.html:17
+#: templates/digidemo/_w_follow_post.html:22
+msgid "Follow Post"
+msgstr ""
+
 #: templates/digidemo/_w_follow_post.html:13
 #: templates/digidemo/_w_follow_post.html:18
+#: templates/digidemo/_w_follow_post.html:23
 msgid "Unfollow Post"
 msgstr ""
 
@@ -1628,39 +1635,40 @@ msgstr ""
 msgid "login"
 msgstr ""
 
-#: templates/digidemo/_w_login_user.html:215
+#: templates/digidemo/_w_login_user.html:220
 msgid "Email or username"
 msgstr ""
 
-#: templates/digidemo/_w_login_user.html:218
+#: templates/digidemo/_w_login_user.html:223
 msgid "you"
 msgstr ""
 
-#: templates/digidemo/_w_login_user.html:221
+#: templates/digidemo/_w_login_user.html:226
 msgid "Password"
 msgstr ""
 
-#: templates/digidemo/_w_login_user.html:224
+#: templates/digidemo/_w_login_user.html:229
 msgid "super-secret"
 msgstr ""
 
-#: templates/digidemo/_w_login_user.html:227
+#: templates/digidemo/_w_login_user.html:232
 msgid "Log in"
 msgstr ""
 
-#: templates/digidemo/_w_login_user.html:229
+#: templates/digidemo/_w_login_user.html:234
 msgid "forgot?"
 msgstr ""
 
-#: templates/digidemo/_w_login_user.html:240
+#: templates/digidemo/_w_login_user.html:245
 msgid "register"
 msgstr ""
 
-#: templates/digidemo/_w_login_user.html:353
+#: templates/digidemo/_w_login_user.html:358
 msgid "Incorrect username or password"
 msgstr ""
 
 #: templates/digidemo/_w_simple_form_wrapped.html:12
+#: templates/digidemo/edit.html:19
 msgid "submit"
 msgstr ""
 
@@ -1668,7 +1676,7 @@ msgstr ""
 msgid "New Issue"
 msgstr ""
 
-#: templates/digidemo/add_proposal.html:32 templates/digidemo/edit.html:31
+#: templates/digidemo/add_proposal.html:32 templates/digidemo/edit.html:32
 msgid "cancel"
 msgstr ""
 
@@ -1709,20 +1717,18 @@ msgid_plural ""
 msgstr[0] ""
 msgstr[1] ""
 
-#: templates/digidemo/all_questions_list.html:68
-#, python-format
+#: templates/digidemo/all_questions_list.html:67
 msgid ""
 "\n"
 "\t\t\tNote: Post your questions about the issue here.  If you want to\n"
 "\t\t\tcontribute to the writing of the issue (it is a wiki after all!),\n"
 "\t\t\tthen you can post contstructive comments about the \n"
 "\t\t\t<span class=\"italic\">content of the proposal</span> in the\n"
-"\t\t\t<a href=\"%(link)s\">discussion area</a>.\n"
+"\t\t\tdiscussion area.\n"
 "\t\t\t"
 msgstr ""
 
-#: templates/digidemo/all_questions_list.html:77
-#: templates/digidemo/question_list.html:79
+#: templates/digidemo/all_questions_list.html:76
 msgid ""
 "\n"
 "\t\t\tMake sure to read the <a href=\"#\">asking good questions</a> \n"
@@ -1776,7 +1782,7 @@ msgid ""
 "\t\t"
 msgstr ""
 
-#: templates/digidemo/edit.html:28
+#: templates/digidemo/edit.html:29
 msgid "Last Modified"
 msgstr ""
 
@@ -1904,6 +1910,10 @@ msgstr ""
 msgid "go to letter..."
 msgstr ""
 
+#: templates/digidemo/post_area.html:57
+msgid "Your Answer"
+msgstr ""
+
 #: templates/digidemo/question_list.html:44
 #, python-format
 msgid ""
@@ -1918,14 +1928,27 @@ msgstr[0] ""
 msgstr[1] ""
 
 #: templates/digidemo/question_list.html:70
+#, python-format
 msgid ""
 "\n"
 "\t\t\tNote: Post your questions about the issue here.  If you want to\n"
 "\t\t\tcontribute to the writing of the issue (it is a wiki after all!),\n"
 "\t\t\tthen you can post contstructive comments about the \n"
 "\t\t\t<span class=\"italic\">content of the proposal</span> in the\n"
-"\t\t\tdiscussion area.\n"
+"\t\t\t<a href=\"%(link)s\">discussion area</a>.\n"
 "\t\t\t"
+msgstr ""
+
+#: templates/digidemo/question_list.html:79
+msgid ""
+"\n"
+"\t\t\tMake sure to read the <a href=\"#\">asking good questions</a> \n"
+"\t\t\tguideline before contributing.\n"
+"\t\t\t"
+msgstr ""
+
+#: templates/digidemo/view_discussion.html:10
+msgid "Your Reply"
 msgstr ""
 
 #: templates/digidemo/view_petition.html:70
@@ -1940,8 +1963,49 @@ msgstr ""
 msgid "Cancel"
 msgstr ""
 
+#: templatetags/apptags.py:117 views.py:477
+msgid "You need to validate your email!"
+msgstr ""
+
+#: templatetags/apptags.py:121
+msgid "You need to login!"
+msgstr ""
+
 #: views.py:44
 msgid "edit / discuss"
+msgstr ""
+
+#: views.py:466
+msgid "You must login to vote!"
+msgstr ""
+
+#: views.py:473
+msgid "You can't vote on your own post!"
+msgstr ""
+
+#: views.py:1237
+msgid "Ask a question"
+msgstr ""
+
+#: views.py:1253
+msgid "Start a discussion"
+msgstr ""
+
+#: views.py:1269
+msgid "Write an open letter"
+msgstr ""
+
+#: views.py:1764
+msgid "Luminocracy.org Password Reset"
+msgstr ""
+
+#: views.py:1765
+#, python-format
+msgid "Your new luminocracy.org password is: %s"
+msgstr ""
+
+#: views.py:1767
+msgid "support@luminocracy.org"
 msgstr ""
 
 #: words.py:10

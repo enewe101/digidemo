@@ -9,18 +9,18 @@
 
 {% if request|getFollowPostStatus:proposal.id == "unlogged" %}
 <form>
-<input type="radio" name="PostFollow" id="followPost" value="follow" onClick="handleClick(this)">Follow Post<br>
+	<input type="radio" name="PostFollow" id="followPost" value="follow" onClick="handleClick(this)">{% trans "Follow Post" %}<br>
 <input type="radio" name="PostFollow" id="unfollowPost" value="unfollow" onClick="handleClick(this)">{% trans "Unfollow Post" %}
 </form>
 {% elif request|getFollowPostStatus:proposal.id == "following" %}
 <form>
-<input type="radio" name="PostFollow" id="followPost" value="follow" onClick="handleClick(this)" checked />Follow Post<br>
+	<input type="radio" name="PostFollow" id="followPost" value="follow" onClick="handleClick(this)" checked />{% trans "Follow Post" %}<br>
 <input type="radio" name="PostFollow" id="unfollowPost" value="unfollow" onClick="handleClick(this)">{% trans "Unfollow Post" %}
 </form>
 {% else %}
 <form>
-<input type="radio" name="PostFollow" id="followPost" value="follow" onClick="handleClick(this)">Follow Post<br>
-<input type="radio" name="PostFollow" id="unfollowPost" value="unfollow" onClick="handleClick(this)" checked />Unfollow Post
+	<input type="radio" name="PostFollow" id="followPost" value="follow" onClick="handleClick(this)">{% trans "Follow Post" %}<br>
+	<input type="radio" name="PostFollow" id="unfollowPost" value="unfollow" onClick="handleClick(this)" checked />{% trans "Unfollow Post" %}
 </form>
 {% endif %}
 

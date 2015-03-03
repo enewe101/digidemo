@@ -388,7 +388,7 @@ def answer(request):
 
 		# render the answer section, and send it back for inclusion on page
 		template = get_template('digidemo/_i_post_with_comments.html')
-		context = Context({
+		context = RequestContext(request, {
 			'post_section': answer_section,
 		})
 		reply_html = template.render(context)

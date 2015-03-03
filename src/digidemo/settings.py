@@ -17,10 +17,10 @@ TEMPLATE_DEBUG = not TEST_MODE
 DEBUG =  local_settings.DEBUG_TEST if TEST_MODE else local_settings.DEBUG
 
 class InvalidString(str):
-    def __mod__(self, other):
-        from django.template.base import TemplateSyntaxError
-        raise TemplateSyntaxError(
-            "Undefined variable or unknown value for: \"%s\"" % other)
+	def __mod__(self, other):
+		from django.template.base import TemplateSyntaxError
+		raise TemplateSyntaxError(
+			"Undefined variable or unknown value for: \"%s\"" % other)
 
 STRICT_TEMPLATE = local_settings.STRICT_TEMPLATE
 if STRICT_TEMPLATE:
@@ -47,24 +47,24 @@ TEMPLATE_CONTEXT_PROCESSORS = (
 
 # Application definition
 INSTALLED_APPS = (
-    'django.contrib.admin',
-    'django.contrib.auth',
-    'django.contrib.contenttypes',
-    'django.contrib.sessions',
-    'django.contrib.messages',
-    'django.contrib.staticfiles',
+	'django.contrib.admin',
+	'django.contrib.auth',
+	'django.contrib.contenttypes',
+	'django.contrib.sessions',
+	'django.contrib.messages',
+	'django.contrib.staticfiles',
 	'digidemo',
 	'haystack',
 )
 
 MIDDLEWARE_CLASSES = (
-    'django.contrib.sessions.middleware.SessionMiddleware',
+	'django.contrib.sessions.middleware.SessionMiddleware',
 	'django.middleware.locale.LocaleMiddleware',
-    'django.middleware.common.CommonMiddleware',
-    'django.middleware.csrf.CsrfViewMiddleware',
-    'django.contrib.auth.middleware.AuthenticationMiddleware',
-    'django.contrib.messages.middleware.MessageMiddleware',
-    'django.middleware.clickjacking.XFrameOptionsMiddleware',
+	'django.middleware.common.CommonMiddleware',
+	'django.middleware.csrf.CsrfViewMiddleware',
+	'django.contrib.auth.middleware.AuthenticationMiddleware',
+	'django.contrib.messages.middleware.MessageMiddleware',
+	'django.middleware.clickjacking.XFrameOptionsMiddleware',
 )
 
 ROOT_URLCONF = 'digidemo.urls'

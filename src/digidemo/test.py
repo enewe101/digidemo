@@ -810,8 +810,10 @@ class AnswerFormTest(SeleniumTestCase):
 		answer = Answer.objects.get(text=answer_text)
 		self.assertEqual(answer.target.pk, 1)
 
+		time.sleep(10)
 		# the answer form should have been hidden.  When revealed, it should
 		# be blank.
+		time.sleep(8)
 		self.assertFalse(textarea.is_displayed())
 		self.driver.find_element('id', toggle_id).click()
 		self.assertTrue(textarea.is_displayed())
