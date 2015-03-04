@@ -21,6 +21,7 @@ from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.select import Select
 from selenium.webdriver.common.by import By
 from selenium.common.exceptions import NoSuchElementException
+from selenium.webdriver.common.keys import Keys
 import filecmp
 import os
 
@@ -257,8 +258,97 @@ class SeleniumTestCase(LiveServerTestCase):
 class RegistrationFormTest(SeleniumTestCase):
 
 	def test_client_side(self):
+
+		# First we navigate to the registration page
+		# here we refer to the view by name, views are named in urls.py
+		self.go(reverse('userRegistration'))
+
+		# We'll start by looking at the username field.  Right below that 
+		# field there's a div whose id is "username_notification_target", 
+		# which is where the 'available' hint gets displayed.  Let's get it:
+		username_notifier_div = self.find('username_notification_target')
+
+		# since we hanev't typed anything, it should be empty
+		self.assertTrue(text_is_similar(username_notifier_div.text, ''))
+		# that checks that the text is "similar" to the empty string.
+		# the text_is_similar function checks that two strings are equal,
+		# ignoring any differences in whitespace -- pretty useful.
+
+		# now we type some stuff
+		self.put('UserRegisterForm__username', 'an_available_name')
+
+		# check that the notice was displayed
+		self.assertTrue(
+			text_is_similar(username_notifier_div.text, 'available!')
+		)
+
+		# clear that username
+		self.find('UserRegisterForm__username').clear()
+
+		# now type an unavailable username, e.g. 'regularuser'
+		# 	... it should display 'unavailable!'
+
+		# now use similar methods to test the password field behaviors
+		# ...
+
+	def test_register_properly(self):
+		# fill out all the fields, 
+		# using the self.puts({'id':'text', 'id2':'text2'}) function
+		# and then click the submit button
+
+		# check that the User was added to the database.  Replace these
+		# keyword args with what you actually used in the form 
+		num_users_found = User.objects.filter(
+			username='new_user', email='the_email'
+		).count()
+
+		self.assertEqual(num_users_found, 1)
+
+		# check that the UserProfile was added to the database
+		num_user_profiles_found = UserProfile.objects.filter(
+			fname='first_name', lname='last_name'
+		).count()
+
+		self.assertEqual(num_user_profiles_found, 1)
+
+		# check that we wound up at the mail sent page
+		self.assertEqual(self.driver.current_url, 
+			self.live_server_url + reverse('mail_sent'))
+
+	
+	def test_register_no_fname(self):
+
+		# submit the form without a first name
+
+		# check that no user object was added to the database
+		# check that no user profile object was added to the database
+
+		# check that the current url is still pointing to the registration
+		# page
+
+		# check that the error displays above the first name field
+
+		pass  # remove "pass" once you edit this!
+
+
+	def test_register_no_lname(self):
+		# similar to the above
 		pass
 
+	def test_register_no_email(self):
+		# do tests for empty email, badly-formed email
+		pass
+
+	def test_register_email_exists(self):
+		# if the email exists, the user should be forwarded to 
+		# a special that allows them to reset their password
+		# test that they were properly forwarded to that page
+		pass
+
+	# and finally, add tests for passwords that are too short, and 
+	# passwords that don't match!
+
+		
 
 
 class EmailValidation(SeleniumTestCase):
