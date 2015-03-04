@@ -1672,7 +1672,7 @@ msgstr "s'enregistrer"
 
 #: templates/digidemo/_w_login_user.html:358
 msgid "Incorrect username or password"
-msgstr "Nom d\\'utilisateur ou mot de passe inexact"
+msgstr "Nom d'utilisateur ou mot de passe inexact"
 
 #: templates/digidemo/_w_simple_form_wrapped.html:12
 #: templates/digidemo/edit.html:19

@@ -33,6 +33,26 @@
 
 		{% block js %}
 
+			{% if GLOBALS.DEBUG %}
+				<!-- in debug mode, all javascript errors are alerted -->
+				<script type="text/javascript">
+					// TODO: in non debug mode, send js errors to the server
+					// to be logged.
+					window.onerror =  function(msg, url, line, col, error) {
+						var extra = !col ? '' : '\ncolumn: ' + col;
+						extra += !error ? '' : '\nerror: ' + error;
+
+						// alert the error
+						alert("Error: " + msg + "\nurl: " + url + "\nline: " 
+							+ line + extra);   
+
+						// prevent browsers that natively alert errors
+						var suppressNativeErrorAlert = true;
+						return suppressNativeErrorAlert;
+					};
+				</script>
+			{% endif %}
+
 			<script type="text/javascript"
 				src="//code.jquery.com/jquery-2.1.1.min.js"></script>
 
