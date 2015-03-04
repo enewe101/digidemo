@@ -22,7 +22,7 @@
 					{% trans "profile" %}
 				</a>	
 				<a id="logout">
-					{% trans "logout" %}
+					logout
 				</a>	
 				<a>
 					{% trans "my questions" %}
@@ -156,6 +156,8 @@
 		<!-- Arm the logged-in menu behaviors -->
 		<script type="text/javascript">
 		(function(){
+
+			var RELOAD_URL = '{% url "do_reload" %}';
 			var logged_in_div = $('#logged_in_div');
 			var logged_in_menu = $('#logged_in_menu');
 
@@ -199,6 +201,8 @@
 			});
 		})();
 		</script>
+
+	</script>
 	<!-- otherwise, show login form and register link -->
 	{% else %}
 
@@ -246,15 +250,19 @@
 				</a>
 			</div>
 		</div>
+		<!-- arm events in the login form -->
 		<script type="text/javascript">
 		(function(){
+			var RELOAD_URL = '{% url "do_reload" %}';
+			var INVALID_EMAIL_URL = '{% url "invalid_email" %}';
+
 			var login_div = $('#login_div');
 			var login_form_div = $('#login_form_div');
 			var login_username = $('#username');
 			var login_password = $('#password');
 
-			// clicking in the search form doesn't bubble up to be a 
-			// click on the search button
+			// clicking in the login form doesn't bubble up to be a 
+			// click on the login_div
 			login_form_div.click(function(e){
 				e.stopPropagation();
 			});
@@ -275,13 +283,13 @@
 			tog.hook('on_show', style_login_div);
 			tog.hook('on_hide', unstyle_login_div);
 
-			// clicking out of the search area gets rid of search form
+			// clicking out of the login area gets rid of search form
 			doc_event_registrar.on('click', function(e){
 				tog.hide();
 				// clear the password field when login form is hidden
 				login_password.val('');
 			});
-			// ensure that clicking the search button doesn't bubble
+			// ensure that clicking the login button doesn't bubble
 			// up to the document.click we just established
 			login_div.click(function(e) {
 				e.stopPropagation();
@@ -296,75 +304,58 @@
 					'error': function(){alert('error')}
 				})
 			});
-		})();
 
+			// register the login form as an ajax form widget
+			register_form('login_form', 'ajax_login', 'login_form', 'submit_login')
+
+			// This makes the login failed message clear (if it was already showing)
+			// upon next submission
+			$('#submit_login').click(function() {
+				$('#ajax_login_error').html('');
+			});
+
+			// make it so that hitting the enter key submits the ajax login form
+			$('#username').keydown(function(e){
+				if(e.which == 13) {
+					$('#ajax_login_error').html('');
+					widgets['login_form'].widget.submit();
+				}
+			});
+			$('#password').keydown(function(e){
+				if(e.which == 13) {
+					$('#ajax_login_error').html('');
+					widgets['login_form'].widget.submit();
+				}
+			});
+
+			// define a callback to be executed after a successful login
+			var login_success_callback = function(data) {
+				if(data.email_valid) {
+					window.location = RELOAD_URL;
+				} else {
+					window.location = INVALID_EMAIL_URL;
+				}
+			}
+
+			// define a callback to be executed when login fails
+			var login_error_callback = function(data) {
+				$('#ajax_login_error').html(
+				'<span class="form_errors">'
+					+ "{% trans "Incorrect username or password" %}"
+				+ '<span>');
+			}
+
+			// bind the callbacks to the login widget
+			$(document).ready(function(){
+				widgets['login_form'].widget.hook('success', login_success_callback);
+				widgets['login_form'].widget.hook('error', login_error_callback);
+			});
+
+		})();
 		</script>
+
 
 	{% endif %}
 
 <script>
-(function(){
-
-	RELOAD_URL = '{% url "do_reload" %}';
-	INVALID_EMAIL_URL = '{% url "invalid_email" %}';
-
-	// arm the login triger to slide open / closed the login form
-	$('#login-trigger').click(function(){
-		$(this).next('#login-content').slideToggle();
-		$(this).toggleClass('active');
-		
-		if ($(this).hasClass('active')) {
-			$(this).find('span').html('&#x25B2;')
-
-		} else {
-			$(this).find('span').html('&#x25BC;')
-		}
-	})
-
-	// register the login as an ajax form widget
-	register_form('login_form', 'ajax_login', 'login_form', 'submit_login')
-
-	// This makes the login failed message clear (if it was already showing)
-	// upon next submission
-	$('#submit_login').click(function() {
-		$('#ajax_login_error').html('');
-	});
-
-	// make it so that hitting the enter key submits the ajax login form
-	$('#username').keydown(function(e){
-		if(e.which == 13) {
-			widgets['login_form'].widget.submit();
-		}
-	});
-	$('#password').keydown(function(e){
-		if(e.which == 13) {
-			widgets['login_form'].widget.submit();
-		}
-	});
-
-	// define a callback to be executed after a successful login
-	var login_success_callback = function(data) {
-		if(data.email_valid) {
-			window.location = RELOAD_URL;
-		} else {
-			window.location = INVALID_EMAIL_URL;
-		}
-	}
-
-	// define a callback to be executed when login fails
-	var login_error_callback = function(data) {
-		$('#ajax_login_error').html(
-		'<span class="form_errors">'
-			+ '{% trans "Incorrect username or password" %}'
-		+ '<span>');
-	}
-
-	// bind the callbacks to the login widget
-	$(document).ready(function(){
-		widgets['login_form'].widget.hook('success', login_success_callback);
-		widgets['login_form'].widget.hook('error', login_error_callback);
-	});
-
-
-}());
 </script>

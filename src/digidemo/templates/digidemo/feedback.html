@@ -1,16 +1,17 @@
 {% extends "digidemo/__base.html" %}
 {% load staticfiles %}
 {% load apptags %}
+{% load i18n %}
 
 {% block middle %}
 
 {% if thank_you %}
 	<div class="centered">
-		<h1 class="italic computerModern">Thank you!</h1>
+		<h1 class="italic computerModern">{% trans "Thank you!" %}</h1>
 	</div>
 {% else %}
 	<div class="mid_form_tall">
- 		<h1 class="italic computerModern">Whoops!</h1>
+		<h1 class="italic computerModern">{% trans "Whoops!" %}</h1>
 		{% include "digidemo/_w_simple_form_wrapped.html" with form=form %}	
 	</div>
 {% endif %}

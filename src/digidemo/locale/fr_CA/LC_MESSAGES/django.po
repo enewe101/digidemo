@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-03-03 10:42-0500\n"
+"POT-Creation-Date: 2015-03-04 01:15-0500\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -1556,11 +1556,11 @@ msgstr "commentaires"
 msgid "vote"
 msgstr "vote"
 
-#: settings.py:137 ~settings.py:98
+#: settings.py:136 ~settings.py:98
 msgid "English"
 msgstr "anglais"
 
-#: settings.py:138 ~settings.py:99
+#: settings.py:137 ~settings.py:99
 msgid "French"
 msgstr "français"
 
@@ -1668,11 +1668,11 @@ msgstr "oublié?"
 
 #: templates/digidemo/_w_login_user.html:245
 msgid "register"
-msgstr "Devenir membre"
+msgstr "s'enregistrer"
 
 #: templates/digidemo/_w_login_user.html:358
 msgid "Incorrect username or password"
-msgstr "Nom d'utilisateur ou mot de passe inexact"
+msgstr "Nom d\\'utilisateur ou mot de passe inexact"
 
 #: templates/digidemo/_w_simple_form_wrapped.html:12
 #: templates/digidemo/edit.html:19
@@ -1766,6 +1766,14 @@ msgstr ""
 "\t\t\tavant de contribuer!\n"
 "\t\t\t"
 
+#: templates/digidemo/check_your_mail.html:11
+msgid "Nice!"
+msgstr "Parfait!"
+
+#: templates/digidemo/check_your_mail.html:13
+msgid "Check your mail for a link to confirm registration."
+msgstr "Veuillez vérifier vos courriels pour confirmer votre enregistrement."
+
 #: templates/digidemo/discussion_list.html:19
 msgid "Discussion area"
 msgstr "Zone de discussion"
@@ -1841,6 +1849,14 @@ msgstr ""
 msgid "Last Modified"
 msgstr "Dernière modification"
 
+#: templates/digidemo/feedback.html:10
+msgid "Thank you!"
+msgstr "Merci!"
+
+#: templates/digidemo/feedback.html:14
+msgid "Whoops!"
+msgstr "Oups!"
+
 #: templates/digidemo/index.html:20
 msgid "What's this all about?"
 msgstr "Mais qu'est-ce?"
@@ -1868,6 +1884,14 @@ msgstr "continuer à lire"
 #: templates/digidemo/index.html:83
 msgid "Trending"
 msgstr "À la hausse"
+
+#: templates/digidemo/invalid_email.html:11
+msgid "Hey!"
+msgstr "Pas si vite!"
+
+#: templates/digidemo/invalid_email.html:13
+msgid "You need to confirm your email first!  Check your mail for a link!"
+msgstr "Vous deviez confirmer votre couriel en premier"
 
 #: templates/digidemo/issue_list.html:13
 #, python-format
@@ -2067,25 +2091,37 @@ msgstr ""
 "\t\t\tavant de contribuer!\n"
 "\t\t\t"
 
-#: templates/digidemo/register.html:60
+#: templates/digidemo/register.html:61
 msgid "too short!"
-msgstr ""
+msgstr "trop court!"
 
-#: templates/digidemo/register.html:67
+#: templates/digidemo/register.html:68
 msgid "Passwords don't match!"
-msgstr ""
+msgstr "Les mots de passe ne correspondent pas"
 
-#: templates/digidemo/register.html:76
+#: templates/digidemo/register.html:77
 msgid "available!"
-msgstr ""
+msgstr "disponible"
 
-#: templates/digidemo/register.html:78
+#: templates/digidemo/register.html:79
 msgid "sorry... it's taken"
-msgstr ""
+msgstr "désolé... déjà pris"
 
-#: templates/digidemo/register.html:96
+#: templates/digidemo/register.html:97
 msgid "Please stick to letters, numbers, and underscore (\\"
-msgstr ""
+msgstr "Veuillez utiliser les lettres, chiffres, et barre de soulignement seulement (\\"
+
+#: templates/digidemo/reset_password.html:17
+msgid "Reset Password"
+msgstr "Réinitialisation de mot de passe"
+
+#: templates/digidemo/validated.html:10
+msgid "Good to go!"
+msgstr "C'est parti!"
+
+#: templates/digidemo/validated.html:13
+msgid "Go ahead and login (up and to your right)."
+msgstr "Ça y est, vous pouvez maintenant vous connecter (en haut à droite)."
 
 #: templates/digidemo/view_discussion.html:10
 msgid "Your Reply"
@@ -2109,17 +2145,15 @@ msgstr "modifier / discuter"
 
 #: views.py:466
 msgid "You must login to vote!"
-msgstr "Vous deviez connexionner pour voter"
+msgstr "Vous devez vous connecter pour voter"
 
 #: views.py:473
-#, fuzzy
-#| msgid "You can't vote on your own post!"
 msgid "You can\\'t vote on your own post!"
-msgstr "Vous ne pouviez pas votez sur votre contribution propre!"
+msgstr "Vous ne pouvez pas voter pour votre propre contribution!"
 
 #: views.py:477
 msgid "You need to validate your email!"
-msgstr "Vous deviez valider votre addresse de couriel"
+msgstr "Vous devez valider votre adresse couriel"
 
 #: views.py:1237
 msgid "Ask a question"
@@ -2191,4 +2225,4 @@ msgid "newest"
 msgstr "récents"
 
 #~ msgid "You need to login!"
-#~ msgstr "Vous deviez connexionner"
+#~ msgstr "Vous devez vous connecter"

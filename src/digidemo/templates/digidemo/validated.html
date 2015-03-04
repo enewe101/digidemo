@@ -7,10 +7,12 @@
 <div class="validate_center">
 	<div class="check"></div>
 	<h2 class="validate"> 
-		Good to go!  <br/>
-		<span class="not_bold">
-			Go ahead and login (up and to your left).
-		</span>
+		{% trans "Good to go!" %}  <br/>
+		{% if not IS_USER_AUTHENTICATED %}
+			<span class="not_bold">
+				{% trans "Go ahead and login (up and to your right)." %}
+			</span>
+		{% endif %}
 	</h2>
 </div>
 

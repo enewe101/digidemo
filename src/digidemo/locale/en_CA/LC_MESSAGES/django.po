@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-03-03 10:42-0500\n"
+"POT-Creation-Date: 2015-03-04 01:15-0500\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -1549,11 +1549,11 @@ msgstr ""
 msgid "vote"
 msgstr ""
 
-#: settings.py:137 ~settings.py:98
+#: settings.py:136 ~settings.py:98
 msgid "English"
 msgstr ""
 
-#: settings.py:138 ~settings.py:99
+#: settings.py:137 ~settings.py:99
 msgid "French"
 msgstr ""
 
@@ -1736,6 +1736,14 @@ msgid ""
 "\t\t\t"
 msgstr ""
 
+#: templates/digidemo/check_your_mail.html:11
+msgid "Nice!"
+msgstr ""
+
+#: templates/digidemo/check_your_mail.html:13
+msgid "Check your mail for a link to confirm registration."
+msgstr ""
+
 #: templates/digidemo/discussion_list.html:19
 msgid "Discussion area"
 msgstr ""
@@ -1786,6 +1794,14 @@ msgstr ""
 msgid "Last Modified"
 msgstr ""
 
+#: templates/digidemo/feedback.html:10
+msgid "Thank you!"
+msgstr ""
+
+#: templates/digidemo/feedback.html:14
+msgid "Whoops!"
+msgstr ""
+
 #: templates/digidemo/index.html:20
 msgid "What's this all about?"
 msgstr ""
@@ -1812,6 +1828,14 @@ msgstr ""
 
 #: templates/digidemo/index.html:83
 msgid "Trending"
+msgstr ""
+
+#: templates/digidemo/invalid_email.html:11
+msgid "Hey!"
+msgstr ""
+
+#: templates/digidemo/invalid_email.html:13
+msgid "You need to confirm your email first!  Check your mail for a link!"
 msgstr ""
 
 #: templates/digidemo/issue_list.html:13
@@ -1947,24 +1971,36 @@ msgid ""
 "\t\t\t"
 msgstr ""
 
-#: templates/digidemo/register.html:60
+#: templates/digidemo/register.html:61
 msgid "too short!"
 msgstr ""
 
-#: templates/digidemo/register.html:67
+#: templates/digidemo/register.html:68
 msgid "Passwords don't match!"
 msgstr ""
 
-#: templates/digidemo/register.html:76
+#: templates/digidemo/register.html:77
 msgid "available!"
 msgstr ""
 
-#: templates/digidemo/register.html:78
+#: templates/digidemo/register.html:79
 msgid "sorry... it's taken"
 msgstr ""
 
-#: templates/digidemo/register.html:96
+#: templates/digidemo/register.html:97
 msgid "Please stick to letters, numbers, and underscore (\\"
+msgstr ""
+
+#: templates/digidemo/reset_password.html:17
+msgid "Reset Password"
+msgstr ""
+
+#: templates/digidemo/validated.html:10
+msgid "Good to go!"
+msgstr ""
+
+#: templates/digidemo/validated.html:13
+msgid "Go ahead and login (up and to your right)."
 msgstr ""
 
 #: templates/digidemo/view_discussion.html:10

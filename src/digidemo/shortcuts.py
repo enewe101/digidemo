@@ -5,6 +5,7 @@ from django.utils.translation import ugettext as __
 from django.contrib.auth import authenticate, login
 from django.core.urlresolvers import reverse
 from digidemo.models import *
+from digidemo.settings import DEBUG
 
 
 def get_profile(user):
@@ -51,12 +52,12 @@ def send_email_confirmation(user):
 
 	# send an email
 	message = (
-		__('To verify your account, click this link: https://luminocracy.org'
+		__('To verify your account, click this link: https:/'
 		+ reverse('verify_email', kwargs={'code': random_hash}))
 	)
 
 	send_mail(__('Welcome to luminocracy'), message, 
 		__('welcome@luminocracy.org'), [user.email], 
-		fail_silently=False
+		fail_silently=DEBUG
 	)
 
