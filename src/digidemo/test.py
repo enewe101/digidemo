@@ -309,7 +309,7 @@ class EmailValidation(SeleniumTestCase):
 			'verify_email', kwargs={'code': verification.code})
 
 		body = (
-			'To verify your account, click this link: https:/'
+			'To verify your account, click this link: https://luminocracy.org'
 			+ email_link
 		)
 		self.assertEqual(sent_mail.body, body)
@@ -342,7 +342,7 @@ class EmailValidation(SeleniumTestCase):
 		self.assertEqual(sent_mail.to, ['newuser@example.com'])
 
 		body = (
-			'To verify your account, click this link: https:/'
+			'To verify your account, click this link: https://luminocracy.org'
 			+ email_link
 		)
 		self.assertEqual(sent_mail.body, body)
