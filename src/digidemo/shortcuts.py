@@ -52,7 +52,7 @@ def send_email_confirmation(user):
 
 	# send an email
 	message = (
-		__('To verify your account, click this link: https:/'
+		__('To verify your account, click this link: https://luminocracy.org'
 		+ reverse('verify_email', kwargs={'code': random_hash}))
 	)
 
