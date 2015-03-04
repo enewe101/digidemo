@@ -19,7 +19,6 @@ BASE_DIR = os.path.join(PROJECT_DIR, 'src')
 TEMP_DIR = os.path.join(PROJECT_DIR, 'temp')
 STATIC_URL = '/static/'
 STATIC_ROOT = os.path.join(PROJECT_DIR, 'static/')
-#STATICFILES_DIRS = (PROJECT_DIR, 'static/',)
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(PROJECT_DIR, 'media/')
 

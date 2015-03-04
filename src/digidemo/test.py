@@ -148,7 +148,8 @@ class SeleniumTestCase(LiveServerTestCase):
 	def full_url(cls, url_without_domain):
 		return 'http://' + cls.get_live_server_url() + url_without_domain
 
-	# Find the element based on html id attribute
+	# go to a url under the luminocracy domain.  The passed url should 
+	# not have the domain, e.g., should be like those returned by reverse()
 	#
 	@classmethod
 	def go(cls, url_without_domain):
@@ -256,10 +257,9 @@ class SeleniumTestCase(LiveServerTestCase):
 class RegistrationFormTest(SeleniumTestCase):
 
 	def test_client_side(self):
-		self.driver
-
-	def test_server_side(self):
 		pass
+
+
 
 class EmailValidation(SeleniumTestCase):
 
