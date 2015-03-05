@@ -17,6 +17,54 @@ def getAuthor(users, proposal):
     return users.get(id=proposal.user_id).user.first_name
 
 
+@register.tag(name='change_lang')
+def change_lang(parser, token):
+	try:
+		tag_name = token.split_contents()
+	
+	except ValueError:
+		raise template.TemplateSyntaxError(
+			"%r tag takes no arguments" % token.contents.split()[0]
+		)
+
+	return ChangeLangNode()
+
+
+class ChangeLangNode(template.Node):
+	'''
+		Supports a template tag that is similar to "static", but it 
+		inserts the langage code in front of the file name so that
+		to serve localized resources.  The path given should be the path to 
+		the resource but where the language code is missing.
+
+		e.g. {% localize_static "/path/to/resource.jpg" %}
+		becomes /static-dir/path/to/en-ca_resource.jpg
+		if the viewer's language code is en-ca
+	'''
+
+
+	def __init__(self):
+	    pass
+	
+	def render(self, context):
+
+		# get name and codes for the language opposite the one currently displayed
+		is_english = context['GLOBALS']['IS_ENGLISH']
+		language_name = 'Francais' if is_english else 'English'
+		language_code = '/fr-ca' if is_english else '/en-ca'
+
+		# remove the language code part of the url
+		url_no_language = os.path.join(*context['request'].path.split('/')[2:])
+
+		# tack on the opposite language code
+		url_switch_language = os.path.join(language_code, url_no_language)
+
+		# make the language-switching link
+		link = '<a href="%s">%s</a>' % (url_switch_language, language_name)
+
+		return mark_safe(link)
+
+
 @register.tag(name="localize_static")
 def localize_image(parser, token):
 	'''

@@ -1,6 +1,8 @@
 from django.conf.urls import patterns, include, url
 from django.conf.urls.static import static as static_url
 from django.conf import settings
+from django.conf.urls.i18n import i18n_patterns
+
 
 from django.contrib import admin
 from views import *
@@ -16,8 +18,11 @@ admin.autodiscover()
     # the default handler is used
 #    handler500 = 'digidemo.views.show_server_error'
 
-
 urlpatterns = patterns('',
+	url(r'^i18n/', include('django.conf.urls.i18n')),
+)
+
+urlpatterns += i18n_patterns('',
 
 	# test url
 	url(r'^test/$', show_test_page, name='test'),

@@ -1,6 +1,7 @@
 {% extends "digidemo/__base.html" %}
 {% load staticfiles %}
 {% load apptags %}
+{% load i18n %}
 
 {% block css %}
 	{{ block.super }}
@@ -13,11 +14,11 @@
 {% block middle %}
 
 <div class="mid_form">
-	<h1 class="computerModern">Login</h1></br> 
+	<h1 class="computerModern">{% trans "Login" %}</h1></br> 
 
 	{% if error %}
 		<span class="field_errors" id="login_error">
-			Incorrect username or password
+			{% trans "Incorrect username or password" %}
 		</span>
 	{% endif %}
 

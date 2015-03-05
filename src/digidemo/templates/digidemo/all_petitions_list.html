@@ -1,5 +1,6 @@
 {% extends "digidemo/__two_column.html" %}
 {% load staticfiles %}
+{% load i18n %}
 
 {% block css %}
 
@@ -12,7 +13,7 @@
 {% endblock css %}
 
 {% block  headline_title %}
-	Open Letters
+	{% trans "Open Letters"%}
 {% endblock headline_title %}
 
 {% block maincol %}
@@ -67,7 +68,7 @@
 							{{ letter.text|truncatewords:100 }}
 							<br />
 							<a href="{{letter.get_url}}">
-								go to petition...
+								{% trans "go to petition..." %}
 							</a>
 						</div>
 
@@ -124,11 +125,12 @@
 		<img src="{% static "digidemo/images/bulb_icon.png" %}" 
 			class="note_icon" />
 		<p>
+			{% blocktrans with link_find_issue=link_find_issue link_add_issue=link_add_issue %}
 			To write an open letter, first 
-			<a href="{% url "issue_list" order_by="interesting" %}">
-				find the issue</a> 
+			<a href="{{ link_find_issue }}"> find the issue</a> 
 			that your letter relates to.  If there isn't an applicable issue
-		    yet, you can <a href="{% url "add_proposal" %}">create one</a>.
+			yet, you can <a href="{{ link_add_issue }}">create one</a>.
+			{% endblocktrans %}
 		</p>
 	</div>
 {% endblock rightcol %}

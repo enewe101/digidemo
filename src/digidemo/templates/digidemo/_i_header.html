@@ -1,5 +1,7 @@
 {% load i18n %}
 {% load staticfiles %}
+{% load apptags %}
+
 <div id="header">
 
 	<div id="header_bg">
@@ -20,10 +22,10 @@
 
 			{% include "digidemo/_i_main_nav_bar.html" %}
 
-			<div class="short_nav_button" id="search_bar">
+			<div class="short_nav_button" id="search_bar" title="not implemented">
 				<img src="{% static "digidemo/images/search.png" %}" />
 
-				<div id="search_form" title="not implemented">
+				<div id="search_form" >
 					<div class="border_cover"></div>
 					<form type="get" action="{% url "search" %}">  
 						<input placeholder="keywords" type="text" name="q" />
@@ -61,6 +63,11 @@
 
 			<div id="login_row">
 				{% include "digidemo/_w_login_user.html" %}
+
+
+			{% change_lang %}
+
+
 			</div>
 
 			<div id="topic_list">
