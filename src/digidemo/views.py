@@ -463,18 +463,18 @@ def get_vote_form(VoteModel, VoteForm, user, target, id_prefix=''):
 	
 	# Only enable the form if the user is authenticated
 	is_enabled = False
-	tooltip = "You must login to vote!"
+	tooltip = _("You must login to vote!")
 	if user.is_authenticated():
 		is_enabled = True
 
 		# Also, don't enable the form if the user is the author of the post!
 		if (target.user == user):
 			is_enabled = False
-			tooltip = r"You can\'t vote on your own post!"
+			tooltip = _(r"You can\'t vote on your own post!")
 
 		if not get_profile(user).email_validated:
 			is_enabled = False
-			tooltip = r"You need to validate your email!"
+			tooltip = _(r"You need to validate your email!")
 
 
 	if existing_vote:
@@ -1234,7 +1234,7 @@ class AskQuestionView(MakePost):
 	form_class = QuestionForm
 	target_class = Proposal
 	active_navitem = QUESTIONS_NAV_NAME
-	subtitle = __('Ask a question')
+	subtitle = _('Ask a question')
 
 	def get_headline_icon_url(self):
 		return static('digidemo/images/question_icon.png')
@@ -1250,7 +1250,7 @@ class StartDiscussionView(MakePost):
 	form_class = DiscussionForm
 	target_class = Proposal
 	active_navitem = ISSUE_NAV_NAME
-	subtitle = __('Start a discussion')
+	subtitle = _('Start a discussion')
 
 	def get_headline_icon_url(self):
 		return static('digidemo/images/comment_icon_med.png')
@@ -1266,7 +1266,7 @@ class StartPetitionView(MakePost):
 	form_class = LetterForm
 	target_class = Proposal
 	active_navitem = OPINION_NAV_NAME
-	subtitle = __('Write an open letter')
+	subtitle = _('Write an open letter')
 
 	def get_headline_icon_url(self):
 		return static('digidemo/images/petition_icon.png')
@@ -1761,10 +1761,10 @@ def resetPassword(request):
 			user.set_password(new_password)
 			user.save()
 			user.email_user(
-				subject='Luminocracy.org Password Reset',
-				message='Your new luminocracy.org password is: '
-					+new_password,
-				from_email='donotreply@luminocracy.org'
+				subject=_('Luminocracy.org Password Reset'),
+				message=_('Your new luminocracy.org password is: %s')
+					% new_password,
+				from_email=_('support@luminocracy.org')
 			)
 
 			return mainPage(request)
