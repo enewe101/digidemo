@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 import os
 from datetime import date, timedelta
 from django import template
@@ -50,8 +51,8 @@ class ChangeLangNode(template.Node):
 
 		# get name and codes for the language opposite the one currently displayed
 		is_english = context['GLOBALS']['IS_ENGLISH']
-		language_name = 'Francais' if is_english else 'English'
-		language_code = '/fr-ca' if is_english else '/en-ca'
+		language_name = u'Français' if is_english else u'English'
+		language_code = u'/fr-ca' if is_english else u'/en-ca'
 
 		# remove the language code part of the url
 		url_no_language = os.path.join(*context['request'].path.split('/')[2:])
@@ -60,7 +61,7 @@ class ChangeLangNode(template.Node):
 		url_switch_language = os.path.join(language_code, url_no_language)
 
 		# make the language-switching link
-		link = '<a href="%s">%s</a>' % (url_switch_language, language_name)
+		link = u'<a href="%s">%s</a>' % (url_switch_language, language_name)
 
 		return mark_safe(link)
 

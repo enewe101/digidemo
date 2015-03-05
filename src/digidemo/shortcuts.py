@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 import hashlib
 from django.core.mail import send_mail
 from django.utils.translation import ugettext_lazy as _

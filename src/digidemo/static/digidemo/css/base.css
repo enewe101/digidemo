@@ -169,10 +169,28 @@ body {
 	height: 88px;
 }
 
-#topic_list {
+#bottom_row {
 	clear: both;
+}
+
+#topic_list {
+	float:left;
 	text-align: center;
 	width: 946px;
+	padding: 4px 0 0 0;
+}
+
+#lang_change_wrapper {
+	float:left;
+	text-align: center;
+	width: 146px;
+	padding: 4px 0 0 0;
+}
+
+#fr_lang_change_wrapper {
+	float:left;
+	text-align: center;
+	width: 216px;
 	padding: 4px 0 0 0;
 }
 
