@@ -349,7 +349,9 @@ class EmailValidation(SeleniumTestCase):
 		
 		# simulate following the link in the email 
 		self.driver.get(self.live_server_url + email_link)
-		
+		message_text = self.find('exclamation').text
+		expected_message_text = 'Good to go!'
+		self.assertTrue(text_is_similar(message_text, expected_message_text))
 
 		# now check that the user's email has been verified
 		user_profile = get_profile(user)
