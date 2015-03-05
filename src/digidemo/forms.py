@@ -473,7 +473,7 @@ class TaggedProposalForm(object):
 		self.taggit = {
 			'id': 'proposal_tags',
 			'tags': '',
-			'label': 'tags',
+			'label': _('tags'),
 			'name': 'tags',
 			'errors': []
 		}

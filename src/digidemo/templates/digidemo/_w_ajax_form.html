@@ -1,3 +1,4 @@
+{% load i18n %}
 {% block ajax_form_form %}
 	<form class="{{ form.form_class}}" 
 		id="{{ form.form_class }}_{{ form.id_prefix }}">
@@ -21,7 +22,7 @@
 		{% endfor %}
 
 		<input id="{{ form.form_class}}_{{ form.id_prefix }}_submit" 
-		class="submit_letter" type="button" value="submit" />
+		class="submit_letter" type="button" value="{% trans "submit" %}" />
 	</form>
 {% endblock ajax_form_form %}
 

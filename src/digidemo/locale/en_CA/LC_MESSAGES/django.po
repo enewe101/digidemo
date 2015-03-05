@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-03-04 23:18-0500\n"
+"POT-Creation-Date: 2015-03-04 23:36-0500\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -1239,6 +1239,10 @@ msgstr ""
 msgid "Resent letter must have same valence as original letter"
 msgstr ""
 
+#: forms.py:476 models.py:214 models.py:240 models.py:340
+msgid "tags"
+msgstr ""
+
 #: forms.py:548 views.py:469
 msgid "You must login to vote!"
 msgstr ""
@@ -1321,10 +1325,6 @@ msgstr ""
 
 #: models.py:213
 msgid "tag"
-msgstr ""
-
-#: models.py:214 models.py:240 models.py:340
-msgid "tags"
 msgstr ""
 
 #: models.py:219
@@ -1698,7 +1698,7 @@ msgid "Incorrect username or password"
 msgstr ""
 
 #: templates/digidemo/_w_simple_form_wrapped.html:12
-#: templates/digidemo/edit.html:19
+#: templates/digidemo/add_proposal.html:23 templates/digidemo/edit.html:19
 msgid "submit"
 msgstr ""
 

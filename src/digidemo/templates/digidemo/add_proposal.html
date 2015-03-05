@@ -20,7 +20,7 @@
 		{% include "digidemo/_w_tagit.html" with taggit=proposal_form.taggit %}
 
 		<input id="{{version_form.form_class}}__submit" 
-			type="submit" value="submit" />
+		type="submit" value="{% trans "submit" %}" />
 	</form>
 
 	{% endwith %}
