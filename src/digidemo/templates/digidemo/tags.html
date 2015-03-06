@@ -1,6 +1,7 @@
 {% extends "digidemo/__base.html" %}
 {% load staticfiles %}
 {% load apptags %}
+{% load i18n %}
 
 {% block css %}
 	{{ block.super }}
@@ -14,13 +15,15 @@
 {% block middle %}
 
 	<div id="preamble">
-		<h2>Topics</h2>
+		<h2>{% trans "Topics" %}</h2>
 		<p>
+			{% blocktrans %}
 			Find issues that you care about by browsing topics.  Issues can
 			belong to many topics.	
 			Subscribe to a topic to get alerts when there is activity
 			on issues issues in that topic.  You can receive alerts on this 
 			site or have them sent to your inbox, it's up to you.
+			{% endblocktrans %}
 		</p>
 	</div>
 

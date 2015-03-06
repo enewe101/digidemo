@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-03-04 23:36-0500\n"
+"POT-Creation-Date: 2015-03-05 13:44-0500\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -1597,11 +1597,11 @@ msgstr "ajouter un commentaire"
 msgid "not implemented"
 msgstr ""
 
-#: templates/digidemo/_i_header.html:102
+#: templates/digidemo/_i_header.html:103
 msgid "feedback"
 msgstr "rétroaction"
 
-#: templates/digidemo/_i_header.html:105
+#: templates/digidemo/_i_header.html:106
 msgid "Feedback"
 msgstr "Rétroaction"
 
@@ -1610,7 +1610,7 @@ msgstr "Rétroaction"
 msgid "Issues"
 msgstr "Enjeux"
 
-#: templates/digidemo/_i_main_nav_bar.html:15
+#: templates/digidemo/_i_main_nav_bar.html:15 templates/digidemo/tags.html:18
 msgid "Topics"
 msgstr "Sujets"
 
@@ -1630,6 +1630,12 @@ msgstr "Usagers"
 #: templates/digidemo/_i_main_nav_bar.html:35
 msgid "Create"
 msgstr "Nouvel"
+
+#: templates/digidemo/_w_ajax_form.html:25
+#: templates/digidemo/_w_simple_form_wrapped.html:12
+#: templates/digidemo/add_proposal.html:23 templates/digidemo/edit.html:19
+msgid "submit"
+msgstr "soumettre"
 
 #: templates/digidemo/_w_follow_post.html:12
 #: templates/digidemo/_w_follow_post.html:17
@@ -1703,11 +1709,6 @@ msgstr "s'enregistrer"
 #: templates/digidemo/login_page.html:21
 msgid "Incorrect username or password"
 msgstr "Nom d'utilisateur ou mot de passe inexact"
-
-#: templates/digidemo/_w_simple_form_wrapped.html:12
-#: templates/digidemo/add_proposal.html:23 templates/digidemo/edit.html:19
-msgid "submit"
-msgstr "soumettre"
 
 #: templates/digidemo/add_proposal.html:7
 msgid "New Issue"
@@ -2185,6 +2186,17 @@ msgstr ""
 #: templates/digidemo/reset_password.html:17
 msgid "Reset Password"
 msgstr "Réinitialisation de mot de passe"
+
+#: templates/digidemo/tags.html:20
+msgid ""
+"\n"
+"\t\t\tFind issues that you care about by browsing topics.  Issues can\n"
+"\t\t\tbelong to many topics.\t\n"
+"\t\t\tSubscribe to a topic to get alerts when there is activity\n"
+"\t\t\ton issues issues in that topic.  You can receive alerts on this \n"
+"\t\t\tsite or have them sent to your inbox, it's up to you.\n"
+"\t\t\t"
+msgstr ""
 
 #: templates/digidemo/validated.html:11
 msgid "Good to go!"
