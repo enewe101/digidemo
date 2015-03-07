@@ -1,3 +1,4 @@
+
 import json
 from django.core.urlresolvers import reverse
 from django.shortcuts import render, get_object_or_404
@@ -224,6 +225,8 @@ def vote(vote_spec, request):
 #####################
 
 UNAUTHORIZED_VOTE_MESSAGE = 'You must login to vote!'
+
+
 
 @ajax_endpoint_login_required(UNAUTHORIZED_VOTE_MESSAGE, AnswerVoteForm)
 def vote_answer(request):

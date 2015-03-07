@@ -17,8 +17,12 @@
 				href="{% static "digidemo/css/forms.css" %}" />
 			<!--link rel="stylesheet" type="text/css" 
 				href="{% static "digidemo/css/login.css" %}" /-->
-			<link rel="stylesheet" type="text/css" 
-				href="{% static "digidemo/css/jquery-ui.css" %}" />
+
+			 <link rel="stylesheet" 
+				href="//code.jquery.com/ui/1.11.3/themes/smoothness/jquery-ui.css">
+
+			<!--link rel="stylesheet" type="text/css" 
+				href="{% static "digidemo/css/jquery-ui.css" %}" /-->
 			<link rel="stylesheet" type="text/css" 
 				href="{% static "digidemo/css/style.css" %}" />
 			<link rel="stylesheet" type="text/css" 
@@ -151,6 +155,9 @@
 				</div>
 			</div>
 			<!-- end of page footer -->
+
+			{% block foreground %}
+			{% endblock foreground %}
 
 		{% endblock body %}
 	</body>

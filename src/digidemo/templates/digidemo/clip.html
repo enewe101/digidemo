@@ -1,0 +1,225 @@
+{% extends "digidemo/__base.html" %}
+{% load staticfiles %}
+{% load apptags %}
+{% load i18n %}
+
+{% block css %}
+	{{ block.super }}
+
+	<style type="text/css">
+		#frm {
+			width: 100%;
+			height: 500px;
+		}
+		.do_menu {
+			position: absolute;
+			width: 150px;
+			top: 0px;
+			left: 0;
+		}
+		.absolutize {
+			position: relative;
+		}
+
+	</style>
+
+{% endblock css %}
+
+{% block js %}
+	{{ block.super }}
+{% endblock js %}
+
+
+{% block middle %}
+<h1 class="computerModern">{% trans "Clipper Mode" %}</h1></br> 	
+
+<!--{!% include "digidemo/_w_ajax_form.html" with form=search_form %}-->
+
+<input id="url_input" type="text" name="url" />
+<input id="submit" type="submit" value="submit" />
+<iframe src="" id="frm">
+</iframe>
+
+<script type="text/javascript">
+(function(){
+
+ 	// get some html pieces
+ 	var frm = $('#frm');
+	var submit = $('#submit');
+	var url_input = $('#url_input');
+
+
+
+
+	// bust the content up by sentences
+ 	function bust(tag) {
+		text = tag.text()
+		texts = text.split('.');
+	}
+
+
+	// callbacks
+	function show_a_menu() {
+		alert('a menu');
+	}
+	function show_general_menu() {
+		alert('gen men');
+	}
+
+	// for opening a context menu in the iframe
+	function click_in_frame(e) {
+		var html_tag = e.target;
+		var tag = $(e.target);
+		var frm = $('#frm');
+		tag.attr('style', "border:solid 1px black");
+
+		var tag_name = html_tag.tagName.toLowerCase();
+		if(tag_name == 'a') {
+			show_a_menu();
+		} else {
+			show_general_menu();
+		}
+
+		var frm_left = frm.offset().left;
+		var frm_top = frm.offset().top;
+
+		menu_abs_left = frm_left + e.pageY;
+		menu_abs_top = frm_top + e.pageX;
+
+		alert(menu_abs_left + ' , ' + menu_abs_top);
+
+		bust(tag);
+
+	}
+
+	// grabs the html from whatever page's url is shown in the textarea
+	function grab() {
+		url = $('#url_input').val();
+		proxy_url = 'http://localhost:8000/clipper/' + url;
+		frm.attr('src', proxy_url);
+		alert(url);
+	}
+
+	// bind various iframe events 
+	// 		- onclick open a context menu
+	function bind_iframe_events() {
+		var frame_doc = document.getElementById('frm').contentWindow.document;
+		frame_doc = $(frame_doc);
+		frame_doc.click(click_in_frame);
+
+	}
+
+	// iframe
+ 	//function load(data) {
+	//	var frame = $('#frm');
+	//	frame.load(bind_iframe_events);
+	//	grab();
+	//}
+
+	var frame = $('#frm');
+	frame.load(function(){
+
+		bind_iframe_events;
+
+		body = $(document.getElementById('frm').contentWindow.document.body);
+
+		//body.append('<div>yo</div>');
+
+		// detach the menus, which are in the html of the bottom of this page
+		var menu_text = $( "#menu_text" ).clone();
+		var menu_a = $( "#menu_a" ).clone();
+
+		body.append(menu_text);
+		body.append(menu_a);
+		$( "#menu_text" ).menu();
+		$( "#menu_a" ).menu();
+
+		alert('loaded');
+
+	});
+
+	$('#submit').click(grab);
+
+
+})();
+
+</script>
+
+{% endblock middle %}
+
+{% block foreground %}
+
+	<ul id="menu_text" class="do_menu">
+		<li class="ui-state-disabled">Aberdeen</li>
+		<li>Ada</li>
+		<li>Adamsville</li>
+		<li>Addyston</li>
+		<li>Delphi
+			<ul>
+				<li class="ui-state-disabled">Ada</li>
+				<li>Saarland</li>
+				<li>Salzburg an der schönen Donau</li>
+			</ul>
+		</li>
+		<li>Saarland</li>
+		<li>Salzburg
+			<ul>
+				<li>Delphi
+				<ul>
+					<li>Ada</li>
+					<li>Saarland</li>
+					<li>Salzburg</li>
+				</ul>
+				</li>
+				<li>Delphi
+					<ul>
+						<li>Ada</li>
+						<li>Saarland</li>
+						<li>Salzburg</li>
+					</ul>
+				</li>
+				<li>Perch</li>
+			</ul>
+		</li>
+		<li class="ui-state-disabled">
+			Amesville
+		</li>
+	</ul>
+	<ul id="menu_a" class="do_menu">
+		<li class="ui-state-disabled">Aberdeen</li>
+		<li>Ada</li>
+		<li>Adamsville</li>
+		<li>Addyston</li>
+		<li>Delphi
+			<ul>
+				<li class="ui-state-disabled">Ada</li>
+				<li>Saarland</li>
+				<li>Salzburg an der schönen Donau</li>
+			</ul>
+		</li>
+		<li>Saarland</li>
+		<li>Salzburg
+			<ul>
+				<li>Delphi
+				<ul>
+					<li>Ada</li>
+					<li>Saarland</li>
+					<li>Salzburg</li>
+				</ul>
+				</li>
+				<li>Delphi
+					<ul>
+						<li>Ada</li>
+						<li>Saarland</li>
+						<li>Salzburg</li>
+					</ul>
+				</li>
+				<li>Perch</li>
+			</ul>
+		</li>
+		<li class="ui-state-disabled">
+			Amesville
+		</li>
+	</ul>
+
+{% endblock foreground %}

@@ -215,6 +215,21 @@ def auto_add_input_class(form_class_name, form_instance):
 			attrs['class'] = css_classes
 
 
+class ClipperSearchForm(AugmentedFormMixin, Form):
+	form_class = 'clipper_search'
+	endpoint = 'clipper_search'
+
+	query = forms.CharField(max_length=50)
+
+	class Meta:
+		fields = ['query']
+		widgets = {
+			'query': forms.TextInput()
+		}
+
+
+
+
 class FeedbackForm(AugmentedFormMixin, ModelForm):
 	form_class = 'feedback_form'
 	endpoint = '/send_feedback/'

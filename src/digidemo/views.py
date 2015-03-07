@@ -2,6 +2,11 @@
 import difflib
 import collections as c
 
+from urlparse import urljoin
+import requests
+from bs4 import BeautifulSoup
+from requests.exceptions import MissingSchema
+
 from uuid import uuid4
 from django.utils.translation import ugettext_lazy as _
 from django.utils.translation import ugettext as __
@@ -26,7 +31,6 @@ from digidemo.forms import *
 from digidemo import utils
 from digidemo.utils import force_logout
 from digidemo.shortcuts import get_profile, login_user, send_email_confirmation
-
 
 from forms import ProposalSearchForm
 from settings import DEBUG
@@ -131,6 +135,7 @@ def get_edit_tabs(active_tab, issue):
 	tabs[active_index]['active'] = True
 
 	return tabs
+
 
 def get_issue_list_tabs(active_tab):
 
@@ -646,7 +651,6 @@ class LetterSection(PostSection):
 		)
 
 
-
 class AbstractView(object):
 
 	# override this with desired template
@@ -738,6 +742,8 @@ class AbstractView(object):
 
 
 
+
+
 # This provides a base for creating views which only logged in users
 # should be able to access.
 #
@@ -788,6 +794,117 @@ class AbstractLoginRequiredView(AbstractView):
 
 		return super(AbstractLoginRequiredView, self).view(
 			request, *args, **kwargs)
+
+
+
+class Clipper(AbstractLoginRequiredView):
+
+	# override this with desired template
+	template = 'digidemo/clip.html'
+
+	# Usually this is the only function to override.
+	def get_context_data(self):
+		return {}
+
+
+def try_get(url):
+	html = ''
+	try:
+		r = requests.get(url)
+		html = r.text
+	except MissingSchema:
+		try: 
+			r = requests.get('http://' + url)
+		except Exception as some_error:
+			html = '<html><body>failed</body></html>'
+		else:
+			html = r.text
+	else:
+		html = r.text
+
+	return html
+
+
+# acts through side-effect!
+def kill_scripts(soupy):
+	'''
+		Takes a BeautifulSoup object and completely removes scripts
+	'''
+	for s in soupy('script'):
+		s.extract()
+
+
+# acts through side-effect!
+def kill_title_attributes(soupy):
+	'''
+		Takes a BeautifulSoup object and completely removes scripts
+	'''
+	for s in soupy.find_all(title=True):
+		del s['title']
+
+
+# acts through side-effect!
+def absolutize_links(soupy, base_url):
+	'''
+		Takes a BeautifulSoup object and absolutizes all of the links
+	'''
+	# get all links, and absolutize their href attribute
+	for link in soupy('a', href=True):
+		#del link['href']
+		href = link['href']
+		abs_href = urljoin(base_url, href)
+		link['href'] = abs_href
+
+
+# acts through side-effect!
+def absolutize_links(soupy, base_url):
+	'''
+		Takes a BeautifulSoup object and absolutizes all of the links
+	'''
+	# get all links, and absolutize their href attribute
+	for link in soupy(src=True):
+		href = link['src']
+		abs_href = urljoin(base_url, href)
+		link['src'] = abs_href
+
+	for link in soupy(srcset=True):
+		splitter = re.compile(r'\s*,\s*')
+		hrefs = splitter.split(link['srcset'])
+		print '\n'.join(hrefs)
+		abs_hrefs = [urljoin(base_url, href) for href in hrefs]
+		print '\n'.join(abs_hrefs)
+		print '\n'*3
+		link['srcset'] = ', '.join(abs_hrefs)
+
+	for link in soupy(href=True):
+		href = link['href']
+		abs_href = urljoin(base_url, href)
+		link['href'] = abs_href
+
+
+
+def stuff(request, href):
+
+	# what webpage to get?
+	href
+	print href
+
+	# get it
+	html = try_get(href)
+
+	# soupify
+	soup = BeautifulSoup(html)
+
+	# kill scripts and title attributes
+	kill_scripts(soup)
+	kill_title_attributes(soup)
+	absolutize_links(soup, html)
+
+	# return the html
+	html = str(soup)
+
+	return HttpResponse(html)
+
 
 
 class Login(AbstractView):
@@ -850,7 +967,7 @@ class InvalidEmail(AbstractView):
 	def get_context_data(self):
 		return {}
 
-		
+
 
 
 

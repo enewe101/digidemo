@@ -29,6 +29,8 @@ urlpatterns += i18n_patterns('',
 
 	# admin pages
 	url('^admin/', include(admin.site.urls)),
+	url('^clip/', Clipper().view, name="clip"),
+	url('^clipper/(?P<href>.*)', stuff, name="clip"),
 
 	# front page urls
 	#url(r'^$', land, name='land'),
