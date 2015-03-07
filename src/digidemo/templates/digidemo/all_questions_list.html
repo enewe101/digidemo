@@ -64,7 +64,7 @@
 		<img src="{% static "digidemo/images/bulb_icon.png" %}" 
 			class="note_icon" />
 		<p>
-			{% blocktrans with link=proposal.get_open_discussion_url %}
+			{% blocktrans %}
 			Note: Post your questions about the issue here.  If you want to
 			contribute to the writing of the issue (it is a wiki after all!),
 			then you can post contstructive comments about the 
@@ -72,11 +72,11 @@
 			discussion area.
 			{% endblocktrans %}
 		</p>
-		<p>
+		<!--p>
 			{% blocktrans %}
 			Make sure to read the <a href="#">asking good questions</a> 
 			guideline before contributing :)
 			{% endblocktrans %}
-		</p>
+		</p-->
 	</div>
 {% endblock rightcol %}

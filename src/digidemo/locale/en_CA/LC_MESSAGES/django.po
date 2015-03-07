@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-03-04 23:18-0500\n"
+"POT-Creation-Date: 2015-03-05 13:44-0500\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -1239,6 +1239,10 @@ msgstr ""
 msgid "Resent letter must have same valence as original letter"
 msgstr ""
 
+#: forms.py:476 models.py:214 models.py:240 models.py:340
+msgid "tags"
+msgstr ""
+
 #: forms.py:548 views.py:469
 msgid "You must login to vote!"
 msgstr ""
@@ -1321,10 +1325,6 @@ msgstr ""
 
 #: models.py:213
 msgid "tag"
-msgstr ""
-
-#: models.py:214 models.py:240 models.py:340
-msgid "tags"
 msgstr ""
 
 #: models.py:219
@@ -1590,11 +1590,11 @@ msgstr ""
 msgid "not implemented"
 msgstr ""
 
-#: templates/digidemo/_i_header.html:102
+#: templates/digidemo/_i_header.html:103
 msgid "feedback"
 msgstr ""
 
-#: templates/digidemo/_i_header.html:105
+#: templates/digidemo/_i_header.html:106
 msgid "Feedback"
 msgstr ""
 
@@ -1603,7 +1603,7 @@ msgstr ""
 msgid "Issues"
 msgstr ""
 
-#: templates/digidemo/_i_main_nav_bar.html:15
+#: templates/digidemo/_i_main_nav_bar.html:15 templates/digidemo/tags.html:18
 msgid "Topics"
 msgstr ""
 
@@ -1622,6 +1622,12 @@ msgstr ""
 
 #: templates/digidemo/_i_main_nav_bar.html:35
 msgid "Create"
+msgstr ""
+
+#: templates/digidemo/_w_ajax_form.html:25
+#: templates/digidemo/_w_simple_form_wrapped.html:12
+#: templates/digidemo/add_proposal.html:23 templates/digidemo/edit.html:19
+msgid "submit"
 msgstr ""
 
 #: templates/digidemo/_w_follow_post.html:12
@@ -1695,11 +1701,6 @@ msgstr ""
 #: templates/digidemo/_w_login_user.html:344
 #: templates/digidemo/login_page.html:21
 msgid "Incorrect username or password"
-msgstr ""
-
-#: templates/digidemo/_w_simple_form_wrapped.html:12
-#: templates/digidemo/edit.html:19
-msgid "submit"
 msgstr ""
 
 #: templates/digidemo/add_proposal.html:7
@@ -2062,6 +2063,17 @@ msgstr ""
 
 #: templates/digidemo/reset_password.html:17
 msgid "Reset Password"
+msgstr ""
+
+#: templates/digidemo/tags.html:20
+msgid ""
+"\n"
+"\t\t\tFind issues that you care about by browsing topics.  Issues can\n"
+"\t\t\tbelong to many topics.\t\n"
+"\t\t\tSubscribe to a topic to get alerts when there is activity\n"
+"\t\t\ton issues issues in that topic.  You can receive alerts on this \n"
+"\t\t\tsite or have them sent to your inbox, it's up to you.\n"
+"\t\t\t"
 msgstr ""
 
 #: templates/digidemo/validated.html:11
