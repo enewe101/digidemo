@@ -30,7 +30,7 @@ from digidemo.abstract_models import *
 from digidemo.forms import *
 from digidemo import utils
 from digidemo.utils import force_logout
-from digidemo.shortcuts import get_profile, login_user, send_email_confirmation
+from digidemo.shortcuts import get_profile, login_user, send_email_confirmation, get_base_url
 
 from forms import ProposalSearchForm
 from settings import DEBUG
@@ -849,19 +849,6 @@ def absolutize_links(soupy, base_url):
 		Takes a BeautifulSoup object and absolutizes all of the links
 	'''
 	# get all links, and absolutize their href attribute
-	for link in soupy('a', href=True):
-		#del link['href']
-		href = link['href']
-		abs_href = urljoin(base_url, href)
-		link['href'] = abs_href
-
-
-# acts through side-effect!
-def absolutize_links(soupy, base_url):
-	'''
-		Takes a BeautifulSoup object and absolutizes all of the links
-	'''
-	# get all links, and absolutize their href attribute
 	for link in soupy(src=True):
 		href = link['src']
 		abs_href = urljoin(base_url, href)
@@ -870,27 +857,37 @@ def absolutize_links(soupy, base_url):
 	for link in soupy(srcset=True):
 		splitter = re.compile(r'\s*,\s*')
 		hrefs = splitter.split(link['srcset'])
-		print '\n'.join(hrefs)
 		abs_hrefs = [urljoin(base_url, href) for href in hrefs]
-		print '\n'.join(abs_hrefs)
-		print '\n'*3
 		link['srcset'] = ', '.join(abs_hrefs)
 
 	for link in soupy(href=True):
 		href = link['href']
+		#print href
+		#print base_url
 		abs_href = urljoin(base_url, href)
 		link['href'] = abs_href
+		#print abs_href
+
 
 
 
 def stuff(request, href):
 
-	# what webpage to get?
-	href
-	print href
+	# load html from an external page if an href was provided
+	href = href.strip()
+	if href == '':
+		html = '<html><head></head><body>Enter an address</body></html>'
 
-	# get it
-	html = try_get(href)
+	else:
+		html = try_get(href)
+
+	# resolve the href
+	if href == '':
+		pass
+	elif href.startswith('http://') or href.startswith('https://'):
+		pass
+	else:
+		href = 'http://' + href
 
 	# soupify
 	soup = BeautifulSoup(html)
@@ -898,11 +895,33 @@ def stuff(request, href):
 	# kill scripts and title attributes
 	kill_scripts(soup)
 	kill_title_attributes(soup)
-	absolutize_links(soup, html)
+	absolutize_links(soup, href)
+
+	base_url = get_base_url(request)
+
+	clip_frame_css_href = static('digidemo/css/clip_frame.css')
+	clip_frame_css_href_absolute = urljoin(base_url, clip_frame_css_href)
+	clip_frame_css = soup.new_tag(
+		'link', 
+		rel="stylesheet", 
+		#type="text/css",
+		href=clip_frame_css_href_absolute
+	)
+
+	jquery_css_href = static('digidemo/css/jquery-ui.css')
+	jquery_css_href_absolute = urljoin(base_url, jquery_css_href)
+	jquery_css = soup.new_tag(
+		'link', 
+		rel="stylesheet", 
+		#type="text/css",
+		href=jquery_css_href_absolute
+	)
+
+	soup.head.append(clip_frame_css)
+	soup.head.append(jquery_css)
 
 	# return the html
 	html = str(soup)
-
 	return HttpResponse(html)
 
 

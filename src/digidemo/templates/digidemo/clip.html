@@ -12,13 +12,18 @@
 			height: 500px;
 		}
 		.do_menu {
-			position: absolute;
-			width: 150px;
-			top: 0px;
-			left: 0;
 		}
 		.absolutize {
 			position: relative;
+		}
+
+		#scratch_pad {
+			background: rgb(240,240,240);
+			height: 300px;
+		}
+		#frm, #scratch_pad, #notes, #notes_textarea {
+			height: 300px;
+			width: 100%;
 		}
 
 	</style>
@@ -33,193 +38,237 @@
 {% block middle %}
 <h1 class="computerModern">{% trans "Clipper Mode" %}</h1></br> 	
 
-<!--{!% include "digidemo/_w_ajax_form.html" with form=search_form %}-->
-
 <input id="url_input" type="text" name="url" />
 <input id="submit" type="submit" value="submit" />
-<iframe src="" id="frm">
-</iframe>
 
-<script type="text/javascript">
-(function(){
+<div id="tabs">
 
- 	// get some html pieces
- 	var frm = $('#frm');
-	var submit = $('#submit');
-	var url_input = $('#url_input');
+	<ul>
+		<li><a href="#tabs-1">Clip this</a></li>
+		<li><a href="#tabs-2">Scratch Pad</a></li>
+		<li><a href="#tabs-3">Notes</a></li>
+	</ul>
 
+	<div id="tabs-1">
+		<iframe src="" id="frm"></iframe>
+	</div>
 
+	<div id="tabs-2">
+		<div id="scratch_pad">
+			scratch pad
+		</div>
+	</div>
 
+	<div id="tabs-3">
+		<div id="notes">
+			<textarea id="notes_textarea" name="notes"></textarea>
+		</div>
+	</div>
+</div>
 
-	// bust the content up by sentences
- 	function bust(tag) {
-		text = tag.text()
-		texts = text.split('.');
-	}
-
-
-	// callbacks
-	function show_a_menu() {
-		alert('a menu');
-	}
-	function show_general_menu() {
-		alert('gen men');
-	}
-
-	// for opening a context menu in the iframe
-	function click_in_frame(e) {
-		var html_tag = e.target;
-		var tag = $(e.target);
-		var frm = $('#frm');
-		tag.attr('style', "border:solid 1px black");
-
-		var tag_name = html_tag.tagName.toLowerCase();
-		if(tag_name == 'a') {
-			show_a_menu();
-		} else {
-			show_general_menu();
-		}
-
-		var frm_left = frm.offset().left;
-		var frm_top = frm.offset().top;
-
-		menu_abs_left = frm_left + e.pageY;
-		menu_abs_top = frm_top + e.pageX;
-
-		alert(menu_abs_left + ' , ' + menu_abs_top);
-
-		bust(tag);
-
-	}
-
-	// grabs the html from whatever page's url is shown in the textarea
-	function grab() {
-		url = $('#url_input').val();
-		proxy_url = 'http://localhost:8000/clipper/' + url;
-		frm.attr('src', proxy_url);
-		alert(url);
-	}
-
-	// bind various iframe events 
-	// 		- onclick open a context menu
-	function bind_iframe_events() {
-		var frame_doc = document.getElementById('frm').contentWindow.document;
-		frame_doc = $(frame_doc);
-		frame_doc.click(click_in_frame);
-
-	}
-
-	// iframe
- 	//function load(data) {
-	//	var frame = $('#frm');
-	//	frame.load(bind_iframe_events);
-	//	grab();
-	//}
-
-	var frame = $('#frm');
-	frame.load(function(){
-
-		bind_iframe_events;
-
-		body = $(document.getElementById('frm').contentWindow.document.body);
-
-		//body.append('<div>yo</div>');
-
-		// detach the menus, which are in the html of the bottom of this page
-		var menu_text = $( "#menu_text" ).clone();
-		var menu_a = $( "#menu_a" ).clone();
-
-		body.append(menu_text);
-		body.append(menu_a);
-		$( "#menu_text" ).menu();
-		$( "#menu_a" ).menu();
-
-		alert('loaded');
-
-	});
-
-	$('#submit').click(grab);
-
-
-})();
-
-</script>
 
 {% endblock middle %}
 
 {% block foreground %}
 
-	<ul id="menu_text" class="do_menu">
-		<li class="ui-state-disabled">Aberdeen</li>
-		<li>Ada</li>
-		<li>Adamsville</li>
-		<li>Addyston</li>
-		<li>Delphi
-			<ul>
-				<li class="ui-state-disabled">Ada</li>
-				<li>Saarland</li>
-				<li>Salzburg an der schönen Donau</li>
-			</ul>
-		</li>
-		<li>Saarland</li>
-		<li>Salzburg
-			<ul>
-				<li>Delphi
-				<ul>
-					<li>Ada</li>
-					<li>Saarland</li>
-					<li>Salzburg</li>
-				</ul>
-				</li>
-				<li>Delphi
-					<ul>
-						<li>Ada</li>
-						<li>Saarland</li>
-						<li>Salzburg</li>
-					</ul>
-				</li>
-				<li>Perch</li>
-			</ul>
-		</li>
-		<li class="ui-state-disabled">
-			Amesville
-		</li>
-	</ul>
-	<ul id="menu_a" class="do_menu">
-		<li class="ui-state-disabled">Aberdeen</li>
-		<li>Ada</li>
-		<li>Adamsville</li>
-		<li>Addyston</li>
-		<li>Delphi
-			<ul>
-				<li class="ui-state-disabled">Ada</li>
-				<li>Saarland</li>
-				<li>Salzburg an der schönen Donau</li>
-			</ul>
-		</li>
-		<li>Saarland</li>
-		<li>Salzburg
-			<ul>
-				<li>Delphi
-				<ul>
-					<li>Ada</li>
-					<li>Saarland</li>
-					<li>Salzburg</li>
-				</ul>
-				</li>
-				<li>Delphi
-					<ul>
-						<li>Ada</li>
-						<li>Saarland</li>
-						<li>Salzburg</li>
-					</ul>
-				</li>
-				<li>Perch</li>
-			</ul>
-		</li>
-		<li class="ui-state-disabled">
-			Amesville
-		</li>
-	</ul>
+	<div id="menu_target"></div>
+
+	<script type="text/javascript">
+
+		// arm tabs
+		$('#tabs').tabs();
+
+		function Menu(options, callbacks) {
+
+			this.wrapper = $('<div class="menu_wrapper" />');
+			this.wrapper.click(function(e) {
+				e.stopPropagation();
+			});
+
+			var menu_ul = $('<ul class="do_menu" />');
+			this.wrapper.append(menu_ul);
+			for(var i=0; i<options.length; i++) {
+				var menu_li = $('<li>' + options[i] + '</li>')
+				menu_ul.append(menu_li);
+				menu_li.click(callbacks[options[i]]);
+			}
+			menu_ul.menu();
+
+			// public functions
+			this.hide = function() {
+				this.wrapper.css('display', 'none');
+			};
+		}
+
+		function pull_text() {
+			var tag = cp.get_selected_tag();
+			var text = tag.text();
+			var new_clip = $('<div class="clip">' + text + '</div>');
+			$('#scratch_pad').append(new_clip);
+			cp.hide_menus();
+		}
+		function nevermind() {
+			cp.hide_menus();
+		}
+			
+
+		var gen_menu_options = ['nevermind', 'add to scratch'];
+		var gen_menu_callbacks = {
+			'nevermind': nevermind,
+			'add to scratch': pull_text
+		};
+		var gen_menu = new Menu(gen_menu_options, gen_menu_callbacks);
+		var menu_general_wrapper = gen_menu.wrapper;
+
+
+		function follow() {
+			var href = cp.get_selected_href()
+			url_input_elm.val(href);
+			cp.point_iframe();
+		}
+
+		var a_menu_options = ['nevermind', 'follow', 'attribute', 
+			'add to stack'];
+		var a_menu_callbacks = {
+			'nevermind': nevermind,
+			'follow': follow,
+			'attribute': function(){},
+			'add to stack': function(){}
+		};
+		var a_menu = new Menu(a_menu_options, a_menu_callbacks);
+		var menu_a_wrapper = a_menu.wrapper;
+
+
+		
+
+
+		function ClipperPanel(
+			frame_div, url_input_elm, submit_elm, menu_a_wrapper, 
+			menu_general_wrapper
+		) {
+
+			// get some html pieces
+			var frm = frame_div;
+			var submit = submit_elm;
+			var url_input = url_input_elm;
+
+			// state variables
+			var recall_border = null;
+			var selected_elm = null;
+			var selected_href = null;
+
+			function load_frame() {
+				put_menus();
+				bind_iframe_events();
+			}
+
+			function put_menus() {
+				var body = frm.contents().find('body');
+				body.append(menu_a_wrapper);
+				body.append(menu_general_wrapper);
+			}
+
+			function bind_iframe_events() {
+				var frame_doc = document.getElementById('frm').contentWindow.document;
+				frame_doc = $(frame_doc);
+				frame_doc.click(click_in_frame);
+				frm.contents().find('a').click(function(e) {
+					click_in_frame(e);
+					e.stopPropagation();
+					return false;
+				})
+			}
+
+			function restore_elm_border() {
+				if(selected_elm === null) {
+					return;
+				}
+				selected_elm.css('border', recall_border);
+			}
+
+			function click_in_frame(e) {
+
+				// restore the old div's display (if any)
+				restore_elm_border();
+
+				// get the clicked div, and remember it's original styling
+				var html_tag = e.target;
+				var tag = $(e.target);
+				selected_elm = tag;
+				recall_border = tag.css('border');
+				selected_href = tag.attr('href');
+
+				// highlight clicked div
+				tag.css('border', 'solid 1px black');
+				var tag_name = html_tag.tagName.toLowerCase();
+
+				// get the coords
+				var y = e.pageY;
+				var x = e.pageX;
+
+				// hide the menus
+				_hide_menus();
+
+				// show the appropriate menus
+				if(html_tag.tagName.toLowerCase() == 'a') {
+					show_menu(menu_a_wrapper, x, y);
+				} else {
+					show_menu(menu_general_wrapper, x, y);
+				}
+			}
+
+			// a public function
+			this.get_selected_tag = function() {
+				return selected_elm;
+			};
+
+			this.get_selected_href = function() {
+				return selected_href;
+			};
+
+
+			function _hide_menus() {
+				menu_a_wrapper.css('display', 'none');
+				menu_general_wrapper.css('display', 'none');
+			}
+
+			this.hide_menus = function() {
+				_hide_menus();
+			};
+
+			function show_menu(which_menu, x, y) {
+				which_menu.css('position', 'absolute');
+				which_menu.css('top', y);
+				which_menu.css('left', x);
+				which_menu.css('display', 'block');
+			}
+
+			// navigates the iframe.  Luminocracy server used as a proxy.
+			function _point_iframe() {
+				url = url_input.val();
+				proxy_url = 'http://localhost:8000/clipper/' + url;
+				// this causes iframe to load url
+				frm.attr('src', proxy_url);
+			}
+			this.point_iframe = function() {
+				_point_iframe()
+			};
+
+			// arm some events on the iframe
+			frm.load(load_frame);
+			submit.click(_point_iframe);
+
+			_point_iframe();
+		}
+
+		var frame_div = $('#frm'); 
+		var url_input_elm = $('#url_input');
+		var submit_elm = $('#submit');
+		var cp = new ClipperPanel(
+			frame_div, url_input_elm, submit_elm, menu_a_wrapper,
+			menu_general_wrapper
+		);
+
+	</script>
 
 {% endblock foreground %}

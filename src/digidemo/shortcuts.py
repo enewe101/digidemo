@@ -13,6 +13,10 @@ def get_profile(user):
 	return UserProfile.objects.get(user=user)
 
 
+def get_base_url(request):
+	return request.scheme + '://' + request.META['HTTP_HOST']
+
+
 def login_user(username, password, request):
 
 		# if the username contains an '@', then its actually an email
