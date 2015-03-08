@@ -893,7 +893,7 @@ def stuff(request, href):
 	soup = BeautifulSoup(html)
 
 	# kill scripts and title attributes
-	kill_scripts(soup)
+	# kill_scripts(soup)
 	kill_title_attributes(soup)
 	absolutize_links(soup, href)
 

@@ -26,6 +26,55 @@
 			width: 100%;
 		}
 
+		.clip {
+			border: 1px solid green;
+			padding: 14px;
+		}
+
+		#scratch_pad_sortable { 
+			list-style-type: none;
+			margin: 0;
+			padding: 0;
+		   	width: 100%; 
+		}
+
+		#scratch_pad_sortable li {
+			margin: 0 3px 3px 3px;
+			padding: 0.4em;
+			padding-left: 1.5em;
+			font-size: 12px;
+			color: black;
+			font-weight: normal;
+		}
+
+		.clip_center {
+		}
+		.clip_left {
+			float: left;
+			margin-right: 20px;
+		}
+		.clip_right {
+			float: right;
+		}
+		.clip_button {
+			float: left;
+			border: solid 1px black;
+			cursor: pointer;
+			margin-right: 4px;
+			width: 40px;
+			text-align: center;
+		}
+		.clip_icon {
+			margin: auto;
+			border: solid 1px blue;
+		}
+		.clip_textarea {
+			width: 300px;
+			display: none;
+		}
+
+
+
 	</style>
 
 {% endblock css %}
@@ -55,7 +104,8 @@
 
 	<div id="tabs-2">
 		<div id="scratch_pad">
-			scratch pad
+			<ul id="scratch_pad_sortable">
+			</ul>
 		</div>
 	</div>
 
@@ -77,6 +127,8 @@
 
 		// arm tabs
 		$('#tabs').tabs();
+
+		$('#scratch_pad_sortable').sortable();
 
 		function Menu(options, callbacks) {
 
@@ -100,11 +152,99 @@
 			};
 		}
 
+		function Clip(text) {
+
+			var wrapper = $('<li class="ui-state-default" />');
+			this.wrapper = wrapper;
+
+			var clip_center = $('<div class="clip_center" />'); 
+			var clip_left = $('<div class="clip_left" />'); 
+			var clip_right = $('<div class="clip_right" />'); 
+
+
+			var new_clip_text = $('<div />')
+			clip_center.append(new_clip_text);
+			new_clip_text.text(text);
+
+			var new_clip_textarea = $('<textarea></textarea>');
+			new_clip_textarea.css('width', '400px');
+			new_clip_textarea.css('display', 'none');
+			clip_center.append(new_clip_textarea);
+			new_clip_textarea.val(text);
+
+			clip_left.disableSelection();
+			clip_right.disableSelection();
+			new_clip_text.disableSelection();
+
+			var new_clip_kill = $(
+				'<div class="clip_button">'
+					+ '<span class="clip_icon ui-icon ui-icon-close"></span>'
+				+ '</div>'
+			);
+
+			var new_clip_edit = $(
+				'<div class="clip_button">'
+					+ '<span class="clip_icon ui-icon ui-icon-pencil"></span>'
+				+ '</div>'
+			);
+
+			var new_clip_move = $('<span class="ui-icon ui-icon-arrow-4"></span>');
+		
+			var state = 'normal';
+			function kill_clip() {
+				wrapper.remove();
+			}
+
+			function start_editing() {
+				new_clip_textarea.css('display', 'block');
+				new_clip_text.css('display', 'none');
+			}
+			
+			function finish_editing() {
+				text = new_clip_textarea.val();
+				new_clip_text.text(text);
+				new_clip_textarea.css('display', 'none');
+				new_clip_text.css('display', 'block');
+			}
+			
+			function edit_clip() {
+				if(state === 'normal') {
+					start_editing();
+					state = 'editing';
+				} else if(state === 'editing') {
+					finish_editing()
+					state = 'normal';
+				}
+			}
+
+
+
+
+			wrapper.append(clip_left);
+			wrapper.append(clip_right);
+			wrapper.append(clip_center);
+			clip_left.append(new_clip_move);
+			clip_right.append(new_clip_edit);
+			clip_right.append(new_clip_kill);
+			new_clip_kill.click(kill_clip);
+			new_clip_edit.click(edit_clip);
+
+		}
+
+
 		function pull_text() {
 			var tag = cp.get_selected_tag();
 			var text = tag.text();
-			var new_clip = $('<div class="clip">' + text + '</div>');
-			$('#scratch_pad').append(new_clip);
+			var texts = text.split(/\.\s+/);
+			for(var i=0; i<texts.length; i++) {
+				var t = texts[i].trim();
+				if(t === '') {
+					continue;
+				}
+				var new_clip = new Clip(texts[i]);
+				$('#scratch_pad_sortable').append(new_clip.wrapper);
+			}
+			$('#scratch_pad_sortable').sortable("refresh");
 			cp.hide_menus();
 		}
 		function nevermind() {
@@ -120,6 +260,7 @@
 		var gen_menu = new Menu(gen_menu_options, gen_menu_callbacks);
 		var menu_general_wrapper = gen_menu.wrapper;
 
+		menu_general_wrapper.css('z-index', '9999999')
 
 		function follow() {
 			var href = cp.get_selected_href()
@@ -138,6 +279,7 @@
 		var a_menu = new Menu(a_menu_options, a_menu_callbacks);
 		var menu_a_wrapper = a_menu.wrapper;
 
+		menu_a_wrapper.css('z-index', '9999999')
 
 		
 
