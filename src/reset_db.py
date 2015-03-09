@@ -23,7 +23,3 @@ Popen(['mysql', '-e', 'create database digidemo;'],
 Popen([manage_command, 'migrate'], 
 		stderr=subprocess.STDOUT).wait()
 
-#output = os.popen("mysql -e 'drop database digidemo;'")
-#output = os.popen("mysql -e 'create database digidemo;'")
-#output = os.popen('%s migrate' % manage_command)
-

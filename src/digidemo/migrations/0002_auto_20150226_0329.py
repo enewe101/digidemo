@@ -4,7 +4,8 @@ from django.db import models, migrations
 from django.core.management import call_command
 from digidemo.settings import INITIAL_FIXTURE
 
-fixture = INITIAL_FIXTURE
+#fixture = INITIAL_FIXTURE
+fixture = 'initial_fixture'
 
 def load_fixture(apps, schema_editor):
 	call_command('loaddata', fixture, app_label='digidemo') 
