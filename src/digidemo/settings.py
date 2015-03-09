@@ -22,11 +22,11 @@ STATIC_ROOT = os.path.join(PROJECT_DIR, 'static/')
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(PROJECT_DIR, 'media/')
 
-INITIAL_FIXTURE = 'initial_fixture'
-if hasattr(local_settings, 'INITIAL_FIXTURE'):
-	INITIAL_FIXTURE = local_settings.INITIAL_FIXTURE
+DATA_FIXTURE = 'production_data'
+if hasattr(local_settings, 'DATA_FIXTURE'):
+	DATA_FIXTURE = local_settings.DATA_FIXTURE
 
-TEST_FIXTURE = 'test_fixture'
+TEST_FIXTURE = 'test_data'
 
 	##########################################
 	#                                        #

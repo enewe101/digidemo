@@ -41,18 +41,20 @@ def reset(user, pwd):
 		print 'aborted'
 		return returncode
 
-	# migration and data loading
+	# migration 
 	returncode = Popen(
 		[manage_command, 'migrate'], stderr=subprocess.STDOUT).wait()
 	if returncode > 0:
 		print 'aborted'
 		return returncode
-
-	Popen([manage_command, 'loaddata', 'test_data'], 
+	# data loading
+	fixture_name = settings.DATA_FIXTURE
+	Popen([manage_command, 'loaddata', fixture_name], 
 		stderr=subprocess.STDOUT).wait()
 	if returncode > 0:
 		print 'aborted'
 		return returncode
+
 
 if __name__ == '__main__':
 	user = None
