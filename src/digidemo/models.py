@@ -39,6 +39,7 @@ from django.template.defaultfilters import slugify
 from django.utils.safestring import mark_safe
 from django.contrib.staticfiles.templatetags.staticfiles import static
 from digidemo import abstract_models
+from digidemo.settings import LANGUAGES
 import re
 import os
 
@@ -221,6 +222,10 @@ class Proposal(abstract_models.Subscribable):
 	title = models.CharField(max_length=256, verbose_name=_('title'))
 	summary = models.TextField(verbose_name=_('summary'))
 	text = models.TextField(verbose_name=_('text'))
+	language = models.CharField(default='en-ca', max_length=5,
+		choices=LANGUAGES, verbose_name=_('language'))
+
+	objects = models.Manager()
 
 	# TODO: add (actors) as a many-to-many relationship
 

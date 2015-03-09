@@ -78,7 +78,7 @@ class SeleniumTestCase(LiveServerTestCase):
 		how to use WebDriver and WebDriverWait
 	'''
 
-	fixtures = ['test_fixture']
+	fixtures = [settings.TEST_FIXTURE]
 
 	LIVE_SERVER_URL = 'localhost:8081'
 

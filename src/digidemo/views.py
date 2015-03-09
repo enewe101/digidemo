@@ -862,7 +862,7 @@ class EditProposalView(AbstractLoginRequiredView):
 
 	def get_context_data(self):
 
-		proposal = Proposal.objects.get(pk=self.kwargs['issue_id'])
+		proposal = get_object_or_404(Proposal, pk=self.kwargs['issue_id'])
 
 		# Work out where the cancel button should point
 		cancel_url = proposal.get_open_discussions_url()
@@ -896,7 +896,7 @@ class EditProposalView(AbstractLoginRequiredView):
 
 	def handle_post(self):
 
-		proposal = Proposal.objects.get(pk=self.kwargs['issue_id'])
+		proposal = get_object_or_404(Proposal, pk=self.kwargs['issue_id'])
 
 		proposal_form = TaggedProposalForm(
 			data=self.request.POST,
@@ -1047,7 +1047,10 @@ class IssueListView(AbstractView):
 		# get the list of issues, sorted in the desired way
 		order_by = self.kwargs.pop('order_by', 'interesting')
 
-		issue_list = Proposal.objects.all()
+		print self.request.LANGUAGE_CODE
+
+		issue_list = Proposal.objects.filter(
+			language=self.request.LANGUAGE_CODE)
 
 		sector = self.kwargs.pop('sector', None)
 		sector_title = ''
@@ -1096,21 +1099,20 @@ class AllPetitionsListView(AbstractView):
 
 		# get the list of petitions, sorted in the desired way
 		order_by = self.kwargs['order_by'] or 'interesting'
+		petitions = Letter.objects.filter(parent_letter=None,
+			target__language=self.request.LANGUAGE_CODE)
+
 		if order_by == 'interesting':
-			petitions = Letter.objects.filter(
-				parent_letter=None).order_by('-last_modified')
+			petitions = petitions.order_by('-last_modified')
 
 		elif order_by == 'newest':
-			petitions = Letter.objects.filter(
-				parent_letter=None).order_by('-creation_date')
+			petitions = petitions.order_by('-creation_date')
 
 		elif order_by == 'activity':
-			petitions = Letter.objects.filter(
-				parent_letter=None).order_by('-score')
+			petitions = petitions.order_by('-score')
 
 		elif order_by == 'location':
-			petitions = Letter.objects.filter(
-				parent_letter=None).order_by('-creation_date')
+			petitions = petitions.order_by('-creation_date')
 
 		# build the tabs, and show the right tab as active
 		tabs = get_petition_list_tabs(order_by)
@@ -1133,17 +1135,20 @@ class AllQuestionsListView(AbstractView):
 
 		# get the list of questions, sorted in the desired way
 		order_by = self.kwargs['order_by'] or 'interesting'
+		questions = Question.objects.filter(
+			target__language=self.request.LANGUAGE_CODE)
+
 		if order_by == 'interesting':
-			questions = Question.objects.all().order_by('-last_modified')
+			questions = questions.order_by('-last_modified')
 
 		elif order_by == 'newest':
-			questions = Question.objects.all().order_by('-creation_date')
+			questions = questions.order_by('-creation_date')
 
 		elif order_by == 'activity':
-			questions = Question.objects.all().order_by('-creation_date')
+			questions = questions.order_by('-creation_date')
 
 		elif order_by == 'location':
-			questions = Question.objects.all().order_by('-creation_date')
+			questions = questions.order_by('-creation_date')
 
 		# build the tabs, and show the right tab as active
 		tabs = get_question_list_tabs(order_by)
@@ -1289,7 +1294,8 @@ class IssueOverview(AbstractView):
 	template = 'digidemo/overview.html'
 
 	def get_context_data(self):
-		proposal = Proposal.objects.get(pk=self.kwargs['proposal_id'])
+		proposal = get_object_or_404(Proposal,
+			pk=self.kwargs['proposal_id'])
 		questions = Question.objects.filter(target=proposal)
 
 		# Get all of the letters which are associated with this proposal
@@ -1375,7 +1381,9 @@ class PetitionListView(AbstractView):
 	def get_context_data(self):
 
 		# get the current proposal
-		proposal = Proposal.objects.get(pk=self.kwargs['proposal_id'])
+		proposal = get_object_or_404(Proposal,
+			pk=self.kwargs['proposal_id']
+		)
 
 		# Get all of the letters which are associated with this proposal
 		# and which are 'original letters'
@@ -1436,7 +1444,8 @@ class DiscussionListView(AbstractView):
 		else:
 			raise Http404
 
-		proposal = Proposal.objects.get(pk=self.kwargs['issue_id'])
+		proposal = get_object_or_404(Proposal,
+			pk=self.kwargs['issue_id'])
 
 		self.open_discussions = Discussion.objects.filter(
 			target=proposal,
@@ -1474,7 +1483,8 @@ class QuestionListView(AbstractView):
 	template = 'digidemo/question_list.html'
 
 	def get_context_data(self):
-		proposal = Proposal.objects.get(pk=self.kwargs['proposal_id'])
+		proposal = get_object_or_404(Proposal,
+			pk=self.kwargs['proposal_id'])
 		questions = Question.objects.filter(target=proposal)
 
 		return {
@@ -1565,43 +1575,60 @@ def what_about(request,sort_type='most_recent'):
 		}
 	)
 
-def find_issues(request,sort_type='most_recent'):
-
-	if(sort_type=='most_recent'):
-		proposals = Proposal.objects.order_by('-creation_date')[:5]
-	elif(sort_type=='top_score'):
-		proposals = Proposal.objects.order_by('-score')[:5]
-
-	active_issues =  Proposal.objects.order_by('-score')[:6]
-	featured_post = Proposal.objects.get(pk=1);
-	users = UserProfile.objects.all();
-	new_petitions = Letter.objects.all()
-
-        
-	return render(
-		request,
-		'digidemo/index.html',
-		{
-			'GLOBALS': get_globals(request),
-			'django_vars_js': get_django_vars_JSON(request=request),
-			'users': users,
-			'active_issues': active_issues,
-			'featured_post': featured_post,
-			'new_petitions': new_petitions
-		}
-	)
+#def find_issues(request,sort_type='most_recent'):
+#
+#	if(sort_type=='most_recent'):
+#		proposals = Proposal.language_filtered.all(request
+#			).order_by('-creation_date')[:5]
+#	elif(sort_type=='top_score'):
+#		proposals = Proposal.language_filtered.all(request
+#			).order_by('-score')[:5]
+#
+#	active_issues =  Proposal.objects.order_by('-score')[:6]
+#	featured_post = Proposal.objects.get(pk=1);
+#	users = UserProfile.objects.all();
+#	new_petitions = Letter.objects.all()
+#
+#        
+#	return render(
+#		request,
+#		'digidemo/index.html',
+#		{
+#			'GLOBALS': get_globals(request),
+#			'django_vars_js': get_django_vars_JSON(request=request),
+#			'users': users,
+#			'active_issues': active_issues,
+#			'featured_post': featured_post,
+#			'new_petitions': new_petitions
+#		}
+#	)
 
 
 def mainPage(request,sort_type='most_recent'):
 
-	if(sort_type=='most_recent'):
-		proposals = Proposal.objects.order_by('-creation_date')[:5]
-	elif(sort_type=='top_score'):
-		proposals = Proposal.objects.order_by('-score')[:5]
+	# get lists of issues
+	proposals = Proposal.objects.filter(language=request.LANGUAGE_CODE)
 
-	active_issues =  Proposal.objects.order_by('-score')[:6]
-	featured_post = get_or_none(Proposal, pk=1);
+	if(sort_type=='most_recent'):
+		proposals = proposals.order_by('-creation_date')[:5]
+	elif(sort_type=='top_score'):
+		proposals = proposals.order_by('-score')[:5]
+
+	active_issues = Proposal.objects.filter(language=request.LANGUAGE_CODE
+		).order_by('-score')[:6]
+
+	# take the earliest issue as the featured post
+	featured_post = None
+	try:
+		featured_post = Proposal.objects.filter(
+			language=request.LANGUAGE_CODE)[0];
+	except IndexError:
+		pass
+
+	# what are we doing with all of the users here?
 	users = UserProfile.objects.all();
+
+	# and with all of the petitions?
 	new_petitions = Letter.objects.all()
 
         
