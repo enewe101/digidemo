@@ -26,6 +26,10 @@ import os
 
 REG_USERNAME = 'regularuser'
 
+class FixtureLoadedTestCase(TestCase):
+	fixtures = ['test_data']
+
+
 def pyWait(predicate, timeout=3, period=0.15):
 
 	start = time.time()
@@ -78,7 +82,7 @@ class SeleniumTestCase(LiveServerTestCase):
 		how to use WebDriver and WebDriverWait
 	'''
 
-	fixtures = [settings.TEST_FIXTURE]
+	fixtures = ['test_data']
 
 	LIVE_SERVER_URL = 'localhost:8081'
 
@@ -1600,7 +1604,7 @@ class VoteTest(SeleniumTestCase):
 
 
 
-class TestNotificationMessage(TestCase):
+class TestNotificationMessage(FixtureLoadedTestCase):
 	EXPECTED_MESSAGES = [
 		"superuser started an issue in a topic you're watching",
 		"superuser started an issue in a topic you're watching",
@@ -1874,7 +1878,7 @@ class TestLogin(SeleniumTestCase):
 		self.assertNotFound('logged_in_div')
 
 
-class TestLoginRequired(TestCase):
+class TestLoginRequired(FixtureLoadedTestCase):
 	'''
 	Attempts to perform requests and POSTs that require login, without
 	actually logging in, and verifies that these do not work.
@@ -2240,7 +2244,7 @@ class TestLoginRequired(TestCase):
 		self.assertEqual(reply_data['msg'], "user did not authenticate")
 
 
-class PublishSubscribeTest(TestCase):
+class PublishSubscribeTest(FixtureLoadedTestCase):
 	'''
 		Tests that creating various subscribable objects always leads 
 		to two things:
@@ -2485,7 +2489,7 @@ class PublishSubscribeTest(TestCase):
 
 
 
-class UserProfileTest(TestCase):
+class UserProfileTest(FixtureLoadedTestCase):
 	'''
 	Tests the user profile model object.  This makes sure that avatar images
 	are saved to the correct folder and are properly copied
