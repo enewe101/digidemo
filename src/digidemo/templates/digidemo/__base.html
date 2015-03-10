@@ -5,9 +5,11 @@
 		<title>
 			{% block title %}luminocracy{% endblock title%}
 		</title>
-
+			<link rel="shortcut icon" type="image/png" 
+				href="{% static 'digidemo/images/favicon.ico' %}"/>
+			
 		{% block css %}
-			<link rel="stylesheet" type="text/css" 
+		    <link rel="stylesheet" type="text/css" 
 				href="{% static "digidemo/css/base.css" %}" />
 			<link rel="stylesheet" type="text/css" 
 				href="{% static "digidemo/css/alacarte.css" %}" />

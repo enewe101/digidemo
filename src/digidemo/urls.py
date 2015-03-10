@@ -37,7 +37,7 @@ urlpatterns += i18n_patterns('',
 	url(r'^$',mainPage, name='mainPage'),
 	url(r'^mainPage/$',mainPage, name='mainPage'),
 	url(r'^what_this_is_about/$', what_about, name='what_about'),
-	url(r'^find_issues/$', find_issues, name='find_issues'),
+	#url(r'^find_issues/$', find_issues, name='find_issues'),
 	url(r'^send_feedback/$', feedback, name='feedback'),
 
 	# login page
