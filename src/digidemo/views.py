@@ -874,7 +874,8 @@ class EditProposalView(AbstractLoginRequiredView):
 			'text': proposal.text,
 			'user': self.request.user,
 			'tags': ','.join([t.name for t in proposal.tags.all()]),
-			'sectors': proposal.sectors.all()
+			'sectors': proposal.sectors.all(),
+			'language': proposal.language
 		}
 
 		proposal_form = TaggedProposalForm(
@@ -990,7 +991,10 @@ class AddProposalView(AbstractLoginRequiredView):
 
 		proposal_form = TaggedProposalForm(
 			endpoint=reverse('add_proposal'),
-			initial={'user': self.request.user}
+			initial={
+				'user': self.request.user,
+				'language': self.request.LANGUAGE_CODE
+			}
 		)
 
 		cancel_url = reverse('mainPage')

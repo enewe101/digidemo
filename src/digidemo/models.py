@@ -346,6 +346,8 @@ class ProposalVersion(abstract_models.TimeStamped):
 	sectors = models.ManyToManyField(
 		Sector, related_name='proposal_versions', blank=True, null=True,
 		verbose_name=_('sectors'))
+	language = models.CharField(default='en-ca', max_length=5,
+		choices=LANGUAGES, verbose_name=_('language'))
 
 	class Meta:
 		verbose_name = _('issue version')
