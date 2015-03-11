@@ -1,5 +1,8 @@
 #!/bin/bash
 
+# abort if any line fails
+set -e
+
 # backup database
 ./manage.py dumpdata --format=json --indent=2 digidemo auth.User > digidemo/fixtures/backup.json
 
