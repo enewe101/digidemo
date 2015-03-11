@@ -7,7 +7,17 @@ import sys
 from digidemo import local_settings
 from django.utils.translation import ugettext_lazy as _
 
+	
+	############
+	#          #
+	#   MODE   #
+	#          #
+	############
+
 TEST_MODE = 'test' in sys.argv
+IN_PRODUCTION = False
+if hasattr(local_settings, 'IN_PRODUCTION'):
+	IN_PRODUCTION = local_settings.IN_PRODUCTION
 
 	####################
 	#                  #

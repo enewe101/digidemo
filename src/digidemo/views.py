@@ -29,7 +29,7 @@ from digidemo.shortcuts import get_profile, login_user, send_email_confirmation
 
 
 from forms import ProposalSearchForm
-from settings import DEBUG
+from settings import DEBUG, IN_PRODUCTION
 from settings import TEMP_DIR
 import pydenticon
 
@@ -259,6 +259,7 @@ def get_globals(request):
 		'IS_ENGLISH': language_is_english,
 		'OTHER_LANG': 'fr' if language_is_english else 'en',
 		'DEBUG': DEBUG,
+		'IN_PRODUCTION': IN_PRODUCTION,
 		'SECTORS': Sector.objects.all(),
 		'IS_USER_AUTHENTICATED': request.user.is_authenticated(),
 		'IS_EMAIL_VALIDATED': email_validated,
