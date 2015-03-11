@@ -384,7 +384,8 @@ class ProposalVersionForm(AugmentedFormMixin, ModelForm):
 	class Meta:
 		model = ProposalVersion
 		fields = [
-			'proposal', 'title', 'summary', 'text', 'user', 'sectors'
+			'proposal', 'title', 'summary', 'text', 'user', 'sectors', 
+			'language'
 		]
 		widgets = {
 			'proposal': forms.HiddenInput(),
@@ -392,7 +393,8 @@ class ProposalVersionForm(AugmentedFormMixin, ModelForm):
 			'title': forms.TextInput(),
 			'summary': forms.Textarea(),
 			'text': forms.Textarea(),
-			'sectors': forms.CheckboxSelectMultiple()
+			'sectors': forms.CheckboxSelectMultiple(),
+			'language': forms.HiddenInput()
 		}
 
 
@@ -409,7 +411,8 @@ class ProposalVersionForm(AugmentedFormMixin, ModelForm):
 				'summary': self.cleaned_data['summary'],
 				'text': self.cleaned_data['text'],
 				'user': self.cleaned_data['user'],
-				'original_user': self.cleaned_data['user']
+				'original_user': self.cleaned_data['user'],
+				'language': self.cleaned_data['language']
 			}
 
 			# now make the proposal and save it

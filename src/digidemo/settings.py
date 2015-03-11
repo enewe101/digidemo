@@ -7,6 +7,7 @@ import sys
 from digidemo import local_settings
 from django.utils.translation import ugettext_lazy as _
 
+TEST_MODE = 'test' in sys.argv
 
 	####################
 	#                  #
@@ -34,7 +35,7 @@ TEST_FIXTURE = 'test_data'
 	#                                        #
 	##########################################
 
-TEST_MODE = 'test' in sys.argv
+TEST_RUNNER = 'django_nose.NoseTestSuiteRunner'
 TEMPLATE_DEBUG = not TEST_MODE
 DEBUG =  local_settings.DEBUG_TEST if TEST_MODE else local_settings.DEBUG
 
@@ -83,6 +84,7 @@ INSTALLED_APPS = (
 	'django.contrib.staticfiles',
 	'digidemo',
 	'haystack',
+	'django_nose',
 )
 AUTH_USER_MODEL = 'auth.User'
 
@@ -115,6 +117,8 @@ WSGI_APPLICATION = 'digidemo.wsgi.application'
 	#####################################
 
 DATABASES = local_settings.DATABASES
+#if TEST_MODE:
+#	DATABASES = {'default': {'ENGINE': 'django.db.backends.sqlite3'}}
 
 HAYSTACK_CONNECTIONS = {
 	'default': {

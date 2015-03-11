@@ -1,0 +1,2539 @@
+[
+{
+  "fields": {
+    "last_modified": "2015-02-26T22:17:37Z",
+    "creation_date": "2015-02-26T22:17:37Z"
+  },
+  "model": "digidemo.subscriptionid",
+  "pk": 1
+},
+{
+  "fields": {
+    "last_modified": "2015-02-26T22:19:53Z",
+    "creation_date": "2015-02-26T22:19:53Z"
+  },
+  "model": "digidemo.subscriptionid",
+  "pk": 2
+},
+{
+  "fields": {
+    "last_modified": "2015-02-26T22:19:53Z",
+    "creation_date": "2015-02-26T22:19:53Z"
+  },
+  "model": "digidemo.subscriptionid",
+  "pk": 3
+},
+{
+  "fields": {
+    "last_modified": "2015-02-26T22:19:53Z",
+    "creation_date": "2015-02-26T22:19:53Z"
+  },
+  "model": "digidemo.subscriptionid",
+  "pk": 4
+},
+{
+  "fields": {
+    "last_modified": "2015-02-26T22:19:54Z",
+    "creation_date": "2015-02-26T22:19:54Z"
+  },
+  "model": "digidemo.subscriptionid",
+  "pk": 5
+},
+{
+  "fields": {
+    "last_modified": "2015-02-26T22:19:54Z",
+    "creation_date": "2015-02-26T22:19:54Z"
+  },
+  "model": "digidemo.subscriptionid",
+  "pk": 6
+},
+{
+  "fields": {
+    "last_modified": "2015-02-26T22:19:54Z",
+    "creation_date": "2015-02-26T22:19:54Z"
+  },
+  "model": "digidemo.subscriptionid",
+  "pk": 7
+},
+{
+  "fields": {
+    "last_modified": "2015-02-26T22:19:54Z",
+    "creation_date": "2015-02-26T22:19:54Z"
+  },
+  "model": "digidemo.subscriptionid",
+  "pk": 8
+},
+{
+  "fields": {
+    "last_modified": "2015-02-26T22:22:54Z",
+    "creation_date": "2015-02-26T22:22:54Z"
+  },
+  "model": "digidemo.subscriptionid",
+  "pk": 9
+},
+{
+  "fields": {
+    "last_modified": "2015-02-26T22:22:54Z",
+    "creation_date": "2015-02-26T22:22:54Z"
+  },
+  "model": "digidemo.subscriptionid",
+  "pk": 10
+},
+{
+  "fields": {
+    "last_modified": "2015-02-26T22:22:54Z",
+    "creation_date": "2015-02-26T22:22:54Z"
+  },
+  "model": "digidemo.subscriptionid",
+  "pk": 11
+},
+{
+  "fields": {
+    "last_modified": "2015-02-26T22:22:54Z",
+    "creation_date": "2015-02-26T22:22:54Z"
+  },
+  "model": "digidemo.subscriptionid",
+  "pk": 12
+},
+{
+  "fields": {
+    "last_modified": "2015-02-26T22:22:54Z",
+    "creation_date": "2015-02-26T22:22:54Z"
+  },
+  "model": "digidemo.subscriptionid",
+  "pk": 13
+},
+{
+  "fields": {
+    "last_modified": "2015-02-26T22:22:54Z",
+    "creation_date": "2015-02-26T22:22:54Z"
+  },
+  "model": "digidemo.subscriptionid",
+  "pk": 14
+},
+{
+  "fields": {
+    "last_modified": "2015-02-26T22:22:54Z",
+    "creation_date": "2015-02-26T22:22:54Z"
+  },
+  "model": "digidemo.subscriptionid",
+  "pk": 15
+},
+{
+  "fields": {
+    "last_modified": "2015-02-26T22:22:54Z",
+    "creation_date": "2015-02-26T22:22:54Z"
+  },
+  "model": "digidemo.subscriptionid",
+  "pk": 16
+},
+{
+  "fields": {
+    "last_modified": "2015-02-26T22:22:54Z",
+    "creation_date": "2015-02-26T22:22:54Z"
+  },
+  "model": "digidemo.subscriptionid",
+  "pk": 17
+},
+{
+  "fields": {
+    "last_modified": "2015-02-26T22:24:20Z",
+    "creation_date": "2015-02-26T22:24:20Z"
+  },
+  "model": "digidemo.subscriptionid",
+  "pk": 18
+},
+{
+  "fields": {
+    "last_modified": "2015-02-26T22:24:20Z",
+    "creation_date": "2015-02-26T22:24:20Z"
+  },
+  "model": "digidemo.subscriptionid",
+  "pk": 19
+},
+{
+  "fields": {
+    "last_modified": "2015-02-26T22:24:20Z",
+    "creation_date": "2015-02-26T22:24:20Z"
+  },
+  "model": "digidemo.subscriptionid",
+  "pk": 20
+},
+{
+  "fields": {
+    "last_modified": "2015-02-26T22:24:20Z",
+    "creation_date": "2015-02-26T22:24:20Z"
+  },
+  "model": "digidemo.subscriptionid",
+  "pk": 21
+},
+{
+  "fields": {
+    "last_modified": "2015-02-26T22:24:20Z",
+    "creation_date": "2015-02-26T22:24:20Z"
+  },
+  "model": "digidemo.subscriptionid",
+  "pk": 22
+},
+{
+  "fields": {
+    "last_modified": "2015-02-26T22:24:20Z",
+    "creation_date": "2015-02-26T22:24:20Z"
+  },
+  "model": "digidemo.subscriptionid",
+  "pk": 23
+},
+{
+  "fields": {
+    "last_modified": "2015-02-26T22:24:20Z",
+    "creation_date": "2015-02-26T22:24:20Z"
+  },
+  "model": "digidemo.subscriptionid",
+  "pk": 24
+},
+{
+  "fields": {
+    "last_modified": "2015-02-26T22:25:02Z",
+    "creation_date": "2015-02-26T22:25:02Z"
+  },
+  "model": "digidemo.subscriptionid",
+  "pk": 25
+},
+{
+  "fields": {
+    "last_modified": "2015-02-26T22:25:02Z",
+    "creation_date": "2015-02-26T22:25:02Z"
+  },
+  "model": "digidemo.subscriptionid",
+  "pk": 26
+},
+{
+  "fields": {
+    "last_modified": "2015-02-26T22:25:02Z",
+    "creation_date": "2015-02-26T22:25:02Z"
+  },
+  "model": "digidemo.subscriptionid",
+  "pk": 27
+},
+{
+  "fields": {
+    "last_modified": "2015-02-26T22:25:02Z",
+    "creation_date": "2015-02-26T22:25:02Z"
+  },
+  "model": "digidemo.subscriptionid",
+  "pk": 28
+},
+{
+  "fields": {
+    "last_modified": "2015-02-26T22:25:02Z",
+    "creation_date": "2015-02-26T22:25:02Z"
+  },
+  "model": "digidemo.subscriptionid",
+  "pk": 29
+},
+{
+  "fields": {
+    "last_modified": "2015-02-26T22:25:02Z",
+    "creation_date": "2015-02-26T22:25:02Z"
+  },
+  "model": "digidemo.subscriptionid",
+  "pk": 30
+},
+{
+  "fields": {
+    "last_modified": "2015-02-26T22:25:02Z",
+    "creation_date": "2015-02-26T22:25:02Z"
+  },
+  "model": "digidemo.subscriptionid",
+  "pk": 31
+},
+{
+  "fields": {
+    "last_modified": "2015-02-26T22:26:34Z",
+    "creation_date": "2015-02-26T22:26:34Z"
+  },
+  "model": "digidemo.subscriptionid",
+  "pk": 32
+},
+{
+  "fields": {
+    "last_modified": "2015-02-26T22:26:34Z",
+    "creation_date": "2015-02-26T22:26:34Z"
+  },
+  "model": "digidemo.subscriptionid",
+  "pk": 33
+},
+{
+  "fields": {
+    "last_modified": "2015-02-26T22:26:34Z",
+    "creation_date": "2015-02-26T22:26:34Z"
+  },
+  "model": "digidemo.subscriptionid",
+  "pk": 34
+},
+{
+  "fields": {
+    "last_modified": "2015-02-26T22:26:34Z",
+    "creation_date": "2015-02-26T22:26:34Z"
+  },
+  "model": "digidemo.subscriptionid",
+  "pk": 35
+},
+{
+  "fields": {
+    "last_modified": "2015-02-26T22:26:34Z",
+    "creation_date": "2015-02-26T22:26:34Z"
+  },
+  "model": "digidemo.subscriptionid",
+  "pk": 36
+},
+{
+  "fields": {
+    "last_modified": "2015-02-26T22:26:34Z",
+    "creation_date": "2015-02-26T22:26:34Z"
+  },
+  "model": "digidemo.subscriptionid",
+  "pk": 37
+},
+{
+  "fields": {
+    "last_modified": "2015-02-26T22:26:34Z",
+    "creation_date": "2015-02-26T22:26:34Z"
+  },
+  "model": "digidemo.subscriptionid",
+  "pk": 38
+},
+{
+  "fields": {
+    "last_modified": "2015-02-26T22:26:34Z",
+    "creation_date": "2015-02-26T22:26:34Z"
+  },
+  "model": "digidemo.subscriptionid",
+  "pk": 39
+},
+{
+  "fields": {
+    "last_modified": "2015-02-26T22:26:34Z",
+    "creation_date": "2015-02-26T22:26:34Z"
+  },
+  "model": "digidemo.subscriptionid",
+  "pk": 40
+},
+{
+  "fields": {
+    "last_modified": "2015-02-26T22:26:34Z",
+    "creation_date": "2015-02-26T22:26:34Z"
+  },
+  "model": "digidemo.subscriptionid",
+  "pk": 41
+},
+{
+  "fields": {
+    "last_modified": "2015-02-26T22:26:34Z",
+    "creation_date": "2015-02-26T22:26:34Z"
+  },
+  "model": "digidemo.subscriptionid",
+  "pk": 42
+},
+{
+  "fields": {
+    "last_modified": "2015-02-26T22:27:28Z",
+    "creation_date": "2015-02-26T22:27:28Z"
+  },
+  "model": "digidemo.subscriptionid",
+  "pk": 43
+},
+{
+  "fields": {
+    "last_modified": "2015-02-26T22:27:28Z",
+    "creation_date": "2015-02-26T22:27:28Z"
+  },
+  "model": "digidemo.subscriptionid",
+  "pk": 44
+},
+{
+  "fields": {
+    "last_modified": "2015-02-26T22:27:28Z",
+    "creation_date": "2015-02-26T22:27:28Z"
+  },
+  "model": "digidemo.subscriptionid",
+  "pk": 45
+},
+{
+  "fields": {
+    "last_modified": "2015-02-26T22:27:28Z",
+    "creation_date": "2015-02-26T22:27:28Z"
+  },
+  "model": "digidemo.subscriptionid",
+  "pk": 46
+},
+{
+  "fields": {
+    "last_modified": "2015-02-26T22:27:28Z",
+    "creation_date": "2015-02-26T22:27:28Z"
+  },
+  "model": "digidemo.subscriptionid",
+  "pk": 47
+},
+{
+  "fields": {
+    "last_modified": "2015-02-26T22:27:28Z",
+    "creation_date": "2015-02-26T22:27:28Z"
+  },
+  "model": "digidemo.subscriptionid",
+  "pk": 48
+},
+{
+  "fields": {
+    "last_modified": "2015-02-26T22:27:28Z",
+    "creation_date": "2015-02-26T22:27:28Z"
+  },
+  "model": "digidemo.subscriptionid",
+  "pk": 49
+},
+{
+  "fields": {
+    "last_modified": "2015-02-26T22:27:28Z",
+    "creation_date": "2015-02-26T22:27:28Z"
+  },
+  "model": "digidemo.subscriptionid",
+  "pk": 50
+},
+{
+  "fields": {
+    "last_modified": "2015-02-26T22:27:28Z",
+    "creation_date": "2015-02-26T22:27:28Z"
+  },
+  "model": "digidemo.subscriptionid",
+  "pk": 51
+},
+{
+  "fields": {
+    "last_modified": "2015-02-26T22:28:10Z",
+    "creation_date": "2015-02-26T22:28:10Z"
+  },
+  "model": "digidemo.subscriptionid",
+  "pk": 52
+},
+{
+  "fields": {
+    "last_modified": "2015-02-26T22:28:10Z",
+    "creation_date": "2015-02-26T22:28:10Z"
+  },
+  "model": "digidemo.subscriptionid",
+  "pk": 53
+},
+{
+  "fields": {
+    "last_modified": "2015-02-26T22:28:10Z",
+    "creation_date": "2015-02-26T22:28:10Z"
+  },
+  "model": "digidemo.subscriptionid",
+  "pk": 54
+},
+{
+  "fields": {
+    "last_modified": "2015-02-26T22:28:10Z",
+    "creation_date": "2015-02-26T22:28:10Z"
+  },
+  "model": "digidemo.subscriptionid",
+  "pk": 55
+},
+{
+  "fields": {
+    "last_modified": "2015-02-26T22:28:10Z",
+    "creation_date": "2015-02-26T22:28:10Z"
+  },
+  "model": "digidemo.subscriptionid",
+  "pk": 56
+},
+{
+  "fields": {
+    "last_modified": "2015-02-26T22:28:10Z",
+    "creation_date": "2015-02-26T22:28:10Z"
+  },
+  "model": "digidemo.subscriptionid",
+  "pk": 57
+},
+{
+  "fields": {
+    "last_modified": "2015-02-26T22:28:52Z",
+    "creation_date": "2015-02-26T22:28:52Z"
+  },
+  "model": "digidemo.subscriptionid",
+  "pk": 58
+},
+{
+  "fields": {
+    "last_modified": "2015-02-26T22:28:52Z",
+    "creation_date": "2015-02-26T22:28:52Z"
+  },
+  "model": "digidemo.subscriptionid",
+  "pk": 59
+},
+{
+  "fields": {
+    "last_modified": "2015-02-26T22:28:52Z",
+    "creation_date": "2015-02-26T22:28:52Z"
+  },
+  "model": "digidemo.subscriptionid",
+  "pk": 60
+},
+{
+  "fields": {
+    "last_modified": "2015-02-26T22:28:52Z",
+    "creation_date": "2015-02-26T22:28:52Z"
+  },
+  "model": "digidemo.subscriptionid",
+  "pk": 61
+},
+{
+  "fields": {
+    "last_modified": "2015-02-26T22:28:52Z",
+    "creation_date": "2015-02-26T22:28:52Z"
+  },
+  "model": "digidemo.subscriptionid",
+  "pk": 62
+},
+{
+  "fields": {
+    "last_modified": "2015-02-26T22:28:52Z",
+    "creation_date": "2015-02-26T22:28:52Z"
+  },
+  "model": "digidemo.subscriptionid",
+  "pk": 63
+},
+{
+  "fields": {
+    "last_modified": "2015-02-26T22:28:52Z",
+    "creation_date": "2015-02-26T22:28:52Z"
+  },
+  "model": "digidemo.subscriptionid",
+  "pk": 64
+},
+{
+  "fields": {
+    "last_modified": "2015-02-26T22:29:42Z",
+    "creation_date": "2015-02-26T22:29:42Z"
+  },
+  "model": "digidemo.subscriptionid",
+  "pk": 65
+},
+{
+  "fields": {
+    "last_modified": "2015-02-26T22:29:42Z",
+    "creation_date": "2015-02-26T22:29:42Z"
+  },
+  "model": "digidemo.subscriptionid",
+  "pk": 66
+},
+{
+  "fields": {
+    "last_modified": "2015-02-26T22:29:42Z",
+    "creation_date": "2015-02-26T22:29:42Z"
+  },
+  "model": "digidemo.subscriptionid",
+  "pk": 67
+},
+{
+  "fields": {
+    "last_modified": "2015-02-26T22:29:42Z",
+    "creation_date": "2015-02-26T22:29:42Z"
+  },
+  "model": "digidemo.subscriptionid",
+  "pk": 68
+},
+{
+  "fields": {
+    "last_modified": "2015-02-26T22:29:42Z",
+    "creation_date": "2015-02-26T22:29:42Z"
+  },
+  "model": "digidemo.subscriptionid",
+  "pk": 69
+},
+{
+  "fields": {
+    "last_modified": "2015-02-26T23:34:06Z",
+    "creation_date": "2015-02-26T23:34:06Z"
+  },
+  "model": "digidemo.subscriptionid",
+  "pk": 70
+},
+{
+  "fields": {
+    "last_modified": "2015-02-26T23:34:06Z",
+    "creation_date": "2015-02-26T23:34:06Z"
+  },
+  "model": "digidemo.subscriptionid",
+  "pk": 71
+},
+{
+  "fields": {
+    "last_modified": "2015-02-26T23:34:06Z",
+    "creation_date": "2015-02-26T23:34:06Z"
+  },
+  "model": "digidemo.subscriptionid",
+  "pk": 72
+},
+{
+  "fields": {
+    "last_modified": "2015-02-26T23:39:20Z",
+    "creation_date": "2015-02-26T23:39:20Z"
+  },
+  "model": "digidemo.subscriptionid",
+  "pk": 73
+},
+{
+  "fields": {
+    "last_modified": "2015-02-27T00:03:48Z",
+    "creation_date": "2015-02-27T00:03:48Z"
+  },
+  "model": "digidemo.subscriptionid",
+  "pk": 74
+},
+{
+  "fields": {
+    "last_modified": "2015-02-27T00:06:08Z",
+    "creation_date": "2015-02-27T00:06:08Z"
+  },
+  "model": "digidemo.subscriptionid",
+  "pk": 75
+},
+{
+  "fields": {
+    "last_modified": "2015-02-27T00:08:58Z",
+    "creation_date": "2015-02-27T00:08:58Z"
+  },
+  "model": "digidemo.subscriptionid",
+  "pk": 76
+},
+{
+  "fields": {
+    "last_modified": "2015-02-27T00:09:31Z",
+    "creation_date": "2015-02-27T00:09:31Z"
+  },
+  "model": "digidemo.subscriptionid",
+  "pk": 77
+},
+{
+  "fields": {
+    "last_modified": "2015-02-27T00:11:18Z",
+    "creation_date": "2015-02-27T00:11:18Z"
+  },
+  "model": "digidemo.subscriptionid",
+  "pk": 78
+},
+{
+  "fields": {
+    "last_modified": "2015-02-27T00:12:02Z",
+    "creation_date": "2015-02-27T00:12:02Z"
+  },
+  "model": "digidemo.subscriptionid",
+  "pk": 79
+},
+{
+  "fields": {
+    "last_modified": "2015-02-27T00:28:23Z",
+    "creation_date": "2015-02-27T00:28:23Z"
+  },
+  "model": "digidemo.subscriptionid",
+  "pk": 80
+},
+{
+  "fields": {
+    "last_modified": "2015-02-27T03:24:55Z",
+    "creation_date": "2015-02-27T03:24:55Z"
+  },
+  "model": "digidemo.subscriptionid",
+  "pk": 81
+},
+{
+  "fields": {
+    "last_modified": "2015-02-27T03:25:33Z",
+    "creation_date": "2015-02-27T03:25:33Z"
+  },
+  "model": "digidemo.subscriptionid",
+  "pk": 82
+},
+{
+  "fields": {
+    "last_modified": "2015-02-27T03:29:04Z",
+    "creation_date": "2015-02-27T03:29:04Z"
+  },
+  "model": "digidemo.subscriptionid",
+  "pk": 83
+},
+{
+  "fields": {
+    "last_modified": "2015-02-27T03:53:02Z",
+    "creation_date": "2015-02-27T03:53:02Z"
+  },
+  "model": "digidemo.subscriptionid",
+  "pk": 84
+},
+{
+  "fields": {
+    "last_modified": "2015-03-10T04:36:43Z",
+    "creation_date": "2015-03-10T04:36:43Z"
+  },
+  "model": "digidemo.subscriptionid",
+  "pk": 85
+},
+{
+  "fields": {
+    "last_modified": "2015-03-10T04:36:43Z",
+    "creation_date": "2015-03-10T04:36:43Z"
+  },
+  "model": "digidemo.subscriptionid",
+  "pk": 86
+},
+{
+  "fields": {
+    "last_modified": "2015-03-10T04:36:43Z",
+    "creation_date": "2015-03-10T04:36:43Z"
+  },
+  "model": "digidemo.subscriptionid",
+  "pk": 87
+},
+{
+  "fields": {
+    "subscription_id": 1,
+    "last_modified": "2015-02-26T22:17:37Z",
+    "name": "economy",
+    "short_name": "eco",
+    "creation_date": "2015-02-26T22:17:37Z"
+  },
+  "model": "digidemo.sector",
+  "pk": 1
+},
+{
+  "fields": {
+    "subscription_id": 2,
+    "last_modified": "2015-02-26T22:19:53Z",
+    "name": "health",
+    "short_name": "hea",
+    "creation_date": "2015-02-26T22:19:53Z"
+  },
+  "model": "digidemo.sector",
+  "pk": 2
+},
+{
+  "fields": {
+    "subscription_id": 3,
+    "last_modified": "2015-02-26T22:19:53Z",
+    "name": "education",
+    "short_name": "edu",
+    "creation_date": "2015-02-26T22:19:53Z"
+  },
+  "model": "digidemo.sector",
+  "pk": 3
+},
+{
+  "fields": {
+    "subscription_id": 4,
+    "last_modified": "2015-02-26T22:19:54Z",
+    "name": "democracy",
+    "short_name": "dem",
+    "creation_date": "2015-02-26T22:19:54Z"
+  },
+  "model": "digidemo.sector",
+  "pk": 4
+},
+{
+  "fields": {
+    "subscription_id": 5,
+    "last_modified": "2015-02-26T22:19:54Z",
+    "name": "environment",
+    "short_name": "env",
+    "creation_date": "2015-02-26T22:19:54Z"
+  },
+  "model": "digidemo.sector",
+  "pk": 5
+},
+{
+  "fields": {
+    "subscription_id": 6,
+    "last_modified": "2015-02-26T22:19:54Z",
+    "name": "culture",
+    "short_name": "cul",
+    "creation_date": "2015-02-26T22:19:54Z"
+  },
+  "model": "digidemo.sector",
+  "pk": 6
+},
+{
+  "fields": {
+    "subscription_id": 7,
+    "last_modified": "2015-02-26T22:19:54Z",
+    "name": "readiness",
+    "short_name": "rea",
+    "creation_date": "2015-02-26T22:19:54Z"
+  },
+  "model": "digidemo.sector",
+  "pk": 7
+},
+{
+  "fields": {
+    "subscription_id": 8,
+    "last_modified": "2015-02-26T22:19:54Z",
+    "name": "relations",
+    "short_name": "rel",
+    "creation_date": "2015-02-26T22:19:54Z"
+  },
+  "model": "digidemo.sector",
+  "pk": 8
+},
+{
+  "fields": {
+    "sector": 3,
+    "target": null,
+    "creation_date": "2015-02-26T22:22:54Z",
+    "last_modified": "2015-02-26T22:22:54Z",
+    "subscription_id": 9,
+    "name": "tuition"
+  },
+  "model": "digidemo.tag",
+  "pk": 1
+},
+{
+  "fields": {
+    "sector": 3,
+    "target": null,
+    "creation_date": "2015-02-26T22:22:54Z",
+    "last_modified": "2015-02-26T22:22:54Z",
+    "subscription_id": 10,
+    "name": "education-tax"
+  },
+  "model": "digidemo.tag",
+  "pk": 2
+},
+{
+  "fields": {
+    "sector": 3,
+    "target": null,
+    "creation_date": "2015-02-26T22:22:54Z",
+    "last_modified": "2015-02-26T22:22:54Z",
+    "subscription_id": 11,
+    "name": "language-of-instruction"
+  },
+  "model": "digidemo.tag",
+  "pk": 3
+},
+{
+  "fields": {
+    "sector": 3,
+    "target": null,
+    "creation_date": "2015-02-26T22:22:54Z",
+    "last_modified": "2015-02-26T22:22:54Z",
+    "subscription_id": 12,
+    "name": "curriculum"
+  },
+  "model": "digidemo.tag",
+  "pk": 4
+},
+{
+  "fields": {
+    "sector": 3,
+    "target": null,
+    "creation_date": "2015-02-26T22:22:54Z",
+    "last_modified": "2015-02-26T22:22:54Z",
+    "subscription_id": 13,
+    "name": "public-school"
+  },
+  "model": "digidemo.tag",
+  "pk": 5
+},
+{
+  "fields": {
+    "sector": 3,
+    "target": null,
+    "creation_date": "2015-02-26T22:22:54Z",
+    "last_modified": "2015-02-26T22:22:54Z",
+    "subscription_id": 14,
+    "name": "private-school"
+  },
+  "model": "digidemo.tag",
+  "pk": 6
+},
+{
+  "fields": {
+    "sector": 3,
+    "target": null,
+    "creation_date": "2015-02-26T22:22:54Z",
+    "last_modified": "2015-02-26T22:22:54Z",
+    "subscription_id": 15,
+    "name": "standardized-testing"
+  },
+  "model": "digidemo.tag",
+  "pk": 7
+},
+{
+  "fields": {
+    "sector": 3,
+    "target": null,
+    "creation_date": "2015-02-26T22:22:54Z",
+    "last_modified": "2015-02-26T22:22:54Z",
+    "subscription_id": 16,
+    "name": "scholarships"
+  },
+  "model": "digidemo.tag",
+  "pk": 8
+},
+{
+  "fields": {
+    "sector": 3,
+    "target": null,
+    "creation_date": "2015-02-26T22:22:54Z",
+    "last_modified": "2015-02-26T22:22:54Z",
+    "subscription_id": 17,
+    "name": "professional-training"
+  },
+  "model": "digidemo.tag",
+  "pk": 9
+},
+{
+  "fields": {
+    "sector": 2,
+    "target": null,
+    "creation_date": "2015-02-26T22:24:20Z",
+    "last_modified": "2015-02-26T22:24:20Z",
+    "subscription_id": 18,
+    "name": "hospital-wait-times"
+  },
+  "model": "digidemo.tag",
+  "pk": 10
+},
+{
+  "fields": {
+    "sector": 2,
+    "target": null,
+    "creation_date": "2015-02-26T22:24:20Z",
+    "last_modified": "2015-02-26T22:24:20Z",
+    "subscription_id": 19,
+    "name": "doctor-salaries"
+  },
+  "model": "digidemo.tag",
+  "pk": 11
+},
+{
+  "fields": {
+    "sector": 2,
+    "target": null,
+    "creation_date": "2015-02-26T22:24:20Z",
+    "last_modified": "2015-02-26T22:24:20Z",
+    "subscription_id": 20,
+    "name": "doctor-shortage"
+  },
+  "model": "digidemo.tag",
+  "pk": 12
+},
+{
+  "fields": {
+    "sector": 2,
+    "target": null,
+    "creation_date": "2015-02-26T22:24:20Z",
+    "last_modified": "2015-02-26T22:24:20Z",
+    "subscription_id": 21,
+    "name": "two-tier-system"
+  },
+  "model": "digidemo.tag",
+  "pk": 13
+},
+{
+  "fields": {
+    "sector": 2,
+    "target": null,
+    "creation_date": "2015-02-26T22:24:20Z",
+    "last_modified": "2015-02-26T22:24:20Z",
+    "subscription_id": 22,
+    "name": "health-insurance-fraud"
+  },
+  "model": "digidemo.tag",
+  "pk": 14
+},
+{
+  "fields": {
+    "sector": 2,
+    "target": null,
+    "creation_date": "2015-02-26T22:24:20Z",
+    "last_modified": "2015-02-26T22:24:20Z",
+    "subscription_id": 23,
+    "name": "preventative-medicine"
+  },
+  "model": "digidemo.tag",
+  "pk": 15
+},
+{
+  "fields": {
+    "sector": 2,
+    "target": null,
+    "creation_date": "2015-02-26T22:24:20Z",
+    "last_modified": "2015-02-26T22:24:20Z",
+    "subscription_id": 24,
+    "name": "alternative-medicine"
+  },
+  "model": "digidemo.tag",
+  "pk": 16
+},
+{
+  "fields": {
+    "sector": 4,
+    "target": null,
+    "creation_date": "2015-02-26T22:25:02Z",
+    "last_modified": "2015-02-26T22:25:02Z",
+    "subscription_id": 25,
+    "name": "access-to-information"
+  },
+  "model": "digidemo.tag",
+  "pk": 17
+},
+{
+  "fields": {
+    "sector": 4,
+    "target": null,
+    "creation_date": "2015-02-26T22:25:02Z",
+    "last_modified": "2015-02-26T22:25:02Z",
+    "subscription_id": 26,
+    "name": "voting"
+  },
+  "model": "digidemo.tag",
+  "pk": 18
+},
+{
+  "fields": {
+    "sector": 4,
+    "target": null,
+    "creation_date": "2015-02-26T22:25:02Z",
+    "last_modified": "2015-02-26T22:25:02Z",
+    "subscription_id": 27,
+    "name": "independant-media"
+  },
+  "model": "digidemo.tag",
+  "pk": 19
+},
+{
+  "fields": {
+    "sector": 4,
+    "target": null,
+    "creation_date": "2015-02-26T22:25:02Z",
+    "last_modified": "2015-02-26T22:25:02Z",
+    "subscription_id": 28,
+    "name": "free-speach"
+  },
+  "model": "digidemo.tag",
+  "pk": 20
+},
+{
+  "fields": {
+    "sector": 4,
+    "target": null,
+    "creation_date": "2015-02-26T22:25:02Z",
+    "last_modified": "2015-02-26T22:25:02Z",
+    "subscription_id": 29,
+    "name": "transparency"
+  },
+  "model": "digidemo.tag",
+  "pk": 21
+},
+{
+  "fields": {
+    "sector": 4,
+    "target": null,
+    "creation_date": "2015-02-26T22:25:02Z",
+    "last_modified": "2015-02-26T22:25:02Z",
+    "subscription_id": 30,
+    "name": "budget"
+  },
+  "model": "digidemo.tag",
+  "pk": 22
+},
+{
+  "fields": {
+    "sector": 4,
+    "target": null,
+    "creation_date": "2015-02-26T22:25:02Z",
+    "last_modified": "2015-02-26T22:25:02Z",
+    "subscription_id": 31,
+    "name": "feedback-mechanisms"
+  },
+  "model": "digidemo.tag",
+  "pk": 23
+},
+{
+  "fields": {
+    "sector": 1,
+    "target": null,
+    "creation_date": "2015-02-26T22:26:34Z",
+    "last_modified": "2015-02-26T22:26:34Z",
+    "subscription_id": 32,
+    "name": "national-debt"
+  },
+  "model": "digidemo.tag",
+  "pk": 24
+},
+{
+  "fields": {
+    "sector": 1,
+    "target": null,
+    "creation_date": "2015-02-26T22:26:34Z",
+    "last_modified": "2015-02-26T22:26:34Z",
+    "subscription_id": 33,
+    "name": "national-deficit"
+  },
+  "model": "digidemo.tag",
+  "pk": 25
+},
+{
+  "fields": {
+    "sector": 1,
+    "target": null,
+    "creation_date": "2015-02-26T22:26:34Z",
+    "last_modified": "2015-02-26T22:26:34Z",
+    "subscription_id": 34,
+    "name": "poverty"
+  },
+  "model": "digidemo.tag",
+  "pk": 26
+},
+{
+  "fields": {
+    "sector": 1,
+    "target": null,
+    "creation_date": "2015-02-26T22:26:34Z",
+    "last_modified": "2015-02-26T22:26:34Z",
+    "subscription_id": 35,
+    "name": "minimum-wage"
+  },
+  "model": "digidemo.tag",
+  "pk": 27
+},
+{
+  "fields": {
+    "sector": 1,
+    "target": null,
+    "creation_date": "2015-02-26T22:26:34Z",
+    "last_modified": "2015-02-26T22:26:34Z",
+    "subscription_id": 36,
+    "name": "income-tax"
+  },
+  "model": "digidemo.tag",
+  "pk": 28
+},
+{
+  "fields": {
+    "sector": 1,
+    "target": null,
+    "creation_date": "2015-02-26T22:26:34Z",
+    "last_modified": "2015-02-26T22:26:34Z",
+    "subscription_id": 37,
+    "name": "redistribution"
+  },
+  "model": "digidemo.tag",
+  "pk": 29
+},
+{
+  "fields": {
+    "sector": 1,
+    "target": null,
+    "creation_date": "2015-02-26T22:26:34Z",
+    "last_modified": "2015-02-26T22:26:34Z",
+    "subscription_id": 38,
+    "name": "capital-gains"
+  },
+  "model": "digidemo.tag",
+  "pk": 30
+},
+{
+  "fields": {
+    "sector": 1,
+    "target": null,
+    "creation_date": "2015-02-26T22:26:34Z",
+    "last_modified": "2015-02-26T22:26:34Z",
+    "subscription_id": 39,
+    "name": "gini-coefficient"
+  },
+  "model": "digidemo.tag",
+  "pk": 31
+},
+{
+  "fields": {
+    "sector": 1,
+    "target": null,
+    "creation_date": "2015-02-26T22:26:34Z",
+    "last_modified": "2015-02-26T22:26:34Z",
+    "subscription_id": 40,
+    "name": "foreign-investment"
+  },
+  "model": "digidemo.tag",
+  "pk": 32
+},
+{
+  "fields": {
+    "sector": 1,
+    "target": null,
+    "creation_date": "2015-02-26T22:26:34Z",
+    "last_modified": "2015-02-26T22:26:34Z",
+    "subscription_id": 41,
+    "name": "trade"
+  },
+  "model": "digidemo.tag",
+  "pk": 33
+},
+{
+  "fields": {
+    "sector": 1,
+    "target": null,
+    "creation_date": "2015-02-26T22:26:34Z",
+    "last_modified": "2015-02-26T22:26:34Z",
+    "subscription_id": 42,
+    "name": "tarrif"
+  },
+  "model": "digidemo.tag",
+  "pk": 34
+},
+{
+  "fields": {
+    "sector": 5,
+    "target": null,
+    "creation_date": "2015-02-26T22:27:28Z",
+    "last_modified": "2015-02-26T22:27:28Z",
+    "subscription_id": 43,
+    "name": "climate-change"
+  },
+  "model": "digidemo.tag",
+  "pk": 35
+},
+{
+  "fields": {
+    "sector": 5,
+    "target": null,
+    "creation_date": "2015-02-26T22:27:28Z",
+    "last_modified": "2015-02-26T22:27:28Z",
+    "subscription_id": 44,
+    "name": "pesticides"
+  },
+  "model": "digidemo.tag",
+  "pk": 36
+},
+{
+  "fields": {
+    "sector": 5,
+    "target": null,
+    "creation_date": "2015-02-26T22:27:28Z",
+    "last_modified": "2015-02-26T22:27:28Z",
+    "subscription_id": 45,
+    "name": "nuclear-power"
+  },
+  "model": "digidemo.tag",
+  "pk": 37
+},
+{
+  "fields": {
+    "sector": 5,
+    "target": null,
+    "creation_date": "2015-02-26T22:27:28Z",
+    "last_modified": "2015-02-26T22:27:28Z",
+    "subscription_id": 46,
+    "name": "alternative-energy"
+  },
+  "model": "digidemo.tag",
+  "pk": 38
+},
+{
+  "fields": {
+    "sector": 5,
+    "target": null,
+    "creation_date": "2015-02-26T22:27:28Z",
+    "last_modified": "2015-02-26T22:27:28Z",
+    "subscription_id": 47,
+    "name": "carbon-tax"
+  },
+  "model": "digidemo.tag",
+  "pk": 39
+},
+{
+  "fields": {
+    "sector": 5,
+    "target": null,
+    "creation_date": "2015-02-26T22:27:28Z",
+    "last_modified": "2015-02-26T22:27:28Z",
+    "subscription_id": 48,
+    "name": "product-lifecycle"
+  },
+  "model": "digidemo.tag",
+  "pk": 40
+},
+{
+  "fields": {
+    "sector": 5,
+    "target": null,
+    "creation_date": "2015-02-26T22:27:28Z",
+    "last_modified": "2015-02-26T22:27:28Z",
+    "subscription_id": 49,
+    "name": "oceans"
+  },
+  "model": "digidemo.tag",
+  "pk": 41
+},
+{
+  "fields": {
+    "sector": 5,
+    "target": null,
+    "creation_date": "2015-02-26T22:27:28Z",
+    "last_modified": "2015-02-26T22:27:28Z",
+    "subscription_id": 50,
+    "name": "extinction"
+  },
+  "model": "digidemo.tag",
+  "pk": 42
+},
+{
+  "fields": {
+    "sector": 5,
+    "target": null,
+    "creation_date": "2015-02-26T22:27:28Z",
+    "last_modified": "2015-02-26T22:27:28Z",
+    "subscription_id": 51,
+    "name": "air-pollution"
+  },
+  "model": "digidemo.tag",
+  "pk": 43
+},
+{
+  "fields": {
+    "sector": 6,
+    "target": null,
+    "creation_date": "2015-02-26T22:28:10Z",
+    "last_modified": "2015-02-26T22:28:10Z",
+    "subscription_id": 52,
+    "name": "bursaries"
+  },
+  "model": "digidemo.tag",
+  "pk": 44
+},
+{
+  "fields": {
+    "sector": 6,
+    "target": null,
+    "creation_date": "2015-02-26T22:28:10Z",
+    "last_modified": "2015-02-26T22:28:10Z",
+    "subscription_id": 53,
+    "name": "free-speach"
+  },
+  "model": "digidemo.tag",
+  "pk": 45
+},
+{
+  "fields": {
+    "sector": 6,
+    "target": null,
+    "creation_date": "2015-02-26T22:28:10Z",
+    "last_modified": "2015-02-26T22:28:10Z",
+    "subscription_id": 54,
+    "name": "imigration"
+  },
+  "model": "digidemo.tag",
+  "pk": 46
+},
+{
+  "fields": {
+    "sector": 6,
+    "target": null,
+    "creation_date": "2015-02-26T22:28:10Z",
+    "last_modified": "2015-02-26T22:28:10Z",
+    "subscription_id": 55,
+    "name": "language-laws"
+  },
+  "model": "digidemo.tag",
+  "pk": 47
+},
+{
+  "fields": {
+    "sector": 6,
+    "target": null,
+    "creation_date": "2015-02-26T22:28:10Z",
+    "last_modified": "2015-02-26T22:28:10Z",
+    "subscription_id": 56,
+    "name": "statutory-holidays"
+  },
+  "model": "digidemo.tag",
+  "pk": 48
+},
+{
+  "fields": {
+    "sector": 6,
+    "target": null,
+    "creation_date": "2015-02-26T22:28:10Z",
+    "last_modified": "2015-02-26T22:28:10Z",
+    "subscription_id": 57,
+    "name": "religion"
+  },
+  "model": "digidemo.tag",
+  "pk": 49
+},
+{
+  "fields": {
+    "sector": 7,
+    "target": null,
+    "creation_date": "2015-02-26T22:28:52Z",
+    "last_modified": "2015-02-26T22:28:52Z",
+    "subscription_id": 58,
+    "name": "emergency-response"
+  },
+  "model": "digidemo.tag",
+  "pk": 50
+},
+{
+  "fields": {
+    "sector": 7,
+    "target": null,
+    "creation_date": "2015-02-26T22:28:52Z",
+    "last_modified": "2015-02-26T22:28:52Z",
+    "subscription_id": 59,
+    "name": "natural-resources"
+  },
+  "model": "digidemo.tag",
+  "pk": 51
+},
+{
+  "fields": {
+    "sector": 7,
+    "target": null,
+    "creation_date": "2015-02-26T22:28:52Z",
+    "last_modified": "2015-02-26T22:28:52Z",
+    "subscription_id": 60,
+    "name": "surveillance"
+  },
+  "model": "digidemo.tag",
+  "pk": 52
+},
+{
+  "fields": {
+    "sector": 7,
+    "target": null,
+    "creation_date": "2015-02-26T22:28:52Z",
+    "last_modified": "2015-02-26T22:28:52Z",
+    "subscription_id": 61,
+    "name": "cyber-security"
+  },
+  "model": "digidemo.tag",
+  "pk": 53
+},
+{
+  "fields": {
+    "sector": 7,
+    "target": null,
+    "creation_date": "2015-02-26T22:28:52Z",
+    "last_modified": "2015-02-26T22:28:52Z",
+    "subscription_id": 62,
+    "name": "energy-security"
+  },
+  "model": "digidemo.tag",
+  "pk": 54
+},
+{
+  "fields": {
+    "sector": 7,
+    "target": null,
+    "creation_date": "2015-02-26T22:28:52Z",
+    "last_modified": "2015-02-26T22:28:52Z",
+    "subscription_id": 63,
+    "name": "food-security"
+  },
+  "model": "digidemo.tag",
+  "pk": 55
+},
+{
+  "fields": {
+    "sector": 7,
+    "target": null,
+    "creation_date": "2015-02-26T22:28:52Z",
+    "last_modified": "2015-02-26T22:28:52Z",
+    "subscription_id": 64,
+    "name": "epidemic"
+  },
+  "model": "digidemo.tag",
+  "pk": 56
+},
+{
+  "fields": {
+    "sector": 8,
+    "target": null,
+    "creation_date": "2015-02-26T22:29:42Z",
+    "last_modified": "2015-02-26T22:29:42Z",
+    "subscription_id": 65,
+    "name": "trade-agreements"
+  },
+  "model": "digidemo.tag",
+  "pk": 57
+},
+{
+  "fields": {
+    "sector": 8,
+    "target": null,
+    "creation_date": "2015-02-26T22:29:42Z",
+    "last_modified": "2015-02-26T22:29:42Z",
+    "subscription_id": 66,
+    "name": "NATO"
+  },
+  "model": "digidemo.tag",
+  "pk": 58
+},
+{
+  "fields": {
+    "sector": 8,
+    "target": null,
+    "creation_date": "2015-02-26T22:29:42Z",
+    "last_modified": "2015-02-26T22:29:42Z",
+    "subscription_id": 67,
+    "name": "foreign-investment"
+  },
+  "model": "digidemo.tag",
+  "pk": 59
+},
+{
+  "fields": {
+    "sector": 8,
+    "target": null,
+    "creation_date": "2015-02-26T22:29:42Z",
+    "last_modified": "2015-02-26T22:29:42Z",
+    "subscription_id": 68,
+    "name": "aid"
+  },
+  "model": "digidemo.tag",
+  "pk": 60
+},
+{
+  "fields": {
+    "sector": 8,
+    "target": null,
+    "creation_date": "2015-02-26T22:29:42Z",
+    "last_modified": "2015-02-26T22:29:42Z",
+    "subscription_id": 69,
+    "name": "usa"
+  },
+  "model": "digidemo.tag",
+  "pk": 61
+},
+{
+  "fields": {
+    "sector": null,
+    "target": null,
+    "creation_date": "2015-02-26T23:34:06Z",
+    "last_modified": "2015-02-26T23:34:06Z",
+    "subscription_id": 71,
+    "name": "CO2"
+  },
+  "model": "digidemo.tag",
+  "pk": 62
+},
+{
+  "fields": {
+    "sector": null,
+    "target": null,
+    "creation_date": "2015-02-26T23:34:06Z",
+    "last_modified": "2015-02-26T23:34:06Z",
+    "subscription_id": 72,
+    "name": "oil-and-gas"
+  },
+  "model": "digidemo.tag",
+  "pk": 63
+},
+{
+  "fields": {
+    "sector": null,
+    "target": null,
+    "creation_date": "2015-03-10T04:36:43Z",
+    "last_modified": "2015-03-10T04:36:43Z",
+    "subscription_id": 86,
+    "name": "chose"
+  },
+  "model": "digidemo.tag",
+  "pk": 64
+},
+{
+  "fields": {
+    "sector": null,
+    "target": null,
+    "creation_date": "2015-03-10T04:36:43Z",
+    "last_modified": "2015-03-10T04:36:43Z",
+    "subscription_id": 87,
+    "name": "autre-chose"
+  },
+  "model": "digidemo.tag",
+  "pk": 65
+},
+{
+  "fields": {
+    "portrait_url": "http://upload.wikimedia.org/wikipedia/commons/thumb/7/74/Stephen_Harper_by_Remy_Steinegger_Infobox.jpg/640px-Stephen_Harper_by_Remy_Steinegger_Infobox.jpg",
+    "fname": "Stephen",
+    "bio_summary": "Born and raised in Toronto, Harper was the first of three sons of Margaret (n\u00e9e Johnston) and Joseph Harris Harper, an accountant at Imperial Oil.",
+    "creation_date": "2015-02-26T23:56:53Z",
+    "lname": "Harper",
+    "last_modified": "2015-02-26T23:56:53Z",
+    "wikipedia_url": "http://en.wikipedia.org/wiki/Stephen_Harper"
+  },
+  "model": "digidemo.person",
+  "pk": 1
+},
+{
+  "fields": {
+    "legal_name": "Conservative Party of Canada",
+    "short_name": "Conservative Party",
+    "legal_classification": "national political party",
+    "revenue": 1000000,
+    "creation_date": "2015-02-27T00:00:35Z",
+    "last_modified": "2015-02-27T00:03:07Z",
+    "operations_summary": "A political party"
+  },
+  "model": "digidemo.organization",
+  "pk": 1
+},
+{
+  "fields": {
+    "salary": "100000.00",
+    "name": "Prime Minister of Canada",
+    "telephone": "(613)555-5555",
+    "creation_date": "2015-02-27T00:02:44Z",
+    "person": 1,
+    "last_modified": "2015-02-27T00:02:44Z",
+    "mandate_summary": "Lead the conservative party",
+    "organization": 1,
+    "email": "stephen.harper@conservatives.ca"
+  },
+  "model": "digidemo.position",
+  "pk": 1
+},
+{
+  "fields": {
+    "username": "superuser",
+    "first_name": "super",
+    "last_name": "user",
+    "is_active": true,
+    "is_superuser": true,
+    "is_staff": true,
+    "last_login": "2015-02-27T00:28:08Z",
+    "groups": [],
+    "user_permissions": [],
+    "password": "pbkdf2_sha256$15000$T7TbtxKUmSm9$Mvvg2KRre2pJdNAZOhQ3lqqb0rKdZcZaiBpmNYiK01A=",
+    "email": "super@example.com",
+    "date_joined": "2015-02-26T23:24:53Z"
+  },
+  "model": "auth.user",
+  "pk": 1
+},
+{
+  "fields": {
+    "username": "regularuser",
+    "first_name": "regular",
+    "last_name": "user",
+    "is_active": true,
+    "is_superuser": false,
+    "is_staff": false,
+    "last_login": "2015-03-10T04:35:34Z",
+    "groups": [],
+    "user_permissions": [],
+    "password": "pbkdf2_sha256$15000$J7jF0HE7SUue$lN7kjwGduL0zLApbd2fZWaX40cXBDVftStBM/WZMY6Y=",
+    "email": "regular@example.com",
+    "date_joined": "2015-02-26T23:25:12Z"
+  },
+  "model": "auth.user",
+  "pk": 2
+},
+{
+  "fields": {
+    "username": "notvalidated",
+    "first_name": "notvalidated",
+    "last_name": "user",
+    "is_active": true,
+    "is_superuser": false,
+    "is_staff": false,
+    "last_login": "2015-02-28T03:23:30Z",
+    "groups": [],
+    "user_permissions": [],
+    "password": "pbkdf2_sha256$15000$4dCpoSIrCZ90$GKyqEEz4911jcfIG1fZPafk5es2fH76qNKYUPkVHuD0=",
+    "email": "notvalidated@example.com",
+    "date_joined": "2015-02-28T03:23:30Z"
+  },
+  "model": "auth.user",
+  "pk": 3
+},
+{
+  "fields": {
+    "target": 1,
+    "text": "It would be interesting to see some stats on the relevant frequencies of the different classes of breaches. Have you seen anything like that?",
+    "creation_date": "2015-02-27T00:12:02Z",
+    "score": 0,
+    "user": 1,
+    "last_modified": "2015-02-27T00:12:02Z",
+    "subscription_id": 79
+  },
+  "model": "digidemo.answercomment",
+  "pk": 1
+},
+{
+  "fields": {
+    "target": 1,
+    "text": "I think that once they upgrade the tar to crude it's the same as conventional crude.",
+    "creation_date": "2015-02-27T00:09:31Z",
+    "score": 0,
+    "user": 2,
+    "last_modified": "2015-02-27T00:09:31Z",
+    "subscription_id": 77
+  },
+  "model": "digidemo.questioncomment",
+  "pk": 1
+},
+{
+  "fields": {
+    "target": 1,
+    "text": "@regularuser I agree with you but I think that you should consider offering some concrete evidence for what you are saying -- back up how the environmental losses will arise and why they are certain. There's plenty of facts in the issue wiki to choose from.",
+    "creation_date": "2015-02-27T00:06:08Z",
+    "score": 0,
+    "user": 1,
+    "last_modified": "2015-02-27T00:06:08Z",
+    "subscription_id": 75
+  },
+  "model": "digidemo.comment",
+  "pk": 1
+},
+{
+  "fields": {
+    "target": 1,
+    "text": "\"Spills\", or *breaches* happen at a rate of 0.6 times per 1000km per decade. Most breaches are minor (classified as class1, see below). They vary greatly in severity which makes putting this figure into perspective somewhat difficult. Breaches are in terms of quantity of volume lost. A class 1 breach is anything less than a cubic metre of crude. These breaches are generally considered minor, when occurring away from developed areas, but might be important when occurring in sensitive areas. Class breaches cover anything larger than class 1 but less than 40 cubic metres. Class 2 breaches are severe, but standard techniques and equipment can be used to clean them up. They are reportable to environmental authorities, who rule on followup actions. Class 3 cover everything larger than class 1. Class 3 are considered \"catastrophic\" and generally require specially engineered solutions to bring them under control. ",
+    "creation_date": "2015-02-27T00:11:18Z",
+    "score": 0,
+    "user": 2,
+    "last_modified": "2015-02-27T00:11:18Z",
+    "subscription_id": 78
+  },
+  "model": "digidemo.answer",
+  "pk": 1
+},
+{
+  "fields": {
+    "target": 2,
+    "text": "Yes, I believe it is.",
+    "creation_date": "2015-02-27T03:25:33Z",
+    "score": 0,
+    "user": 2,
+    "last_modified": "2015-02-27T03:25:33Z",
+    "subscription_id": 82
+  },
+  "model": "digidemo.answer",
+  "pk": 2
+},
+{
+  "fields": {
+    "target": 1,
+    "text": "Test answer.",
+    "creation_date": "2015-02-27T03:53:02Z",
+    "score": 0,
+    "user": 2,
+    "last_modified": "2015-02-27T03:53:02Z",
+    "subscription_id": 84
+  },
+  "model": "digidemo.answer",
+  "pk": 3
+},
+{
+  "fields": {
+    "target": 1,
+    "title": "How likely (or frequent) can we expect spills along the pipeline extension to be? ",
+    "text": "I would like to know how likely spills are, based on the rate of previous incidents. It will probably be important to take into account the kind of piping technology used, and the kind of service. For example, repurposed piping originally for the transport of natural gas is likely to be different from newly built piping. Or, (and I'm not sure), there may be a difference due to the fact that this is crude derived from tarsands, rather than conventional crude. ",
+    "creation_date": "2015-02-27T00:08:58Z",
+    "score": 0,
+    "user": 1,
+    "last_modified": "2015-02-27T00:08:58Z",
+    "subscription_id": 76
+  },
+  "model": "digidemo.question",
+  "pk": 1
+},
+{
+  "fields": {
+    "target": 1,
+    "title": "Test question?",
+    "text": "Is this a test?",
+    "creation_date": "2015-02-27T03:24:55Z",
+    "score": 0,
+    "user": 2,
+    "last_modified": "2015-02-27T03:24:55Z",
+    "subscription_id": 81
+  },
+  "model": "digidemo.question",
+  "pk": 2
+},
+{
+  "fields": {
+    "target": 1,
+    "text": "Good point, I'm going to add that in now...",
+    "creation_date": "2015-02-27T00:28:23Z",
+    "score": 0,
+    "is_open": false,
+    "user": 1,
+    "last_modified": "2015-02-27T00:28:23Z",
+    "subscription_id": 80
+  },
+  "model": "digidemo.reply",
+  "pk": 1
+},
+{
+  "fields": {
+    "target": 1,
+    "text": "Test reply.",
+    "creation_date": "2015-02-27T03:29:04Z",
+    "score": 0,
+    "is_open": false,
+    "user": 2,
+    "last_modified": "2015-02-27T03:29:04Z",
+    "subscription_id": 83
+  },
+  "model": "digidemo.reply",
+  "pk": 2
+},
+{
+  "fields": {
+    "target": 1,
+    "title": "Social Factors",
+    "text": "I think that we need more material covering the social factors of this proposal. There is only a brief mention of the displacement of people. It would be better to get some statistics together on how many people are likely to be displaced, and how this w I think that we need more material covering the social factors of this proposal. There is only a brief mention of the displacement of people.",
+    "creation_date": "2015-02-26T23:39:20Z",
+    "score": 1,
+    "is_open": true,
+    "user": 2,
+    "last_modified": "2015-02-27T01:54:20Z",
+    "subscription_id": 73
+  },
+  "model": "digidemo.discussion",
+  "pk": 1
+},
+{
+  "fields": {
+    "target": 1,
+    "recipients": [
+      1
+    ],
+    "title": "Stop Keystone XL ",
+    "text": "I do not support the project to expand the Keystone Pipeline System. This proposal generates serious and certain environmental losses, which do not justify the economic gains. Furthermore, the development will bring wealth mainly to foreign shareholders, so that the actual economic gains will be much less than they should be.",
+    "parent_letter": null,
+    "creation_date": "2015-02-27T00:03:48Z",
+    "last_modified": "2015-02-27T00:03:48Z",
+    "user": 2,
+    "score": 1,
+    "subscription_id": 74,
+    "valence": -1
+  },
+  "model": "digidemo.letter",
+  "pk": 1
+},
+{
+  "fields": {
+    "code": "e6ffc74a14b4589443c94b49ef0ea032",
+    "last_modified": "2015-02-28T03:23:31Z",
+    "user": 3,
+    "creation_date": "2015-02-28T03:23:31Z"
+  },
+  "model": "digidemo.emailverification",
+  "pk": 1
+},
+{
+  "fields": {
+    "email_validated": true,
+    "province": "",
+    "street": "",
+    "do_email_responses": true,
+    "country": "",
+    "rep": 0,
+    "creation_date": "2015-02-26T22:37:55Z",
+    "followedProposals": [],
+    "do_email_watched": true,
+    "last_modified": "2015-02-26T23:04:24Z",
+    "user": 1,
+    "avatar_img": "avatars/superuser.jpg",
+    "do_email_news": true,
+    "do_email_petitions": true,
+    "zip_code": ""
+  },
+  "model": "digidemo.userprofile",
+  "pk": 1
+},
+{
+  "fields": {
+    "email_validated": true,
+    "province": "",
+    "street": "",
+    "do_email_responses": true,
+    "country": "",
+    "rep": 10,
+    "creation_date": "2015-02-26T22:38:58Z",
+    "followedProposals": [],
+    "do_email_watched": true,
+    "last_modified": "2015-02-27T01:54:20Z",
+    "user": 2,
+    "avatar_img": "avatars/regularuser.jpg",
+    "do_email_news": true,
+    "do_email_petitions": true,
+    "zip_code": ""
+  },
+  "model": "digidemo.userprofile",
+  "pk": 2
+},
+{
+  "fields": {
+    "email_validated": false,
+    "province": "",
+    "street": "",
+    "do_email_responses": true,
+    "country": "",
+    "rep": 0,
+    "creation_date": "2015-02-28T03:23:31Z",
+    "followedProposals": [],
+    "do_email_watched": true,
+    "last_modified": "2015-02-28T03:23:31Z",
+    "user": 3,
+    "avatar_img": "avatars/notvalidated_nuvojIu.png",
+    "do_email_news": true,
+    "do_email_petitions": true,
+    "zip_code": ""
+  },
+  "model": "digidemo.userprofile",
+  "pk": 3
+},
+{
+  "fields": {
+    "sectors": [
+      1,
+      5,
+      6
+    ],
+    "language": "en-ca",
+    "title": "Keystone XL Pipeline Extension",
+    "text": "#Background#\r\nThe Keystone XL pipeline project is a contentious political issue, owing to probable environmental, economic, and social impacts. Environmentally, the pipeline might present a risk of contaminating groundwater and disturbing sensitive ecosystems, but it might also be a better alternative than ground transport by train or truck. Economically, the pipeline might produce jobs temporarily during its construction, and permanently in additional refinement activities in the US. It would also lead to a redistribution of crude supply, emphasizing export and raising the price of oil in the Midwestern US. Socially, the construction of the pipeline would disturb landowners currently in its path, and would disturb heritage sites of cultural significance.\r\n\r\n# Actors #\r\n - **TransCanada**: Corporation that owns the existing Keysone Pipeline System, and which has put forward the proposal to state and federal authorities for the Keystone XL extension.\r\n - **ConocoPhillips**: Corporation that was part-owner of the Keystone Pipeline System, bought out by TransCanada.\r\n - **Cardno Entrix**: Environmental Assessment Consultancy, contracted by TransCanada to produce an environmental assessment of the Keystone XL proposal.\r\n- **US Government**:\r\n        - **President Obama**: Can approve or reject the application for a Presidential Permit, legally needed to proceed with the construction project. \r\n         - **Environmental Protection Agency**: Oversees the environmental assessment of the project, and approves or rejects the application for an environmental permit, legally needed to proceed with the construction project.\r\n         - **US State Governments**: Each US state through which the proposed pipeline would pass can approve or reject the construction activities within its borders.\r\n     - **Canadian Government**:\r\n             - **National Energy Board of Canada** (NEB): Responsible for approving or rejecting the construction activities within Canada.\r\n- WorleyParsons: Corporation acting as the general contractor for the pipeline construction.\r\n        \r\n# Impacts #\r\n## Environmental Impacts ##\r\n**Hazards relating to oil spills**. The originally proposed route traversed the Sand Hills region and the Ogallala aquifer.  The Sand Hills region is a sensitive wetland ecosystem in Nebraska.  The Ogallala aquifer is one of the largest reserves of fresh water in the world, spans eight states, provides drinking water for two million people, and supports a US$20 billion worth of agricultural activity.\r\n        \r\nThe path of the pipeline has been revised by TransCanada to avoid the Sand Hills region, and reduce the length of piping running over the Ogallala aquifer.  The actual risks of a spill in the region of the aquifer are unclear, and the severity of impact is debated.  The pipeline, with a normal depth of 4 feet would be separated from the aquifer by a layer of fine clay, which might drastically reduce the actual effects on drinking water.  Thousands of miles of existing pipelines carrying crude oil and refined liquid hydrocarbons have crossed over the Ogallala Aquifer for years, so the severity of risk could be evaluated empirically.  The pipeline will be newly constructed, which should be considered when comparing to existing pipelines which do not benefit from technological advances or were converted from natural gas pipelines.\r\n        \r\n**Greenhouse Gas Emissions**.  The Keystone XL pipeline would carry crude oil to refineries for conversion into fuels, among other products.  The activities of extracting, refining, and burning petroleum-derived fuels is a major contributor to CO2 accumulation in the atmosphere and climate change.  By providing access to US and global markets, the Keystone XL pipeline would facilitate further extraction in the oilsands of Alberta.  \r\n\r\nIf the Keystone XL pipeline is not built, crude from the Albertan tarsands might be refined and exported from Canada, based on alternative Canadian pipeline  construction projects which would bring the crude to tidewater.  Additionally, ground transport of crude, by train and tanker, might be used instead, which adds to greenhouse gas emissions and poses its own safety hazards.\r\n        \r\n## Economic Impacts ##\r\n**Employment**.  Construction of the pipeline would provide temporary employment for about 2 years.  Estimates of the amount of employment vary widely.  A report by Perryman Group, a financial analysis firm that was hired by TransCanada, estimates construction would employ 20,000 US workers and spend US$7 billion.  A study conducted by Cornell ILR Global Labor Institute estimated construction would employ 2500 to 4650 US workers.  The US State Department estimated 5000 to 6000 temporary construction jobs.  It's Supplemenntal Environmental Impact Statement estimated 3900 US workers directly employed and 42000 US workers indirectly employed by construction activities. \r\n        \r\n**Risk of impact due to spills**.  The original route proposed for the Keystone XL pipeline passed over the Ogallala aquifer.  The aquifer supports about US$20 billion in agricultural activity.  If a spill contaminated the water, it could have serious economic impact.  The amended proposal has reduced the length of piping that crosses the aquifer.  The 2010 Enbridge oil spill along the Kalamazoo river in Michigan showed that spills can result in significant economic costs beyond environmental ones.\r\n        \r\n# Social Impacts #\r\n**Displacement of people**.  Land owners in the path of the pipeline would be displaced.  Landowners have already complained about threats by TransCanada to confiscate private land and some have faced lawsuits.  As of October 17, 2011 Transcanada had 34 eminent domain actions against landowners in Texas and 22 in South Dakota.\r\n        \r\n**Damage to public goods (excluding the environment)**.  Various sacred sites, and prehistoric or historic archeological sites, and sites with traditional cultural value to Native Americans and other groups might be disturbed, removed or demolished.  TransCanada made a major donation to the University of Toronto to promote education and research in the health of the Aboriginal population.\r\n        \r\n**Safety**.  Ground transport by tanker truck and rail is less safe.  As an example, the derailment of a train transporting crude oil at Lac-M\u00e9gantic in 2013 kiled 50 people.  Increased production in North Dakota has exceeded pipeline capacity since 2010, leading to increasing volumes of crude being shipped by truck or rail to refineries.  Alberta is expected to running up against a pipeline capacity limit around 2016.\r\n        \r\n# In Perspective #\r\n- The Alberta oil sands account for a quantity of GHG emissions equal to \r\n             - the coal-fired power plants in the State of Wisconsin \r\n             - 2.5% of total GHG emissions from the coal-fired power plants of the US\r\n             - 0.1% of global GHG emissions from all sources\r\n- The Enbridge \"Alberta Clipper\" expansion has continued during late 2013, adding approximately the same cross-border capacity.\r\n- The Keystone XL expansion is Phase 4 in the Keystone Pipeline system.\r\n             - it corresponds to between 1897 km, later revised to 1408 km of piping or 28% revised to 23% of the Keystone system by length.\r\n             - it will account for about 40% of the Keystone system's capacity if built.\r\n- There are currently about 320,000 km of similar oil pipelines in the US.\r\n- Alternative projects are being considered:\r\n                 - An all-Canadian pipeline north to the Arctic coast for shipping to markets in Europe and Asia\r\n                 - An all-Canadian pipeline (\"Energy East\") that would extend to Saint John, New Brunswick for export, while also supplying Montreal, Quebec City, and Saint John refineries.",
+    "tags": [
+      35,
+      62,
+      63
+    ],
+    "summary": "The Keystone XL Pipeline is a proposed extension to the existing Keystone Pipeline System, put forward by TransCanada, the corporation that owns the Keystone System. The pipeline would cross the Canada/US border, importing crude oil sourced from the Albertan oil sands, into the United States. The proposal is currently awaiting government approval. The pipeline would be newly constructed, and is similar to existing pipelines in North America.",
+    "last_modified": "2015-02-26T23:34:06Z",
+    "user": 2,
+    "proposal": 1,
+    "creation_date": "2015-02-26T23:34:06Z"
+  },
+  "model": "digidemo.proposalversion",
+  "pk": 1
+},
+{
+  "fields": {
+    "sectors": [
+      1,
+      8
+    ],
+    "language": "fr-ca",
+    "title": "Ceci n'est pas un titre",
+    "text": "C'est qu'un teste.",
+    "tags": [
+      64,
+      65
+    ],
+    "summary": "Ceci n'est pas un R\u00e9sum\u00e9.",
+    "last_modified": "2015-03-10T04:36:43Z",
+    "user": 2,
+    "proposal": 2,
+    "creation_date": "2015-03-10T04:36:43Z"
+  },
+  "model": "digidemo.proposalversion",
+  "pk": 2
+},
+{
+  "fields": {
+    "score": 0,
+    "language": "en-ca",
+    "title": "Keystone XL Pipeline Extension",
+    "text": "#Background#\r\nThe Keystone XL pipeline project is a contentious political issue, owing to probable environmental, economic, and social impacts. Environmentally, the pipeline might present a risk of contaminating groundwater and disturbing sensitive ecosystems, but it might also be a better alternative than ground transport by train or truck. Economically, the pipeline might produce jobs temporarily during its construction, and permanently in additional refinement activities in the US. It would also lead to a redistribution of crude supply, emphasizing export and raising the price of oil in the Midwestern US. Socially, the construction of the pipeline would disturb landowners currently in its path, and would disturb heritage sites of cultural significance.\r\n\r\n# Actors #\r\n - **TransCanada**: Corporation that owns the existing Keysone Pipeline System, and which has put forward the proposal to state and federal authorities for the Keystone XL extension.\r\n - **ConocoPhillips**: Corporation that was part-owner of the Keystone Pipeline System, bought out by TransCanada.\r\n - **Cardno Entrix**: Environmental Assessment Consultancy, contracted by TransCanada to produce an environmental assessment of the Keystone XL proposal.\r\n- **US Government**:\r\n        - **President Obama**: Can approve or reject the application for a Presidential Permit, legally needed to proceed with the construction project. \r\n         - **Environmental Protection Agency**: Oversees the environmental assessment of the project, and approves or rejects the application for an environmental permit, legally needed to proceed with the construction project.\r\n         - **US State Governments**: Each US state through which the proposed pipeline would pass can approve or reject the construction activities within its borders.\r\n     - **Canadian Government**:\r\n             - **National Energy Board of Canada** (NEB): Responsible for approving or rejecting the construction activities within Canada.\r\n- WorleyParsons: Corporation acting as the general contractor for the pipeline construction.\r\n        \r\n# Impacts #\r\n## Environmental Impacts ##\r\n**Hazards relating to oil spills**. The originally proposed route traversed the Sand Hills region and the Ogallala aquifer.  The Sand Hills region is a sensitive wetland ecosystem in Nebraska.  The Ogallala aquifer is one of the largest reserves of fresh water in the world, spans eight states, provides drinking water for two million people, and supports a US$20 billion worth of agricultural activity.\r\n        \r\nThe path of the pipeline has been revised by TransCanada to avoid the Sand Hills region, and reduce the length of piping running over the Ogallala aquifer.  The actual risks of a spill in the region of the aquifer are unclear, and the severity of impact is debated.  The pipeline, with a normal depth of 4 feet would be separated from the aquifer by a layer of fine clay, which might drastically reduce the actual effects on drinking water.  Thousands of miles of existing pipelines carrying crude oil and refined liquid hydrocarbons have crossed over the Ogallala Aquifer for years, so the severity of risk could be evaluated empirically.  The pipeline will be newly constructed, which should be considered when comparing to existing pipelines which do not benefit from technological advances or were converted from natural gas pipelines.\r\n        \r\n**Greenhouse Gas Emissions**.  The Keystone XL pipeline would carry crude oil to refineries for conversion into fuels, among other products.  The activities of extracting, refining, and burning petroleum-derived fuels is a major contributor to CO2 accumulation in the atmosphere and climate change.  By providing access to US and global markets, the Keystone XL pipeline would facilitate further extraction in the oilsands of Alberta.  \r\n\r\nIf the Keystone XL pipeline is not built, crude from the Albertan tarsands might be refined and exported from Canada, based on alternative Canadian pipeline  construction projects which would bring the crude to tidewater.  Additionally, ground transport of crude, by train and tanker, might be used instead, which adds to greenhouse gas emissions and poses its own safety hazards.\r\n        \r\n## Economic Impacts ##\r\n**Employment**.  Construction of the pipeline would provide temporary employment for about 2 years.  Estimates of the amount of employment vary widely.  A report by Perryman Group, a financial analysis firm that was hired by TransCanada, estimates construction would employ 20,000 US workers and spend US$7 billion.  A study conducted by Cornell ILR Global Labor Institute estimated construction would employ 2500 to 4650 US workers.  The US State Department estimated 5000 to 6000 temporary construction jobs.  It's Supplemenntal Environmental Impact Statement estimated 3900 US workers directly employed and 42000 US workers indirectly employed by construction activities. \r\n        \r\n**Risk of impact due to spills**.  The original route proposed for the Keystone XL pipeline passed over the Ogallala aquifer.  The aquifer supports about US$20 billion in agricultural activity.  If a spill contaminated the water, it could have serious economic impact.  The amended proposal has reduced the length of piping that crosses the aquifer.  The 2010 Enbridge oil spill along the Kalamazoo river in Michigan showed that spills can result in significant economic costs beyond environmental ones.\r\n        \r\n# Social Impacts #\r\n**Displacement of people**.  Land owners in the path of the pipeline would be displaced.  Landowners have already complained about threats by TransCanada to confiscate private land and some have faced lawsuits.  As of October 17, 2011 Transcanada had 34 eminent domain actions against landowners in Texas and 22 in South Dakota.\r\n        \r\n**Damage to public goods (excluding the environment)**.  Various sacred sites, and prehistoric or historic archeological sites, and sites with traditional cultural value to Native Americans and other groups might be disturbed, removed or demolished.  TransCanada made a major donation to the University of Toronto to promote education and research in the health of the Aboriginal population.\r\n        \r\n**Safety**.  Ground transport by tanker truck and rail is less safe.  As an example, the derailment of a train transporting crude oil at Lac-M\u00e9gantic in 2013 kiled 50 people.  Increased production in North Dakota has exceeded pipeline capacity since 2010, leading to increasing volumes of crude being shipped by truck or rail to refineries.  Alberta is expected to running up against a pipeline capacity limit around 2016.\r\n        \r\n# In Perspective #\r\n- The Alberta oil sands account for a quantity of GHG emissions equal to \r\n             - the coal-fired power plants in the State of Wisconsin \r\n             - 2.5% of total GHG emissions from the coal-fired power plants of the US\r\n             - 0.1% of global GHG emissions from all sources\r\n- The Enbridge \"Alberta Clipper\" expansion has continued during late 2013, adding approximately the same cross-border capacity.\r\n- The Keystone XL expansion is Phase 4 in the Keystone Pipeline system.\r\n             - it corresponds to between 1897 km, later revised to 1408 km of piping or 28% revised to 23% of the Keystone system by length.\r\n             - it will account for about 40% of the Keystone system's capacity if built.\r\n- There are currently about 320,000 km of similar oil pipelines in the US.\r\n- Alternative projects are being considered:\r\n                 - An all-Canadian pipeline north to the Arctic coast for shipping to markets in Europe and Asia\r\n                 - An all-Canadian pipeline (\"Energy East\") that would extend to Saint John, New Brunswick for export, while also supplying Montreal, Quebec City, and Saint John refineries.",
+    "tags": [
+      35,
+      62,
+      63
+    ],
+    "proposal_image": "/digidemo/proposal-images/",
+    "creation_date": "2015-02-26T23:34:06Z",
+    "sectors": [
+      1,
+      5,
+      6
+    ],
+    "last_modified": "2015-02-26T23:34:06Z",
+    "user": 2,
+    "subscription_id": 70,
+    "summary": "The Keystone XL Pipeline is a proposed extension to the existing Keystone Pipeline System, put forward by TransCanada, the corporation that owns the Keystone System. The pipeline would cross the Canada/US border, importing crude oil sourced from the Albertan oil sands, into the United States. The proposal is currently awaiting government approval. The pipeline would be newly constructed, and is similar to existing pipelines in North America.",
+    "original_user": 2,
+    "is_published": false
+  },
+  "model": "digidemo.proposal",
+  "pk": 1
+},
+{
+  "fields": {
+    "score": 0,
+    "language": "fr-ca",
+    "title": "Ceci n'est pas un titre",
+    "text": "C'est qu'un teste.",
+    "tags": [
+      64,
+      65
+    ],
+    "proposal_image": "/digidemo/proposal-images/",
+    "creation_date": "2015-03-10T04:36:43Z",
+    "sectors": [
+      1,
+      8
+    ],
+    "last_modified": "2015-03-10T04:36:43Z",
+    "user": 2,
+    "subscription_id": 85,
+    "summary": "Ceci n'est pas un R\u00e9sum\u00e9.",
+    "original_user": 2,
+    "is_published": false
+  },
+  "model": "digidemo.proposal",
+  "pk": 2
+},
+{
+  "fields": {
+    "event_type": "ISSUE",
+    "creation_date": "2015-02-26T23:34:06Z",
+    "source_user": 2,
+    "last_modified": "2015-02-26T23:34:06Z",
+    "link_back": "/overview/1/keystone-xl-pipeline-extension",
+    "was_posted": false,
+    "subscription_id": 1,
+    "event_data": "#Background#\r\nThe Keystone XL pipeline project is a contentious political issue, owing to probable e"
+  },
+  "model": "digidemo.publication",
+  "pk": 1
+},
+{
+  "fields": {
+    "event_type": "ISSUE",
+    "creation_date": "2015-02-26T23:34:06Z",
+    "source_user": 2,
+    "last_modified": "2015-02-26T23:34:06Z",
+    "link_back": "/overview/1/keystone-xl-pipeline-extension",
+    "was_posted": false,
+    "subscription_id": 5,
+    "event_data": "#Background#\r\nThe Keystone XL pipeline project is a contentious political issue, owing to probable e"
+  },
+  "model": "digidemo.publication",
+  "pk": 2
+},
+{
+  "fields": {
+    "event_type": "ISSUE",
+    "creation_date": "2015-02-26T23:34:06Z",
+    "source_user": 2,
+    "last_modified": "2015-02-26T23:34:06Z",
+    "link_back": "/overview/1/keystone-xl-pipeline-extension",
+    "was_posted": false,
+    "subscription_id": 6,
+    "event_data": "#Background#\r\nThe Keystone XL pipeline project is a contentious political issue, owing to probable e"
+  },
+  "model": "digidemo.publication",
+  "pk": 3
+},
+{
+  "fields": {
+    "event_type": "ISSUE",
+    "creation_date": "2015-02-26T23:34:06Z",
+    "source_user": 2,
+    "last_modified": "2015-02-26T23:34:06Z",
+    "link_back": "/overview/1/keystone-xl-pipeline-extension",
+    "was_posted": false,
+    "subscription_id": 43,
+    "event_data": "#Background#\r\nThe Keystone XL pipeline project is a contentious political issue, owing to probable e"
+  },
+  "model": "digidemo.publication",
+  "pk": 4
+},
+{
+  "fields": {
+    "event_type": "ISSUE",
+    "creation_date": "2015-02-26T23:34:06Z",
+    "source_user": 2,
+    "last_modified": "2015-02-26T23:34:06Z",
+    "link_back": "/overview/1/keystone-xl-pipeline-extension",
+    "was_posted": false,
+    "subscription_id": 71,
+    "event_data": "#Background#\r\nThe Keystone XL pipeline project is a contentious political issue, owing to probable e"
+  },
+  "model": "digidemo.publication",
+  "pk": 5
+},
+{
+  "fields": {
+    "event_type": "ISSUE",
+    "creation_date": "2015-02-26T23:34:06Z",
+    "source_user": 2,
+    "last_modified": "2015-02-26T23:34:06Z",
+    "link_back": "/overview/1/keystone-xl-pipeline-extension",
+    "was_posted": false,
+    "subscription_id": 72,
+    "event_data": "#Background#\r\nThe Keystone XL pipeline project is a contentious political issue, owing to probable e"
+  },
+  "model": "digidemo.publication",
+  "pk": 6
+},
+{
+  "fields": {
+    "event_type": "ISSUE",
+    "creation_date": "2015-02-26T23:34:06Z",
+    "source_user": 2,
+    "last_modified": "2015-02-26T23:34:06Z",
+    "link_back": "/overview/1/keystone-xl-pipeline-extension",
+    "was_posted": false,
+    "subscription_id": 70,
+    "event_data": "#Background#\r\nThe Keystone XL pipeline project is a contentious political issue, owing to probable e"
+  },
+  "model": "digidemo.publication",
+  "pk": 7
+},
+{
+  "fields": {
+    "event_type": "DISCUSSION",
+    "creation_date": "2015-02-26T23:39:20Z",
+    "source_user": 2,
+    "last_modified": "2015-02-26T23:39:20Z",
+    "link_back": "/view-discussion/1/social-factors",
+    "was_posted": false,
+    "subscription_id": 70,
+    "event_data": "I think that we need more material covering the social factors of this proposal. There is only a bri"
+  },
+  "model": "digidemo.publication",
+  "pk": 8
+},
+{
+  "fields": {
+    "event_type": "LETTER",
+    "creation_date": "2015-02-27T00:03:48Z",
+    "source_user": 2,
+    "last_modified": "2015-02-27T00:03:48Z",
+    "link_back": "/view-petition/1/stop-keystone-xl",
+    "was_posted": false,
+    "subscription_id": 70,
+    "event_data": "I do not support the project to expand the Keystone Pipeline System. This proposal generates serious"
+  },
+  "model": "digidemo.publication",
+  "pk": 9
+},
+{
+  "fields": {
+    "event_type": "COMMENT",
+    "creation_date": "2015-02-27T00:06:08Z",
+    "source_user": 1,
+    "last_modified": "2015-02-27T00:06:08Z",
+    "link_back": "/view-petition/1/stop-keystone-xl",
+    "was_posted": false,
+    "subscription_id": 74,
+    "event_data": "@regularuser I agree with you but I think that you should consider offering some concrete evidence f"
+  },
+  "model": "digidemo.publication",
+  "pk": 10
+},
+{
+  "fields": {
+    "event_type": "QUESTION",
+    "creation_date": "2015-02-27T00:08:58Z",
+    "source_user": 1,
+    "last_modified": "2015-02-27T00:08:58Z",
+    "link_back": "/view-question/1/how-likely-or-frequent-can-we-expect-spills-along-the-pipeline-extension-to-be",
+    "was_posted": false,
+    "subscription_id": 70,
+    "event_data": "I would like to know how likely spills are, based on the rate of previous incidents. It will probabl"
+  },
+  "model": "digidemo.publication",
+  "pk": 11
+},
+{
+  "fields": {
+    "event_type": "COMMENT",
+    "creation_date": "2015-02-27T00:09:31Z",
+    "source_user": 2,
+    "last_modified": "2015-02-27T00:09:31Z",
+    "link_back": "/view-question/1/how-likely-or-frequent-can-we-expect-spills-along-the-pipeline-extension-to-be",
+    "was_posted": false,
+    "subscription_id": 76,
+    "event_data": "I think that once they upgrade the tar to crude it's the same as conventional crude."
+  },
+  "model": "digidemo.publication",
+  "pk": 12
+},
+{
+  "fields": {
+    "event_type": "ANSWER",
+    "creation_date": "2015-02-27T00:11:18Z",
+    "source_user": 2,
+    "last_modified": "2015-02-27T00:11:18Z",
+    "link_back": "/view-question/1/how-likely-or-frequent-can-we-expect-spills-along-the-pipeline-extension-to-be",
+    "was_posted": false,
+    "subscription_id": 76,
+    "event_data": "\"Spills\", or *breaches* happen at a rate of 0.6 times per 1000km per decade. Most breaches are minor"
+  },
+  "model": "digidemo.publication",
+  "pk": 13
+},
+{
+  "fields": {
+    "event_type": "COMMENT",
+    "creation_date": "2015-02-27T00:12:02Z",
+    "source_user": 1,
+    "last_modified": "2015-02-27T00:12:02Z",
+    "link_back": "/view-question/1/how-likely-or-frequent-can-we-expect-spills-along-the-pipeline-extension-to-be",
+    "was_posted": false,
+    "subscription_id": 78,
+    "event_data": "It would be interesting to see some stats on the relevant frequencies of the different classes of br"
+  },
+  "model": "digidemo.publication",
+  "pk": 14
+},
+{
+  "fields": {
+    "event_type": "REPLY",
+    "creation_date": "2015-02-27T00:28:23Z",
+    "source_user": 1,
+    "last_modified": "2015-02-27T00:28:23Z",
+    "link_back": "/view-discussion/1/social-factors",
+    "was_posted": false,
+    "subscription_id": 73,
+    "event_data": "Good point, I'm going to add that in now..."
+  },
+  "model": "digidemo.publication",
+  "pk": 15
+},
+{
+  "fields": {
+    "event_type": "VOTE",
+    "creation_date": "2015-02-27T01:54:20Z",
+    "source_user": 1,
+    "last_modified": "2015-02-27T01:54:20Z",
+    "link_back": "/view-discussion/1/social-factors",
+    "was_posted": false,
+    "subscription_id": 73,
+    "event_data": "1"
+  },
+  "model": "digidemo.publication",
+  "pk": 16
+},
+{
+  "fields": {
+    "event_type": "QUESTION",
+    "creation_date": "2015-02-27T03:24:55Z",
+    "source_user": 2,
+    "last_modified": "2015-02-27T03:24:55Z",
+    "link_back": "/view-question/2/test-question",
+    "was_posted": false,
+    "subscription_id": 70,
+    "event_data": "Is this a test?"
+  },
+  "model": "digidemo.publication",
+  "pk": 17
+},
+{
+  "fields": {
+    "event_type": "ANSWER",
+    "creation_date": "2015-02-27T03:25:33Z",
+    "source_user": 2,
+    "last_modified": "2015-02-27T03:25:33Z",
+    "link_back": "/view-question/2/test-question",
+    "was_posted": false,
+    "subscription_id": 81,
+    "event_data": "Yes, I believe it is."
+  },
+  "model": "digidemo.publication",
+  "pk": 18
+},
+{
+  "fields": {
+    "event_type": "REPLY",
+    "creation_date": "2015-02-27T03:29:04Z",
+    "source_user": 2,
+    "last_modified": "2015-02-27T03:29:04Z",
+    "link_back": "/view-discussion/1/social-factors",
+    "was_posted": false,
+    "subscription_id": 73,
+    "event_data": "Test reply."
+  },
+  "model": "digidemo.publication",
+  "pk": 19
+},
+{
+  "fields": {
+    "event_type": "ANSWER",
+    "creation_date": "2015-02-27T03:53:02Z",
+    "source_user": 2,
+    "last_modified": "2015-02-27T03:53:02Z",
+    "link_back": "/view-question/1/how-likely-or-frequent-can-we-expect-spills-along-the-pipeline-extension-to-be",
+    "was_posted": false,
+    "subscription_id": 76,
+    "event_data": "Test answer."
+  },
+  "model": "digidemo.publication",
+  "pk": 20
+},
+{
+  "fields": {
+    "event_type": "ISSUE",
+    "creation_date": "2015-03-10T04:36:43Z",
+    "source_user": 2,
+    "last_modified": "2015-03-10T04:36:43Z",
+    "link_back": "/fr-ca/overview/2/ceci-nest-pas-un-titre",
+    "was_posted": false,
+    "subscription_id": 1,
+    "event_data": "C'est qu'un teste."
+  },
+  "model": "digidemo.publication",
+  "pk": 21
+},
+{
+  "fields": {
+    "event_type": "ISSUE",
+    "creation_date": "2015-03-10T04:36:43Z",
+    "source_user": 2,
+    "last_modified": "2015-03-10T04:36:43Z",
+    "link_back": "/fr-ca/overview/2/ceci-nest-pas-un-titre",
+    "was_posted": false,
+    "subscription_id": 8,
+    "event_data": "C'est qu'un teste."
+  },
+  "model": "digidemo.publication",
+  "pk": 22
+},
+{
+  "fields": {
+    "event_type": "ISSUE",
+    "creation_date": "2015-03-10T04:36:43Z",
+    "source_user": 2,
+    "last_modified": "2015-03-10T04:36:43Z",
+    "link_back": "/fr-ca/overview/2/ceci-nest-pas-un-titre",
+    "was_posted": false,
+    "subscription_id": 86,
+    "event_data": "C'est qu'un teste."
+  },
+  "model": "digidemo.publication",
+  "pk": 23
+},
+{
+  "fields": {
+    "event_type": "ISSUE",
+    "creation_date": "2015-03-10T04:36:43Z",
+    "source_user": 2,
+    "last_modified": "2015-03-10T04:36:43Z",
+    "link_back": "/fr-ca/overview/2/ceci-nest-pas-un-titre",
+    "was_posted": false,
+    "subscription_id": 87,
+    "event_data": "C'est qu'un teste."
+  },
+  "model": "digidemo.publication",
+  "pk": 24
+},
+{
+  "fields": {
+    "event_type": "ISSUE",
+    "creation_date": "2015-03-10T04:36:43Z",
+    "source_user": 2,
+    "last_modified": "2015-03-10T04:36:43Z",
+    "link_back": "/fr-ca/overview/2/ceci-nest-pas-un-titre",
+    "was_posted": false,
+    "subscription_id": 85,
+    "event_data": "C'est qu'un teste."
+  },
+  "model": "digidemo.publication",
+  "pk": 25
+},
+{
+  "fields": {
+    "subscription_id": 70,
+    "reason": "AUTHOR",
+    "last_modified": "2015-02-26T23:34:06Z",
+    "user": 2,
+    "creation_date": "2015-02-26T23:34:06Z"
+  },
+  "model": "digidemo.subscription",
+  "pk": 1
+},
+{
+  "fields": {
+    "subscription_id": 73,
+    "reason": "AUTHOR",
+    "last_modified": "2015-02-26T23:39:20Z",
+    "user": 2,
+    "creation_date": "2015-02-26T23:39:20Z"
+  },
+  "model": "digidemo.subscription",
+  "pk": 2
+},
+{
+  "fields": {
+    "subscription_id": 74,
+    "reason": "AUTHOR",
+    "last_modified": "2015-02-27T00:03:48Z",
+    "user": 2,
+    "creation_date": "2015-02-27T00:03:48Z"
+  },
+  "model": "digidemo.subscription",
+  "pk": 3
+},
+{
+  "fields": {
+    "subscription_id": 75,
+    "reason": "AUTHOR",
+    "last_modified": "2015-02-27T00:06:08Z",
+    "user": 1,
+    "creation_date": "2015-02-27T00:06:08Z"
+  },
+  "model": "digidemo.subscription",
+  "pk": 4
+},
+{
+  "fields": {
+    "subscription_id": 74,
+    "reason": "COMMENTER",
+    "last_modified": "2015-02-27T00:06:08Z",
+    "user": 1,
+    "creation_date": "2015-02-27T00:06:08Z"
+  },
+  "model": "digidemo.subscription",
+  "pk": 5
+},
+{
+  "fields": {
+    "subscription_id": 76,
+    "reason": "AUTHOR",
+    "last_modified": "2015-02-27T00:08:58Z",
+    "user": 1,
+    "creation_date": "2015-02-27T00:08:58Z"
+  },
+  "model": "digidemo.subscription",
+  "pk": 6
+},
+{
+  "fields": {
+    "subscription_id": 77,
+    "reason": "AUTHOR",
+    "last_modified": "2015-02-27T00:09:31Z",
+    "user": 2,
+    "creation_date": "2015-02-27T00:09:31Z"
+  },
+  "model": "digidemo.subscription",
+  "pk": 7
+},
+{
+  "fields": {
+    "subscription_id": 76,
+    "reason": "COMMENTER",
+    "last_modified": "2015-02-27T00:09:31Z",
+    "user": 2,
+    "creation_date": "2015-02-27T00:09:31Z"
+  },
+  "model": "digidemo.subscription",
+  "pk": 8
+},
+{
+  "fields": {
+    "subscription_id": 78,
+    "reason": "AUTHOR",
+    "last_modified": "2015-02-27T00:11:18Z",
+    "user": 2,
+    "creation_date": "2015-02-27T00:11:18Z"
+  },
+  "model": "digidemo.subscription",
+  "pk": 9
+},
+{
+  "fields": {
+    "subscription_id": 79,
+    "reason": "AUTHOR",
+    "last_modified": "2015-02-27T00:12:02Z",
+    "user": 1,
+    "creation_date": "2015-02-27T00:12:02Z"
+  },
+  "model": "digidemo.subscription",
+  "pk": 10
+},
+{
+  "fields": {
+    "subscription_id": 78,
+    "reason": "COMMENTER",
+    "last_modified": "2015-02-27T00:12:02Z",
+    "user": 1,
+    "creation_date": "2015-02-27T00:12:02Z"
+  },
+  "model": "digidemo.subscription",
+  "pk": 11
+},
+{
+  "fields": {
+    "subscription_id": 80,
+    "reason": "AUTHOR",
+    "last_modified": "2015-02-27T00:28:23Z",
+    "user": 1,
+    "creation_date": "2015-02-27T00:28:23Z"
+  },
+  "model": "digidemo.subscription",
+  "pk": 12
+},
+{
+  "fields": {
+    "subscription_id": 81,
+    "reason": "AUTHOR",
+    "last_modified": "2015-02-27T03:24:55Z",
+    "user": 2,
+    "creation_date": "2015-02-27T03:24:55Z"
+  },
+  "model": "digidemo.subscription",
+  "pk": 13
+},
+{
+  "fields": {
+    "subscription_id": 82,
+    "reason": "AUTHOR",
+    "last_modified": "2015-02-27T03:25:33Z",
+    "user": 2,
+    "creation_date": "2015-02-27T03:25:33Z"
+  },
+  "model": "digidemo.subscription",
+  "pk": 14
+},
+{
+  "fields": {
+    "subscription_id": 83,
+    "reason": "AUTHOR",
+    "last_modified": "2015-02-27T03:29:04Z",
+    "user": 2,
+    "creation_date": "2015-02-27T03:29:04Z"
+  },
+  "model": "digidemo.subscription",
+  "pk": 15
+},
+{
+  "fields": {
+    "subscription_id": 84,
+    "reason": "AUTHOR",
+    "last_modified": "2015-02-27T03:53:02Z",
+    "user": 2,
+    "creation_date": "2015-02-27T03:53:02Z"
+  },
+  "model": "digidemo.subscription",
+  "pk": 16
+},
+{
+  "fields": {
+    "subscription_id": 85,
+    "reason": "AUTHOR",
+    "last_modified": "2015-03-10T04:36:43Z",
+    "user": 2,
+    "creation_date": "2015-03-10T04:36:43Z"
+  },
+  "model": "digidemo.subscription",
+  "pk": 17
+}
+]
