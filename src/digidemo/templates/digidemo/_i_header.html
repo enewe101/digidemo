@@ -4,118 +4,32 @@
 
 <div id="header">
 
-	<div id="header_bg">
-
-	<div class="outer_center">
-		{% if GLOBALS.IS_ENGLISH %}
-			<div class="inner_center">
-		{% else %}
-			<div class="fr_inner_center">
-		{% endif %}
-
-			<a href="{% url "mainPage" %}">
-				<div class="short_nav_button_first">
-				<img id="colophon" 
-					src="{% static "digidemo/images/colophon_inline.png"%}" />
-				</div>
-			</a>
-
-			{% include "digidemo/_i_main_nav_bar.html" %}
-
-			<div class="short_nav_button" id="search_bar" 
-				title="{% trans "not implemented" %}">
-				<img src="{% static "digidemo/images/search.png" %}" />
-
-				<div id="search_form" >
-					<div class="border_cover"></div>
-					<form type="get" action="{% url "search" %}">  
-						<input placeholder="keywords" type="text" name="q" />
-						<input class="search_submit" type="submit" 
-							value="go" />
-					</form>
-				</div>
-			</div>
-			<script type="text/javascript">
-//				////			(function(){
-//				var search_button = $('#search_bar');
-//				var search_form = $('#search_form');
-//
-//				// clicking in the search form doesn't bubble up to be a 
-//				// click on the search button
-//				search_form.click(function(e){
-//					e.stopPropagation();
-//				});
-//
-//				var tog = new ToggleHidden(search_button, search_form);
-//
-//				// clicking out of the search area gets rid of search form
-//				doc_event_registrar.on('click', function(e){
-//					tog.hide();
-//				});
-//				// ensure that clicking the search button doesn't bubble
-//				// up to the document.click we just established
-//				search_button.click(function(e) {
-//					e.stopPropagation();
-//				});
-//
-//			})();
-
-			</script>
-
-			<div id="login_row">
-				{% include "digidemo/_w_login_user.html" %}
-
-
-
-
-			</div>
-
-			<div id="bottom_row">
-				<div id="topic_list">
-					{% for sector in GLOBALS.SECTORS %}
-					<a href="{% url "issue_list_sector" sector=sector.name order_by="interesting" %}"
-						class='sector_links{% if forloop.first %}_first{%endif%}'>
-							{% trans sector.name %}
-					</a>
-					{% endfor %}
-				</div>
-
-				{% if GLOBALS.IS_ENGLISH %}
-					<div id="lang_change_wrapper">
-				{% else %}
-					<div id="fr_lang_change_wrapper">
-				{% endif %}
-						{% change_lang %}
-					</div>
-			</div>
-			<div class="clear"></div>
-
+	<div id="left_header_group">
+		<a id="site_name" href="{% url "index" %}">
+			luminocracy
+		</a>
+		<div id="colophon">
+		</div>
+		<div id="tagline">
+			Read. Discuss. Act.
 		</div>
 	</div>
+
+	<div id="right_header_group">
+		<a class="header_link">
+			by topic
+		</a>
+		<a class="header_link">
+			unanswered
+		</a>
+		<a id="search" class="menu_container">
+		</a>
+
+		{% include "digidemo/_w_login_user.html" %}
 	</div>
+
 	<div class="clear"></div>
 
-	<div id="header_border"> </div>
-	<div id="header_shadow"></div>
-
-			<!-- feedback form -->
-			<div id="feedback_area">
-				<a id="toggle_feedback">{% trans "feedback" %}</a>
-
-				<div id="feedback_form_wrapper">
-					<h2>{% trans "Feedback" %}</h2>
-					{% include "digidemo/_w_simple_form_wrapped.html" with form=GLOBALS.FEEDBACK_FORM %}
-				</div>
-			</div>
-			<script type="text/javascript">
-
-			(function(){
-				var tog_div = $('#toggle_feedback');
-				var show_div = $('#feedback_form_wrapper');
-				var tog = ToggleHidden(tog_div, show_div);
-			})();
-
-			</script>
-			<!-- end of feedback form -->
 </div>
+
 

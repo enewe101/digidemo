@@ -6,33 +6,32 @@
 	<!-- if user logged in, show greeting, profile link, and logout button -->
 	{% if request|getLoggedInUser != "false" %}
 		<div id="logged_in_div" class="logged_in_div">
-			<div class="sender_avatar_image">
-				<img class="avatar_image_medium"
+
+			<img class="avatar_image_small"
 				src="{{ user.profile.get_avatar_img_url }}"
 				alt="{{ user.username }}" />
 
-				<img class="avatar_mask_medium"
-				src="{% static "digidemo/images/avatar_mask.png" %}" />
-			</div>
 
-			<div id="logged_in_menu" class="header_menu">
-				<div class="border_cover_med"></div>
-				<a 
-					href="{% url "userProfile" request|getLoggedInUser %}">
-					{% trans "profile" %}
-				</a>	
-				<a id="logout">
-					{% trans "logout" %}
-				</a>	
-				<a>
-					{% trans "my questions" %}
-				</a>	
-				<a>
-					{% trans "my issues" %}
-				</a>	
-				<a>
-					{% trans "recent stuff" %}
-				</a>	
+			<div id="logged_in_menu_locator">
+				<div id="logged_in_menu" class="header_menu">
+					<div class="chebyshev"></div>
+					<a 
+						href="{% url "userProfile" request|getLoggedInUser %}">
+						{% trans "profile" %}
+					</a>	
+					<a id="logout">
+						{% trans "logout" %}
+					</a>	
+					<a>
+						{% trans "my questions" %}
+					</a>	
+					<a>
+						{% trans "my issues" %}
+					</a>	
+					<a>
+						{% trans "recent stuff" %}
+					</a>	
+				</div>
 			</div>
 
 		</div>
@@ -46,30 +45,34 @@
 				<div id="notifications_icon" class="no_notifications">
 				</div>
 			{% endif %}
-			<div id="notifications_menu" class="header_menu">
-				<div class="border_cover_short"></div>
-				{% for notification in GLOBALS.NOTIFICATIONS %}
-					<a notification="{{notification.pk}}" 
-						{% if notification.was_checked %}
-							class="notification_checked"
-						{% else %}
-							class="notification_unchecked"
-						{% endif %}
-						href="{{notification.link_back}}"> 
-							{{notification.message}} 
-					</a>
-				{% endfor %}
-				{% if GLOBALS.NOTIFICATIONS|length < 1 %}
-					<div class="empty_notifications_div"> 
-						{% trans "no notifications!" %}
-					</div>
-				{% endif %}
-				<form id="register_notifications_seen_form">
-					<input type="hidden" 
-						value="{{GLOBALS.UNSEEN_NOTIFICATION_PKS}}"
-						name="notification_pks" />
-				</form>
+
+			<div id="notifications_menu_locator">
+				<div id="notifications_menu" class="header_menu">
+					<div class="chebyshev"></div>
+					{% for notification in GLOBALS.NOTIFICATIONS %}
+						<a notification="{{notification.pk}}" 
+							{% if notification.was_checked %}
+								class="notification_checked"
+							{% else %}
+								class="notification_unchecked"
+							{% endif %}
+							href="{{notification.link_back}}"> 
+								{{notification.message}} 
+						</a>
+					{% endfor %}
+					{% if GLOBALS.NOTIFICATIONS|length < 1 %}
+						<div class="empty_notifications_div"> 
+							{% trans "no notifications!" %}
+						</div>
+					{% endif %}
+					<form id="register_notifications_seen_form">
+						<input type="hidden" 
+							value="{{GLOBALS.UNSEEN_NOTIFICATION_PKS}}"
+							name="notification_pks" />
+					</form>
+				</div>
 			</div>
+
 		</div>
 
 		<!-- Arm the notifications menu behaviors -->
@@ -206,50 +209,47 @@
 	<!-- otherwise, show login form and register link -->
 	{% else %}
 
-		<div id="log_or_register_div">
-			<div id="login_div" class="login_div">
+			<div class="header_link">
 
-				<a>{% trans "login" %} </a>
+				<a id="login_div" class="login_div">{% trans "login" %} </a>
 
-				<div id="login_form_div">
-					{% if GLOBALS.IS_ENGLISH %}
-						<div class="border_cover_med_short"></div>
-					{% else %}
-						<div class="border_cover_very_long"></div>
-					{% endif %}
+				<div id="login_menu_locator">
+					<div id="login_form_div" class="header_menu">
 
-					<form id="login_form">
-						<div id="ajax_login_error"></div>
-						<label for="username">
-							{% trans "Email or username" %}
-						</label><br/>
-						<input class='text_input' id="username" type="text"
-						name="username" placeholder="{% trans "you" %}@example.com" />
+						<div class="chebyshev"></div>
 
-							<label for="password">
-								{% trans "Password" %}
+						<form id="login_form">
+							<div id="ajax_login_error"></div>
+							<label for="username">
+								{% trans "Email or username" %}
 							</label><br/>
-						<input class='text_input' id="password" type="password"
-						name="password" placeholder="{% trans "super-secret" %}" />
+							<input class='text_input' id="username" type="text"
+							name="username" placeholder="{% trans "you" %}@example.com" />
 
-						<input type="button" id="submit_login" 
-							value="{% trans "Log in" %}" />
-							<a href="{% url "resetPassword" %}">
-								{% trans "forgot?" %}
-							</a>
-					</form>
+								<label for="password">
+									{% trans "Password" %}
+								</label><br/>
+							<input class='text_input' id="password" type="password"
+							name="password" placeholder="{% trans "super-secret" %}" />
+
+							<input type="button" id="submit_login" 
+								value="{% trans "Log in" %}" />
+								<a id="forgot_link" 
+									href="{% url "resetPassword" %}">
+									{% trans "forgot?" %}
+								</a>
+						</form>
+					</div>
 				</div>
 
 			</div>
 
-			<div id="separator_div" class="float_left">|</div>
-
-			<div id="register_div" class="float_left">
-				<a href="{% url "userRegistration" %}">
+			<div class="header_link menu_container">
+				<a id="register_div" href="{% url "userRegistration" %}">
 					{% trans "register" %}
 				</a>
 			</div>
-		</div>
+
 		<!-- arm events in the login form -->
 		<script type="text/javascript">
 		(function(){

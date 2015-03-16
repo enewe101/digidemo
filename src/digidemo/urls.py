@@ -32,8 +32,8 @@ urlpatterns += i18n_patterns('',
 
 	# front page urls
 	#url(r'^$', land, name='land'),
-	url(r'^$',mainPage, name='mainPage'),
-	url(r'^mainPage/$',mainPage, name='mainPage'),
+	url(r'^$', index, name='index'),
+	#url(r'^mainPage/$',mainPage, name='mainPage'),
 	url(r'^what_this_is_about/$', what_about, name='what_about'),
 	#url(r'^find_issues/$', find_issues, name='find_issues'),
 	url(r'^send_feedback/$', feedback, name='feedback'),

@@ -385,7 +385,7 @@ class ProposalVersionForm(AugmentedFormMixin, ModelForm):
 		model = ProposalVersion
 		fields = [
 			'proposal', 'title', 'summary', 'text', 'user', 'sectors', 
-			'language'
+			'language', 'proposal_image'
 		]
 		widgets = {
 			'proposal': forms.HiddenInput(),
@@ -394,7 +394,8 @@ class ProposalVersionForm(AugmentedFormMixin, ModelForm):
 			'summary': forms.Textarea(),
 			'text': forms.Textarea(),
 			'sectors': forms.CheckboxSelectMultiple(),
-			'language': forms.HiddenInput()
+			'language': forms.HiddenInput(),
+			'proposal_image': forms.ClearableFileInput()
 		}
 
 

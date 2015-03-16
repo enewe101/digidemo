@@ -3,6 +3,12 @@
 {% load apptags %}
 {% load i18n %}
 
+{% block js %}
+	{{ block.super }}
+	<script type="text/javascript" 
+		src="{% static "digidemo/js/packery.js" %}"></script>
+{% endblock js %}
+
 {% block css %}
 	{{ block.super }}
 	<link rel="stylesheet" type="text/css" 
@@ -11,132 +17,102 @@
 
 {% block middle %}
 
-	<div id="center_banner">
-		<div id="banner" class="centered">
-			<img id="big_logo"
-				src="{% localize_static "digidemo/images/big_logo.png" %}" />
-			<a href="{% url "what_about" %}" 
-				id="what_about" class="cta">
-				{% trans "What's this all about?" %}
-			</a>
-			<a href="{% url "topics" %}" 
-				id="find_issues" class="cta">
-				{% trans "Find issues you care about" %}
-			</a>
-			<div class="clear"></div>
-		</div>
-	</div>
 	<!-- begin featured -->
 	<div id="outer_center_featured">
 		<div id="center_featured">
-			<div id="featured_issue" >
-
-				<h2 class="featured_heading">
-					{% trans "Featured Issue" %}
-					<a href="{% url "issue_list" order_by="interesting" %}" class="marquee_see_more">
-						<span class="orange">{% trans "See all" %}</span>
-					</a>
-				</h2>
-
-				{% if featured_post %}
-				<div id="featured_body">
-					
-					<div class="issue_preview">
-
-						<h2 class="issue_title">
-							<a href="{{featured_post.get_proposal_url}}">
-								<span class="black">{{featured_post.title}}</span>
-							</a>
-						</h2>
-						<span class="gray smallcaps ubuntu">
-							{% trans "issue" %}
-						</span>
-
-						<div class="info_line">
-							<!--span class="last_modified">
-								Last mod {{ featured_post.last_modified }} 
-							</span-->
-						</div>
-
-						<div class="preview_summary">
-							<span class="bold">{% trans "In brief" %}:</span> 
-							{{featured_post.summary}} 
-							
-							<a href="{{featured_post.get_proposal_url}}">
-								<span class="orange">
-									{% trans "read more" %}
-								</span>
-							</a>
-						</div>
-					</div>
-
+			<div id="packery">
+				<div id="f0" class="feat">
 				</div>
-				{% endif %}
-				<div class="clear"></div>
-			</div>
-			<!-- end featured -->
-
-
-			<!-- begin more articles -->
-			<div id="trending">
-				<h2 class="featured_headin">
-					{% trans "Trending" %}
-					<a href="{% url "issue_list" order_by="activity" %}" class="marquee_see_more">
-						<span class="orange">{% trans "See all" %}</span>
-					</a>
-				</h2>
-
-				<div id="trending_body">
-					<!-- begin post -->
-					{% for proposal in active_issues %}
-						<div class="issue_info">
-							<h3 class="issue_title"> 
-								<a href="{{ proposal.get_proposal_url }}">
-									{{proposal.title}}
-								</a> 
-							</h3>
-							<span class="gray smallcaps">
-								{% trans "issue" %}
-							</span>
-							<!--span class="last_modified">
-								(Last mod {{ featured_post.last_modified }})
-							</span-->
-						</div>
-					{% endfor %}
+				<div id="f1" class="feat">
 				</div>
-				<div class="clear"></div>
+				<div id="f2" class="feat">
+				</div>
+				<div id="f3" class="feat">
+				</div>
+				<div id="f4" class="feat">
+				</div>
+				<div id="f5" class="feat">
+				</div>
 			</div>
-			<!-- end more articles -->
 		</div>
 	</div>
 
-	<!-- begin post navigation -->
-	<!--div class="marquee_section">
-		<h2 class="marquee_heading">
-			New Petitions
-			<a href="{% url "petition_list" %}" class="marquee_see_more">
-				See all
-			</a>
-		</h2>
+	<script type="text/javascript">
+		(function(){
+			function normalish(N) {
+				var sum = 0;
+				for(var i=0; i<N; i++) {
+					sum += Math.random();
+				}	
+				return sum / N;
+			}
 
-		{% for petition in new_petitions %}
-			<div class="petition_preview">
-				<div class="petition_score">
-					{{ petition.score }}<img src="{% static "digidemo/images/feather_sign.png" %}" />
-				</div>
+			var approx_sizes = [8,4,4,2,2,1];
+			var color = ['red', 'blue', 'green', 'gold', 'purple', 'pink'];
+			for(var i=0; i<6; i++) {
+				var elm = $('#f' + i);
+				var size = 120 * approx_sizes[i] * normalish(30);
+				elm.css('width', size);
+				elm.css('height', size);
+				elm.css('background', color[i]);
+			}
 
-				<div class="petition_title_div">
-					<h3 class="petition_title">
-						<a href="{{ petition.get_url }}">
-							{{ petition.title }}
-						</a>
-					</h3>
-				</div>
-				<div class="clear"></div>
-			</div>
-		{% endfor %}
-
-	</div-->
-	<!-- end post navigation -->
+			var featured = $('#packery');
+			featured.packery({
+				itemSelector: '.feat',
+				gutter: 10
+			});
+		}());
+	</script>
 
 {% endblock middle %}
+{% block footer %}
+
+	<div id="about">
+		<h1>Political Info for Canadians By Canadians</h1>
+
+		<div id="about_info">
+			<h2>Crowdsourced by Canadians like you</h2>
+			<p>
+				Our issues are crowdsourced by Canadians like you, and written 
+				through 
+				a community authoring process, to promote a balanced account 
+				that 
+				reflects diverse perspectives.
+			</p>
+			<h2>A non-partisan source you can trust</h2>
+			<p>
+				The goal of this platform is to create a productive dialogue 
+				that
+				focused on learning and finding solutions.  We want to cut 
+				through
+				rhetoric, while still reflecting the diversity of viewpoints,
+				and provide a place where Canadians can both read about current 
+				events and take action to shape them.
+			</p>
+			<h2>It's easy, with a little help from your friends</h2>
+			<p>
+				Is there an important issue going on today that you think 
+				Canadians
+				need to know about?  It only takes five minutes to start a new 
+				issue,
+				and invite others to help you.  Our tools make it easy to share
+				the
+				work of staying active and informed.
+			</p>
+		</div>
+
+		<div id="cta">
+			<a id="start_issue"
+				href="{% url "add_proposal" %}">Start an issue</a>
+			<p class="italic">
+				An "issue" is one opportunity, threat, or decision.
+				It can be at the level of your city, province, or the whole 
+				country.
+			</p>
+		</div>
+		<div class="clear"></div>
+
+	</div>
+
+{% endblock footer %}

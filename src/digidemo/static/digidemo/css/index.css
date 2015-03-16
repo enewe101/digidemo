@@ -1,80 +1,3 @@
-
-#center_banner {
-	text-align: center;
-}
-
-#banner {
-	margin: auto;
-	margin-top: 36px;
-	margin-bottom: 36px;
-	width: 1000px;
-}
-
-#big_logo{
-	margin-left: 120px;
-	float:left;
-}
-
-a.cta {
-	color: white;
-	border: solid 2px rgb(140,0,152);
-	background: rgb(170,0,212);
-	border-radius: 10px;
-	float: left;
-	width: 140px;
-	font-size: 22px;
-	margin-left: 20px;
-}
-
-#find_issues {
-	padding: 14px 14px 14px 14px;
-	height: 80px;
-}
-
-#what_about {
-	padding: 27px 14px 14px 14px;
-	height: 65px;
-}
-
-.issue_preview .status_indicator {
-	float: left;
-	height: 80px;
-	width: 80px;
-	font-family: computerModern;
-	text-align: center;
-}
-
-.issue_preview .subscore {
-	font-size: 24px;
-	font-style: italic;
-	font-weight: bold;
-	color: rgb(120,120,120);
-}
-
-.issue_preview .score {
-	font-size: 24px;
-	font-style: italic;
-	font-weight: bold;
-	color: rgb(120,120,120);
-}
-
-.last_modified {
-	font-family: ubuntu;
-	color: rgb(120,120,120);
-}
-
-.info_line {
-	font-size: 14px;
-}
-
-#featured_issue {
-	width: 550px;
-}
-
-#trending {
-	width: 325px;
-}
-
 #outer_center_featured {
 	text-align: center;
 }
@@ -83,80 +6,51 @@ a.cta {
 	margin: auto;
 	text-align: left;
 	width: 960px;
+	max-width: 100%;
 }
 
-#featured_heading {
-	padding: 0 8px;
+#about h1 {
+	text-shadow: 1px 1px rgb(80,80,80);
+	font-size: 40px;
+	color: rgb(245,245,245);
+}
+
+#about h2 {
 	margin: 0;
 }
 
-#featured_issue, #trending {
-	float:left;
-	position: relative;
-	margin: 10px;
-	padding: 20px 10px 10px 10px;
+.feat{
+	border-radius: 10px;
+	max-width: 100%;
 }
 
-#trending_body, #featured_body {
-	margin: 10px 10px 10px 24px;
-	clear: both;
+#about{
 }
 
-.issue_info {
-	margin: 12px 0 0 0;
-}
-
-.issue_title {
-	margin: 0px;
-	padding: 0px;
-	font-size: 18px;
-	line-height: 1.2em;
-	display: inline;
-	font-family: computerModern;
-}
-
-.petition_title_div {
+#about_info {
+	width: 480px;
+	max-width: 100%;
 	float: left;
-	padding: 8px;
-	margin-left: 6px;
-	background: rgb(245, 245, 245);
 }
 
-.petition_preview {
-	margin: 6px 0 0 0;
+#cta {
+	text-align: center;
+	float: left;
+	width: 348px;
+	max-width: 100%;
+	margin: 60px 20px 0 20px;
+	padding: 40px;
 }
 
-.petition_preview .petition_title {
-	font-size: 18px;
-	margin: 0;
-	padding: 0;
-	width: 240px;
-}
-
-.petition_preview .petition_score {
-	font-size: 24px;
-	font-family: computerModern;
+#start_issue:link, #start_issue:visited, #start_issue:hover, 
+#start_issue:active {
+	display: block;
+	margin: auto;
+	padding: 16px;
+	background: white;
+	width: 120px;
+	color: green;
+	border-radius: 10px;
 	font-weight: bold;
-	font-style: italic;
+	font-size: 22px;
 }
-
-.issue_preview .q_icon {
-	margin: 0 0 -1px 3px;
-}
-
-.issue_preview {
-	font-family: computerModern;
-	font-size: 18px;
-}
-
-.issue_preview .preview_summary {
-	margin: 14px 0 14px 0;
-	text-align: justify;
-}
-
-.petition_score {
-	float: left;
-}
-
-#welcome {
-	margin: 20px 0 60px 0;

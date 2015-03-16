@@ -799,7 +799,7 @@ class Login(AbstractView):
 	# By default (if `next_url` is not set), send the user to the front page.
 	#
 	def view(self, *args, **kwargs):
-		next_url = kwargs.pop('next_url', reverse('mainPage'))
+		next_url = kwargs.pop('next_url', reverse('index'))
 		return super(Login, self).view(*args, next_url=next_url, **kwargs)
 
 
@@ -967,7 +967,7 @@ class AddProposalView(AbstractLoginRequiredView):
 		# Otherwise, make the context to dislpay the form
 
 		# Work out where the cancel button should point
-		cancel_url = reverse('mainPage')
+		cancel_url = reverse('index')
 		if 'HTTP_REFERER' in self.request.META:
 			cancel_url = self.request.META['HTTP_REFERER']
 
@@ -998,7 +998,7 @@ class AddProposalView(AbstractLoginRequiredView):
 			}
 		)
 
-		cancel_url = reverse('mainPage')
+		cancel_url = reverse('index')
 		if 'HTTP_REFERER' in self.request.META:
 			cancel_url = self.request.META['HTTP_REFERER']
 
@@ -1566,7 +1566,7 @@ def do_reload(request):
 
 class AllPetitionListView(object):
 	def view(self, request):
-		return mainPage(request)
+		return index(request)
 
 
 def what_about(request,sort_type='most_recent'):
@@ -1609,7 +1609,7 @@ def what_about(request,sort_type='most_recent'):
 #	)
 
 
-def mainPage(request,sort_type='most_recent'):
+def index(request,sort_type='most_recent'):
 
 	# get lists of issues
 	proposals = Proposal.objects.filter(language=request.LANGUAGE_CODE)
@@ -1805,7 +1805,7 @@ def resetPassword(request):
 				from_email=_('support@luminocracy.org')
 			)
 
-			return mainPage(request)
+			return index(request)
 
 	else:
 		pass_reset_form = ResetPasswordForm(endpoint=reverse('resetPassword'))

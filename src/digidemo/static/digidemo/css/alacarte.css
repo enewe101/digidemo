@@ -315,6 +315,7 @@ hr {
 .avatar_image_medium {
 	width: 56px;
 	height: 56px;
+	border-radius: 50%;
 }
 
 .avatar_mask_medium {
@@ -341,9 +342,10 @@ hr {
 
 
 .avatar_image_small {
-	margin-top: 6px;
+	margin-top: 4px;
 	height: 42px;
 	width: 42px;
+	border-radius: 50%;
 }
 
 .avatar_mask_small {

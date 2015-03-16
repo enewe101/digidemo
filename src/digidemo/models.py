@@ -348,6 +348,10 @@ class ProposalVersion(abstract_models.TimeStamped):
 		verbose_name=_('sectors'))
 	language = models.CharField(default='en-ca', max_length=5,
 		choices=LANGUAGES, verbose_name=_('language'))
+	proposal_image = models.ImageField(
+		upload_to='proposal_avatars',
+		default='/digidemo/proposal-images/',
+		verbose_name=_('issue image'));
 
 	class Meta:
 		verbose_name = _('issue version')
