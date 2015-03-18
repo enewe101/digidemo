@@ -1630,7 +1630,7 @@
     "is_active": true,
     "is_superuser": false,
     "is_staff": false,
-    "last_login": "2015-03-10T04:35:34Z",
+    "last_login": "2015-03-15T19:24:24Z",
     "groups": [],
     "user_permissions": [],
     "password": "pbkdf2_sha256$15000$J7jF0HE7SUue$lN7kjwGduL0zLApbd2fZWaX40cXBDVftStBM/WZMY6Y=",
@@ -1914,6 +1914,7 @@
       62,
       63
     ],
+    "proposal_image": "/digidemo/proposal-images/",
     "summary": "The Keystone XL Pipeline is a proposed extension to the existing Keystone Pipeline System, put forward by TransCanada, the corporation that owns the Keystone System. The pipeline would cross the Canada/US border, importing crude oil sourced from the Albertan oil sands, into the United States. The proposal is currently awaiting government approval. The pipeline would be newly constructed, and is similar to existing pipelines in North America.",
     "last_modified": "2015-02-26T23:34:06Z",
     "user": 2,
@@ -1936,6 +1937,7 @@
       64,
       65
     ],
+    "proposal_image": "/digidemo/proposal-images/",
     "summary": "Ceci n'est pas un R\u00e9sum\u00e9.",
     "last_modified": "2015-03-10T04:36:43Z",
     "user": 2,

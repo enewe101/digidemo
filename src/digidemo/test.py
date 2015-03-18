@@ -410,7 +410,7 @@ class EmailValidation(SeleniumTestCase):
 		self.click('LoginForm__submit')
 		self.assertEqual(
 			self.driver.current_url,
-			self.live_server_url + reverse('mainPage')
+			self.live_server_url + reverse('index')
 		)
 
 
@@ -1734,13 +1734,15 @@ class TestLogin(SeleniumTestCase):
 
 	def test_ajax_login(self):
 		# try logging in normally, this should work
-		self.go(reverse('mainPage'))
+		self.go(reverse('index'))
 		self.click('login_div')
 		self.puts({
 			'username': 'regularuser',
 			'password': 'regularuser'
 		})
 		self.click('submit_login')
+
+		time.sleep(100)
 
 		# The user's avatar should appear showing that the user is logged in
 		self.wait.until(lambda driver: self.find('logged_in_div'))
@@ -1749,7 +1751,7 @@ class TestLogin(SeleniumTestCase):
 	def test_ajax_login_email(self):
 
 		# try logging in using email, this should work
-		self.go(reverse('mainPage'))
+		self.go(reverse('index'))
 		self.click('login_div')
 		self.puts({
 			'username': 'regular@example.com',
@@ -1764,7 +1766,7 @@ class TestLogin(SeleniumTestCase):
 	def test_ajax_login_incorrect(self):
 
 		# try leaving username blank
-		self.go(reverse('mainPage'))
+		self.go(reverse('index'))
 		self.click('login_div')
 		self.puts({
 			#'username': 'regular@example.com',
@@ -1784,7 +1786,7 @@ class TestLogin(SeleniumTestCase):
 		self.assertNotFound('logged_in_div')
 
 		# try leaving username blank
-		self.go(reverse('mainPage'))
+		self.go(reverse('index'))
 		self.click('login_div')
 		self.puts({
 			'username': 'regularuser',
@@ -1804,7 +1806,7 @@ class TestLogin(SeleniumTestCase):
 		self.assertNotFound('logged_in_div')
 
 		# try submitting incorrect credentials
-		self.go(reverse('mainPage'))
+		self.go(reverse('index'))
 		self.click('login_div')
 		self.puts({
 			'username': 'regularuser',
@@ -1837,7 +1839,7 @@ class TestLogin(SeleniumTestCase):
 		# We should have been redirected to the home page
 		self.assertEqual(
 			self.driver.current_url,
-			self.full_url(reverse('mainPage'))
+			self.full_url(reverse('index'))
 		)
 
 		# The logged in div should be shown at upper right of the status bar
@@ -1856,7 +1858,7 @@ class TestLogin(SeleniumTestCase):
 		# We should have been redirected to the home page
 		self.assertEqual(
 			self.driver.current_url,
-			self.full_url(reverse('mainPage'))
+			self.full_url(reverse('index'))
 		)
 
 		# The logged in div should be shown at upper right of the status bar
@@ -2567,6 +2569,27 @@ class PublishSubscribeTest(FixtureLoadedTestCase):
 		)
 
 
+
+
+
+from django.contrib.auth import authenticate
+
+class NewTest(FixtureLoadedTestCase):
+
+	def test_users(self):
+
+		# try to authenticate the user
+		username='regularuser'
+		password='regularuser'
+
+		user = authenticate(
+			username=username,
+			password=password
+		)
+
+		print type(user)
+
+		self.assertTrue(False)
 
 
 

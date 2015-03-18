@@ -23,7 +23,7 @@ def mkdir_p(path):
 # make some absolute paths that are needed
 manage_command = os.path.join(settings.BASE_DIR, 'manage.py')
 fixtures_dir = os.path.join(settings.BASE_DIR, 'digidemo/fixtures')
-fixture_fname = os.path.join(fixtures_dir, 'test_fixture.json')
+fixture_fname = os.path.join(fixtures_dir, 'test_data.json')
 
 # be sure the fixtures dir exists and open the file for writing
 mkdir_p(fixtures_dir)
