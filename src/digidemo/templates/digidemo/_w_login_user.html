@@ -218,27 +218,11 @@
 
 						<div class="chebyshev"></div>
 
-						<form id="login_form">
-							<div id="ajax_login_error"></div>
-							<label for="username">
-								{% trans "Email or username" %}
-							</label><br/>
-							<input class='text_input' id="username" type="text"
-							name="username" placeholder="{% trans "you" %}@example.com" />
-
-								<label for="password">
-									{% trans "Password" %}
-								</label><br/>
-							<input class='text_input' id="password" type="password"
-							name="password" placeholder="{% trans "super-secret" %}" />
-
-							<input type="button" id="submit_login" 
-								value="{% trans "Log in" %}" />
-								<a id="forgot_link" 
-									href="{% url "resetPassword" %}">
-									{% trans "forgot?" %}
-								</a>
-						</form>
+						{% include "digidemo/_w_login_form.html" with form=GLOBALS.LOGIN_FORM %}
+						<a id="forgot_link" 
+							href="{% url "resetPassword" %}">
+							{% trans "forgot?" %}
+						</a>
 					</div>
 				</div>
 
@@ -258,8 +242,16 @@
 
 			var login_div = $('#login_div');
 			var login_form_div = $('#login_form_div');
-			var login_username = $('#username');
-			var login_password = $('#password');
+
+			var login_form_class = '{{ GLOBALS.LOGIN_FORM.form_class}}';
+			var login_prefix_id = '{{ GLOBALS.LOGIN_FORM.id_prefix }}';
+			var login_form_id = login_form_class + '_' + login_prefix_id;
+
+			var login_submit = $('#' + login_form_id + '_submit');
+			var login_errors = $('#' + login_form_id + '_errors');
+			var login_username = $('#' + login_form_id + '_username');
+			var login_password = $('#' + login_form_id + '_password');
+
 
 			// clicking in the login form doesn't bubble up to be a 
 			// click on the login_div
@@ -305,26 +297,23 @@
 				})
 			});
 
-			// register the login form as an ajax form widget
-			register_form('login_form', 'ajax_login', 'login_form', 'submit_login')
 
-			// This makes the login failed message clear (if it was already showing)
 			// upon next submission
-			$('#submit_login').click(function() {
-				$('#ajax_login_error').html('');
+			login_submit.click(function() {
+				login_errors.html('');
 			});
 
 			// make it so that hitting the enter key submits the ajax login form
-			$('#username').keydown(function(e){
+			login_username.keydown(function(e){
 				if(e.which == 13) {
-					$('#ajax_login_error').html('');
-					widgets['login_form'].widget.submit();
+					login_errors.html('');
+					widgets[login_form_id].widget.submit();
 				}
 			});
-			$('#password').keydown(function(e){
+			login_password.keydown(function(e){
 				if(e.which == 13) {
-					$('#ajax_login_error').html('');
-					widgets['login_form'].widget.submit();
+					login_password.html('');
+					widgets[login_form_id].widget.submit();
 				}
 			});
 
@@ -339,16 +328,14 @@
 
 			// define a callback to be executed when login fails
 			var login_error_callback = function(data) {
-				$('#ajax_login_error').html(
-				'<span class="form_errors">'
-					+ "{% trans "Incorrect username or password" %}"
-				+ '<span>');
+				login_errors.html(
+					"{% trans "Incorrect username or password" %}");
 			}
 
 			// bind the callbacks to the login widget
 			$(document).ready(function(){
-				widgets['login_form'].widget.hook('success', login_success_callback);
-				widgets['login_form'].widget.hook('error', login_error_callback);
+				widgets[login_form_id].widget.hook('success', login_success_callback);
+				widgets[login_form_id].widget.hook('error', login_error_callback);
 			});
 
 		})();

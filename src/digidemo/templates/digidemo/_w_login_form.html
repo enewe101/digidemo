@@ -1,0 +1,52 @@
+{% load i18n %}
+{% block ajax_form_form %}
+	<form class="{{ form.form_class}}" 
+		id="{{ form.form_class }}_{{ form.id_prefix }}">
+
+		{% csrf_token %}
+
+		<div class="form_errors"
+			id="{{form.form_class}}_{{form.id_prefix}}_errors">
+		</div>
+
+		{% for hidden in form.hidden_fields %}
+			{{ hidden }}
+		{% endfor %}
+
+			<div class="form_line">
+				<div class="field_errors" 
+					id="{{form.username.id_for_label}}_errors"></div>
+				<label for="{{ form.username.id_for_label }}">
+					{% trans "username or email" %}:
+				</label>
+				{{ form.username }}
+			</div>
+
+			<div class="form_line">
+				<div class="field_errors" 
+					id="{{form.username.id_for_label}}_errors"></div>
+				{{ form.password.label_tag }}
+				{{ form.password }}
+			</div>
+
+		<input id="{{ form.form_class}}_{{ form.id_prefix }}_submit" 
+		class="submit" type="button" value="{% trans "log in" %}" />
+	</form>
+{% endblock ajax_form_form %}
+
+{% block ajax_form_script %}
+<!-- arm the submit button to submit the form to an ajax endpoint -->
+<script type="text/javascript">
+
+(function(){
+	register_form(
+		'{{ form.form_class}}_{{ form.id_prefix }}',
+		'{{ form.endpoint }}',
+		'{{ form.form_class}}',
+		'{{ form.form_class}}_{{ form.id_prefix }}_submit'
+	);
+}());
+
+</script>
+{% endblock ajax_form_script %}
+

@@ -264,7 +264,8 @@ def get_globals(request):
 		'IS_USER_AUTHENTICATED': request.user.is_authenticated(),
 		'IS_EMAIL_VALIDATED': email_validated,
 		'USER': request.user,
-		'FEEDBACK_FORM': FeedbackForm()
+		'FEEDBACK_FORM': FeedbackForm(),
+		'LOGIN_FORM': LoginForm(id_prefix='header')
 	}
 
 	if request.user.is_authenticated():

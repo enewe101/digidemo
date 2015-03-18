@@ -1735,10 +1735,10 @@ class TestLogin(SeleniumTestCase):
 		self.go(reverse('index'))
 		self.click('login_div')
 		self.puts({
-			'username': 'regularuser',
-			'password': 'regularuser'
+			'LoginForm_header_username': 'regularuser',
+			'LoginForm_header_password': 'regularuser'
 		})
-		self.click('submit_login')
+		self.click('LoginForm_header_submit')
 
 		# The user's avatar should appear showing that the user is logged in
 		self.wait.until(lambda driver: self.find('logged_in_div'))
@@ -1750,10 +1750,10 @@ class TestLogin(SeleniumTestCase):
 		self.go(reverse('index'))
 		self.click('login_div')
 		self.puts({
-			'username': 'regular@example.com',
-			'password': 'regularuser'
+			'LoginForm_header_username': 'regular@example.com',
+			'LoginForm_header_password': 'regularuser'
 		})
-		self.click('submit_login')
+		self.click('LoginForm_header_submit')
 
 		# The user's avatar should appear showing that the user is logged in
 		self.wait.until(lambda driver: self.find('logged_in_div'))
@@ -1766,15 +1766,15 @@ class TestLogin(SeleniumTestCase):
 		self.click('login_div')
 		self.puts({
 			#'username': 'regular@example.com',
-			'password': 'regularuser'
+			'LoginForm_header_password': 'regularuser'
 		})
-		self.click('submit_login')
+		self.click('LoginForm_header_submit')
 
 		# An error message should display
 		self.assertTrue(
 			self.wait.until( lambda driver: 
 				'Incorrect username or password' in
-				self.find('ajax_login_error').text
+				self.find('LoginForm_header_errors').text
 			)
 		)
 
@@ -1785,16 +1785,16 @@ class TestLogin(SeleniumTestCase):
 		self.go(reverse('index'))
 		self.click('login_div')
 		self.puts({
-			'username': 'regularuser',
+			'LoginForm_header_username': 'regularuser',
 			#'password': 'regularuser'
 		})
-		self.click('submit_login')
+		self.click('LoginForm_header_submit')
 
 		# An error message should display
 		self.assertTrue(
 			self.wait.until( lambda driver: 
 				'Incorrect username or password' in
-				self.find('ajax_login_error').text
+				self.find('LoginForm_header_errors').text
 			)
 		)
 
@@ -1805,16 +1805,16 @@ class TestLogin(SeleniumTestCase):
 		self.go(reverse('index'))
 		self.click('login_div')
 		self.puts({
-			'username': 'regularuser',
-			'password': 'wrong_password'
+			'LoginForm_header_username': 'regularuser',
+			'LoginForm_header_password': 'wrong_password'
 		})
-		self.click('submit_login')
+		self.click('LoginForm_header_submit')
 
 		# An error message should display
 		self.assertTrue(
 			self.wait.until( lambda driver: 
 				'Incorrect username or password' in
-				self.find('ajax_login_error').text
+				self.find('LoginForm_header_errors').text
 			)
 		)
 

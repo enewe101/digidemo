@@ -250,9 +250,8 @@ body {
 	border-radius: 6px;
 	display: none;
 	background: white;
-	width: 168px;
 	text-align: left;
-	padding: 8px;
+	padding: 16px;
 	z-index: 1000;
 	color: black;
 }
@@ -312,34 +311,23 @@ body {
 	background: green;
 }
 
-#submit_login {
+#LoginForm_header_submit {
 	height: 36px;
 	border: solid 1px black;
 	border-radius: 3px;
 	background: rgb(250, 250, 250);
-	margin: 4px 12px 4px 4px;
+	margin: 4px 12px 4px 0;
+	font-size: 16px;
+	float:left;
 }
 
-#login_form_div .text_input, #submit_login {
-	padding: 0 4px 0 4px;
-	font-size: 16px;
-	font-family: ubuntu;
-}
 
 #forgot_link {
-	display: inline;
-}
-
-#login_form_div .text_input {
-	height: 34px;
-	border: solid 1px black;
-	border-radius: 3px;
-	background: rgb(250, 250, 250);
-	width: 150px;
-	margin: 4px;
-	padding: 0 4px 0 4px;
+	display: block;
+	float: left;
+	margin: 4px 12px 4px 0;
 	font-size: 16px;
-	font-family: ubuntu;
+	padding-top: 8px;
 }
 
 input[type="submit"] {
@@ -355,6 +343,21 @@ input[type="submit"] {
 input[type="text"], input[type="password"], input[type="email"] {
 	height: 34px;
 	width: 200px;
+	border: solid 1px black;
+	background: rgb(250,250,250);
+	border-radius: 3px;
+	font-size: 16px;
+	font-family: ubuntu;
+	padding: 0 4px 0 4px;
+	opacity: 0.8;
+	filter: alpha(opacity=80); /* For IE8 and earlier */
+}
+
+#login_form_div input[type="text"],
+#login_form_div input[type="password"],
+#login_form_div input[type="email"] {
+	height: 34px;
+	width: 160px;
 	border: solid 1px black;
 	background: rgb(250,250,250);
 	border-radius: 3px;
@@ -383,6 +386,11 @@ input[type="text"], input[type="password"], input[type="email"] {
 	bottom: 6px;
 }
 
+#logged_in_menu {
+	width: 120px;
+}
+
+
 .header_menu {
 	position: absolute;
 	top: 0;
@@ -390,7 +398,6 @@ input[type="text"], input[type="password"], input[type="email"] {
 	border: solid 2px black;
 	border-radius: 6px;
 	display: none;
-	width: 120px;
 	text-align: left;
 	padding: 4px;
 	background: white;
