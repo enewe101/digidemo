@@ -1482,12 +1482,10 @@ class AddProposalTest(ProposalFormTest):
 		print 'opp_code', opp_code
 
 		self.go(url_patch_lang('', language_code))
-		time.sleep(3)
 
 		self.assertTrue(self.values[0] in self.find('trending').text)
 
 		self.go(url_patch_lang('', opp_code))
-		time.sleep(3)
 
 		self.assertFalse(self.values[0] in self.find('trending').text)
 
@@ -1741,8 +1739,6 @@ class TestLogin(SeleniumTestCase):
 			'password': 'regularuser'
 		})
 		self.click('submit_login')
-
-		time.sleep(100)
 
 		# The user's avatar should appear showing that the user is logged in
 		self.wait.until(lambda driver: self.find('logged_in_div'))
