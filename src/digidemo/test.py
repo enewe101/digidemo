@@ -1,31 +1,67 @@
 # TODO: remove classmethod decorators from SeleniumTestCase
 
+import filecmp
+import os
 import json
 import time
 import copy
 import unittest
+from urlparse import urljoin
+
 from django.core.urlresolvers import reverse
 from django.core.files import File
 from django.core import mail
 from django.test import TestCase, LiveServerTestCase
 from django.utils.html import escape
+
 from digidemo import settings, markdown as md
 from digidemo.models import *
 from digidemo.abstract_models import *
 from digidemo.views import get_notification_message
-from digidemo.shortcuts import get_profile
-from selenium import webdriver
-from selenium.common.exceptions import TimeoutException
+from digidemo.shortcuts import get_profile, url_patch_lang
+
+
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.select import Select
 from selenium.webdriver.common.by import By
 from selenium.common.exceptions import NoSuchElementException
+
 from selenium.webdriver.common.keys import Keys
 import filecmp
 import os
 
+
+#def patch_broken_pipe_error():
+#    """Monkey Patch BaseServer.handle_error to not write
+#    a stacktrace to stderr on broken pipe.
+#    http://stackoverflow.com/a/7913160"""
+#    import sys
+#    from SocketServer import BaseServer
+#
+#    handle_error = BaseServer.handle_error
+#
+#    def my_handle_error(self, request, client_address):
+#        type, err, tb = sys.exc_info()
+#        # there might be better ways to detect the specific erro
+#        if repr(err) == "error(32, 'Broken pipe')":
+#            # you may ignore it...
+#            logging.getLogger('mylog').warn(err)
+#        else:
+#            handle_error(self, request, client_address)
+#
+#    BaseServer.handle_error = my_handle_error
+#
+#
+#patch_broken_pipe_error()
+
+
+
 REG_USERNAME = 'regularuser'
+
+class FixtureLoadedTestCase(TestCase):
+	fixtures = ['test_data']
+
 
 def pyWait(predicate, timeout=3, period=0.15):
 
@@ -79,14 +115,19 @@ class SeleniumTestCase(LiveServerTestCase):
 		how to use WebDriver and WebDriverWait
 	'''
 
-	fixtures = ['test_fixture']
+	fixtures = ['test_data']
 
 	LIVE_SERVER_URL = 'localhost:8081'
 
 	@classmethod
 	def setUpClass(cls):
 		cls.driver = webdriver.Firefox()
-		cls.wait = WebDriverWait(cls.driver, 3)
+
+
+
+
+		cls.wait = WebDriverWait(cls.driver, 3)	
+
 		super(SeleniumTestCase, cls).setUpClass()
 
 	@classmethod
@@ -147,14 +188,25 @@ class SeleniumTestCase(LiveServerTestCase):
 	#
 	@classmethod
 	def full_url(cls, url_without_domain):
-		return 'http://' + cls.get_live_server_url() + url_without_domain
+
+		base_url = 'http://' + cls.get_live_server_url()
+		full_url = urljoin(base_url, url_without_domain)
+
+		return full_url
 
 	# go to a url under the luminocracy domain.  The passed url should
 	# not have the domain, e.g., should be like those returned by reverse()
 	#
 	@classmethod
 	def go(cls, url_without_domain):
-		cls.driver.get(cls.get_live_server_url() + url_without_domain)
+		'''
+			using a url without a domain, and an optional language code
+			constructs the full url.  If no language code is specified, 
+			english will be forced.
+		'''
+
+		full_url = cls.full_url(url_without_domain)
+		cls.driver.get(full_url)
 
 
 	# Checks that an element with a given id *does not exist* on the page
@@ -1379,14 +1431,21 @@ class ProposalFormTest(FormTest):
 	TAGS_ERROR_ID = 'proposal_tags_errors'
 	TAGS_ERROR_MSG = 'Please include at least one tag.'
 
-	def test_edit_proposal(self):
+	def test_edit_proposal_english(self):
+		self.do_edit_proposal('en-ca')
+
+	def test_edit_proposal_french(self):
+		self.do_edit_proposal('fr-ca')
+
+	def do_edit_proposal(self, language_code='en-ca'):
 
 		self.login_regularuser()
 
 		expected_id = self.expect_proposal_id()
 
 		# Go to the edit page for a test proposal
-		self.driver.get(self.get_url())
+		self.driver.get(self.get_url(language_code))
+		self.assertTrue(language_code, self.driver.current_url)
 
 		# Fill and submit the form with valid data
 		self.fill_form(self.form_data)
@@ -1411,8 +1470,14 @@ class ProposalFormTest(FormTest):
 		]
 		self.check_db(
 			expected_id, *self.values, username=self.username,
-			tags=self.TEST_TAGS, sectors=sectors,
-			event_type=self.EVENT_TYPE
+
+
+
+
+			tags=self.TEST_TAGS, sectors=sectors, 
+			event_type=self.EVENT_TYPE,
+			language=language_code
+
 		)
 
 
@@ -1516,9 +1581,18 @@ class ProposalFormTest(FormTest):
 			self.escape_text, self.escape_text, self.username,
 				self.TEST_TAGS, sectors, self.EVENT_TYPE)
 
-	def get_url(self):
-		return (self.live_server_url
-			+ Proposal.objects.get(pk=self.expect_proposal_id).get_edit_url())
+
+
+
+
+
+	def get_url(self, language_code='en-ca'):
+		edit_url = url_patch_lang(
+			Proposal.objects.get(pk=self.expect_proposal_id).get_edit_url(),
+			language_code
+		)
+		return self.full_url(edit_url)
+
 
 
 	def expect_proposal_id(self):
@@ -1534,7 +1608,8 @@ class ProposalFormTest(FormTest):
 			username,
 			tags,
 			sectors,
-			event_type
+			event_type,
+			language='en-ca'
 		):
 
 		proposal = Proposal.objects.get(title=title)
@@ -1568,8 +1643,13 @@ class ProposalFormTest(FormTest):
 		)
 		self.assertEqual(p.was_posted, False)
 		self.assertEqual(p.event_data, proposal.text[:100])
-		self.assertEqual(p.link_back,
-			proposal.get_url_by_view_name('proposal'))
+
+
+
+
+		self.assertEqual(p.link_back, url_patch_lang(
+			proposal.get_url_by_view_name('proposal'), language))
+
 
 		# Check if a Publication was made against the tags
 		tag_names = tags.split()
@@ -1578,30 +1658,7 @@ class ProposalFormTest(FormTest):
 			Tag.objects.get(name=tag_names[1])
 		]
 
-		# TODO: restore publish-subscribe system after making changes to it
 
-		#for tag in tag_objects:
-
-		#	p = Publication.objects.get(
-		#		subscription_id=tag.subscription_id,
-		#		source_user=user,
-		#		event_type=event_type
-		#	)
-		#	self.assertEqual(p.was_posted, False)
-		#	self.assertEqual(p.event_data, proposal.text[:100])
-		#	self.assertEqual(p.link_back,
-		#		proposal.get_url_by_view_name('proposal'))
-
-		#for sector in sectors:
-		#	# Check if a Publication was made against the sector
-		#	p = Publication.objects.get(
-		#		subscription_id=sector.subscription_id,
-		#		source_user=user,
-		#		event_type=event_type,
-		#		was_posted=False,
-		#		event_data=proposal.text[:100],
-		#		link_back=proposal.get_url_by_view_name('proposal')
-		#	)
 
 
 class AddProposalTest(ProposalFormTest):
@@ -1610,11 +1667,30 @@ class AddProposalTest(ProposalFormTest):
 	REASON = 'AUTHOR'
 	EVENT_TYPE = 'ISSUE'
 
-	def get_url(self):
-		return self.live_server_url + reverse('add_proposal')
+	def get_url(self, language_code='en-ca'):
+		add_url = url_patch_lang(reverse('add_proposal'), language_code)
+		return self.full_url(add_url)
 
 	def expect_proposal_id(self):
 		return Proposal.objects.all().count() + 1
+
+	def do_edit_proposal(self, language_code='en-ca'):
+
+		super(AddProposalTest, self).do_edit_proposal(language_code)
+
+		opp_code = 'fr-ca' if language_code == 'en-ca' else 'en-ca'
+		print 'opp_code', opp_code
+
+		self.go(url_patch_lang('', language_code))
+		time.sleep(3)
+
+		self.assertTrue(self.values[0] in self.find('trending').text)
+
+		self.go(url_patch_lang('', opp_code))
+		time.sleep(3)
+
+		self.assertFalse(self.values[0] in self.find('trending').text)
+
 
 
 
@@ -1635,7 +1711,7 @@ class VoteTest(SeleniumTestCase):
 			'url': url
 		}
 
-		self.vote_test(**vote_spec)
+		self.do_vote(**vote_spec)
 
 
 	def test_answer_vote(self):
@@ -1648,7 +1724,7 @@ class VoteTest(SeleniumTestCase):
 			'url': url
 		}
 
-		self.vote_test(**vote_spec)
+		self.do_vote(**vote_spec)
 
 
 	def test_discussion_vote(self):
@@ -1661,7 +1737,7 @@ class VoteTest(SeleniumTestCase):
 			'url': url
 		}
 
-		self.vote_test(**vote_spec)
+		self.do_vote(**vote_spec)
 
 
 	def test_reply_vote(self):
@@ -1674,7 +1750,7 @@ class VoteTest(SeleniumTestCase):
 			'url': url
 		}
 
-		self.vote_test(**vote_spec)
+		self.do_vote(**vote_spec)
 
 
 	def get_elements(self):
@@ -1702,7 +1778,7 @@ class VoteTest(SeleniumTestCase):
 		return (is_up_on, is_down_on, state, score)
 
 
-	def vote_test(self, up_id, score_id, down_id, url):
+	def do_vote(self, up_id, score_id, down_id, url):
 
 		self.up_id = up_id
 		self.score_id = score_id
@@ -1775,7 +1851,7 @@ class VoteTest(SeleniumTestCase):
 
 
 
-class TestNotificationMessage(TestCase):
+class TestNotificationMessage(FixtureLoadedTestCase):
 	EXPECTED_MESSAGES = [
 		"superuser started an issue in a topic you're watching",
 		"superuser started an issue in a topic you're watching",
@@ -2049,7 +2125,28 @@ class TestLogin(SeleniumTestCase):
 		self.assertNotFound('logged_in_div')
 
 
-class TestLoginRequired(TestCase):
+
+class TestIssueLang(SeleniumTestCase):
+
+	def test_french_issues(self):
+		# go to main page, in french
+		self.go(url_patch_lang('', 'fr-ca'))
+		self.assertFalse(
+			'Keystone XL Pipeline Extension' in self.find('trending').text)
+		self.assertTrue(
+			'Ceci n\'est pas un titre' in self.find('trending').text)
+
+
+	def test_english_issues(self):
+		# go to main page, in english
+		self.go(url_patch_lang('', 'en-ca'))
+		self.assertTrue(
+			'Keystone XL Pipeline Extension' in self.find('trending').text)
+		self.assertFalse(
+			'Ceci n\'est pas un titre' in self.find('trending').text)
+
+
+class TestLoginRequired(FixtureLoadedTestCase):
 	'''
 	Attempts to perform requests and POSTs that require login, without
 	actually logging in, and verifies that these do not work.
@@ -2095,9 +2192,10 @@ class TestLoginRequired(TestCase):
 			{
 				'title': 'Test title',
 				'summary': 'test summary',
-				'text': 'Test proposal text',
-				'user': 1,
-				'tags': 'tag1,tag2'
+				'text': 'Test proposal text', 
+				'user': 1, 
+				'tags': 'tag1,tag2',
+				'language': 'en-ca'
 			},
 			Proposal
 		),
@@ -2106,9 +2204,10 @@ class TestLoginRequired(TestCase):
 			{
 				'title': 'Test title edited',
 				'summary': 'test summary',
-				'text': 'Test proposal text',
-				'user': 1,
-				'tags': 'tag1,tag2'
+				'text': 'Test proposal text', 
+				'user': 1, 
+				'tags': 'tag1,tag2',
+				'language': 'en-ca'
 			},
 			Proposal
 		),
@@ -2235,10 +2334,13 @@ class TestLoginRequired(TestCase):
 		# to the login page, and the object will be added to the database.
 		for view_name, kwargs, post_data, post_class in self.login_post_views:
 
+			print view_name
+
 			self.client.login(
 				username='superuser', password='superuser')
 
 			url = reverse(view_name, kwargs=kwargs)
+
 			response = self.client.post(url, post_data, follow=True)
 
 			# verify we got redirected
@@ -2248,7 +2350,7 @@ class TestLoginRequired(TestCase):
 			def func():
 				post_class.objects.get(title=post_data['title'])
 
-			# since posting would have failed, the object should not exist
+			# since posting would have succeeded, the object should exist
 			self.assertEqual(
 				post_class.objects.filter(title=post_data['title']).count(),
 				1
@@ -2365,8 +2467,17 @@ class TestLoginRequired(TestCase):
 
 
 	def assert_was_not_redirected_to_login(self, request):
+
+		login_required_url_fragment = reverse('login_required')
+
+		# pull the urls out of the redirect chain
+		redirect_urls = [r[0] for r in request.redirect_chain]
+
+		# Ensure login_required_url_fragment isn't within any part of the
+		# redirect chain
 		self.assertFalse(
-			reverse('login_required') in request.redirect_chain[-1][0])
+			any([login_required_url_fragment in r for r in redirect_urls])
+		)
 
 	def assert_was_redirected_to_login(self, request):
 		self.assertTrue(
@@ -2415,7 +2526,7 @@ class TestLoginRequired(TestCase):
 		self.assertEqual(reply_data['msg'], "user did not authenticate")
 
 
-class PublishSubscribeTest(TestCase):
+class PublishSubscribeTest(FixtureLoadedTestCase):
 	'''
 		Tests that creating various subscribable objects always leads
 		to two things:
@@ -2427,13 +2538,13 @@ class PublishSubscribeTest(TestCase):
 			new Question
 
 		For most kinds of subsrcibable objects, the tests that need to
-		be run are pretty formulaic.  So, a helper function,
-		do_subscribable_test, is used.  The tests that match this formula
-		can be defined by a few args passed into do_subscribable_test.
+		be run are pretty formulaic.  So, a helper function, 
+		do_subscribable, is used.  The tests that match this formula
+		can be defined by a few args passed into do_subscribable.
 		That goes for testing questions, comments, letters, etc.
 
 		But testing Proposals is a bit more complex so it is done in its
-		own test routine, different from do_subscribable_test.
+		own test routine, different from do_subscribable.
 	'''
 
 	# TODO: implement these three tests
@@ -2520,7 +2631,7 @@ class PublishSubscribeTest(TestCase):
 		question_author = User.objects.get(username='superuser')
 		title = 'Question about publications'
 		text = 'Hey, will this trigger a publication like it should?'
-		self.do_subscribable_test(
+		self.do_subscribable(
 			proposal,
 			Question,
 			{
@@ -2539,7 +2650,7 @@ class PublishSubscribeTest(TestCase):
 		text = 'Hey, will this trigger a publication like it should?'
 		valence = '1'
 		proposal = Proposal.objects.get(pk=1)
-		self.do_subscribable_test(
+		self.do_subscribable(
 			proposal,
 			Letter,
 			{
@@ -2563,7 +2674,7 @@ class PublishSubscribeTest(TestCase):
 		text = 'Hey, will this trigger a publication like it should?'
 		for target_class, notifier_class, event_type in classes:
 			target = target_class.objects.get(pk=1)
-			self.do_subscribable_test(
+			self.do_subscribable(
 				target,
 				notifier_class,
 				{
@@ -2586,7 +2697,7 @@ class PublishSubscribeTest(TestCase):
 		text = 'Hey, will this trigger a publication like it should?'
 		for target_class, notifier_class, event_type in classes:
 			target = target_class.objects.get(pk=1)
-			self.do_subscribable_test(
+			self.do_subscribable(
 				target,
 				notifier_class,
 				{
@@ -2612,7 +2723,7 @@ class PublishSubscribeTest(TestCase):
 		for target_class, comment_class in classes:
 			target = target_class.objects.get(pk=1)
 			text = 'Yo this is a test comment!'
-			self.do_subscribable_test(
+			self.do_subscribable(
 				target,
 				comment_class,
 				{
@@ -2624,10 +2735,10 @@ class PublishSubscribeTest(TestCase):
 			)
 
 
-	def do_subscribable_test(
-			self,
-			target,
-			subscribable_class,
+	def do_subscribable(
+			self, 
+			target, 
+			subscribable_class, 
 			subscribable_constructor_args,
 			subscribable_author,
 			event_type,
@@ -2660,7 +2771,7 @@ class PublishSubscribeTest(TestCase):
 
 
 
-class UserProfileTest(TestCase):
+class UserProfileTest(FixtureLoadedTestCase):
 	'''
 	Tests the user profile model object.  This makes sure that avatar images
 	are saved to the correct folder and are properly copied

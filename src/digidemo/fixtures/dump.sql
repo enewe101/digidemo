@@ -620,7 +620,7 @@ CREATE TABLE `digidemo_letter_recipients` (
   KEY `digidemo_letter_recipients_1f456125` (`position_id`),
   CONSTRAINT `letter_id_refs_id_72f69299` FOREIGN KEY (`letter_id`) REFERENCES `digidemo_letter` (`id`),
   CONSTRAINT `position_id_refs_id_0e734fb2` FOREIGN KEY (`position_id`) REFERENCES `digidemo_position` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=20 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=27 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -629,7 +629,7 @@ CREATE TABLE `digidemo_letter_recipients` (
 
 LOCK TABLES `digidemo_letter_recipients` WRITE;
 /*!40000 ALTER TABLE `digidemo_letter_recipients` DISABLE KEYS */;
-REPLACE INTO `digidemo_letter_recipients` (`id`, `letter_id`, `position_id`) VALUES (1,1,1),(14,51,1),(15,52,1),(16,53,1),(17,54,1),(18,55,1),(19,56,1);
+REPLACE INTO `digidemo_letter_recipients` (`id`, `letter_id`, `position_id`) VALUES (20,1,1),(21,51,1),(22,52,1),(23,53,1),(24,54,1),(25,55,1),(26,56,1);
 /*!40000 ALTER TABLE `digidemo_letter_recipients` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -882,7 +882,7 @@ CREATE TABLE `digidemo_proposal_sectors` (
   KEY `digidemo_proposal_sectors_663ed8c9` (`sector_id`),
   CONSTRAINT `proposal_id_refs_id_800c990c` FOREIGN KEY (`proposal_id`) REFERENCES `digidemo_proposal` (`id`),
   CONSTRAINT `sector_id_refs_id_0005c07d` FOREIGN KEY (`sector_id`) REFERENCES `digidemo_sector` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=127 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=140 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -891,7 +891,7 @@ CREATE TABLE `digidemo_proposal_sectors` (
 
 LOCK TABLES `digidemo_proposal_sectors` WRITE;
 /*!40000 ALTER TABLE `digidemo_proposal_sectors` DISABLE KEYS */;
-REPLACE INTO `digidemo_proposal_sectors` (`id`, `proposal_id`, `sector_id`) VALUES (18,1,1),(19,1,2),(20,1,6),(24,28,1),(25,28,6),(26,28,8),(48,29,6),(49,29,7),(50,29,8),(123,30,5),(124,30,6),(125,30,7),(126,30,8);
+REPLACE INTO `digidemo_proposal_sectors` (`id`, `proposal_id`, `sector_id`) VALUES (127,1,1),(128,1,2),(129,1,6),(130,28,1),(132,28,6),(131,28,8),(135,29,6),(134,29,7),(133,29,8),(137,30,5),(139,30,6),(138,30,7),(136,30,8);
 /*!40000 ALTER TABLE `digidemo_proposal_sectors` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -912,7 +912,7 @@ CREATE TABLE `digidemo_proposal_tags` (
   KEY `digidemo_proposal_tags_5659cca2` (`tag_id`),
   CONSTRAINT `proposal_id_refs_id_b71410b6` FOREIGN KEY (`proposal_id`) REFERENCES `digidemo_proposal` (`id`),
   CONSTRAINT `tag_id_refs_id_e1334569` FOREIGN KEY (`tag_id`) REFERENCES `digidemo_tag` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=113 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=127 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -921,7 +921,7 @@ CREATE TABLE `digidemo_proposal_tags` (
 
 LOCK TABLES `digidemo_proposal_tags` WRITE;
 /*!40000 ALTER TABLE `digidemo_proposal_tags` DISABLE KEYS */;
-REPLACE INTO `digidemo_proposal_tags` (`id`, `proposal_id`, `tag_id`) VALUES (21,1,21),(20,1,79),(22,1,80),(27,28,81),(28,28,82),(29,28,83),(30,28,84),(52,29,47),(53,29,85),(54,29,86),(109,30,86),(110,30,87),(111,30,88),(112,30,89);
+REPLACE INTO `digidemo_proposal_tags` (`id`, `proposal_id`, `tag_id`) VALUES (114,1,21),(115,1,79),(113,1,80),(118,28,81),(116,28,82),(117,28,83),(119,28,84),(120,29,47),(122,29,85),(121,29,86),(125,30,86),(126,30,87),(123,30,88),(124,30,89);
 /*!40000 ALTER TABLE `digidemo_proposal_tags` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -976,7 +976,7 @@ CREATE TABLE `digidemo_proposalversion_sectors` (
   KEY `digidemo_proposalversion_sectors_663ed8c9` (`sector_id`),
   CONSTRAINT `proposalversion_id_refs_id_fc6cba85` FOREIGN KEY (`proposalversion_id`) REFERENCES `digidemo_proposalversion` (`id`),
   CONSTRAINT `sector_id_refs_id_85ea46f5` FOREIGN KEY (`sector_id`) REFERENCES `digidemo_sector` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=149 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=281 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -985,7 +985,7 @@ CREATE TABLE `digidemo_proposalversion_sectors` (
 
 LOCK TABLES `digidemo_proposalversion_sectors` WRITE;
 /*!40000 ALTER TABLE `digidemo_proposalversion_sectors` DISABLE KEYS */;
-REPLACE INTO `digidemo_proposalversion_sectors` (`id`, `proposalversion_id`, `sector_id`) VALUES (1,44,1),(2,44,5),(3,45,1),(4,45,5),(5,46,1),(6,46,5),(7,47,1),(8,47,5),(9,48,1),(10,48,5),(11,49,1),(13,49,5),(12,49,8),(22,57,1),(24,57,5),(23,57,8),(31,62,1),(33,62,5),(32,62,8),(35,71,2),(36,73,1),(37,75,1),(38,76,1),(40,90,1),(41,90,2),(42,90,6),(43,91,1),(44,91,6),(45,91,8),(47,92,1),(48,92,6),(46,92,8),(49,93,6),(50,93,7),(51,93,8),(53,94,6),(54,94,7),(52,94,8),(56,95,6),(57,95,7),(55,95,8),(59,96,6),(60,96,7),(58,96,8),(62,97,6),(63,97,7),(61,97,8),(65,98,6),(66,98,7),(64,98,8),(68,99,6),(69,99,7),(67,99,8),(71,100,6),(72,100,7),(70,100,8),(73,101,5),(74,101,6),(75,101,7),(76,101,8),(78,102,5),(79,102,6),(80,102,7),(77,102,8),(82,103,5),(83,103,6),(84,103,7),(81,103,8),(86,104,5),(87,104,6),(88,104,7),(85,104,8),(90,105,5),(91,105,6),(92,105,7),(89,105,8),(94,106,5),(95,106,6),(96,106,7),(93,106,8),(98,107,5),(99,107,6),(100,107,7),(97,107,8),(102,108,5),(103,108,6),(104,108,7),(101,108,8),(106,109,5),(107,109,6),(108,109,7),(105,109,8),(110,110,5),(111,110,6),(112,110,7),(109,110,8),(114,111,5),(115,111,6),(116,111,7),(113,111,8),(118,112,5),(119,112,6),(120,112,7),(117,112,8),(122,113,5),(123,113,6),(124,113,7),(121,113,8),(126,114,5),(127,114,6),(128,114,7),(125,114,8),(130,115,5),(131,115,6),(132,115,7),(129,115,8),(134,116,5),(135,116,6),(136,116,7),(133,116,8),(138,117,5),(139,117,6),(140,117,7),(137,117,8),(142,118,5),(143,118,6),(144,118,7),(141,118,8),(146,119,5),(147,119,6),(148,119,7),(145,119,8);
+REPLACE INTO `digidemo_proposalversion_sectors` (`id`, `proposalversion_id`, `sector_id`) VALUES (149,44,1),(150,44,5),(151,45,1),(152,45,5),(153,46,1),(154,46,5),(155,47,1),(156,47,5),(157,48,1),(158,48,5),(159,49,1),(161,49,5),(160,49,8),(162,57,1),(164,57,5),(163,57,8),(165,62,1),(167,62,5),(166,62,8),(168,71,2),(169,73,1),(170,75,1),(171,76,1),(172,90,1),(173,90,2),(174,90,6),(175,91,1),(177,91,6),(176,91,8),(178,92,1),(180,92,6),(179,92,8),(183,93,6),(182,93,7),(181,93,8),(186,94,6),(185,94,7),(184,94,8),(189,95,6),(188,95,7),(187,95,8),(192,96,6),(191,96,7),(190,96,8),(195,97,6),(194,97,7),(193,97,8),(198,98,6),(197,98,7),(196,98,8),(201,99,6),(200,99,7),(199,99,8),(204,100,6),(203,100,7),(202,100,8),(206,101,5),(208,101,6),(207,101,7),(205,101,8),(210,102,5),(212,102,6),(211,102,7),(209,102,8),(214,103,5),(216,103,6),(215,103,7),(213,103,8),(218,104,5),(220,104,6),(219,104,7),(217,104,8),(222,105,5),(224,105,6),(223,105,7),(221,105,8),(226,106,5),(228,106,6),(227,106,7),(225,106,8),(230,107,5),(232,107,6),(231,107,7),(229,107,8),(234,108,5),(236,108,6),(235,108,7),(233,108,8),(238,109,5),(240,109,6),(239,109,7),(237,109,8),(242,110,5),(244,110,6),(243,110,7),(241,110,8),(246,111,5),(248,111,6),(247,111,7),(245,111,8),(250,112,5),(252,112,6),(251,112,7),(249,112,8),(254,113,5),(256,113,6),(255,113,7),(253,113,8),(258,114,5),(260,114,6),(259,114,7),(257,114,8),(262,115,5),(264,115,6),(263,115,7),(261,115,8),(266,116,5),(268,116,6),(267,116,7),(265,116,8),(270,117,5),(272,117,6),(271,117,7),(269,117,8),(274,118,5),(276,118,6),(275,118,7),(273,118,8),(278,119,5),(280,119,6),(279,119,7),(277,119,8);
 /*!40000 ALTER TABLE `digidemo_proposalversion_sectors` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -1006,7 +1006,7 @@ CREATE TABLE `digidemo_proposalversion_tags` (
   KEY `digidemo_proposalversion_tags_5659cca2` (`tag_id`),
   CONSTRAINT `proposalversion_id_refs_id_55181f50` FOREIGN KEY (`proposalversion_id`) REFERENCES `digidemo_proposalversion` (`id`),
   CONSTRAINT `tag_id_refs_id_8710c93d` FOREIGN KEY (`tag_id`) REFERENCES `digidemo_tag` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=162 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=307 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -1015,7 +1015,7 @@ CREATE TABLE `digidemo_proposalversion_tags` (
 
 LOCK TABLES `digidemo_proposalversion_tags` WRITE;
 /*!40000 ALTER TABLE `digidemo_proposalversion_tags` DISABLE KEYS */;
-REPLACE INTO `digidemo_proposalversion_tags` (`id`, `proposalversion_id`, `tag_id`) VALUES (2,39,63),(3,39,64),(4,39,65),(5,40,63),(6,40,64),(7,40,65),(8,41,63),(9,42,63),(10,43,63),(11,44,63),(12,46,63),(13,47,63),(14,48,63),(15,49,63),(24,57,63),(31,62,63),(32,62,74),(30,62,75),(34,71,76),(35,73,77),(36,75,78),(37,76,78),(40,78,63),(41,78,74),(39,78,75),(43,81,63),(44,81,74),(42,81,75),(46,82,63),(47,82,74),(45,82,75),(49,83,63),(50,83,74),(48,83,75),(52,84,63),(53,84,74),(51,84,75),(55,85,63),(56,85,74),(54,85,75),(58,86,63),(59,86,74),(57,86,75),(61,87,63),(62,87,74),(60,87,75),(64,88,63),(65,88,74),(63,88,75),(67,89,63),(68,89,74),(66,89,75),(70,90,21),(69,90,79),(71,90,80),(72,91,81),(73,91,82),(74,91,83),(75,91,84),(76,92,81),(77,92,82),(78,92,83),(79,92,84),(81,93,47),(80,93,85),(82,93,86),(83,94,47),(84,94,85),(85,94,86),(86,95,47),(87,95,85),(88,95,86),(89,96,47),(90,96,85),(91,96,86),(92,97,47),(93,97,85),(94,97,86),(95,98,47),(96,98,85),(97,98,86),(98,99,47),(99,99,85),(100,99,86),(101,100,47),(102,100,85),(103,100,86),(104,101,87),(105,101,88),(106,102,87),(107,102,88),(108,103,87),(109,103,88),(110,103,89),(111,104,87),(112,104,88),(113,104,89),(114,105,87),(115,105,88),(116,105,89),(117,106,87),(118,106,88),(119,106,89),(120,107,87),(121,107,88),(122,107,89),(123,108,87),(124,108,88),(125,108,89),(126,109,87),(127,109,88),(128,109,89),(129,110,87),(130,110,88),(131,110,89),(132,111,87),(133,111,88),(134,111,89),(135,112,87),(136,112,88),(137,112,89),(138,113,87),(139,113,88),(140,113,89),(141,114,87),(142,114,88),(143,114,89),(144,115,87),(145,115,88),(146,115,89),(147,116,87),(148,116,88),(149,116,89),(153,117,86),(150,117,87),(151,117,88),(152,117,89),(154,118,86),(155,118,87),(156,118,88),(157,118,89),(158,119,86),(159,119,87),(160,119,88),(161,119,89);
+REPLACE INTO `digidemo_proposalversion_tags` (`id`, `proposalversion_id`, `tag_id`) VALUES (162,39,63),(163,39,64),(164,39,65),(165,40,63),(166,40,64),(167,40,65),(168,41,63),(169,42,63),(170,43,63),(171,44,63),(172,46,63),(173,47,63),(174,48,63),(175,49,63),(176,57,63),(178,62,63),(179,62,74),(177,62,75),(180,71,76),(181,73,77),(182,75,78),(183,76,78),(185,78,63),(186,78,74),(184,78,75),(188,81,63),(189,81,74),(187,81,75),(191,82,63),(192,82,74),(190,82,75),(194,83,63),(195,83,74),(193,83,75),(197,84,63),(198,84,74),(196,84,75),(200,85,63),(201,85,74),(199,85,75),(203,86,63),(204,86,74),(202,86,75),(206,87,63),(207,87,74),(205,87,75),(209,88,63),(210,88,74),(208,88,75),(212,89,63),(213,89,74),(211,89,75),(215,90,21),(216,90,79),(214,90,80),(219,91,81),(217,91,82),(218,91,83),(220,91,84),(223,92,81),(221,92,82),(222,92,83),(224,92,84),(225,93,47),(227,93,85),(226,93,86),(228,94,47),(230,94,85),(229,94,86),(231,95,47),(233,95,85),(232,95,86),(234,96,47),(236,96,85),(235,96,86),(237,97,47),(239,97,85),(238,97,86),(240,98,47),(242,98,85),(241,98,86),(243,99,47),(245,99,85),(244,99,86),(246,100,47),(248,100,85),(247,100,86),(250,101,87),(249,101,88),(252,102,87),(251,102,88),(255,103,87),(253,103,88),(254,103,89),(258,104,87),(256,104,88),(257,104,89),(261,105,87),(259,105,88),(260,105,89),(264,106,87),(262,106,88),(263,106,89),(267,107,87),(265,107,88),(266,107,89),(270,108,87),(268,108,88),(269,108,89),(273,109,87),(271,109,88),(272,109,89),(276,110,87),(274,110,88),(275,110,89),(279,111,87),(277,111,88),(278,111,89),(282,112,87),(280,112,88),(281,112,89),(285,113,87),(283,113,88),(284,113,89),(288,114,87),(286,114,88),(287,114,89),(291,115,87),(289,115,88),(290,115,89),(294,116,87),(292,116,88),(293,116,89),(297,117,86),(298,117,87),(295,117,88),(296,117,89),(301,118,86),(302,118,87),(299,118,88),(300,118,89),(305,119,86),(306,119,87),(303,119,88),(304,119,89);
 /*!40000 ALTER TABLE `digidemo_proposalversion_tags` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -1549,6 +1549,32 @@ REPLACE INTO `django_content_type` (`id`, `name`, `app_label`, `model`) VALUES (
 UNLOCK TABLES;
 
 --
+-- Table structure for table `django_migrations`
+--
+
+DROP TABLE IF EXISTS `django_migrations`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `django_migrations` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `app` varchar(255) NOT NULL,
+  `name` varchar(255) NOT NULL,
+  `applied` datetime NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `django_migrations`
+--
+
+LOCK TABLES `django_migrations` WRITE;
+/*!40000 ALTER TABLE `django_migrations` DISABLE KEYS */;
+REPLACE INTO `django_migrations` (`id`, `app`, `name`, `applied`) VALUES (1,'contenttypes','0001_initial','2015-03-08 21:28:33'),(2,'auth','0001_initial','2015-03-08 21:28:33'),(3,'admin','0001_initial','2015-03-08 21:28:33'),(4,'digidemo','0001_initial','2015-03-08 21:28:33'),(5,'digidemo','0002_auto_20150226_0329','2015-03-08 21:28:34'),(6,'sessions','0001_initial','2015-03-08 21:28:35');
+/*!40000 ALTER TABLE `django_migrations` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `django_session`
 --
 
@@ -1583,4 +1609,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2015-03-08 16:46:31
+-- Dump completed on 2015-03-09 23:03:03

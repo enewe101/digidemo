@@ -7,6 +7,17 @@ import sys
 from digidemo import local_settings
 from django.utils.translation import ugettext_lazy as _
 
+	
+	############
+	#          #
+	#   MODE   #
+	#          #
+	############
+
+TEST_MODE = 'test' in sys.argv
+IN_PRODUCTION = False
+if hasattr(local_settings, 'IN_PRODUCTION'):
+	IN_PRODUCTION = local_settings.IN_PRODUCTION
 
 	####################
 	#                  #
@@ -21,9 +32,12 @@ STATIC_URL = '/static/'
 STATIC_ROOT = os.path.join(PROJECT_DIR, 'static/')
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(PROJECT_DIR, 'media/')
-INITIAL_DATA_FIXTURE = 'test_fixture'
-if hasattr(local_settings, 'INITIAL_DATA_FIXTURE'):
-	INITIAL_DATA_FIXTURE = local_settings.INITIAL_DATA_FIXTURE
+
+DATA_FIXTURE = 'production_data'
+if hasattr(local_settings, 'DATA_FIXTURE'):
+	DATA_FIXTURE = local_settings.DATA_FIXTURE
+
+TEST_FIXTURE = 'test_data'
 
 	##########################################
 	#                                        #
@@ -31,7 +45,7 @@ if hasattr(local_settings, 'INITIAL_DATA_FIXTURE'):
 	#                                        #
 	##########################################
 
-TEST_MODE = 'test' in sys.argv
+TEST_RUNNER = 'django_nose.NoseTestSuiteRunner'
 TEMPLATE_DEBUG = not TEST_MODE
 DEBUG =  local_settings.DEBUG_TEST if TEST_MODE else local_settings.DEBUG
 
@@ -80,6 +94,7 @@ INSTALLED_APPS = (
 	'django.contrib.staticfiles',
 	'digidemo',
 	'haystack',
+	'django_nose',
 )
 AUTH_USER_MODEL = 'auth.User'
 
@@ -112,6 +127,8 @@ WSGI_APPLICATION = 'digidemo.wsgi.application'
 	#####################################
 
 DATABASES = local_settings.DATABASES
+#if TEST_MODE:
+#	DATABASES = {'default': {'ENGINE': 'django.db.backends.sqlite3'}}
 
 HAYSTACK_CONNECTIONS = {
 	'default': {
