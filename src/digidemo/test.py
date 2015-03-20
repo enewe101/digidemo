@@ -16,7 +16,7 @@ from digidemo.views import get_notification_message
 from digidemo.shortcuts import get_profile
 from selenium import webdriver
 from selenium.common.exceptions import TimeoutException
-from selenium.webdriver.support.ui import WebDriverWait 
+from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.select import Select
 from selenium.webdriver.common.by import By
@@ -36,7 +36,7 @@ def pyWait(predicate, timeout=3, period=0.15):
 		if predicate():
 			return True
 		time.sleep(period)
-	
+
 	return False
 
 
@@ -45,7 +45,7 @@ def createUser():
 	user = User.objects.create_user(
 		'test_username', 'test@example.com', 'test_password')
 	user.save()
-	
+
 	# Create an associated user profile
 	user_profile = UserProfile(
 		user=user,
@@ -75,7 +75,7 @@ class SeleniumTestCase(LiveServerTestCase):
 		This is an abstract test class.  It provides derived classes with
 		access to a WebDriver and a WebDriverWait object.  Any classes
 		designed to test the actual behavior of webpages in a browser should
-		inheret from this class.  See the wiki for an explanation of 
+		inheret from this class.  See the wiki for an explanation of
 		how to use WebDriver and WebDriverWait
 	'''
 
@@ -86,7 +86,7 @@ class SeleniumTestCase(LiveServerTestCase):
 	@classmethod
 	def setUpClass(cls):
 		cls.driver = webdriver.Firefox()
-		cls.wait = WebDriverWait(cls.driver, 3)	
+		cls.wait = WebDriverWait(cls.driver, 3)
 		super(SeleniumTestCase, cls).setUpClass()
 
 	@classmethod
@@ -123,14 +123,14 @@ class SeleniumTestCase(LiveServerTestCase):
 
 	# Check if the elements identified by their id's contain the given text
 	# By default this matches the actual html found in the element, but it
-	# can match based on the rendered text too (what you'd be able to 
+	# can match based on the rendered text too (what you'd be able to
 	# copy/paste).
 	#
 	def elements_contain(self, contents_spec, use_html=True):
 		'''
-			returns a boolean value indicating whether each of the indicated 
+			returns a boolean value indicating whether each of the indicated
 			html elements (html id given as keys of <contents_spec>)
-			contains the corresponding content (given as values of 
+			contains the corresponding content (given as values of
 			<content_spec>).  Ignores differences in whitespace
 		'''
 
@@ -149,7 +149,7 @@ class SeleniumTestCase(LiveServerTestCase):
 	def full_url(cls, url_without_domain):
 		return 'http://' + cls.get_live_server_url() + url_without_domain
 
-	# go to a url under the luminocracy domain.  The passed url should 
+	# go to a url under the luminocracy domain.  The passed url should
 	# not have the domain, e.g., should be like those returned by reverse()
 	#
 	@classmethod
@@ -167,7 +167,7 @@ class SeleniumTestCase(LiveServerTestCase):
 		self.assertRaises(NoSuchElementException, func)
 
 
-	# Click the element. Just a convinience method. 
+	# Click the element. Just a convinience method.
 	#
 	@classmethod
 	def click(cls, element_id):
@@ -180,21 +180,21 @@ class SeleniumTestCase(LiveServerTestCase):
 		return cls.driver.find_element('id', element_id)
 
 	# fill out the text (form) input with the string
-	# 
+	#
 	@classmethod
 	def put(cls, text_input_id, string):
 		cls.driver.find_element('id', text_input_id).send_keys(string)
 
 
-	# Fill several text inputs with the provided text.  
+	# Fill several text inputs with the provided text.
 	# (Uses html ids to find the inputs.)
-	# 
+	#
 	@classmethod
 	def puts(cls, put_spec):
 		'''
 			Put spec is a dictionary -- keys are the html ids for text inputs
 			and the values are the text to place in the inputs
-			e.g. 
+			e.g.
 				{'some_input_id': 'some_text', 'another_input': 'more_text'}
 		'''
 		for text_input_id, text in put_spec.items():
@@ -202,14 +202,14 @@ class SeleniumTestCase(LiveServerTestCase):
 
 
 	# login as a regular user
-	# 
+	#
 	@classmethod
 	def login_regularuser(cls):
 		cls.login('regularuser', 'regularuser')
 
 
 	# login as a user whose email has not yet been validated
-	# 
+	#
 	@classmethod
 	def login_notvalidateduser(cls):
 		cls.login('notvalidated', 'notvalidated')
@@ -224,14 +224,14 @@ class SeleniumTestCase(LiveServerTestCase):
 
 	# This should only be used to access the live server url inside class
 	# methods.  Otherwise, just use self.live_server_url itself
-	# 
+	#
 	@classmethod
 	def get_live_server_url(cls):
 		return cls.LIVE_SERVER_URL
 
 
 	# Go to login page and login using provided credentials
-	# 
+	#
 	@classmethod
 	def login(cls, username, password):
 
@@ -253,8 +253,8 @@ class SeleniumTestCase(LiveServerTestCase):
 		# click the avatar
 		cls.click('logged_in_div')
 		cls.click('logout')
-	
-		
+
+
 class RegistrationFormTest(SeleniumTestCase):
 
 	def test_client_side(self):
@@ -263,8 +263,8 @@ class RegistrationFormTest(SeleniumTestCase):
 		# here we refer to the view by name, views are named in urls.py
 		self.go(reverse('userRegistration'))
 
-		# We'll start by looking at the username field.  Right below that 
-		# field there's a div whose id is "username_notification_target", 
+		# We'll start by looking at the username field.  Right below that
+		# field there's a div whose id is "username_notification_target",
 		# which is where the 'available' hint gets displayed.  Let's get it:
 		username_notifier_div = self.find('username_notification_target')
 
@@ -287,44 +287,129 @@ class RegistrationFormTest(SeleniumTestCase):
 
 		# now type an unavailable username, e.g. 'regularuser'
 		# 	... it should display 'unavailable!'
+		self.put('UserRegisterForm__username', 'regularuser')
+
+		self.assertTrue(
+		     text_is_similar(username_notifier_div.text, 'sorry...it\'s taken')
+		)
+
+		self.find('UserRegisterForm__username').clear()
 
 		# now use similar methods to test the password field behaviors
 		# ...
+		password_notifier_div = self.find('pwd1_notification_target')
+
+		self.assertTrue(text_is_similar(password_notifier_div.text, ''))
+
+		self.find('UserRegisterForm__password').clear()
+
+		self.put('UserRegisterForm__password','lalalal' )
+
+		self.assertTrue(
+		      text_is_similar(password_notifier_div.text, 'too short!')
+		)
+
+		self.find('UserRegisterForm__password').clear()
+
+		passwordconfirm_notifier_div = self.find('pwd2_notification_target')
+
+		self.assertTrue(text_is_similar(passwordconfirm_notifier_div.text, ''))
+
+		self.put('UserRegisterForm__password', 'password')
+
+		self.put('UserRegisterForm__confirm_password', 'passwordy')
+
+		self.assertTrue(
+		     text_is_similar(passwordconfirm_notifier_div.text, 'Passwords don\'t match!')
+		)
+
+		self.find('UserRegisterForm__password').clear()
+
+		self.find('UserRegisterForm__confirm_password').clear()
+
+
+
+
+
+
+
 
 	def test_register_properly(self):
-		# fill out all the fields, 
+		# fill out all the fields,
 		# using the self.puts({'id':'text', 'id2':'text2'}) function
 		# and then click the submit button
 
+		self.go(reverse('userRegistration'))
+
+		self.puts({
+		      'UserRegisterForm__first_name': 'Unoriginalfirstname',
+			  'UserRegisterForm__last_name': 'Unoriginallastname',
+			  'UserRegisterForm__username': 'unoriginalusername',
+			  'UserRegisterForm__email': 'octopustentaculus@gmail.com',
+			  'UserRegisterForm__password': 'unoriginalpassword',
+			  'UserRegisterForm__confirm_password': 'unoriginalpassword'
+			})
+
+
+		self.click('UserRegisterForm__submit')
+
 		# check that the User was added to the database.  Replace these
-		# keyword args with what you actually used in the form 
+		# keyword args with what you actually used in the form
 		num_users_found = User.objects.filter(
-			username='new_user', email='the_email'
+			username='unoriginalusername', email='octopustentaculus@gmail.com'
 		).count()
 
 		self.assertEqual(num_users_found, 1)
 
 		# check that the UserProfile was added to the database
-		num_user_profiles_found = UserProfile.objects.filter(
-			fname='first_name', lname='last_name'
+		num_user_profiles_found = User.objects.filter(
+			first_name='Unoriginalfirstname', last_name='Unoriginallastname'
 		).count()
 
 		self.assertEqual(num_user_profiles_found, 1)
 
 		# check that we wound up at the mail sent page
-		self.assertEqual(self.driver.current_url, 
+		self.assertEqual(self.driver.current_url,
 			self.live_server_url + reverse('mail_sent'))
 
-	
+		self.go(reverse('userRegistration'))
+
+
 	def test_register_no_fname(self):
 
 		# submit the form without a first name
+		self.go(reverse('userRegistration'))
+
+		self.puts({
+			  'UserRegisterForm__last_name': 'Unoriginallastname',
+			  'UserRegisterForm__username': 'unoriginalusername',
+			  'UserRegisterForm__email': 'octopustentaculus@gmail.com',
+			  'UserRegisterForm__password': 'unoriginalpassword',
+			  'UserRegisterForm__confirm_password': 'unoriginalpassword'
+			})
+
+
+		self.click('UserRegisterForm__submit')
+
 
 		# check that no user object was added to the database
+		num_users_found = User.objects.filter(
+			username='unoriginalusername', email='octopustentaculus@gmail.com'
+		).count()
+
+		self.assertEqual(num_users_found, 0)
+
+
 		# check that no user profile object was added to the database
+		num_user_profiles_found = User.objects.filter(
+			last_name='Unoriginallastname'
+		).count()
+
+		self.assertEqual(num_user_profiles_found, 0)
 
 		# check that the current url is still pointing to the registration
 		# page
+
 
 		# check that the error displays above the first name field
 
@@ -340,15 +425,15 @@ class RegistrationFormTest(SeleniumTestCase):
 		pass
 
 	def test_register_email_exists(self):
-		# if the email exists, the user should be forwarded to 
+		# if the email exists, the user should be forwarded to
 		# a special that allows them to reset their password
 		# test that they were properly forwarded to that page
 		pass
 
-	# and finally, add tests for passwords that are too short, and 
+	# and finally, add tests for passwords that are too short, and
 	# passwords that don't match!
 
-		
+
 
 
 class EmailValidation(SeleniumTestCase):
@@ -362,9 +447,9 @@ class EmailValidation(SeleniumTestCase):
 				- they get sent an email to confirm their email address
 				- when their email is not validated, they are forwarded
 					to the invalid_email page
-				- they can resend the email confirmation mail from the 
+				- they can resend the email confirmation mail from the
 					invalid email page
-				- following the link in the email confirmation page makes 
+				- following the link in the email confirmation page makes
 					their email validated
 				- loging in with a valid email forwards to the home page
 		'''
@@ -436,8 +521,8 @@ class EmailValidation(SeleniumTestCase):
 			+ email_link
 		)
 		self.assertEqual(sent_mail.body, body)
-		
-		# simulate following the link in the email 
+
+		# simulate following the link in the email
 		self.driver.get(self.live_server_url + email_link)
 
 		# now check that the user's email has been verified
@@ -465,7 +550,7 @@ class EmailValidation(SeleniumTestCase):
 
 # Tests the leaving comments.  Tests the comment forms for all the various
 # types of comments and places they occur.  Tests that submitting an empty
-# comment generates an error message for the user.  
+# comment generates an error message for the user.
 #
 class CommentTest(SeleniumTestCase):
 
@@ -682,7 +767,7 @@ class CommentTest(SeleniumTestCase):
 			subscription_id=comment.subscription_id
 		)
 
-		# TODO: restore publish-subscribe testing after changes to 
+		# TODO: restore publish-subscribe testing after changes to
 		# publish-subscribe system have been made
 
 		# ...and that she was subscribed to the thing she commented on
@@ -727,7 +812,7 @@ class CommentTest(SeleniumTestCase):
 		self.assertTrue(comment_textarea.is_displayed())
 		self.assertEqual(comment_textarea.text, '')
 
-		# Attempt to submit blank comment.  But first check how many 
+		# Attempt to submit blank comment.  But first check how many
 		# comments there are.
 		comments_wrapper = self.driver.find_element('id', comments_wrapper_id)
 		comments = comments_wrapper.find_elements_by_class_name(
@@ -743,7 +828,7 @@ class CommentTest(SeleniumTestCase):
 		# hide the comment textarea again
 		comment_form_toggler.click()
 
-		
+
 class QuestionRenderTest(SeleniumTestCase):
 	'''
 		tests that the test question in the database renders correctly
@@ -764,7 +849,7 @@ class QuestionRenderTest(SeleniumTestCase):
 		body = self.driver.find_element_by_class_name('post_body')
 		self.assertTrue(text_is_similar(body.text, question.text))
 
-		# TODO: this is fragile.  It should be based on the actual 
+		# TODO: this is fragile.  It should be based on the actual
 		# answer objects...
 
 		# make sure that all the answers showed up
@@ -776,7 +861,7 @@ class QuestionRenderTest(SeleniumTestCase):
 
 			a, a_div = answers[i], answer_divs[i]
 			self.assertEqual(
-				space_match.sub('', a_div.text), 
+				space_match.sub('', a_div.text),
 				space_match.sub('', a.text)
 			)
 
@@ -786,7 +871,7 @@ class QuestionRenderTest(SeleniumTestCase):
 			self.driver.find_element('id', 'AnswerVoteForm_%d_score'%(pk))
 			self.driver.find_element(
 				'id', 'AnswerVoteForm_%d_downvote'%(pk))
-		
+
 
 
 # Test submitting an answer using the answer form, and ensure that submitting
@@ -895,7 +980,7 @@ class AnswerFormTest(SeleniumTestCase):
 
 		# the new answer should appear shortly on the page
 		self.wait.until(lambda driver:
-			len(driver.find_elements_by_class_name(answer_class_name)) 
+			len(driver.find_elements_by_class_name(answer_class_name))
 			== initial_num_answers + 1)
 		last_answer = self.driver.find_elements_by_class_name(
 			answer_class_name)[-1]
@@ -951,7 +1036,7 @@ class QuestionFormTest(SeleniumTestCase):
 
 	def submit_question(self):
 
-		# go to the submit question page 
+		# go to the submit question page
 		proposal = Proposal.objects.get(pk=1)
 		url = self.live_server_url + proposal.get_question_url()
 		self.driver.get(url)
@@ -960,9 +1045,9 @@ class QuestionFormTest(SeleniumTestCase):
 		for t in self.texts:
 			self.driver.find_element('id', t[0]).send_keys(t[1])
 
-		# submit the form.  
+		# submit the form.
 		self.driver.find_element('id', self.submit_id).click()
-		
+
 		# We should be redirected to a page containing the question
 		found_title_text = self.driver.find_element_by_class_name(
 			'post_title').text
@@ -971,16 +1056,16 @@ class QuestionFormTest(SeleniumTestCase):
 			'post_body').text
 		self.assertEqual(found_question_text, self.question_text)
 
-		# The question should be in the database. (this automatically raises 
+		# The question should be in the database. (this automatically raises
 		# an error if no match for the query is found.)
 		Question.objects.get(
 			target=proposal, title=self.title_text, text=self.question_text)
 
 
 	def submit_incomplete_question(self):
-		FIELD_WRAPPER_ERROR_CLASS = 'field_wrapper_error'	
+		FIELD_WRAPPER_ERROR_CLASS = 'field_wrapper_error'
 
-		# go to the submit question page 
+		# go to the submit question page
 		proposal = Proposal.objects.get(pk=1)
 		url = self.live_server_url + proposal.get_question_url()
 		self.driver.get(url)
@@ -990,10 +1075,10 @@ class QuestionFormTest(SeleniumTestCase):
 		body = self.driver.find_element('id', t[0])
 		body.send_keys(t[1])
 
-		# submit the form.  
+		# submit the form.
 		submit = self.driver.find_element('id', self.submit_id).click()
 
-		# we should still face the form, and the title should have an 
+		# we should still face the form, and the title should have an
 		# error class and error message
 		title = self.driver.find_element('id', self.texts[0][0])
 		error_class = title.find_element_by_xpath('..').get_attribute('class')
@@ -1006,30 +1091,30 @@ class QuestionFormTest(SeleniumTestCase):
 		self.driver.find_element('id', self.texts[1][0]).clear()
 		self.driver.find_element('id', self.submit_id).click()
 
-		# we should still face the form, and the title should have an 
+		# we should still face the form, and the title should have an
 		# error class and error message
 		body = self.driver.find_element('id', self.texts[1][0])
 		error_class = body.find_element_by_xpath('..').get_attribute('class')
 		self.assertEqual(error_class, FIELD_WRAPPER_ERROR_CLASS)
 
 
-# Test adding a discussion 
+# Test adding a discussion
 #
 class AddDiscussionTest(SeleniumTestCase):
 	'''
 		Tests adding a discussion using the add discussion form.
-		Ensures that added discussions display correctly.  Tests that 
+		Ensures that added discussions display correctly.  Tests that
 		submitting an incomplete form triggers errors.
 	'''
 
 	TITLE = 'Test Discussion'
 	TEXT = 'Charlie Brown, why do you test my patience?'
-	ERROR = 'This field is required.'  
-	
+	ERROR = 'This field is required.'
+
 	def test_add_complete_discussion(self):
 		'''
 			Tests adding a discussion.  Ensures the discussion displays
-			correctly after adding it, and that it is included in the 
+			correctly after adding it, and that it is included in the
 			discussion list view for the proposal.
 		'''
 
@@ -1046,11 +1131,11 @@ class AddDiscussionTest(SeleniumTestCase):
 		title_input_id = 'DiscussionForm__title'
 		self.driver.find_element('id', title_input_id).send_keys(self.TITLE)
 
-		# do similarly to insert the discussion text. 
+		# do similarly to insert the discussion text.
 		text_input_id = 'DiscussionForm__text'
 		self.driver.find_element('id', text_input_id).send_keys(self.TEXT)
 
-		# now click the form's submit button 
+		# now click the form's submit button
 		submit_button_id = 'DiscussionForm__submit'
 		self.driver.find_element('id', submit_button_id).click()
 
@@ -1120,7 +1205,7 @@ class AddDiscussionTest(SeleniumTestCase):
 
 	def test_add_incomplete_discussion(self):
 		'''
-			Tests error messaging when a discussion is added incorrectly.  
+			Tests error messaging when a discussion is added incorrectly.
 		'''
 
 		# login a regular user
@@ -1135,11 +1220,11 @@ class AddDiscussionTest(SeleniumTestCase):
 		title_input_id = 'DiscussionForm__title'
 		self.driver.find_element('id', title_input_id).send_keys('')
 
-		# do similarly to insert the discussion text. 
+		# do similarly to insert the discussion text.
 		text_input_id = 'DiscussionForm__text'
 		self.driver.find_element('id', text_input_id).send_keys(self.TEXT)
 
-		# now click the form's submit button 
+		# now click the form's submit button
 		submit_button_id = 'DiscussionForm__submit'
 		self.driver.find_element('id', submit_button_id).click()
 
@@ -1174,10 +1259,10 @@ class AddDiscussionTest(SeleniumTestCase):
 		text_input_id = 'DiscussionForm__text'
 		self.driver.find_element('id', text_input_id).send_keys('')
 
-		# now click the form's submit button 
+		# now click the form's submit button
 		submit_button_id = 'DiscussionForm__submit'
-		self.driver.find_element('id', submit_button_id).click()		
-		
+		self.driver.find_element('id', submit_button_id).click()
+
 		error_msg_id = "DiscussionForm__text_errors"
 		self.assertTrue(
 			self.wait.until(lambda driver:
@@ -1214,14 +1299,14 @@ class FormTest(SeleniumTestCase):
 			# first clear the input
 			self.clear_input(form_element_id, input_type)
 
-			# if this element was listed in the clear argument, 
+			# if this element was listed in the clear argument,
 			# then that's all we do
 			if form_element_id in clear:
 				continue
 
 			# Next, delegate filling the element to the appropriate method
 			self.fill_input(form_element_id, input_val, input_type)
-			
+
 
 	def fill_input(self, element_id, input_val, input_type):
 		if input_type == 'text':
@@ -1243,8 +1328,8 @@ class FormTest(SeleniumTestCase):
 				'None')
 
 
-# Test editing proposals with the ProposalVersionForm.  Ensure that 
-# incomplete forms cause an error to be shown, and that html special 
+# Test editing proposals with the ProposalVersionForm.  Ensure that
+# incomplete forms cause an error to be shown, and that html special
 # characters get escaped.
 #
 class ProposalFormTest(FormTest):
@@ -1268,13 +1353,13 @@ class ProposalFormTest(FormTest):
 
 		}, 'ProposalVersionForm__text': {
 
-			'value': values[2], 
+			'value': values[2],
 			'error_id': 'ProposalVersionForm__text_errors',
 			'display_id': 'proposal_text',
 			'expect': md.markdown(values[2])
 
 		}
-		
+
 	}
 
 	check_pk = True
@@ -1325,7 +1410,7 @@ class ProposalFormTest(FormTest):
 		]
 		self.check_db(
 			expected_id, *self.values, username=self.username,
-			tags=self.TEST_TAGS, sectors=sectors, 
+			tags=self.TEST_TAGS, sectors=sectors,
 			event_type=self.EVENT_TYPE
 		)
 
@@ -1338,7 +1423,7 @@ class ProposalFormTest(FormTest):
 		# Go to the edit page for a test proposal
 		self.driver.get(self.get_url())
 
-		# we'll submit the form several times, 
+		# we'll submit the form several times,
 		# each time ommitting a different field
 		for ommitted_id, spec in self.form_data.items():
 
@@ -1426,12 +1511,12 @@ class ProposalFormTest(FormTest):
 			Sector.objects.get(name='environment'),
 			Sector.objects.get(name='culture')
 		]
-		self.check_db(expected_id, self.escape_text, 
-			self.escape_text, self.escape_text, self.username, 
+		self.check_db(expected_id, self.escape_text,
+			self.escape_text, self.escape_text, self.username,
 				self.TEST_TAGS, sectors, self.EVENT_TYPE)
 
 	def get_url(self):
-		return (self.live_server_url 
+		return (self.live_server_url
 			+ Proposal.objects.get(pk=self.expect_proposal_id).get_edit_url())
 
 
@@ -1440,13 +1525,13 @@ class ProposalFormTest(FormTest):
 
 
 	def check_db(
-			self, 
-			expected_id, 
-			title, 
-			summary, 
-			text, 
-			username, 
-			tags, 
+			self,
+			expected_id,
+			title,
+			summary,
+			text,
+			username,
+			tags,
 			sectors,
 			event_type
 		):
@@ -1471,7 +1556,7 @@ class ProposalFormTest(FormTest):
 
 		# Check if a Subscription was made
 		sub_id = proposal.subscription_id
-		s = Subscription.objects.get(subscription_id=sub_id, user=user, 
+		s = Subscription.objects.get(subscription_id=sub_id, user=user,
 			reason=self.REASON)
 
 		# check if a publication was made against the proposal
@@ -1482,7 +1567,7 @@ class ProposalFormTest(FormTest):
 		)
 		self.assertEqual(p.was_posted, False)
 		self.assertEqual(p.event_data, proposal.text[:100])
-		self.assertEqual(p.link_back, 
+		self.assertEqual(p.link_back,
 			proposal.get_url_by_view_name('proposal'))
 
 		# Check if a Publication was made against the tags
@@ -1503,7 +1588,7 @@ class ProposalFormTest(FormTest):
 		#	)
 		#	self.assertEqual(p.was_posted, False)
 		#	self.assertEqual(p.event_data, proposal.text[:100])
-		#	self.assertEqual(p.link_back, 
+		#	self.assertEqual(p.link_back,
 		#		proposal.get_url_by_view_name('proposal'))
 
 		#for sector in sectors:
@@ -1606,7 +1691,7 @@ class VoteTest(SeleniumTestCase):
 		state = 0
 		if is_up_on:
 			state = 1
-			self.assertTrue(not is_down_on) 
+			self.assertTrue(not is_down_on)
 		elif is_down_on:
 			state = -1
 			self.assertTrue(not is_up_on)
@@ -1812,13 +1897,13 @@ class TestLogin(SeleniumTestCase):
 
 		# An error message should display
 		self.assertTrue(
-			self.wait.until( lambda driver: 
+			self.wait.until( lambda driver:
 				'Incorrect username or password' in
 				self.find('ajax_login_error').text
 			)
 		)
 
-		# The logged in div should not be shown 
+		# The logged in div should not be shown
 		self.assertNotFound('logged_in_div')
 
 		# try leaving username blank
@@ -1832,13 +1917,13 @@ class TestLogin(SeleniumTestCase):
 
 		# An error message should display
 		self.assertTrue(
-			self.wait.until( lambda driver: 
+			self.wait.until( lambda driver:
 				'Incorrect username or password' in
 				self.find('ajax_login_error').text
 			)
 		)
 
-		# The logged in div should not be shown 
+		# The logged in div should not be shown
 		self.assertNotFound('logged_in_div')
 
 		# try submitting incorrect credentials
@@ -1852,13 +1937,13 @@ class TestLogin(SeleniumTestCase):
 
 		# An error message should display
 		self.assertTrue(
-			self.wait.until( lambda driver: 
+			self.wait.until( lambda driver:
 				'Incorrect username or password' in
 				self.find('ajax_login_error').text
 			)
 		)
 
-		# The logged in div should not be shown 
+		# The logged in div should not be shown
 		self.assertNotFound('logged_in_div')
 
 
@@ -1902,7 +1987,7 @@ class TestLogin(SeleniumTestCase):
 
 
 	def test_login_incorrect(self):
-		# Try ommitting username on login 
+		# Try ommitting username on login
 		self.go(reverse('login_required'))
 		self.puts({
 			#'LoginForm__username': 'regular@example.com',
@@ -1922,7 +2007,7 @@ class TestLogin(SeleniumTestCase):
 		# The logged in div should not be shown
 		self.assertNotFound('logged_in_div')
 
-		# Try ommitting password on login 
+		# Try ommitting password on login
 		self.go(reverse('login_required'))
 		self.puts({
 			'LoginForm__username': 'regular@example.com',
@@ -1982,46 +2067,46 @@ class TestLoginRequired(TestCase):
 	# 	1) views name
 	#	2) keyword dictionary associated to url (reverse url resolution)
 	#	3) dictionary of post data
-	# 
+	#
 	login_post_views = [
-		('ask_question', {'target_id':1}, 
-			{'title': 'Test title', 'text': 'Test text', 
+		('ask_question', {'target_id':1},
+			{'title': 'Test title', 'text': 'Test text',
 				'user':1, 'target':1}, Question
 		),
-		('start_discussion', {'target_id':1}, 
-			{'title': 'Test title', 'text': 'Test text', 
+		('start_discussion', {'target_id':1},
+			{'title': 'Test title', 'text': 'Test text',
 				'user':1, 'target':1}, Discussion
 		),
 
-		('start_petition', {'target_id':1}, 
+		('start_petition', {'target_id':1},
 			{
 				'title': 'Test petitien title',
-				'text': 'Test text', 
+				'text': 'Test text',
 				'user':1,
 				'target':1,
 				'valence': 1,
 				'recipients': 1
-			}, 
+			},
 			Letter
 		),
 
-		('add_proposal', {}, 
+		('add_proposal', {},
 			{
-				'title': 'Test title', 
+				'title': 'Test title',
 				'summary': 'test summary',
-				'text': 'Test proposal text', 
-				'user': 1, 
+				'text': 'Test proposal text',
+				'user': 1,
 				'tags': 'tag1,tag2'
 			},
 			Proposal
 		),
 
-		('edit', {'issue_id':1}, 
+		('edit', {'issue_id':1},
 			{
-				'title': 'Test title edited', 
+				'title': 'Test title edited',
 				'summary': 'test summary',
-				'text': 'Test proposal text', 
-				'user': 1, 
+				'text': 'Test proposal text',
+				'user': 1,
 				'tags': 'tag1,tag2'
 			},
 			Proposal
@@ -2032,7 +2117,7 @@ class TestLoginRequired(TestCase):
 		# votes
 		('vote_answer', {'valence':1, 'user':1, 'target':2}, AnswerVote),
 		('vote_question', {'valence':1, 'user':1, 'target':2}, QuestionVote),
-		('vote_discussion', {'valence':1, 'user':1, 'target':1}, 
+		('vote_discussion', {'valence':1, 'user':1, 'target':1},
 			DiscussionVote),
 		('vote_reply', {'valence':1, 'user':1, 'target':2}, ReplyVote),
 
@@ -2047,13 +2132,13 @@ class TestLoginRequired(TestCase):
 			ReplyComment),
 		('discussion_comment', {'text':'Test comment', 'user':1, 'target':1},
 			DiscussionComment),
-		
+
 		# subposts
 		('answer', {'text':'Test answer', 'user':1, 'target':1}, Answer),
 		('reply', {'text':'Test reply', 'user':1, 'target':1}, Reply),
 
 		# petitions
-		('send_letter', 
+		('send_letter',
 			{
 				'text': 'Test letter',
 				'user':1,
@@ -2064,7 +2149,7 @@ class TestLoginRequired(TestCase):
 			},
 			Letter
 		),
-		('resend_letter', 
+		('resend_letter',
 			{
 				'parent_letter': 1,
 				'text': 'Test signing letter',
@@ -2089,14 +2174,14 @@ class TestLoginRequired(TestCase):
 			# check that we were redirected to the login page
 			self.assert_was_redirected_to_login(response)
 
-			# this function tries to retrieve the object we posted 
+			# this function tries to retrieve the object we posted
 			def func():
 				post_class.objects.get(title=post_data['title'])
 
 			# since posting should have failed, the object should not exist
 			self.assertRaises(post_class.DoesNotExist, func)
 
-		# this time we'll login, but the user will not have a validated 
+		# this time we'll login, but the user will not have a validated
 		# email
 		for view_name, kwargs, post_data, post_class in self.login_post_views:
 			url = reverse(view_name, kwargs=kwargs)
@@ -2112,7 +2197,7 @@ class TestLoginRequired(TestCase):
 			# check that we were redirected to invalid_email page
 			self.assert_was_redirected_to_invalid_email(response)
 
-			# this function tries to retrieve the object we posted 
+			# this function tries to retrieve the object we posted
 			def func():
 				post_class.objects.get(title=post_data['title'])
 
@@ -2136,7 +2221,7 @@ class TestLoginRequired(TestCase):
 			# verify we got redirected
 			self.assert_was_redirected_to_login(response)
 
-			# this function tries to retrieve the object we posted 
+			# this function tries to retrieve the object we posted
 			def func():
 				post_class.objects.get(title=post_data['title'])
 
@@ -2158,7 +2243,7 @@ class TestLoginRequired(TestCase):
 			# verify we got redirected
 			self.assert_was_not_redirected_to_login(response)
 
-			# this function tries to retrieve the object we posted 
+			# this function tries to retrieve the object we posted
 			def func():
 				post_class.objects.get(title=post_data['title'])
 
@@ -2171,7 +2256,7 @@ class TestLoginRequired(TestCase):
 
 	def test_get_login_required(self):
 
-		# Trying to navigate to these views without logging in causes 
+		# Trying to navigate to these views without logging in causes
 		# redirection to the login page
 		for view_name, kwargs in self.login_get_views:
 			url = reverse(view_name, kwargs=kwargs)
@@ -2217,7 +2302,7 @@ class TestLoginRequired(TestCase):
 					username='regularuser', password='regularuser')
 
 				# ensure that we have posted {user:1}, to be sure that we
-				# correctly test that the logged in user matches the posted 
+				# correctly test that the logged in user matches the posted
 				# user
 				self.assertTrue(post_data['user']==1,
 					"In the post_data you need to set the user to be 1 so "
@@ -2331,17 +2416,17 @@ class TestLoginRequired(TestCase):
 
 class PublishSubscribeTest(TestCase):
 	'''
-		Tests that creating various subscribable objects always leads 
+		Tests that creating various subscribable objects always leads
 		to two things:
 		1) The author is subscribed to the created object
 		2) A Publication is isued against target objects.  For example,
-			if a Question is being posted within a certain Proposal, then 
+			if a Question is being posted within a certain Proposal, then
 			a Publication shoulid be issued for that Proposal, so that
-			any users subscribed to the Proposal will be notified of the 
+			any users subscribed to the Proposal will be notified of the
 			new Question
 
 		For most kinds of subsrcibable objects, the tests that need to
-		be run are pretty formulaic.  So, a helper function, 
+		be run are pretty formulaic.  So, a helper function,
 		do_subscribable_test, is used.  The tests that match this formula
 		can be defined by a few args passed into do_subscribable_test.
 		That goes for testing questions, comments, letters, etc.
@@ -2369,7 +2454,7 @@ class PublishSubscribeTest(TestCase):
 
 		# make a proposal
 		proposal = Proposal(
-			title='test proposal 1', 
+			title='test proposal 1',
 			summary='test proposal 1',
 			text='test proposal 1',
 			original_user=proposal_author,
@@ -2384,7 +2469,7 @@ class PublishSubscribeTest(TestCase):
 		# make an associated proposal version
 		proposal_version = ProposalVersion(
 			proposal=proposal,
-			title='test proposal 1', 
+			title='test proposal 1',
 			summary='test proposal 1',
 			text='test proposal 1',
 			user=proposal_author
@@ -2405,7 +2490,7 @@ class PublishSubscribeTest(TestCase):
 		self.assertEqual(p.event_type, 'ISSUE')
 		self.assertEqual(p.was_posted, False)
 		self.assertEqual(p.event_data, proposal.text[:100])
-		self.assertEqual(p.link_back, 
+		self.assertEqual(p.link_back,
 			proposal.get_url_by_view_name('proposal'))
 
 
@@ -2415,7 +2500,7 @@ class PublishSubscribeTest(TestCase):
 		self.assertEqual(p.event_type, 'ISSUE')
 		self.assertEqual(p.was_posted, False)
 		self.assertEqual(p.event_data, proposal.text[:100])
-		self.assertEqual(p.link_back, 
+		self.assertEqual(p.link_back,
 			proposal.get_url_by_view_name('proposal'))
 
 		# Check if a Publication was made against the sector
@@ -2487,7 +2572,7 @@ class PublishSubscribeTest(TestCase):
 				event_type,
 				text[:100]
 			)
-				
+
 
 	def test_titled_posts(self):
 		classes = [
@@ -2539,9 +2624,9 @@ class PublishSubscribeTest(TestCase):
 
 
 	def do_subscribable_test(
-			self, 
-			target, 
-			subscribable_class, 
+			self,
+			target,
+			subscribable_class,
 			subscribable_constructor_args,
 			subscribable_author,
 			event_type,
@@ -2605,7 +2690,7 @@ class UserProfileTest(TestCase):
 		# Create an auth_user
 		self.user = User.objects.create_user(
 			'test_username', 'test@example.com', 'test_password')
-		
+
 		# Create an associated user profile
 		self.user_profile = UserProfile(
 			user=self.user,
@@ -2649,5 +2734,3 @@ class UserProfileTest(TestCase):
 
 			# check if the user got reputation removed
 			self.assertTrue(UserProfile.objects.get(pk=pk).rep == 0)
-
-
