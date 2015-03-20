@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 import hashlib
 from django.core.mail import send_mail
 from django.utils.translation import ugettext_lazy as _
@@ -39,7 +40,10 @@ def login_user(username, password, request):
 			return 'LOGIN_FAILED'
 
 
-def send_email_confirmation(user):
+def get_domain_and_language(request):
+	return 'https://luminocracy.org/%s' % request.LANGUAGE_CODE
+
+def send_email_confirmation(user, request):
 	# send registration email
 	random_hash = hashlib.sha256(
 		'af612da003486b687' + user.username
@@ -52,8 +56,10 @@ def send_email_confirmation(user):
 
 	# send an email
 	message = (
-		__('To verify your account, click this link: https:/'
-		+ reverse('verify_email', kwargs={'code': random_hash}))
+		__('To verify your account, click this link: ' 
+			+ 'https://luminocracy.org'
+			+ reverse('verify_email', kwargs={'code': random_hash})
+		)
 	)
 
 	send_mail(__('Welcome to luminocracy'), message, 

@@ -473,7 +473,7 @@ class TaggedProposalForm(object):
 		self.taggit = {
 			'id': 'proposal_tags',
 			'tags': '',
-			'label': 'tags',
+			'label': _('tags'),
 			'name': 'tags',
 			'errors': []
 		}
@@ -545,7 +545,7 @@ class VoteForm(ModelForm):
 	def __init__(self, *args, **kwargs):
 		self.cur_score = kwargs.pop('cur_score', 0)
 		self.is_enabled = kwargs.pop('is_enabled', False)
-		self.tooltip = kwargs.pop('tooltip', __('You must login to vote!'))
+		self.tooltip = kwargs.pop('tooltip', _('You must login to vote!'))
 
 		super(VoteForm, self).__init__(*args, **kwargs)
 
@@ -645,7 +645,7 @@ class UserRegisterForm(AugmentedFormMixin, ModelForm):
 			email_exists = User.objects.filter(email=email).count()>0
 			if email_exists:
 				self._errors['email'] = self.error_class(
-					[__("Hmm... looks like you've signed up before...")]
+					[_("Hmm... looks like you've signed up before...")]
 				)
 				del cleaned['email']
 
@@ -662,7 +662,7 @@ class UserRegisterForm(AugmentedFormMixin, ModelForm):
 			illegal_username = LEGAL_USERNAME.search(username) is None
 			if illegal_username:
 				self._errors['username'] = self.error_class(
-					[__("Please stick to letters, numbers, and underscore!")])
+					[_("Please stick to letters, numbers, and underscore!")])
 				del cleaned['username']
 
 		# check that passwords are long enough and match
@@ -687,15 +687,15 @@ class UserRegisterForm(AugmentedFormMixin, ModelForm):
 
 				if pwd_too_short:
 					self._errors['password'] = self.error_class(
-						[__("Password too short")])
+						[_("Password too short")])
 
 				if pwd_no_match:
 					if 'password' in self._errors:
 						self._errors['password'].append(
-							__("Passwords didn't match!"))
+							_("Passwords didn't match!"))
 					else:
 						self._errors['password'] = self.error_class(
-							[__("Passwords didn't match!")])
+							[_("Passwords didn't match!")])
 
 				if pwd_no_match or pwd_too_short:
 					del cleaned['password']
@@ -723,7 +723,7 @@ class ResetPasswordForm(AugmentedFormMixin,ModelForm):
 		    user_email_match = False
 		
 		if not user_email_match:
-		    self._errors['username'] = self.error_class([__("Username doesn't exist or email doesn't match.")])
+		    self._errors['username'] = self.error_class([_("Username doesn't exist or email doesn't match.")])
 		
 		return cleaned
 

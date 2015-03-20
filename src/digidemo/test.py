@@ -484,7 +484,7 @@ class EmailValidation(SeleniumTestCase):
 			'verify_email', kwargs={'code': verification.code})
 
 		body = (
-			'To verify your account, click this link: https:/'
+			'To verify your account, click this link: https://luminocracy.org'
 			+ email_link
 		)
 		self.assertEqual(sent_mail.body, body)
@@ -517,13 +517,16 @@ class EmailValidation(SeleniumTestCase):
 		self.assertEqual(sent_mail.to, ['newuser@example.com'])
 
 		body = (
-			'To verify your account, click this link: https:/'
+			'To verify your account, click this link: https://luminocracy.org'
 			+ email_link
 		)
 		self.assertEqual(sent_mail.body, body)
 
 		# simulate following the link in the email
 		self.driver.get(self.live_server_url + email_link)
+		message_text = self.find('exclamation').text
+		expected_message_text = 'Good to go!'
+		self.assertTrue(text_is_similar(message_text, expected_message_text))
 
 		# now check that the user's email has been verified
 		user_profile = get_profile(user)
@@ -992,10 +995,8 @@ class AnswerFormTest(SeleniumTestCase):
 		answer = Answer.objects.get(text=answer_text)
 		self.assertEqual(answer.target.pk, 1)
 
-		time.sleep(10)
 		# the answer form should have been hidden.  When revealed, it should
 		# be blank.
-		time.sleep(8)
 		self.assertFalse(textarea.is_displayed())
 		self.driver.find_element('id', toggle_id).click()
 		self.assertTrue(textarea.is_displayed())

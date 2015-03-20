@@ -1,5 +1,7 @@
 {% load i18n %}
 {% load staticfiles %}
+{% load apptags %}
+
 <div id="header">
 
 	<div id="header_bg">
@@ -20,10 +22,11 @@
 
 			{% include "digidemo/_i_main_nav_bar.html" %}
 
-			<div class="short_nav_button" id="search_bar">
+			<div class="short_nav_button" id="search_bar" 
+				title="{% trans "not implemented" %}">
 				<img src="{% static "digidemo/images/search.png" %}" />
 
-				<div id="search_form" title="not implemented">
+				<div id="search_form" >
 					<div class="border_cover"></div>
 					<form type="get" action="{% url "search" %}">  
 						<input placeholder="keywords" type="text" name="q" />
@@ -61,16 +64,31 @@
 
 			<div id="login_row">
 				{% include "digidemo/_w_login_user.html" %}
+
+
+
+
 			</div>
 
-			<div id="topic_list">
-				{% for sector in GLOBALS.SECTORS %}
-				<a href="{% url "issue_list_sector" sector=sector.name order_by="interesting" %}"
-					class='sector_links{% if forloop.first %}_first{%endif%}'>
-						{% trans sector.name %}
-				</a>
-				{% endfor %}
+			<div id="bottom_row">
+				<div id="topic_list">
+					{% for sector in GLOBALS.SECTORS %}
+					<a href="{% url "issue_list_sector" sector=sector.name order_by="interesting" %}"
+						class='sector_links{% if forloop.first %}_first{%endif%}'>
+							{% trans sector.name %}
+					</a>
+					{% endfor %}
+				</div>
+
+				{% if GLOBALS.IS_ENGLISH %}
+					<div id="lang_change_wrapper">
+				{% else %}
+					<div id="fr_lang_change_wrapper">
+				{% endif %}
+						{% change_lang %}
+					</div>
 			</div>
+			<div class="clear"></div>
 
 		</div>
 	</div>
@@ -96,6 +114,7 @@
 				var show_div = $('#feedback_form_wrapper');
 				var tog = ToggleHidden(tog_div, show_div);
 			})();
+
 			</script>
 			<!-- end of feedback form -->
 </div>

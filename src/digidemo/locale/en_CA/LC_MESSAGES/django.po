@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-03-03 10:42-0500\n"
+"POT-Creation-Date: 2015-03-05 13:44-0500\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -1239,6 +1239,14 @@ msgstr ""
 msgid "Resent letter must have same valence as original letter"
 msgstr ""
 
+#: forms.py:476 models.py:214 models.py:240 models.py:340
+msgid "tags"
+msgstr ""
+
+#: forms.py:548 views.py:469
+msgid "You must login to vote!"
+msgstr ""
+
 #: forms.py:598 models.py:117
 msgid "username"
 msgstr ""
@@ -1249,6 +1257,26 @@ msgstr ""
 
 #: forms.py:613
 msgid "Confirm password"
+msgstr ""
+
+#: forms.py:648
+msgid "Hmm... looks like you've signed up before..."
+msgstr ""
+
+#: forms.py:665
+msgid "Please stick to letters, numbers, and underscore!"
+msgstr ""
+
+#: forms.py:690
+msgid "Password too short"
+msgstr ""
+
+#: forms.py:695 forms.py:698
+msgid "Passwords didn't match!"
+msgstr ""
+
+#: forms.py:726
+msgid "Username doesn't exist or email doesn't match."
 msgstr ""
 
 #: models.py:92 models.py:103 models.py:115 models.py:496
@@ -1299,10 +1327,6 @@ msgstr ""
 msgid "tag"
 msgstr ""
 
-#: models.py:214 models.py:240 models.py:340
-msgid "tags"
-msgstr ""
-
 #: models.py:219
 msgid "is published"
 msgstr ""
@@ -1328,7 +1352,7 @@ msgid "issue image"
 msgstr ""
 
 #: models.py:327 models.py:333 templates/digidemo/index.html:52
-#: templates/digidemo/index.html.py:99 views.py:41
+#: templates/digidemo/index.html.py:99 views.py:42
 msgid "issue"
 msgstr ""
 
@@ -1495,7 +1519,7 @@ msgstr ""
 msgid "letter"
 msgstr ""
 
-#: models.py:523 views.py:43
+#: models.py:523 views.py:44
 msgid "letters"
 msgstr ""
 
@@ -1523,7 +1547,7 @@ msgstr ""
 msgid "question"
 msgstr ""
 
-#: models.py:595 views.py:42
+#: models.py:595 views.py:43
 msgid "questions"
 msgstr ""
 
@@ -1549,11 +1573,11 @@ msgstr ""
 msgid "vote"
 msgstr ""
 
-#: settings.py:137 ~settings.py:98
+#: settings.py:136 ~settings.py:98
 msgid "English"
 msgstr ""
 
-#: settings.py:138 ~settings.py:99
+#: settings.py:137 ~settings.py:99
 msgid "French"
 msgstr ""
 
@@ -1561,11 +1585,16 @@ msgstr ""
 msgid "add comment"
 msgstr ""
 
-#: templates/digidemo/_i_header.html:85
+#: templates/digidemo/_i_header.html:26
+#: templates/digidemo/_i_main_nav_bar.html:29
+msgid "not implemented"
+msgstr ""
+
+#: templates/digidemo/_i_header.html:103
 msgid "feedback"
 msgstr ""
 
-#: templates/digidemo/_i_header.html:88
+#: templates/digidemo/_i_header.html:106
 msgid "Feedback"
 msgstr ""
 
@@ -1574,7 +1603,7 @@ msgstr ""
 msgid "Issues"
 msgstr ""
 
-#: templates/digidemo/_i_main_nav_bar.html:15
+#: templates/digidemo/_i_main_nav_bar.html:15 templates/digidemo/tags.html:18
 msgid "Topics"
 msgstr ""
 
@@ -1593,6 +1622,12 @@ msgstr ""
 
 #: templates/digidemo/_i_main_nav_bar.html:35
 msgid "Create"
+msgstr ""
+
+#: templates/digidemo/_w_ajax_form.html:25
+#: templates/digidemo/_w_simple_form_wrapped.html:12
+#: templates/digidemo/add_proposal.html:23 templates/digidemo/edit.html:19
+msgid "submit"
 msgstr ""
 
 #: templates/digidemo/_w_follow_post.html:12
@@ -1631,45 +1666,41 @@ msgstr ""
 msgid "no notifications!"
 msgstr ""
 
-#: templates/digidemo/_w_login_user.html:208
+#: templates/digidemo/_w_login_user.html:212
 msgid "login"
 msgstr ""
 
-#: templates/digidemo/_w_login_user.html:220
+#: templates/digidemo/_w_login_user.html:224
 msgid "Email or username"
 msgstr ""
 
-#: templates/digidemo/_w_login_user.html:223
+#: templates/digidemo/_w_login_user.html:227
 msgid "you"
 msgstr ""
 
-#: templates/digidemo/_w_login_user.html:226
+#: templates/digidemo/_w_login_user.html:230
 msgid "Password"
 msgstr ""
 
-#: templates/digidemo/_w_login_user.html:229
+#: templates/digidemo/_w_login_user.html:233
 msgid "super-secret"
 msgstr ""
 
-#: templates/digidemo/_w_login_user.html:232
+#: templates/digidemo/_w_login_user.html:236
 msgid "Log in"
 msgstr ""
 
-#: templates/digidemo/_w_login_user.html:234
+#: templates/digidemo/_w_login_user.html:238
 msgid "forgot?"
 msgstr ""
 
-#: templates/digidemo/_w_login_user.html:245
+#: templates/digidemo/_w_login_user.html:249
 msgid "register"
 msgstr ""
 
-#: templates/digidemo/_w_login_user.html:358
+#: templates/digidemo/_w_login_user.html:344
+#: templates/digidemo/login_page.html:21
 msgid "Incorrect username or password"
-msgstr ""
-
-#: templates/digidemo/_w_simple_form_wrapped.html:12
-#: templates/digidemo/edit.html:19
-msgid "submit"
 msgstr ""
 
 #: templates/digidemo/add_proposal.html:7
@@ -1682,6 +1713,25 @@ msgstr ""
 
 #: templates/digidemo/add_proposal.html:35
 msgid "preview"
+msgstr ""
+
+#: templates/digidemo/all_petitions_list.html:16
+msgid "Open Letters"
+msgstr ""
+
+#: templates/digidemo/all_petitions_list.html:71
+msgid "go to petition..."
+msgstr ""
+
+#: templates/digidemo/all_petitions_list.html:128
+#, python-format
+msgid ""
+"\n"
+"\t\t\tTo write an open letter, first \n"
+"\t\t\t<a href=\"%(link_find_issue)s\"> find the issue</a> \n"
+"\t\t\tthat your letter relates to.  If there isn't an applicable issue\n"
+"\t\t\tyet, you can <a href=\"%(link_add_issue)s\">create one</a>.\n"
+"\t\t\t"
 msgstr ""
 
 #: templates/digidemo/all_questions_list.html:13
@@ -1736,6 +1786,14 @@ msgid ""
 "\t\t\t"
 msgstr ""
 
+#: templates/digidemo/check_your_mail.html:11
+msgid "Nice!"
+msgstr ""
+
+#: templates/digidemo/check_your_mail.html:13
+msgid "Check your mail for a link to confirm registration."
+msgstr ""
+
 #: templates/digidemo/discussion_list.html:19
 msgid "Discussion area"
 msgstr ""
@@ -1786,6 +1844,14 @@ msgstr ""
 msgid "Last Modified"
 msgstr ""
 
+#: templates/digidemo/feedback.html:10
+msgid "Thank you!"
+msgstr ""
+
+#: templates/digidemo/feedback.html:14
+msgid "Whoops!"
+msgstr ""
+
 #: templates/digidemo/index.html:20
 msgid "What's this all about?"
 msgstr ""
@@ -1812,6 +1878,14 @@ msgstr ""
 
 #: templates/digidemo/index.html:83
 msgid "Trending"
+msgstr ""
+
+#: templates/digidemo/invalid_email.html:11
+msgid "Hey!"
+msgstr ""
+
+#: templates/digidemo/invalid_email.html:13
+msgid "You need to confirm your email first!  Check your mail for a link!"
 msgstr ""
 
 #: templates/digidemo/issue_list.html:13
@@ -1867,12 +1941,16 @@ msgid ""
 "\t\t"
 msgstr ""
 
+#: templates/digidemo/login_page.html:17
+msgid "Login"
+msgstr ""
+
 #: templates/digidemo/overview.html:32
 msgid "go to editing room"
 msgstr ""
 
 #: templates/digidemo/overview.html:38
-#: templates/digidemo/petition_list.html:33
+#: templates/digidemo/petition_list.html:34
 #, python-format
 msgid ""
 "\n"
@@ -1902,11 +1980,11 @@ msgid_plural ""
 msgstr[0] ""
 msgstr[1] ""
 
-#: templates/digidemo/petition_list.html:42
+#: templates/digidemo/petition_list.html:43
 msgid "start a letter"
 msgstr ""
 
-#: templates/digidemo/petition_list.html:85
+#: templates/digidemo/petition_list.html:86
 msgid "go to letter..."
 msgstr ""
 
@@ -1947,24 +2025,63 @@ msgid ""
 "\t\t\t"
 msgstr ""
 
-#: templates/digidemo/register.html:60
+#: templates/digidemo/register.html:10
+msgid "Have we met before?"
+msgstr ""
+
+#: templates/digidemo/register.html:11
+msgid "Hey!  You've signed up before.  Did you forget?"
+msgstr ""
+
+#: templates/digidemo/register.html:13
+msgid "I forgot my password"
+msgstr ""
+
+#: templates/digidemo/register.html:19
+msgid "Register Now"
+msgstr ""
+
+#: templates/digidemo/register.html:63
 msgid "too short!"
 msgstr ""
 
-#: templates/digidemo/register.html:67
+#: templates/digidemo/register.html:70
 msgid "Passwords don't match!"
 msgstr ""
 
-#: templates/digidemo/register.html:76
+#: templates/digidemo/register.html:79
 msgid "available!"
 msgstr ""
 
-#: templates/digidemo/register.html:78
+#: templates/digidemo/register.html:81
 msgid "sorry... it's taken"
 msgstr ""
 
-#: templates/digidemo/register.html:96
-msgid "Please stick to letters, numbers, and underscore (\\"
+#: templates/digidemo/register.html:99
+msgid "Please stick to letters, numbers, and underscore (\"_\")!"
+msgstr ""
+
+#: templates/digidemo/reset_password.html:17
+msgid "Reset Password"
+msgstr ""
+
+#: templates/digidemo/tags.html:20
+msgid ""
+"\n"
+"\t\t\tFind issues that you care about by browsing topics.  Issues can\n"
+"\t\t\tbelong to many topics.\t\n"
+"\t\t\tSubscribe to a topic to get alerts when there is activity\n"
+"\t\t\ton issues issues in that topic.  You can receive alerts on this \n"
+"\t\t\tsite or have them sent to your inbox, it's up to you.\n"
+"\t\t\t"
+msgstr ""
+
+#: templates/digidemo/validated.html:11
+msgid "Good to go!"
+msgstr ""
+
+#: templates/digidemo/validated.html:14
+msgid "Go ahead and login (up and to your right)."
 msgstr ""
 
 #: templates/digidemo/view_discussion.html:10
@@ -1983,44 +2100,40 @@ msgstr ""
 msgid "Cancel"
 msgstr ""
 
-#: views.py:44
+#: views.py:45
 msgid "edit / discuss"
 msgstr ""
 
-#: views.py:466
-msgid "You must login to vote!"
-msgstr ""
-
-#: views.py:473
+#: views.py:476
 msgid "You can\\'t vote on your own post!"
 msgstr ""
 
-#: views.py:477
+#: views.py:480
 msgid "You need to validate your email!"
 msgstr ""
 
-#: views.py:1237
+#: views.py:1243
 msgid "Ask a question"
 msgstr ""
 
-#: views.py:1253
+#: views.py:1259
 msgid "Start a discussion"
 msgstr ""
 
-#: views.py:1269
+#: views.py:1275
 msgid "Write an open letter"
 msgstr ""
 
-#: views.py:1764
+#: views.py:1770
 msgid "Luminocracy.org Password Reset"
 msgstr ""
 
-#: views.py:1765
+#: views.py:1771
 #, python-format
 msgid "Your new luminocracy.org password is: %s"
 msgstr ""
 
-#: views.py:1767
+#: views.py:1773
 msgid "support@luminocracy.org"
 msgstr ""
 

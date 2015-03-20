@@ -1,15 +1,16 @@
 {% extends "digidemo/__base.html" %}
 {% load staticfiles %}
 {% load apptags %}
+{% load i18n %}
 
 {% block middle %}
 
 <div class="validate_center">
 	<div class="mail_sent"></div>
 	<h2 id="mail_sent_message" class="validate"> 
-		Nice!  <br/>
+		{% trans "Nice!" %}  <br/>
 		<span class="not_bold">
-			Check your mail for a link to confirm registration.
+			{% trans "Check your mail for a link to confirm registration." %}
 		</span>
 	</h2>
 </div>

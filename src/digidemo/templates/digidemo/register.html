@@ -7,14 +7,16 @@
 
 {% if email_exists %}
 	<div class="mid_form_med">
-		<h1 class="computerModern">Have we met before?</h1></br> 
-		Hey!  You've signed up before.  Did you forget? <br/>
-		<a href="{% url "resetPassword" %}">I forgot my password</a>
+		<h1 class="computerModern">{% trans "Have we met before?" %}</h1></br> 
+		{% trans "Hey!  You've signed up before.  Did you forget?" %} <br/>
+		<a href="{% url "resetPassword" %}">
+			{% trans "I forgot my password" %}
+		</a>
 	</div>
 
 {% else %}
 	<div class="mid_form_tall">
-		<h1 class="computerModern">Register Now</h1></br> 
+		<h1 class="computerModern">{% trans "Register Now" %}</h1></br> 
 			{% include "digidemo/_w_simple_form_wrapped.html" with form=form %}
 	</div>
 
@@ -94,7 +96,7 @@
 			var legal_usernames = /^\w+$/;
 			if(!legal_usernames.test(username)){
 				username_status.text(
-				'{% trans "Please stick to letters, numbers, and underscore (\"_\")!" %}');
+				'{% trans 'Please stick to letters, numbers, and underscore ("_")!' %}');
 				return;
 			}
 

@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-03-03 10:42-0500\n"
+"POT-Creation-Date: 2015-03-05 13:44-0500\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -659,8 +659,6 @@ msgid "British Indian Ocean Territory"
 msgstr ""
 
 #: choices.py:178
-#, fuzzy
-#| msgid "relations"
 msgid "Ireland"
 msgstr "relations"
 
@@ -1065,8 +1063,6 @@ msgid "Sao Tome and Principe"
 msgstr ""
 
 #: choices.py:279
-#, fuzzy
-#| msgid "username"
 msgid "Suriname"
 msgstr "nom d'utilisateur"
 
@@ -1244,6 +1240,14 @@ msgstr ""
 "Les lettres ré-expédiées doivent avoir la même valence que les lettres "
 "originelles"
 
+#: forms.py:476 models.py:214 models.py:240 models.py:340
+msgid "tags"
+msgstr "sujets"
+
+#: forms.py:548 views.py:469
+msgid "You must login to vote!"
+msgstr "Vous devez vous connecter pour voter"
+
 #: forms.py:598 models.py:117
 msgid "username"
 msgstr "nom d'utilisateur"
@@ -1255,6 +1259,30 @@ msgstr "mot de passe"
 #: forms.py:613
 msgid "Confirm password"
 msgstr "confirmation du mot de passe"
+
+#: forms.py:648
+msgid "Hmm... looks like you've signed up before..."
+msgstr ""
+
+#: forms.py:665
+msgid "Please stick to letters, numbers, and underscore!"
+msgstr ""
+"Veuillez utiliser les lettres, chiffres, et barre de soulignement seulement "
+"(\"_\")!"
+
+#: forms.py:690
+#, fuzzy
+#| msgid "Password too short."
+msgid "Password too short"
+msgstr "Le mot de passe est trop court."
+
+#: forms.py:695 forms.py:698
+msgid "Passwords didn't match!"
+msgstr "Les mots de passe ne correspondent pas!"
+
+#: forms.py:726
+msgid "Username doesn't exist or email doesn't match."
+msgstr ""
 
 #: models.py:92 models.py:103 models.py:115 models.py:496
 msgid "email"
@@ -1304,10 +1332,6 @@ msgstr "secteurs d'impact"
 msgid "tag"
 msgstr "sujet"
 
-#: models.py:214 models.py:240 models.py:340
-msgid "tags"
-msgstr "sujets"
-
 #: models.py:219
 msgid "is published"
 msgstr "publié"
@@ -1333,7 +1357,7 @@ msgid "issue image"
 msgstr "image de l'enjeu"
 
 #: models.py:327 models.py:333 templates/digidemo/index.html:52
-#: templates/digidemo/index.html.py:99 views.py:41
+#: templates/digidemo/index.html.py:99 views.py:42
 msgid "issue"
 msgstr "enjeu"
 
@@ -1502,7 +1526,7 @@ msgstr "parent"
 msgid "letter"
 msgstr "lettre"
 
-#: models.py:523 views.py:43
+#: models.py:523 views.py:44
 msgid "letters"
 msgstr "lettres"
 
@@ -1530,7 +1554,7 @@ msgstr "réponses"
 msgid "question"
 msgstr "question"
 
-#: models.py:595 views.py:42
+#: models.py:595 views.py:43
 msgid "questions"
 msgstr "questions"
 
@@ -1556,11 +1580,11 @@ msgstr "commentaires"
 msgid "vote"
 msgstr "vote"
 
-#: settings.py:137 ~settings.py:98
+#: settings.py:136 ~settings.py:98
 msgid "English"
 msgstr "anglais"
 
-#: settings.py:138 ~settings.py:99
+#: settings.py:137 ~settings.py:99
 msgid "French"
 msgstr "français"
 
@@ -1568,11 +1592,16 @@ msgstr "français"
 msgid "add comment"
 msgstr "ajouter un commentaire"
 
-#: templates/digidemo/_i_header.html:85
+#: templates/digidemo/_i_header.html:26
+#: templates/digidemo/_i_main_nav_bar.html:29
+msgid "not implemented"
+msgstr ""
+
+#: templates/digidemo/_i_header.html:103
 msgid "feedback"
 msgstr "rétroaction"
 
-#: templates/digidemo/_i_header.html:88
+#: templates/digidemo/_i_header.html:106
 msgid "Feedback"
 msgstr "Rétroaction"
 
@@ -1581,7 +1610,7 @@ msgstr "Rétroaction"
 msgid "Issues"
 msgstr "Enjeux"
 
-#: templates/digidemo/_i_main_nav_bar.html:15
+#: templates/digidemo/_i_main_nav_bar.html:15 templates/digidemo/tags.html:18
 msgid "Topics"
 msgstr "Sujets"
 
@@ -1601,6 +1630,12 @@ msgstr "Usagers"
 #: templates/digidemo/_i_main_nav_bar.html:35
 msgid "Create"
 msgstr "Nouvel"
+
+#: templates/digidemo/_w_ajax_form.html:25
+#: templates/digidemo/_w_simple_form_wrapped.html:12
+#: templates/digidemo/add_proposal.html:23 templates/digidemo/edit.html:19
+msgid "submit"
+msgstr "soumettre"
 
 #: templates/digidemo/_w_follow_post.html:12
 #: templates/digidemo/_w_follow_post.html:17
@@ -1638,46 +1673,42 @@ msgstr "événements récents"
 msgid "no notifications!"
 msgstr "aucune notification"
 
-#: templates/digidemo/_w_login_user.html:208
+#: templates/digidemo/_w_login_user.html:212
 msgid "login"
 msgstr "connexion"
 
-#: templates/digidemo/_w_login_user.html:220
+#: templates/digidemo/_w_login_user.html:224
 msgid "Email or username"
 msgstr "courriel ou nom d'utilisateur"
 
-#: templates/digidemo/_w_login_user.html:223
+#: templates/digidemo/_w_login_user.html:227
 msgid "you"
 msgstr "vous"
 
-#: templates/digidemo/_w_login_user.html:226
+#: templates/digidemo/_w_login_user.html:230
 msgid "Password"
 msgstr "Mot de passe"
 
-#: templates/digidemo/_w_login_user.html:229
+#: templates/digidemo/_w_login_user.html:233
 msgid "super-secret"
 msgstr "confidentiel"
 
-#: templates/digidemo/_w_login_user.html:232
+#: templates/digidemo/_w_login_user.html:236
 msgid "Log in"
 msgstr "Se connecter"
 
-#: templates/digidemo/_w_login_user.html:234
+#: templates/digidemo/_w_login_user.html:238
 msgid "forgot?"
 msgstr "oublié?"
 
-#: templates/digidemo/_w_login_user.html:245
+#: templates/digidemo/_w_login_user.html:249
 msgid "register"
-msgstr "Devenir membre"
+msgstr "s'enregistrer"
 
-#: templates/digidemo/_w_login_user.html:358
+#: templates/digidemo/_w_login_user.html:344
+#: templates/digidemo/login_page.html:21
 msgid "Incorrect username or password"
 msgstr "Nom d'utilisateur ou mot de passe inexact"
-
-#: templates/digidemo/_w_simple_form_wrapped.html:12
-#: templates/digidemo/edit.html:19
-msgid "submit"
-msgstr "soumettre"
 
 #: templates/digidemo/add_proposal.html:7
 msgid "New Issue"
@@ -1690,6 +1721,25 @@ msgstr "annuler"
 #: templates/digidemo/add_proposal.html:35
 msgid "preview"
 msgstr "aperçu"
+
+#: templates/digidemo/all_petitions_list.html:16
+msgid "Open Letters"
+msgstr "Lettres Ouvertes"
+
+#: templates/digidemo/all_petitions_list.html:71
+msgid "go to petition..."
+msgstr "lire la suite"
+
+#: templates/digidemo/all_petitions_list.html:128
+#, python-format
+msgid ""
+"\n"
+"\t\t\tTo write an open letter, first \n"
+"\t\t\t<a href=\"%(link_find_issue)s\"> find the issue</a> \n"
+"\t\t\tthat your letter relates to.  If there isn't an applicable issue\n"
+"\t\t\tyet, you can <a href=\"%(link_add_issue)s\">create one</a>.\n"
+"\t\t\t"
+msgstr ""
 
 #: templates/digidemo/all_questions_list.html:13
 #: templates/digidemo/overview.html:111
@@ -1766,6 +1816,14 @@ msgstr ""
 "\t\t\tavant de contribuer!\n"
 "\t\t\t"
 
+#: templates/digidemo/check_your_mail.html:11
+msgid "Nice!"
+msgstr "Parfait!"
+
+#: templates/digidemo/check_your_mail.html:13
+msgid "Check your mail for a link to confirm registration."
+msgstr "Veuillez vérifier vos courriels pour confirmer votre enregistrement."
+
 #: templates/digidemo/discussion_list.html:19
 msgid "Discussion area"
 msgstr "Zone de discussion"
@@ -1841,6 +1899,14 @@ msgstr ""
 msgid "Last Modified"
 msgstr "Dernière modification"
 
+#: templates/digidemo/feedback.html:10
+msgid "Thank you!"
+msgstr "Merci!"
+
+#: templates/digidemo/feedback.html:14
+msgid "Whoops!"
+msgstr "Oups!"
+
 #: templates/digidemo/index.html:20
 msgid "What's this all about?"
 msgstr "Mais qu'est-ce?"
@@ -1868,6 +1934,14 @@ msgstr "continuer à lire"
 #: templates/digidemo/index.html:83
 msgid "Trending"
 msgstr "À la hausse"
+
+#: templates/digidemo/invalid_email.html:11
+msgid "Hey!"
+msgstr "Pas si vite!"
+
+#: templates/digidemo/invalid_email.html:13
+msgid "You need to confirm your email first!  Check your mail for a link!"
+msgstr "Vous deviez confirmer votre couriel en premier"
 
 #: templates/digidemo/issue_list.html:13
 #, python-format
@@ -1958,12 +2032,16 @@ msgstr ""
 "\t\t</p>\n"
 "\t\t"
 
+#: templates/digidemo/login_page.html:17
+msgid "Login"
+msgstr "connexion"
+
 #: templates/digidemo/overview.html:32
 msgid "go to editing room"
 msgstr "forum de discussion et salle de rédaction"
 
 #: templates/digidemo/overview.html:38
-#: templates/digidemo/petition_list.html:33
+#: templates/digidemo/petition_list.html:34
 #, python-format
 msgid ""
 "\n"
@@ -2005,11 +2083,11 @@ msgstr[1] ""
 "\t\t\t\t\t\t\t\t%(num_answers)s Réponses\n"
 "\t\t\t\t\t\t\t"
 
-#: templates/digidemo/petition_list.html:42
+#: templates/digidemo/petition_list.html:43
 msgid "start a letter"
 msgstr "rédiger une lettre"
 
-#: templates/digidemo/petition_list.html:85
+#: templates/digidemo/petition_list.html:86
 msgid "go to letter..."
 msgstr "lire la suite"
 
@@ -2067,25 +2145,66 @@ msgstr ""
 "\t\t\tavant de contribuer!\n"
 "\t\t\t"
 
-#: templates/digidemo/register.html:60
+#: templates/digidemo/register.html:10
+msgid "Have we met before?"
+msgstr ""
+
+#: templates/digidemo/register.html:11
+msgid "Hey!  You've signed up before.  Did you forget?"
+msgstr ""
+
+#: templates/digidemo/register.html:13
+msgid "I forgot my password"
+msgstr "confirmation du mot de passe"
+
+#: templates/digidemo/register.html:19
+msgid "Register Now"
+msgstr "S'enregistrer"
+
+#: templates/digidemo/register.html:63
 msgid "too short!"
-msgstr ""
+msgstr "trop court!"
 
-#: templates/digidemo/register.html:67
+#: templates/digidemo/register.html:70
 msgid "Passwords don't match!"
-msgstr ""
+msgstr "Les mots de passe ne correspondent pas"
 
-#: templates/digidemo/register.html:76
+#: templates/digidemo/register.html:79
 msgid "available!"
-msgstr ""
+msgstr "disponible"
 
-#: templates/digidemo/register.html:78
+#: templates/digidemo/register.html:81
 msgid "sorry... it's taken"
+msgstr "désolé... déjà pris"
+
+#: templates/digidemo/register.html:99
+msgid "Please stick to letters, numbers, and underscore (\"_\")!"
+msgstr ""
+"Veuillez utiliser les lettres, chiffres, et barre de soulignement seulement "
+"(\"_\")!"
+
+#: templates/digidemo/reset_password.html:17
+msgid "Reset Password"
+msgstr "Réinitialisation de mot de passe"
+
+#: templates/digidemo/tags.html:20
+msgid ""
+"\n"
+"\t\t\tFind issues that you care about by browsing topics.  Issues can\n"
+"\t\t\tbelong to many topics.\t\n"
+"\t\t\tSubscribe to a topic to get alerts when there is activity\n"
+"\t\t\ton issues issues in that topic.  You can receive alerts on this \n"
+"\t\t\tsite or have them sent to your inbox, it's up to you.\n"
+"\t\t\t"
 msgstr ""
 
-#: templates/digidemo/register.html:96
-msgid "Please stick to letters, numbers, and underscore (\\"
-msgstr ""
+#: templates/digidemo/validated.html:11
+msgid "Good to go!"
+msgstr "C'est parti!"
+
+#: templates/digidemo/validated.html:14
+msgid "Go ahead and login (up and to your right)."
+msgstr "Ça y est, vous pouvez maintenant vous connecter."
 
 #: templates/digidemo/view_discussion.html:10
 msgid "Your Reply"
@@ -2103,46 +2222,40 @@ msgstr "signer cette lettre"
 msgid "Cancel"
 msgstr "Annuler"
 
-#: views.py:44
+#: views.py:45
 msgid "edit / discuss"
 msgstr "modifier / discuter"
 
-#: views.py:466
-msgid "You must login to vote!"
-msgstr "Vous deviez connexionner pour voter"
-
-#: views.py:473
-#, fuzzy
-#| msgid "You can't vote on your own post!"
+#: views.py:476
 msgid "You can\\'t vote on your own post!"
-msgstr "Vous ne pouviez pas votez sur votre contribution propre!"
+msgstr "Vous ne pouvez pas voter pour votre propre contribution!"
 
-#: views.py:477
+#: views.py:480
 msgid "You need to validate your email!"
-msgstr "Vous deviez valider votre addresse de couriel"
+msgstr "Vous devez valider votre adresse couriel"
 
-#: views.py:1237
+#: views.py:1243
 msgid "Ask a question"
 msgstr "Poser une question"
 
-#: views.py:1253
+#: views.py:1259
 msgid "Start a discussion"
 msgstr "Commencer une discussion"
 
-#: views.py:1269
+#: views.py:1275
 msgid "Write an open letter"
 msgstr "Rédiger une lettre"
 
-#: views.py:1764
+#: views.py:1770
 msgid "Luminocracy.org Password Reset"
 msgstr "Réinitialisation de mot de passe"
 
-#: views.py:1765
+#: views.py:1771
 #, python-format
 msgid "Your new luminocracy.org password is: %s"
 msgstr "Votre nouveau mot de passe est: %s"
 
-#: views.py:1767
+#: views.py:1773
 msgid "support@luminocracy.org"
 msgstr "support@luminocracy.org"
 
@@ -2191,4 +2304,4 @@ msgid "newest"
 msgstr "récents"
 
 #~ msgid "You need to login!"
-#~ msgstr "Vous deviez connexionner"
+#~ msgstr "Vous devez vous connecter"

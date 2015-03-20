@@ -1,16 +1,19 @@
 {% extends "digidemo/__base.html" %}
 {% load staticfiles %}
 {% load apptags %}
+{% load i18n %}
 
 {% block middle %}
 
 <div class="validate_center">
 	<div class="check"></div>
-	<h2 class="validate"> 
-		Good to go!  <br/>
-		<span class="not_bold">
-			Go ahead and login (up and to your left).
-		</span>
+	<h2 id="exclamation" class="validate"> 
+		{% trans "Good to go!" %}  <br/>
+		{% if not GLOBALS.IS_USER_AUTHENTICATED %}
+			<span id="exclamation_message" class="not_bold">
+				{% trans "Go ahead and login (up and to your right)." %}
+			</span>
+		{% endif %}
 	</h2>
 </div>
 

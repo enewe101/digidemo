@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 import difflib
 import collections as c
 
@@ -253,8 +254,10 @@ def get_globals(request):
 			and get_profile(request.user).email_validated
 		) else False
 
+	language_is_english = request.LANGUAGE_CODE.startswith('en')
 	GLOBALS = {
-		'IS_ENGLISH': request.LANGUAGE_CODE.startswith('en'),
+		'IS_ENGLISH': language_is_english,
+		'OTHER_LANG': 'fr' if language_is_english else 'en',
 		'DEBUG': DEBUG,
 		'SECTORS': Sector.objects.all(),
 		'IS_USER_AUTHENTICATED': request.user.is_authenticated(),
@@ -1114,6 +1117,9 @@ class AllPetitionsListView(AbstractView):
 
 		return {
 			'GLOBALS': get_globals(self.request),
+			'link_find_issue': reverse('issue_list', 
+				kwargs={'order_by':'interesting'}),
+			'link_add_issue':reverse('add_proposal'),
 			'letters': petitions,
 			'tabs': tabs,
 			'active_navitem': OPINION_NAV_NAME
@@ -1683,7 +1689,7 @@ def userRegistration(request):
 				'%s.png' % new_user.username,
 				File(f)
 			)
-			send_email_confirmation(new_user)
+			send_email_confirmation(new_user, request)
 			return redirect(reverse('mail_sent'))
 
 	else:
@@ -1712,7 +1718,7 @@ def resend_email_confirmation(request):
 
 		# only send the verification email if their email isn't validated
 		if not get_profile(user).email_validated:
-			send_email_confirmation(user)
+			send_email_confirmation(user, request)
 
 		# Show the mail sent page
 		return mail_sent(request)

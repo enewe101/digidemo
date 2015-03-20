@@ -1,15 +1,16 @@
 {% extends "digidemo/__base.html" %}
 {% load staticfiles %}
 {% load apptags %}
+{% load i18n %}
 
 {% block middle %}
 
 <div class="validate_center">
 	<div class="no_love"></div>
 	<h2 class="validate"> 
-		Hey!<br/>
+		{% trans "Hey!" %}<br/>
 		<span class="not_bold">
-			You need to confirm your email first!  Check your mail for a link!
+			{% trans "You need to confirm your email first!  Check your mail for a link!" %}
 		</span>
 	</h2>
 	<a id='resend_link' class="go_button" href="{% url "resend_email_confirmation" %}">resend confirmation email</a>

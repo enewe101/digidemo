@@ -5,9 +5,11 @@
 		<title>
 			{% block title %}luminocracy{% endblock title%}
 		</title>
-
+			<link rel="shortcut icon" type="image/png" 
+				href="{% static 'digidemo/images/favicon.ico' %}"/>
+			
 		{% block css %}
-			<link rel="stylesheet" type="text/css" 
+		    <link rel="stylesheet" type="text/css" 
 				href="{% static "digidemo/css/base.css" %}" />
 			<link rel="stylesheet" type="text/css" 
 				href="{% static "digidemo/css/alacarte.css" %}" />
@@ -15,8 +17,8 @@
 				href="{% static "digidemo/css/widgets.css" %}" />
 			<link rel="stylesheet" type="text/css" 
 				href="{% static "digidemo/css/forms.css" %}" />
-			<link rel="stylesheet" type="text/css" 
-				href="{% static "digidemo/css/login.css" %}" />
+			<!--link rel="stylesheet" type="text/css" 
+				href="{% static "digidemo/css/login.css" %}" /-->
 			<link rel="stylesheet" type="text/css" 
 				href="{% static "digidemo/css/jquery-ui.css" %}" />
 			<link rel="stylesheet" type="text/css" 
@@ -32,6 +34,26 @@
 		{% endblock css %}
 
 		{% block js %}
+
+			{% if GLOBALS.DEBUG %}
+				<!-- in debug mode, all javascript errors are alerted -->
+				<script type="text/javascript">
+					// TODO: in non debug mode, send js errors to the server
+					// to be logged.
+					window.onerror =  function(msg, url, line, col, error) {
+						var extra = !col ? '' : '\ncolumn: ' + col;
+						extra += !error ? '' : '\nerror: ' + error;
+
+						// alert the error
+						alert("Error: " + msg + "\nurl: " + url + "\nline: " 
+							+ line + extra);   
+
+						// prevent browsers that natively alert errors
+						var suppressNativeErrorAlert = true;
+						return suppressNativeErrorAlert;
+					};
+				</script>
+			{% endif %}
 
 			<script type="text/javascript"
 				src="//code.jquery.com/jquery-2.1.1.min.js"></script>
