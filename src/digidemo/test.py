@@ -2568,28 +2568,6 @@ class PublishSubscribeTest(FixtureLoadedTestCase):
 
 
 
-from django.contrib.auth import authenticate
-
-class NewTest(FixtureLoadedTestCase):
-
-	def test_users(self):
-
-		# try to authenticate the user
-		username='regularuser'
-		password='regularuser'
-
-		user = authenticate(
-			username=username,
-			password=password
-		)
-
-		print type(user)
-
-		self.assertTrue(False)
-
-
-
-
 class UserProfileTest(FixtureLoadedTestCase):
 	'''
 	Tests the user profile model object.  This makes sure that avatar images
