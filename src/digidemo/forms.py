@@ -399,71 +399,71 @@ class ProposalVersionForm(AugmentedFormMixin, ModelForm):
 		}
 
 
-	def save(self, commit=True):
+#	def save(self, commit=True):
+#
+#		# If the proposal version isn't bound to a proposal, we are making
+#		# a brand new proposal
+#		if self.cleaned_data['proposal'] is None:
+#
+#			# Copy data from the proposal_version,
+#			# which is used to make the proposal itself
+#			proposal_init = {
+#				'title': self.cleaned_data['title'],
+#				'summary': self.cleaned_data['summary'],
+#				'text': self.cleaned_data['text'],
+#				'user': self.cleaned_data['user'],
+#				'original_user': self.cleaned_data['user'],
+#				'language': self.cleaned_data['language']
+#			}
+#
+#			# now make the proposal and save it
+#			self.proposal = Proposal(**proposal_init)
+#			self.proposal.save(suppress_subscribe=True, suppress_publish=True)
+#
+#			# now save the proposal version, then bind the proposal and
+#			# then save the bound proposal_version
+#			new_proposal_version = super(ProposalVersionForm, self).save(
+#				commit=False)
+#			new_proposal_version.proposal = self.proposal
+#			new_proposal_version.save()
+#
+#			# Finally copy the sectors to the saved proposal and
+#			# proposal_version
+#			for sector in self.cleaned_data['sectors']:
+#				new_proposal_version.sectors.add(sector)
+#				self.proposal.sectors.add(sector)
+#
+#		# Otherwise, we editing an existing proposal proposal, by saving a new
+#		# proposal version
+#		else:
+#
+#			# Update the values in the Proposal which mirror the
+#			# ProposalVersion.  Since this is an edit, there is already
+#			# a proposal bound to the form, get it, then update values.
+#			self.proposal = self.cleaned_data['proposal']
+#			for field in ['title', 'summary', 'text', 'user']:
+#				setattr(self.proposal, field, self.cleaned_data[field])
+#
+#			# this save will cause the editing user to be subscribed to the 
+#			# issue
+#			self.proposal.save(suppress_publish=True, suppress_subscribe=True)
+#
+#			# Save a new proposal version based on the contents of this form
+#			new_proposal_version = super(ProposalVersionForm, self).save()
+#
+#			# We also need to manually copy over the sectors.
+#			# First, clear any existing ones from the proposal (this makes
+#			# deletion of sectors possible)
+#			self.proposal.sectors.clear()
+#			for sector in self.cleaned_data['sectors']:
+#				new_proposal_version.sectors.add(sector)
+#				self.proposal.sectors.add(sector)
+#
+#		# Finally, return a reference to the proposal
+#		return new_proposal_version
 
-		# If the proposal version isn't bound to a proposal, we are making
-		# a brand new proposal
-		if self.cleaned_data['proposal'] is None:
 
-			# Copy data from the proposal_version,
-			# which is used to make the proposal itself
-			proposal_init = {
-				'title': self.cleaned_data['title'],
-				'summary': self.cleaned_data['summary'],
-				'text': self.cleaned_data['text'],
-				'user': self.cleaned_data['user'],
-				'original_user': self.cleaned_data['user'],
-				'language': self.cleaned_data['language']
-			}
-
-			# now make the proposal and save it
-			self.proposal = Proposal(**proposal_init)
-			self.proposal.save(suppress_subscribe=True, suppress_publish=True)
-
-			# now save the proposal version, then bind the proposal and
-			# then save the bound proposal_version
-			new_proposal_version = super(ProposalVersionForm, self).save(
-				commit=False)
-			new_proposal_version.proposal = self.proposal
-			new_proposal_version.save()
-
-			# Finally copy the sectors to the saved proposal and
-			# proposal_version
-			for sector in self.cleaned_data['sectors']:
-				new_proposal_version.sectors.add(sector)
-				self.proposal.sectors.add(sector)
-
-		# Otherwise, we editing an existing proposal proposal, by saving a new
-		# proposal version
-		else:
-
-			# Update the values in the Proposal which mirror the
-			# ProposalVersion.  Since this is an edit, there is already
-			# a proposal bound to the form, get it, then update values.
-			self.proposal = self.cleaned_data['proposal']
-			for field in ['title', 'summary', 'text', 'user']:
-				setattr(self.proposal, field, self.cleaned_data[field])
-
-			# this save will cause the editing user to be subscribed to the 
-			# issue
-			self.proposal.save(suppress_publish=True, suppress_subscribe=True)
-
-			# Save a new proposal version based on the contents of this form
-			new_proposal_version = super(ProposalVersionForm, self).save()
-
-			# We also need to manually copy over the sectors.
-			# First, clear any existing ones from the proposal (this makes
-			# deletion of sectors possible)
-			self.proposal.sectors.clear()
-			for sector in self.cleaned_data['sectors']:
-				new_proposal_version.sectors.add(sector)
-				self.proposal.sectors.add(sector)
-
-		# Finally, return a reference to the proposal
-		return new_proposal_version
-
-
-class TaggedProposalForm(object):
+class TaggerForm(object):
 
 	# tags can consist of letters, numbers, and hyphens
 	# a valid list of tags has at least one tag (containing at least one
@@ -471,76 +471,55 @@ class TaggedProposalForm(object):
 	# commas
 	valid_tags_re = re.compile(r'^[-a-zA-Z0-9]+(,[-a-zA-Z0-9]+)*$')
 
-	def __init__(self, initial=None, data=None, endpoint=None):
+	def __init__(
+			self, 
+			data=None, 
+			initial=None,
+			id_prefix = 'proposal_tags'
+		):
 
-		self.tag_errors = ''
-		self.taggit = {
-			'id': 'proposal_tags',
-			'tags': '',
-			'label': _('tags'),
-			'name': 'tags',
-			'errors': []
-		}
+		self.id_prefix = id_prefix
+		self.tags = []
+		self.tag_text = ''
+		self.label = _('tags')
+		self.name = 'tag_text'
+		self.errors = []
 
-		if data is not None:
+		if initial is not None:
+			self.tags = initial.pop('tags', [])
+			self.tag_text = ','.join([tag.name for tag in self.tags])
 
-			self.taggit['tags'] = data['tags']
-			self.proposal_version_form = ProposalVersionForm(
-				data, endpoint=endpoint)
-
-		elif initial is not None:
-
-			self.taggit['tags'] = initial.pop('tags', '')
-			self.proposal_version_form = ProposalVersionForm(
-				initial=initial, endpoint=endpoint)
-
-		else:
-			self.proposal_version_form = ProposalVersionForm(
-				endpoint=endpoint)
+		elif data is not None:
+			self.tag_text = data['tag_text']
 
 
 	def is_valid(self):
 
-		valid = self.proposal_version_form.is_valid()
+		if self.valid_tags_re.match(self.tag_text) is None:
 
-		if self.valid_tags_re.match(self.taggit['tags']) is None:
-
-			if self.taggit['tags'].strip() == '':
-				self.taggit['errors'].append(
+			if self.tag_text.strip() == '':
+				self.errors.append(
 					'Please include at least one tag.')
 
 			else:
-				self.taggit['errors'].append('Tags should contain only '\
+				self.errors.append('Tags should contain only '\
 					'letters, numbers and hyphens.')
 			
-			valid = False
+			return False
 
-		else:
-			self.tags = self.taggit['tags'].split(',')
-
-		return valid
+		return True
 
 
 	def save(self):
 
-		proposal_version = self.proposal_version_form.save()
-		proposal = proposal_version.proposal
+		tag_names = self.tag_text.split(',')
+		tags = []
 
-		# we will clear the current tags, then add the ones that were
-		# actually sent in the form.  This means that if the user deleted
-		# tags, they will actually be deleted on the proposal
-		proposal.tags.clear()
-
-		for tag_name in self.tags:
-
+		for tag_name in tag_names:
 			tag, created = Tag.objects.get_or_create(name=tag_name)
+			tags.append(tag)
 
-			proposal_version.tags.add(tag)
-			proposal.tags.add(tag)
-
-		return proposal_version
-	
-
+		return tags
 
 
 

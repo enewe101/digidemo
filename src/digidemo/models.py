@@ -238,7 +238,7 @@ class Proposal(abstract_models.Subscribable):
 		verbose_name=_('last author'))
 	proposal_image = models.ImageField(
 		upload_to='proposal_avatars',
-		default='/digidemo/proposal-images/',
+		default='digidemo/proposal-images/',
 		verbose_name=_('issue image'));
 	tags = models.ManyToManyField(
 		Tag, related_name='proposals', blank=True, null=True,
@@ -350,7 +350,7 @@ class ProposalVersion(abstract_models.TimeStamped):
 		choices=LANGUAGES, verbose_name=_('language'))
 	proposal_image = models.ImageField(
 		upload_to='proposal-images',
-		default='/digidemo/proposal-images/default.jpg',
+		default='digidemo/proposal-images/default.jpg',
 		verbose_name=_('issue image'));
 
 	class Meta:

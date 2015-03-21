@@ -1,5 +1,6 @@
 {% extends "digidemo/__base.html" %}
 {% load staticfiles %}
+{% load static %}
 {% load apptags %}
 {% load i18n %}
 
@@ -21,18 +22,27 @@
 	<div id="outer_center_featured">
 		<div id="center_featured">
 			<div id="packery">
-				<div id="f0" class="feat">
-				</div>
-				<div id="f1" class="feat">
-				</div>
-				<div id="f2" class="feat">
-				</div>
-				<div id="f3" class="feat">
-				</div>
-				<div id="f4" class="feat">
-				</div>
-				<div id="f5" class="feat">
-				</div>
+				{% for issue in active_issues %}
+					<div id="f{{forloop.counter0}}" class="feat">
+						<img 
+							src="{% get_media_prefix %}{{issue.proposal_image}}" />
+						<div class="feat_text">
+							{% if forloop.counter0 < 3 %}
+								<div class="title">
+									bla bla bla bla
+								</div>
+							{% endif %}
+							{% if forloop.counter0 < 1 %}
+								<div class="summary">
+									bla bla bla bla <br />
+									bla bla bla bla <br />
+									bla bla bla bla <br />
+								</div>
+							{% endif %}
+						</div>
+
+					</div>
+				{% endfor %}
 			</div>
 		</div>
 	</div>
@@ -47,21 +57,65 @@
 				return sum / N;
 			}
 
-			var approx_sizes = [8,4,4,2,2,1];
-			var color = ['red', 'blue', 'green', 'gold', 'purple', 'pink'];
-			for(var i=0; i<6; i++) {
-				var elm = $('#f' + i);
-				var size = 120 * approx_sizes[i] * normalish(30);
-				elm.css('width', size);
-				elm.css('height', size);
-				elm.css('background', color[i]);
+			function ThumbArray(thumb_container, itemSelector) {
+
+				var thumbs = thumb_container.children();
+				var active_thumb = $(thumbs[0]);
+
+				//function resize(elm, size) {
+				//	elm = $(elm);
+				//	var img = elm.find('img');
+				//	elm.css({
+				//		'width': size,
+				//		'height': size
+				//	});
+				//	img.css({
+				//		'width': size,
+				//		'height': size
+				//	});
+				//}
+
+				//function swap_size(e) {
+
+				//	var clicked_thumb = $(this);
+				//	var old_thumb = active_thumb;
+
+				//	var active_thumb_size = old_thumb.css('width');
+				//	var clicked_thumb_size = clicked_thumb.css('width');
+
+				//	resize(clicked_thumb, active_thumb_size);
+				//	resize(old_thumb, clicked_thumb_size);
+
+				//	active_thumb = clicked_thumb;
+				//	thumb_container.packery();//'fit', this);
+
+				//}
+
+				function pack() {
+					thumb_container.packery({
+						itemSelector: itemSelector,
+						gutter: 10
+					});
+				}
+
+				// resize the thumbs
+				//for(i=0; i<thumbs.length; i++) {
+				//	var elm = $(thumbs[i]);
+				//	var img = elm.find('img');
+				//	var size = sizes[i];
+				//	elm.css('width', size);
+				//	elm.css('height', size);
+				//	img.css('width', size);
+				//	img.css('height', size);
+				//	elm.click(swap_size);
+				//}
+
+				pack();
+
 			}
 
-			var featured = $('#packery');
-			featured.packery({
-				itemSelector: '.feat',
-				gutter: 10
-			});
+			var thumb_array = new ThumbArray($('#packery'), '.feat');
+
 		}());
 	</script>
 

@@ -869,21 +869,21 @@ class EditProposalView(AbstractLoginRequiredView):
 		# Work out where the cancel button should point
 		cancel_url = proposal.get_open_discussions_url()
 
-		initial = {
-			'proposal': proposal,
-			'title': proposal.title,
-			'summary': proposal.summary,
-			'text': proposal.text,
-			'user': self.request.user,
-			'tags': ','.join([t.name for t in proposal.tags.all()]),
-			'sectors': proposal.sectors.all(),
-			'language': proposal.language
-		}
 
-		proposal_form = TaggedProposalForm(
-			initial=initial,
+		proposal_form = ProposalVersionForm(
+			initial = {
+				'proposal': proposal,
+				'title': proposal.title,
+				'summary': proposal.summary,
+				'text': proposal.text,
+				'user': self.request.user,
+				'sectors': proposal.sectors.all(),
+				'language': proposal.language
+			},
 			endpoint=proposal.get_edit_url()
 		)
+
+		tagger_form = TaggerForm(initial={'tags':proposal.tags.all()})
 		
 
 		return {
@@ -891,6 +891,7 @@ class EditProposalView(AbstractLoginRequiredView):
 			'headline': proposal.title,
 			'proposal': proposal,
 			'proposal_form': proposal_form,
+			'tagger_form': tagger_form,
 			'tabs': get_proposal_tabs(proposal, EDIT_TAB_NAME),
 			'active_navitem': 'create',
 			'cancel_url': cancel_url
@@ -901,24 +902,45 @@ class EditProposalView(AbstractLoginRequiredView):
 
 		proposal = get_object_or_404(Proposal, pk=self.kwargs['issue_id'])
 
-		proposal_form = TaggedProposalForm(
-			data=self.request.POST,
+		proposal_form = ProposalVersionForm(
+			self.request.POST,
+			self.request.FILES,
 			endpoint=proposal.get_edit_url()
 		)
+		tagger_form = TaggerForm(self.request.POST)
 
-		if proposal_form.is_valid():
+		if proposal_form.is_valid() and tagger_form.is_valid():
 
+			tags = tagger_form.save()
 			proposal_version = proposal_form.save()
-
-			# while saving the form above, publication is suppressed.
-			# publish now.
 			proposal = proposal_version.proposal
+
+			fields_to_copy = [
+				'title', 'summary', 'text', 'user', 'proposal_image'
+			]
+			for field in fields_to_copy:
+				setattr(
+					proposal, 
+					field, 
+					getattr(proposal_version, field)
+				)
+
+			proposal.save(suppress_publish=True, suppress_subscribe=True)
+
+			proposal.sectors.clear()
+			for sector in proposal_form.cleaned_data['sectors']:
+				proposal_version.sectors.add(sector)
+				proposal.sectors.add(sector)
+
+			proposal.tags.clear()
+			for tag in tags:
+				proposal_version.tags.add(tag)
+				proposal.tags.add(tag)
+
 			proposal.subscribe(reason='EDITOR')
 			proposal.publish(event_type='EDIT_ISSUE')
 
 			return redirect(proposal.get_proposal_url())
-
-		# Otherwise, make the context to dislpay the form
 
 		# Work out where the cancel button should point
 		cancel_url = proposal.get_open_discussions_url()
@@ -951,21 +973,53 @@ class AddProposalView(AbstractLoginRequiredView):
 	# cause a rediret
 	def handle_post(self):
 
-		proposal_form = TaggedProposalForm(
-			data=self.request.POST,
+		tagger_form = TaggerForm(self.request.POST)
+
+		proposal_form = ProposalVersionForm(
+			self.request.POST, 
+			self.request.FILES,
 			endpoint=reverse('add_proposal')
 		)
 
 		# If the form is correctly filled out, save it and redirect
 		# to the issue page
-		if proposal_form.is_valid():
-			proposal_version = proposal_form.save()
-			proposal = proposal_version.proposal
+		if proposal_form.is_valid() and tagger_form.is_valid():
+
+			tags = tagger_form.save()
+			proposal_version = proposal_form.save(commit=False)
+
+			# Copy data from the proposal_version,
+			# which is used to make the proposal itself
+			proposal_init = {
+				'title': proposal_version.title,
+				'summary': proposal_version.summary,
+				'text': proposal_version.text,
+				'user': proposal_version.user,
+				'original_user': proposal_version.user,
+				'language': proposal_version.language,
+				'proposal_image': proposal_version.proposal_image
+			}
+			proposal = Proposal(**proposal_init)
+			proposal.save(suppress_subscribe=True, suppress_publish=True)
+
+			# now save the proposal version, then bind the proposal and
+			# then save the bound proposal_version
+			proposal_version.propsal = proposal
+			proposal_version.save()
+
+			for sector in proposal_form.cleaned_data['sectors']:
+				proposal_version.sectors.add(sector)
+				proposal.sectors.add(sector)
+
+			for tag in tags:
+				proposal_version.tags.add(tag)
+				proposal.tags.add(tag)
+
 			proposal.subscribe(reason='AUTHOR')
 			proposal.publish(event_type='ISSUE')
+
 			return redirect(proposal.get_url_by_view_name('proposal'))
 
-		# Otherwise, make the context to dislpay the form
 
 		# Work out where the cancel button should point
 		cancel_url = reverse('index')
@@ -991,13 +1045,15 @@ class AddProposalView(AbstractLoginRequiredView):
 
 	def get_context_data(self):
 
-		proposal_form = TaggedProposalForm(
+		proposal_form = ProposalVersionForm(
 			endpoint=reverse('add_proposal'),
 			initial={
 				'user': self.request.user,
 				'language': self.request.LANGUAGE_CODE
 			}
 		)
+
+		taggit = TaggerForm()
 
 		cancel_url = reverse('index')
 		if 'HTTP_REFERER' in self.request.META:
@@ -1007,6 +1063,7 @@ class AddProposalView(AbstractLoginRequiredView):
 			'GLOBALS': get_globals(self.request),
 			'headline': 'new issue',
 			'proposal_form': proposal_form,
+			'taggit': taggit,
 			'tabs': None,
 			'active_navitem': 'create',
 			'cancel_url': cancel_url
@@ -1616,9 +1673,9 @@ def index(request,sort_type='most_recent'):
 	proposals = Proposal.objects.filter(language=request.LANGUAGE_CODE)
 
 	if(sort_type=='most_recent'):
-		proposals = proposals.order_by('-creation_date')[:5]
+		proposals = proposals.order_by('-creation_date')[:6]
 	elif(sort_type=='top_score'):
-		proposals = proposals.order_by('-score')[:5]
+		proposals = proposals.order_by('-score')[:6]
 
 	active_issues = Proposal.objects.filter(language=request.LANGUAGE_CODE
 		).order_by('-score')[:6]

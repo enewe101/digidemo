@@ -440,7 +440,7 @@ input[type="text"], input[type="password"], input[type="email"] {
 .inner_center {
 	text-align: left;
 	margin: auto;
-	width: 960px;
+	width: 970px;
 	max-width: 100%;
 }
 

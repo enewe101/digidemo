@@ -1,5 +1,6 @@
 {% extends "digidemo/__tabbed.html" %}
 {% load apptags %}
+{% load static %}
 {% load staticfiles %}
 {% load i18n %}
 
@@ -27,6 +28,10 @@
 {% block middle %}
 <!-- start the previews -->
 <div id="previews">
+	<div>
+		<img 
+		src="{% get_media_prefix %}{{ proposal.proposal_image }}" />
+	</div>
 	<div>
 		<a href="{% url "editors_area" issue_id=proposal.id open_status="open" %}" class="go_button">
 			{% trans "go to editing room" %}

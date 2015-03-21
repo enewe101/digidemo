@@ -2,7 +2,7 @@
 {% load staticfiles %}
 
 
-<! -- aehlke github tagit code -->
+<!-- aehlke github tagit code -->
 <script src="{% static "digidemo/js/tag-it.js" %}" type="text/javascript" charset="utf-8"></script>
                   
 <link rel="stylesheet" type="text/css" href="http://ajax.googleapis.com/ajax/libs/jqueryui/1/themes/flick/jquery-ui.css">
@@ -13,34 +13,34 @@
 
  var sampleTags = ['c++', 'java' ];
     $(document).ready(function() {
-		$("#{{taggit.id}}").tagit({
+		$("#{{taggit.id_prefix}}").tagit({
 			caseSensitive : false,
 			availableTags: sampleTags,
 			singleField: true,
-			singleFieldNode: $('#{{taggit.id}}_hidden_input'),
+			singleFieldNode: $('#{{taggit.id_prefix}}_hidden_input'),
 		});
 
-		$("#{{taggit.id}} .tagit-new").attr('id', '{{taggit.id}}_input')
+		$("#{{taggit.id_prefix}} .tagit-new").attr('id', '{{taggit.id_prefix}}_input')
     });
 
 </script>
 
 <div class="form_line">
 	<div class="field_label_wrapper">
-		<span class="field_errors" id="{{taggit.id}}_errors">
+		<span class="field_errors" id="{{taggit.id_prefix}}_errors">
 			{% for error in taggit.errors %}
 				{{ error }}
 			{% endfor %}
 		</span>
-		<label for="{{ taggit.id }}" />{{ taggit.label|capfirst }}:</label>
+		<label for="{{ taggit.id_prefix }}" />{{ taggit.label|capfirst }}:</label>
 	</div>
 
 	<div class="field_wrapper{% if taggit.errors %}_error{% endif %}">
-		<ul class="taggit" id="{{ taggit.id }}">
+		<ul class="taggit" id="{{ taggit.id_prefix }}">
 			<!-- Existing list items will be pre-added to the tags -->
 		</ul>
 	</div>
 
-	<input type="hidden" id="{{taggit.id}}_hidden_input" 
-		value="{{ taggit.tags }}" name="{{ taggit.name }}" /> 
+	<input type="hidden" id="{{taggit.id_prefix}}_hidden_input" 
+		value="{{ taggit.tag_text }}" name="{{ taggit.name }}" /> 
 </div>
