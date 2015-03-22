@@ -127,48 +127,52 @@
 {% block footer %}
 
 	<div id="about">
+
 		<h1>Political Info for Canadians By Canadians</h1>
 
-		<div id="about_info">
+		<div id="start" class="centered right_col">
+			<a id="start_issue"
+				href="{% url "add_proposal" %}">Start an issue</a>
+			<p id="def_issue" class="italic">
+				An "issue" is one opportunity, threat, or decision.
+				It can be at the level of your city, province, or the whole 
+				country.
+			</p>
+		</div>
+
+		<div id="about_info" class="left_col">
 			<h2>Crowdsourced by Canadians like you</h2>
 			<p>
-				Our issues are crowdsourced by Canadians like you, and written 
-				through 
-				a community authoring process, to promote a balanced account 
-				that 
-				reflects diverse perspectives.
+				Our issues are crowdsourced by Canadians like you, and 
+				written through 
+				a community authoring process, to promote a balanced 
+				account that reflects diverse perspectives.
 			</p>
 			<h2>A non-partisan source you can trust</h2>
 			<p>
-				The goal of this platform is to create a productive dialogue 
+				The goal of this platform is to create a productive 
+				dialogue 
 				that
 				focused on learning and finding solutions.  We want to cut 
 				through
-				rhetoric, while still reflecting the diversity of viewpoints,
-				and provide a place where Canadians can both read about current 
+				rhetoric, while still reflecting the diversity of 
+				viewpoints,
+				and provide a place where Canadians can both read about 
+				current 
 				events and take action to shape them.
 			</p>
 			<h2>It's easy, with a little help from your friends</h2>
 			<p>
 				Is there an important issue going on today that you think 
 				Canadians
-				need to know about?  It only takes five minutes to start a new 
-				issue,
-				and invite others to help you.  Our tools make it easy to share
-				the
-				work of staying active and informed.
+				need to know about?  It only takes five minutes to start 
+				a new issue,
+				and invite others to help you.  Our tools make it easy to 
+				share the work of staying active and informed.
 			</p>
 		</div>
 
-		<div id="cta">
-			<a id="start_issue"
-				href="{% url "add_proposal" %}">Start an issue</a>
-			<p class="italic">
-				An "issue" is one opportunity, threat, or decision.
-				It can be at the level of your city, province, or the whole 
-				country.
-			</p>
-		</div>
+
 		<div class="clear"></div>
 
 	</div>

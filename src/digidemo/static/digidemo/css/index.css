@@ -19,23 +19,36 @@
 	margin: 0;
 }
 
+.left_col {
+	float: none;
+	width: 100%;
+}
+
+.right_col{
+	float: none;
+	width: 100%;
+}
+
+@media screen and (min-width: 660px) {
+	.left_col {
+		float:left;
+		width: 50%;
+	}
+
+	.right_col{
+		float:right;
+		width: 50%;
+	}
+}
 
 #about{
 }
 
 #about_info {
-	width: 480px;
-	max-width: 100%;
-	float: left;
 }
 
 #cta {
 	text-align: center;
-	float: left;
-	width: 348px;
-	max-width: 100%;
-	margin: 60px 20px 0 20px;
-	padding: 40px;
 }
 
 .summary_backdrop {
@@ -69,6 +82,16 @@
 	font-size: 22px;
 }
 
+#start {
+	margin-bottom: 32px;
+}
+
+#def_issue {
+	max-width: 240px;
+	margin: auto;
+	margin-top: 16px;
+}
+
 .feat {
 	color: white;
 	text-shadow: -1px -1px black;
@@ -79,6 +102,7 @@
 	float: left;
 	border-radius: 10px;
 	max-width: 100%;
+	max-height: 100vw;
 }
 
 .feat .title {
@@ -86,58 +110,86 @@
 	left: 10px;
 	color: white;
 	font-size: 30px;
+	max-width: 100%;
+	max-height: 100vw;
 }
 
 #f0, #f0 img {
 	width: 524px;
 	height: 524px;
+	max-width: 100%;
+	max-height: 100vw;
 }
 
 #f1, #f1 img {
 	width: 257px;
 	height: 257px;
+	max-width: 100%;
+	max-height: 100vw;
 }
 
 #f2, #f2 img {
 	width: 257px;
 	height: 257px;
+	max-width: 100%;
+	max-height: 100vw;
 }
 
 #f3, #f3 img {
 	width: 168px;
 	height: 168px;
+	max-width: 100%;
+	max-height: 100vw;
 }
 
 #f4, #f4 img {
 	width: 168px;
 	height: 168px;
+	max-width: 100%;
+	max-height: 100vw;
 }
 
 #f5, #f5 img {
 	width: 168px;
 	height: 168px;
+	max-width: 100%;
+	max-height: 100vw;
 }
 
 #f0 .title, #f0 .summary, #f0 .summary_backdrop {
 	width: 504px;
+	max-width: 100%;
+	max-height: 100vw;
 }
 #f1 .title, #f1 .summary, #f1 .summary_backdrop, 
 #f2 .title, #f2 .summary, #f2 .summary_backdrop {
 	width: 237px;
+	max-width: 100%;
+	max-height: 100vw;
 }
 
 #f3 .title, #f3 .summary, #f3 .summary_backdrop, 
 #f4 .title, #f4 .summary, #f4 .summary_backdrop,
 #f5 .title, #f5 .summary, #f5 .summary_backdrop {
-	width: 1#8px;
+	width: 168px;
+	max-width: 100%;
+	max-height: 100vw;
 }
 
 .summary, .summary_backdrop {
+	display: none;
 	position: absolute;
 	bottom: 0px;
 	left: 0px;
 	padding: 10px;
 	font-size: 18px;
 	border-radius: 10px;
+}
+
+
+@media screen and (min-width: 559px) {
+	.summary, .summary_backdrop {
+		display: block;
+	}
 }
 
