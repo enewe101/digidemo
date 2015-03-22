@@ -181,7 +181,7 @@ hr {
 .list_item {
 	background: rgb(245,245,245);
 	padding: 10px;
-	margin-bottom: 10px;
+	margin: 0 10px 10px 10px;
 }
 
 .list_item .status_indicator, .letter .status_indicator {
@@ -228,7 +228,14 @@ hr {
 	margin: 0 0 0 2px;
 }
 
-.go_button, .go_button_inline {
+.go_button_right {
+	display: inline;
+	position: relative;
+	padding: 4px;
+	top: -6px;
+}
+
+.go_button_right, .go_button, .go_button_inline {
 	background: black;
 	color: white;
 	border: solid 1px black;
@@ -242,16 +249,20 @@ hr {
 	border: solid 1px rgb(170, 0, 212);
 }
 
-.go_button:link, .go_button_inline:link {
+.go_button:link, .go_button_inline:link,
+.go_button_right:link {
 	color: white;
 }
-.go_button:visited, .go_button_inline:visited {
+.go_button:visited, .go_button_inline:visited,
+.go_button_right:visited {
 	color: white;
 }
-.go_button:hover, .go_button_inline:hover {
+.go_button:hover, .go_button_inline:hover,
+.go_button_right:hover {
 	color: white;
 }
-.go_button:active, .go_button_inline:active {
+.go_button:active, .go_button_inline:active,
+.go_button_right:active {
 	color: white;
 }
 
@@ -266,6 +277,11 @@ hr {
 }
 .go_button_highlighted:active, .go_button_inline_highlighted:active {
 	color: rgb(170, 0, 212);
+}
+
+.go_button_right {
+	font-size: 12px;
+	font-family: ubuntu;
 }
 
 .subtitle {
@@ -400,10 +416,10 @@ hr {
 .marquee_section {
 	float:left;
 	position: relative;
-	width: 298px;
-	margin: 10px;
-	padding: 20px 10px 10px 10px;
+	margin-top: 20px;
+	padding-top: 20px;
 	border: dotted 1px rgb(120,120,120);
+	width: 100%;
 }
 
 .marquee_see_more {

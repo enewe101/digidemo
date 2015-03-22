@@ -18,26 +18,59 @@
 
 
 {% block  headline_title %}
+
 	<span id="proposal_title">{{ proposal.title }}</span>
-	<div id="follow">
+	<a href="{% url "edit" issue_id=proposal.id  %}" 
+		class="go_button_right">
+		{% trans "edit" %}
+	</a>
+	<!--div id="follow">
 		{% include "digidemo/_w_follow_post.html" %}
-	</div>
+	</div-->
+
+	<div class="clear"></div>
 
 {% endblock headline_title %}
 
 {% block middle %}
-<!-- start the previews -->
-<div id="previews">
-	<div>
-		<a href="{% url "editors_area" issue_id=proposal.id open_status="open" %}" class="go_button">
-			{% trans "go to editing room" %}
-		</a>
-	</div>
-	<div>
-		<img class="proposal_image"
-		src="{% get_media_prefix %}{{ proposal.proposal_image }}" />
+
+
+<div>
+
+	<div id="proposal_image" class="right_col">
+			<img class="proposal_image"
+			src="{% get_media_prefix %}{{ proposal.proposal_image }}" />
 	</div>
 
+	<div class="left_col padded">
+			<div id="inbrief" class="in_brief">
+				<h1>{% trans "In brief" %}</h1>
+				<span id="proposal_summary">
+					{{ proposal.summary|markdown }}
+				</span>
+			</div>
+
+			<!-- start of proposal sectors -->
+
+			<div id="tags" class="tags">
+				{% for sector in proposal.sectors.all %}
+					{{ sector.render_link }}
+				{% endfor %}
+
+				{% for tag in proposal.tags.all %}
+					{{ tag.render_link }}
+				{% endfor %}
+				
+			</div>
+			<!-- end of proposal sectors -->
+	</div>
+
+</div>
+
+<div class="clear"></div>
+
+<!-- start the previews -->
+<div id="previews" class="right_col">
 	<div class="marquee_section">
 		<h2 class="marquee_heading">
 			{% blocktrans count num_letters=letter_sections|length %}
@@ -156,27 +189,7 @@
 <!-- end preview area -->
 
 <!-- start the proposal -->
-<div id="article">
-	<div id="inbrief" class="inbrief">
-		<h1>{% trans "In brief" %}</h1>
-		<span id="proposal_summary">
-			{{ proposal.summary|markdown }}
-		</span>
-	</div>
-
-	<!-- start of proposal sectors -->
-
-	<div id="tags" class="tags">
-		{% for sector in proposal.sectors.all %}
-			{{ sector.render_link }}
-		{% endfor %}
-
-		{% for tag in proposal.tags.all %}
-			{{ tag.render_link }}
-		{% endfor %}
-		
-	</div>
-	<!-- end of proposal sectors -->
+<div id="article" class="left_col padded">
 
 	<!-- start the proposal text (body) -->
 	<div id="proposal_text">
@@ -186,9 +199,5 @@
 
 </div>
 
-<div id="full_issue">
-
-
-</div>
 {% endblock middle %}
 

@@ -2,6 +2,9 @@
 {% load staticfiles %}
 {% load apptags %}
 
+<div id="top_line">
+	{% change_lang %}
+</div>
 <div id="header">
 
 	<div id="left_header_group">
@@ -16,16 +19,18 @@
 	</div>
 
 	<div id="right_header_group">
-		<a class="header_link">
+		<!--a class="header_link">
 			by topic
 		</a>
 		<a class="header_link">
 			unanswered
-		</a>
+		</a-->
 		<a id="search" class="menu_container">
 		</a>
 
-		{% include "digidemo/_w_login_user.html" %}
+		<div class="float_left">
+			{% include "digidemo/_w_login_user.html" %}
+		</div>
 	</div>
 
 	<div class="clear"></div>

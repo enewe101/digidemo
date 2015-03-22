@@ -1,7 +1,35 @@
+
+.left_col {
+	width: 100%;
+	float: none;
+}
+
+.right_col {
+	width: 100%;
+	float: none;
+}
+
+@media screen and (min-width: 980px) {
+	.left_col {
+		width: 620px;
+		float: left;
+	}
+
+	.right_col {
+		width: 320px;
+		float: right;
+	}
+}
+
+#proposal_image {
+	text-align: center;
+}
+
 .proposal_image {
 	border-radius: 10px;
-	width: 325px;
-	height: 325px;
+	width: 320px;
+	height: 320px;
+	margin: auto;
 }
 
 .overview_section_heading, .overview_serifs_section_heading {
@@ -47,7 +75,6 @@
 .overview_letter_main {
 	position: relative;
 	float: left;
-	width: 278px;
 }
 
 .overview_physical_letter {
@@ -69,14 +96,19 @@
 	font-family: ubuntu;
 }
 
-#overview_in_brief {
+.in_brief {
 	font-family: computerModern;
-	font-size: 14px;
+	font-size: 18px;
+}
+
+#proposal_text {
+	font-family: computerModern;
+	font-size: 18px;
 }
 
 #previews {
 	float: right;
-	margin-left: 30px;
+	margin-bottom: 20px;
 }
 
 #article {

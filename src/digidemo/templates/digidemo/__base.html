@@ -7,6 +7,11 @@
 		</title>
 			<link rel="shortcut icon" type="image/png" 
 				href="{% static 'digidemo/images/favicon.ico' %}"/>
+
+		{% block meta %}
+			<meta name="viewport" 
+				content="width=device-width, initial-scale=1.0">
+		{% endblock meta %}
 			
 		{% block css %}
 		    <link rel="stylesheet" type="text/css" 
@@ -31,6 +36,18 @@
 				href="{% static "digidemo/css/jquery.switchButton.css" %}" />
 			<link rel="stylesheet" type="text/css" 
 				href="//ajax.googleapis.com/ajax/libs/jqueryui/1/themes/flick/jquery-ui.css" />
+
+			<link rel="stylesheet" 
+				href="http://yui.yahooapis.com/pure/0.6.0/pure-min.css">
+			<!--[if lte IE 8]>
+				<link rel="stylesheet" 
+					href="{% static "digidemo/css/grid-old-ie.css" %}" />
+			<![endif]-->
+			<!--[if gt IE 8]><!-->
+				<link rel="stylesheet" 
+					href="{% static "digidemo/css/grid.css" %}" />
+			<!--<![endif]-->
+
 		{% endblock css %}
 
 		{% block js %}
