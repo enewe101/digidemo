@@ -2881,6 +2881,38 @@
 },
 {
   "fields": {
+    "last_modified": "2015-03-22T01:50:57Z",
+    "creation_date": "2015-03-22T01:50:57Z"
+  },
+  "model": "digidemo.subscriptionid",
+  "pk": 361
+},
+{
+  "fields": {
+    "last_modified": "2015-03-22T01:50:57Z",
+    "creation_date": "2015-03-22T01:50:57Z"
+  },
+  "model": "digidemo.subscriptionid",
+  "pk": 362
+},
+{
+  "fields": {
+    "last_modified": "2015-03-22T01:50:58Z",
+    "creation_date": "2015-03-22T01:50:58Z"
+  },
+  "model": "digidemo.subscriptionid",
+  "pk": 363
+},
+{
+  "fields": {
+    "last_modified": "2015-03-22T01:50:58Z",
+    "creation_date": "2015-03-22T01:50:58Z"
+  },
+  "model": "digidemo.subscriptionid",
+  "pk": 364
+},
+{
+  "fields": {
     "message": "nice site!",
     "last_modified": "2015-02-05T18:17:51Z",
     "email": "edward.newell@gmail.com",
@@ -4237,6 +4269,42 @@
 },
 {
   "fields": {
+    "sector": null,
+    "target": null,
+    "creation_date": "2015-03-22T01:50:57Z",
+    "last_modified": "2015-03-22T01:50:57Z",
+    "subscription_id": 362,
+    "name": "tfsa"
+  },
+  "model": "digidemo.tag",
+  "pk": 90
+},
+{
+  "fields": {
+    "sector": null,
+    "target": null,
+    "creation_date": "2015-03-22T01:50:58Z",
+    "last_modified": "2015-03-22T01:50:58Z",
+    "subscription_id": 363,
+    "name": "economy"
+  },
+  "model": "digidemo.tag",
+  "pk": 91
+},
+{
+  "fields": {
+    "sector": null,
+    "target": null,
+    "creation_date": "2015-03-22T01:50:58Z",
+    "last_modified": "2015-03-22T01:50:58Z",
+    "subscription_id": 364,
+    "name": "wealth"
+  },
+  "model": "digidemo.tag",
+  "pk": 92
+},
+{
+  "fields": {
     "portrait_url": "http://upload.wikimedia.org/wikipedia/commons/thumb/1/12/Stephen_Harper_by_Remy_Steinegger.jpg/800px-Stephen_Harper_by_Remy_Steinegger.jpg",
     "fname": "stephen",
     "bio_summary": "Stephen Joseph Harper (born April 30, 1959) is a Canadian politician who is the 22nd and current Prime Minister of Canada and the Leader of the Conservative Party. Harper became prime minister in 2006, forming a minority government after the 2006 election. He is the first prime minister to come from the newly reconstituted Conservative Party, which formed after a merger of the Progressive Conservative Party and the Canadian Alliance.",
@@ -4302,7 +4370,7 @@
     "is_active": true,
     "is_superuser": false,
     "is_staff": false,
-    "last_login": "2015-03-04T14:45:00Z",
+    "last_login": "2015-03-11T04:52:33Z",
     "groups": [],
     "user_permissions": [],
     "password": "pbkdf2_sha256$15000$eoqpl0EtXyBA$8FHX50MbjpH6/BKPivlfFefYoxKg70Mcy2U+lompLoA=",
@@ -4338,10 +4406,10 @@
     "is_active": true,
     "is_superuser": false,
     "is_staff": false,
-    "last_login": "2015-02-24T05:47:04Z",
+    "last_login": "2015-03-22T00:44:15Z",
     "groups": [],
     "user_permissions": [],
-    "password": "pbkdf2_sha256$12000$soH9GmCGqALu$wrXGyFVEhATt9oBosVsGMBoZKsmUr06Z4+I0KFOddZg=",
+    "password": "pbkdf2_sha256$15000$M4bc5pYkizLM$EYWPVE9x2DVjQFqTi9hZGWcWBKGcEjGpe+Nklx6YW9g=",
     "email": "stefan@dimitrov.li",
     "date_joined": "2015-02-05T20:18:55Z"
   },
@@ -5235,7 +5303,7 @@
 },
 {
   "fields": {
-    "email_validated": false,
+    "email_validated": true,
     "province": "",
     "street": "",
     "do_email_responses": true,
@@ -5244,7 +5312,7 @@
     "creation_date": "2015-02-05T20:18:56Z",
     "followedProposals": [],
     "do_email_watched": true,
-    "last_modified": "2015-02-24T21:16:24Z",
+    "last_modified": "2015-03-22T00:44:32Z",
     "user": 4,
     "avatar_img": "avatars/stefan_1.png",
     "do_email_news": true,
@@ -7216,6 +7284,29 @@
 },
 {
   "fields": {
+    "sectors": [
+      1,
+      8
+    ],
+    "language": "en-ca",
+    "title": "Doubling TFSA contribution limits",
+    "text": "#Background#\r\nThe TFSA account was first introduced in 2009 to encourage Canadians to save. Originally the account allowed for contributions of up to $5,000 per year. \r\n\r\n# Actors #\r\n - **Government**: The Government wants to provide incentive for Canadians to save money. At the same time it has to balance the budget and ensure that no group of Canadians are unfairly benefiting from the regulations. \r\n - **Banks**: Banks benefit by holding TFSA deposits because the rules of this account discourage Canadians from withdrawing money on a regular basis. When money is withdrawn from a TFSA account, the contribution room is not freed up until the following year. By having longer-term accounts banks can invest the funds in lucrative mortgages or credit card offers, while giving only a negligible portion of the earnings as interest back to the TFSA account holder.\r\n - **Average Canadians**: The average working class Canadian benefits from TFSA accounts by means of tax-free interest and incentive to keep healthy financial discipline.\r\n - **Savvy investors and traders**: Savvy investors and traders are able to exploit the full potential of a TFSA. The TFSA is a very flexible investment vehicle, particularly if used as a self-directed account. It can hold a large variety of securities and financial instruments, similar to a RRSP account. The few exclusions relate to shares in companies of which the TFSA account holder has controlling role. Savvy individuals with access to highly lucrative investments have a virtually unlimited potential to earn tax-free income by re-investing earnings within the TFSA account.\r\n\r\n# Impacts #\r\n## Unfair advantages ##\r\n**Tax avoidance**. When the TFSA was first introduced, savvy investors and traders took unfair advantage of the weak penalties for over-contribution and unqualified investments. The original penalty for over contribution was only 1% per month (and only on the over-contributions). Wealthy investors with access to investments with high returns were over-contributing $100,000 or more, paying the 1% penalty and still keeping all returns as tax-free income. Furthermore, initially the penalty for purchasing prohibited investments inside a TFSA (such as the shares of a company you control) was simply forfeiting the purchase. I.e., investors with questionable morality were allowed to keep any capital gains from breaking the rules, without paying tax[1].\r\nWhile the rules have since changed to prevent the most obvious tax avoidance schemes, questions still remain about what other opportunities for abuse are being exploited.\r\n\r\n**Unequal opportunities**. In 2010 big banks held 75% of Tax-Free Savings Accounts[2]. That is to say, 75% of accounts were giving their owners only the marginal interest rate that the big banks offer. At the same time, the remaining 25% of TFSAs were self-directed or held by other institutions, offering lucrative investments with limitless tax exemption to those in the know. Fast-forward to 2012, less than 16% of TFSA account holders under 60 years old had reached the $5,500 contribution limit[3]. I.e., only 16% of the economically active Canadian residents with TFSA accounts have enough spare income to reach the $5,500 TFSA contribution limit. If the limit is doubled, then, fewer than 16% of working Canadians will be able to benefit from this tax-break.\r\n\r\n## Economic Impacts ##\r\n**Loss of tax income**. By having no limits on the types of investments in a TFSA, the government in power leaves an unpredictable tax loss for future governments. The amount of tax wealthy investors and knowledgeable traders will not pay into future budgets depends only on their luck and skills. Doubling the contribution limit has cumulative impact on the tax loss, as any earnings can be re-invested freely.\r\n\r\n**Reduced economic activity**. Encouraging Canadians to invest up to $11,000 of their yearly income in a savings account and penalizing them (by means of lost contribution room) for withdrawals, may negatively impact local businesses as less money will be circulating in the economy. This will put deflationary pressure on an economy that is already struggling to achieve inflation targets.\r\n\r\n**Cushion for rate hike**. The TFSA can have a positive impact on the economy by providing a cushion for future changes that may take households by surprise. For instance, the abnormally low interest rate has allowed a large number of people to take mortgages. If the interest rates recover, a TFSA could save home-owners who are facing unexpected increase in the payments for their home.\r\n\r\n# References #\r\n[1] http://www.theglobeandmail.com/globe-investor/personal-finance/tfsa-move-targets-savvy-investors/article4215495/\r\n[2] http://www.theglobeandmail.com/globe-investor/personal-finance/taxman-may-forgive-tfsa-rule-breakers/article1373287/\r\n[3] http://www.cbc.ca/news/politics/doubling-tfsa-limit-will-only-help-wealthy-study-argues-1.2967796",
+    "tags": [
+      90,
+      91,
+      92
+    ],
+    "summary": "The Tax-Free Savings Account (TFSA) is a special type of account which allows Canadian residents to contribute after-tax funds up to a yearly contribution limit. Any earnings within the TFSA account (such as interest or capital gains) are tax-free. The individual can choose to withdraw funds from his/her TFSA at any time without being subject to tax on the withdrawals.\r\nThe Conservative government has proposed to dobule the TFSA contribution limit from the current $5,500 per year to $11,000 per year.",
+    "last_modified": "2015-03-22T01:50:57Z",
+    "user": 4,
+    "proposal": 31,
+    "creation_date": "2015-03-22T01:50:57Z"
+  },
+  "model": "digidemo.proposalversion",
+  "pk": 120
+},
+{
+  "fields": {
     "score": 0,
     "language": "en-ca",
     "title": "Keystone XL Pipeline Extension",
@@ -7328,6 +7419,33 @@
   },
   "model": "digidemo.proposal",
   "pk": 30
+},
+{
+  "fields": {
+    "score": 0,
+    "language": "en-ca",
+    "title": "Doubling TFSA contribution limits",
+    "text": "#Background#\r\nThe TFSA account was first introduced in 2009 to encourage Canadians to save. Originally the account allowed for contributions of up to $5,000 per year. \r\n\r\n# Actors #\r\n - **Government**: The Government wants to provide incentive for Canadians to save money. At the same time it has to balance the budget and ensure that no group of Canadians are unfairly benefiting from the regulations. \r\n - **Banks**: Banks benefit by holding TFSA deposits because the rules of this account discourage Canadians from withdrawing money on a regular basis. When money is withdrawn from a TFSA account, the contribution room is not freed up until the following year. By having longer-term accounts banks can invest the funds in lucrative mortgages or credit card offers, while giving only a negligible portion of the earnings as interest back to the TFSA account holder.\r\n - **Average Canadians**: The average working class Canadian benefits from TFSA accounts by means of tax-free interest and incentive to keep healthy financial discipline.\r\n - **Savvy investors and traders**: Savvy investors and traders are able to exploit the full potential of a TFSA. The TFSA is a very flexible investment vehicle, particularly if used as a self-directed account. It can hold a large variety of securities and financial instruments, similar to a RRSP account. The few exclusions relate to shares in companies of which the TFSA account holder has controlling role. Savvy individuals with access to highly lucrative investments have a virtually unlimited potential to earn tax-free income by re-investing earnings within the TFSA account.\r\n\r\n# Impacts #\r\n## Unfair advantages ##\r\n**Tax avoidance**. When the TFSA was first introduced, savvy investors and traders took unfair advantage of the weak penalties for over-contribution and unqualified investments. The original penalty for over contribution was only 1% per month (and only on the over-contributions). Wealthy investors with access to investments with high returns were over-contributing $100,000 or more, paying the 1% penalty and still keeping all returns as tax-free income. Furthermore, initially the penalty for purchasing prohibited investments inside a TFSA (such as the shares of a company you control) was simply forfeiting the purchase. I.e., investors with questionable morality were allowed to keep any capital gains from breaking the rules, without paying tax[1].\r\nWhile the rules have since changed to prevent the most obvious tax avoidance schemes, questions still remain about what other opportunities for abuse are being exploited.\r\n\r\n**Unequal opportunities**. In 2010 big banks held 75% of Tax-Free Savings Accounts[2]. That is to say, 75% of accounts were giving their owners only the marginal interest rate that the big banks offer. At the same time, the remaining 25% of TFSAs were self-directed or held by other institutions, offering lucrative investments with limitless tax exemption to those in the know. Fast-forward to 2012, less than 16% of TFSA account holders under 60 years old had reached the $5,500 contribution limit[3]. I.e., only 16% of the economically active Canadian residents with TFSA accounts have enough spare income to reach the $5,500 TFSA contribution limit. If the limit is doubled, then, fewer than 16% of working Canadians will be able to benefit from this tax-break.\r\n\r\n## Economic Impacts ##\r\n**Loss of tax income**. By having no limits on the types of investments in a TFSA, the government in power leaves an unpredictable tax loss for future governments. The amount of tax wealthy investors and knowledgeable traders will not pay into future budgets depends only on their luck and skills. Doubling the contribution limit has cumulative impact on the tax loss, as any earnings can be re-invested freely.\r\n\r\n**Reduced economic activity**. Encouraging Canadians to invest up to $11,000 of their yearly income in a savings account and penalizing them (by means of lost contribution room) for withdrawals, may negatively impact local businesses as less money will be circulating in the economy. This will put deflationary pressure on an economy that is already struggling to achieve inflation targets.\r\n\r\n**Cushion for rate hike**. The TFSA can have a positive impact on the economy by providing a cushion for future changes that may take households by surprise. For instance, the abnormally low interest rate has allowed a large number of people to take mortgages. If the interest rates recover, a TFSA could save home-owners who are facing unexpected increase in the payments for their home.\r\n\r\n# References #\r\n[1] http://www.theglobeandmail.com/globe-investor/personal-finance/tfsa-move-targets-savvy-investors/article4215495/\r\n[2] http://www.theglobeandmail.com/globe-investor/personal-finance/taxman-may-forgive-tfsa-rule-breakers/article1373287/\r\n[3] http://www.cbc.ca/news/politics/doubling-tfsa-limit-will-only-help-wealthy-study-argues-1.2967796",
+    "tags": [
+      90,
+      91,
+      92
+    ],
+    "proposal_image": "/digidemo/proposal-images/",
+    "creation_date": "2015-03-22T01:50:57Z",
+    "sectors": [
+      1,
+      8
+    ],
+    "last_modified": "2015-03-22T01:50:57Z",
+    "user": 4,
+    "subscription_id": 361,
+    "summary": "The Tax-Free Savings Account (TFSA) is a special type of account which allows Canadian residents to contribute after-tax funds up to a yearly contribution limit. Any earnings within the TFSA account (such as interest or capital gains) are tax-free. The individual can choose to withdraw funds from his/her TFSA at any time without being subject to tax on the withdrawals.\r\nThe Conservative government has proposed to dobule the TFSA contribution limit from the current $5,500 per year to $11,000 per year.",
+    "original_user": 4,
+    "is_published": false
+  },
+  "model": "digidemo.proposal",
+  "pk": 31
 },
 {
   "fields": {
@@ -11307,6 +11425,90 @@
 },
 {
   "fields": {
+    "event_type": "ISSUE",
+    "creation_date": "2015-03-22T01:50:58Z",
+    "source_user": 4,
+    "last_modified": "2015-03-22T01:50:58Z",
+    "link_back": "/en-ca/overview/31/doubling-tfsa-contribution-limits",
+    "was_posted": false,
+    "subscription_id": 97,
+    "event_data": "#Background#\r\nThe TFSA account was first introduced in 2009 to encourage Canadians to save. Original"
+  },
+  "model": "digidemo.publication",
+  "pk": 285
+},
+{
+  "fields": {
+    "event_type": "ISSUE",
+    "creation_date": "2015-03-22T01:50:58Z",
+    "source_user": 4,
+    "last_modified": "2015-03-22T01:50:58Z",
+    "link_back": "/en-ca/overview/31/doubling-tfsa-contribution-limits",
+    "was_posted": false,
+    "subscription_id": 104,
+    "event_data": "#Background#\r\nThe TFSA account was first introduced in 2009 to encourage Canadians to save. Original"
+  },
+  "model": "digidemo.publication",
+  "pk": 286
+},
+{
+  "fields": {
+    "event_type": "ISSUE",
+    "creation_date": "2015-03-22T01:50:58Z",
+    "source_user": 4,
+    "last_modified": "2015-03-22T01:50:58Z",
+    "link_back": "/en-ca/overview/31/doubling-tfsa-contribution-limits",
+    "was_posted": false,
+    "subscription_id": 362,
+    "event_data": "#Background#\r\nThe TFSA account was first introduced in 2009 to encourage Canadians to save. Original"
+  },
+  "model": "digidemo.publication",
+  "pk": 287
+},
+{
+  "fields": {
+    "event_type": "ISSUE",
+    "creation_date": "2015-03-22T01:50:58Z",
+    "source_user": 4,
+    "last_modified": "2015-03-22T01:50:58Z",
+    "link_back": "/en-ca/overview/31/doubling-tfsa-contribution-limits",
+    "was_posted": false,
+    "subscription_id": 363,
+    "event_data": "#Background#\r\nThe TFSA account was first introduced in 2009 to encourage Canadians to save. Original"
+  },
+  "model": "digidemo.publication",
+  "pk": 288
+},
+{
+  "fields": {
+    "event_type": "ISSUE",
+    "creation_date": "2015-03-22T01:50:58Z",
+    "source_user": 4,
+    "last_modified": "2015-03-22T01:50:58Z",
+    "link_back": "/en-ca/overview/31/doubling-tfsa-contribution-limits",
+    "was_posted": false,
+    "subscription_id": 364,
+    "event_data": "#Background#\r\nThe TFSA account was first introduced in 2009 to encourage Canadians to save. Original"
+  },
+  "model": "digidemo.publication",
+  "pk": 289
+},
+{
+  "fields": {
+    "event_type": "ISSUE",
+    "creation_date": "2015-03-22T01:50:58Z",
+    "source_user": 4,
+    "last_modified": "2015-03-22T01:50:58Z",
+    "link_back": "/en-ca/overview/31/doubling-tfsa-contribution-limits",
+    "was_posted": false,
+    "subscription_id": 361,
+    "event_data": "#Background#\r\nThe TFSA account was first introduced in 2009 to encourage Canadians to save. Original"
+  },
+  "model": "digidemo.publication",
+  "pk": 290
+},
+{
+  "fields": {
     "subscription_id": 301,
     "reason": "AUTHOR",
     "last_modified": "2015-01-25T02:22:40Z",
@@ -11964,6 +12166,17 @@
   },
   "model": "digidemo.subscription",
   "pk": 60
+},
+{
+  "fields": {
+    "subscription_id": 361,
+    "reason": "AUTHOR",
+    "last_modified": "2015-03-22T01:50:58Z",
+    "user": 4,
+    "creation_date": "2015-03-22T01:50:58Z"
+  },
+  "model": "digidemo.subscription",
+  "pk": 61
 },
 {
   "fields": {

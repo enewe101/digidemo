@@ -1147,7 +1147,7 @@ class IssueListView(AbstractView):
 			issues = issue_list.order_by('-creation_date')
 
 		elif order_by == 'activity':
-			issues = issue_list.order_by('-creation_date')
+			issues = issue_list.order_by('-score')
 
 		elif order_by == 'location':
 			issues = issue_list.order_by('-creation_date')
@@ -1689,7 +1689,7 @@ def index(request,sort_type='most_recent'):
 		proposals = proposals.order_by('-score')[:6]
 
 	active_issues = Proposal.objects.filter(language=request.LANGUAGE_CODE
-		).order_by('-score')[:6]
+		).order_by('-last_modified')[:6]
 
 	# take the earliest issue as the featured post
 	featured_post = None
