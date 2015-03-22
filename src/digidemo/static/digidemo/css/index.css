@@ -101,79 +101,16 @@
 .feat, .feat img {
 	float: left;
 	border-radius: 10px;
-	max-width: 100%;
-	max-height: 100vw;
+	width: 100%;
+	height: 100vw;
 }
 
 .feat .title {
 	position: absolute;
 	left: 10px;
+	right: 10px;
 	color: white;
 	font-size: 30px;
-	max-width: 100%;
-	max-height: 100vw;
-}
-
-#f0, #f0 img {
-	width: 524px;
-	height: 524px;
-	max-width: 100%;
-	max-height: 100vw;
-}
-
-#f1, #f1 img {
-	width: 257px;
-	height: 257px;
-	max-width: 100%;
-	max-height: 100vw;
-}
-
-#f2, #f2 img {
-	width: 257px;
-	height: 257px;
-	max-width: 100%;
-	max-height: 100vw;
-}
-
-#f3, #f3 img {
-	width: 168px;
-	height: 168px;
-	max-width: 100%;
-	max-height: 100vw;
-}
-
-#f4, #f4 img {
-	width: 168px;
-	height: 168px;
-	max-width: 100%;
-	max-height: 100vw;
-}
-
-#f5, #f5 img {
-	width: 168px;
-	height: 168px;
-	max-width: 100%;
-	max-height: 100vw;
-}
-
-#f0 .title, #f0 .summary, #f0 .summary_backdrop {
-	width: 504px;
-	max-width: 100%;
-	max-height: 100vw;
-}
-#f1 .title, #f1 .summary, #f1 .summary_backdrop, 
-#f2 .title, #f2 .summary, #f2 .summary_backdrop {
-	width: 237px;
-	max-width: 100%;
-	max-height: 100vw;
-}
-
-#f3 .title, #f3 .summary, #f3 .summary_backdrop, 
-#f4 .title, #f4 .summary, #f4 .summary_backdrop,
-#f5 .title, #f5 .summary, #f5 .summary_backdrop {
-	width: 168px;
-	max-width: 100%;
-	max-height: 100vw;
 }
 
 .summary, .summary_backdrop {
@@ -186,8 +123,71 @@
 	border-radius: 10px;
 }
 
-
 @media screen and (min-width: 559px) {
+
+	#f0, #f0 img {
+		width: 524px;
+		height: 524px;
+		max-width: 100%;
+		max-height: 100vw;
+	}
+
+	#f1, #f1 img {
+		width: 257px;
+		height: 257px;
+		max-width: 100%;
+		max-height: 100vw;
+	}
+
+	#f2, #f2 img {
+		width: 257px;
+		height: 257px;
+		max-width: 100%;
+		max-height: 100vw;
+	}
+
+	#f3, #f3 img {
+		width: 168px;
+		height: 168px;
+		max-width: 100%;
+		max-height: 100vw;
+	}
+
+	#f4, #f4 img {
+		width: 168px;
+		height: 168px;
+		max-width: 100%;
+		max-height: 100vw;
+	}
+
+	#f5, #f5 img {
+		width: 168px;
+		height: 168px;
+		max-width: 100%;
+		max-height: 100vw;
+	}
+
+	#f0 .title, #f0 .summary, #f0 .summary_backdrop {
+		width: 504px;
+		max-width: 100%;
+		max-height: 100vw;
+	}
+	#f1 .title, #f1 .summary, #f1 .summary_backdrop, 
+	#f2 .title, #f2 .summary, #f2 .summary_backdrop {
+		width: 237px;
+		max-width: 100%;
+		max-height: 100vw;
+	}
+
+	#f3 .title, #f3 .summary, #f3 .summary_backdrop, 
+	#f4 .title, #f4 .summary, #f4 .summary_backdrop,
+	#f5 .title, #f5 .summary, #f5 .summary_backdrop {
+		width: 168px;
+		max-width: 100%;
+		max-height: 100vw;
+	}
+
+
 	.summary, .summary_backdrop {
 		display: block;
 	}
