@@ -6,11 +6,11 @@
 	<div class="form_line">
 
 		<div class="field_label_wrapper">
-			<span class="field_errors" id="{{field.id_for_label}}_errors">
+			<div class="field_errors" id="{{field.id_for_label}}_errors">
 				{% for error in field.errors %}
 					{{ error }}
 				{% endfor %}
-			</span>
+			</div>
 			{{ field.label_tag }}
 		</div>
 		<div class="field_wrapper{% if field.errors %}_error{% endif %}">

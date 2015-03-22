@@ -38,6 +38,24 @@
 	padding: 40px;
 }
 
+.summary_backdrop {
+	opacity: 0.4;
+	background: black;
+	filter: alpha(opacity=40); /* For IE8 and earlier */
+}
+
+.summary p, .summary_backdrop p {
+	display: inline;
+	color: white;
+	text-shadow: -1px -1px black;
+}
+.summary .read_more_link,
+.summary_backdrop .read_more_link {
+	display: inline;
+	text-shadow: none;
+	color: orange;
+}
+
 #start_issue:link, #start_issue:visited, #start_issue:hover, 
 #start_issue:active {
 	display: block;
@@ -65,7 +83,6 @@
 
 .feat .title {
 	position: absolute;
-	top: 10px;
 	left: 10px;
 	color: white;
 	font-size: 30px;
@@ -101,22 +118,26 @@
 	height: 168px;
 }
 
-#f0 .title, #f0 .summary {
+#f0 .title, #f0 .summary, #f0 .summary_backdrop {
 	width: 504px;
 }
-#f1 .title, #f1 .summary
-#f2 .title, #f2 .summary {
+#f1 .title, #f1 .summary, #f1 .summary_backdrop, 
+#f2 .title, #f2 .summary, #f2 .summary_backdrop {
 	width: 237px;
 }
 
-#f3 .title, #f3 .summary
-#f4 .title, #f4 .summary
-#f5 .title, #f5 .summary {
+#f3 .title, #f3 .summary, #f3 .summary_backdrop, 
+#f4 .title, #f4 .summary, #f4 .summary_backdrop,
+#f5 .title, #f5 .summary, #f5 .summary_backdrop {
 	width: 1#8px;
 }
 
-.feat .summary {
+.summary, .summary_backdrop {
 	position: absolute;
-	bottom: 10px;
-	left: 10px;
+	bottom: 0px;
+	left: 0px;
+	padding: 10px;
+	font-size: 18px;
+	border-radius: 10px;
 }
+

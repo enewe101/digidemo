@@ -29,13 +29,13 @@
 <!-- start the previews -->
 <div id="previews">
 	<div>
-		<img 
-		src="{% get_media_prefix %}{{ proposal.proposal_image }}" />
-	</div>
-	<div>
 		<a href="{% url "editors_area" issue_id=proposal.id open_status="open" %}" class="go_button">
 			{% trans "go to editing room" %}
 		</a>
+	</div>
+	<div>
+		<img class="proposal_image"
+		src="{% get_media_prefix %}{{ proposal.proposal_image }}" />
 	</div>
 
 	<div class="marquee_section">

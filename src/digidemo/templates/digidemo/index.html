@@ -23,23 +23,27 @@
 		<div id="center_featured">
 			<div id="packery">
 				{% for issue in active_issues %}
-					<div id="f{{forloop.counter0}}" class="feat">
+					<div id="f{{forloop.counter0}}" class="feat"
+							href="{{ issue.get_proposal_url }}">
+						<a href="{{ issue.get_proposal_url }}">
 						<img 
 							src="{% get_media_prefix %}{{issue.proposal_image}}" />
 						<div class="feat_text">
 							{% if forloop.counter0 < 3 %}
 								<div class="title">
-									bla bla bla bla
+									{{ issue.title }}
 								</div>
 							{% endif %}
 							{% if forloop.counter0 < 1 %}
+								<div class="summary_backdrop">
+									{{ issue.summary|truncatechars:750|markdown }}
+								</div>
 								<div class="summary">
-									bla bla bla bla <br />
-									bla bla bla bla <br />
-									bla bla bla bla <br />
+									{{ issue.summary|truncatechars:750|markdown }}
 								</div>
 							{% endif %}
 						</div>
+						</a>
 
 					</div>
 				{% endfor %}

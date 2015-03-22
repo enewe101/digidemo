@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 # TODO: remove classmethod decorators from SeleniumTestCase
 
 import filecmp
@@ -127,12 +128,20 @@ class SeleniumTestCase(LiveServerTestCase):
 		super(SeleniumTestCase, cls).tearDownClass()
 
 
-	def element_contains(self, element_id, content, use_html=True):
+	def element_contains(
+			self,
+			element_id,
+			content,
+			use_html=True,
+			as_substring=False
+		):
 		'''
 			returns a boolean indicating whether the element with html_id
 			<element_id> contains the text <content>.  Ignores differences
 			in whitespace.
 		'''
+
+
 		if use_html:
 			found_content = (
 				self.driver.find_element('id', element_id)
@@ -141,16 +150,29 @@ class SeleniumTestCase(LiveServerTestCase):
 		else:
 			found_content = self.driver.find_element('id', element_id).text
 
+		# to ensure support of unicode, cast strings to unicode
+		content = unicode(content)
+		found_content = unicode(found_content)
 
-		if not text_is_similar(found_content, content):
-			print '<<'
-			print found_content
-			print '-- is different from --'
-			print content
-			print '>>'
-			return False
+		if as_substring:
+			if not content in found_content:
+				print '<<'
+				print found_content
+				print '-- is different from --'
+				print content
+				print '>>'
+				return False
 
-		else: return True
+		else:
+			if not text_is_similar(found_content, content):
+				print '<<'
+				print found_content
+				print '-- is different from --'
+				print content
+				print '>>'
+				return False
+
+		return True
 
 
 	# Check if the elements identified by their id's contain the given text
@@ -158,7 +180,12 @@ class SeleniumTestCase(LiveServerTestCase):
 	# can match based on the rendered text too (what you'd be able to 
 	# copy/paste).
 	#
-	def elements_contain(self, contents_spec, use_html=True):
+	def elements_contain(
+			self,
+			contents_spec,
+			use_html=True, 
+			as_substring=False
+		):
 		'''
 			returns a boolean value indicating whether each of the indicated 
 			html elements (html id given as keys of <contents_spec>)
@@ -169,8 +196,12 @@ class SeleniumTestCase(LiveServerTestCase):
 		valid = True
 		for element_id, content in contents_spec.items():
 			valid = (
-				self.element_contains(element_id, content, use_html)
-				and valid
+				self.element_contains(
+					element_id,
+					content,
+					use_html,
+					as_substring
+				) and valid
 			)
 
 		return valid
@@ -225,7 +256,9 @@ class SeleniumTestCase(LiveServerTestCase):
 	# fill out the text (form) input with the string
 	# 
 	@classmethod
-	def put(cls, text_input_id, string):
+	def put(cls, text_input_id, string, replace=False):
+		if replace:
+			cls.driver.find_element('id', text_input_id).clear()
 		cls.driver.find_element('id', text_input_id).send_keys(string)
 
 
@@ -233,7 +266,7 @@ class SeleniumTestCase(LiveServerTestCase):
 	# (Uses html ids to find the inputs.)
 	# 
 	@classmethod
-	def puts(cls, put_spec):
+	def puts(cls, put_spec, replace=False):
 		'''
 			Put spec is a dictionary -- keys are the html ids for text inputs
 			and the values are the text to place in the inputs
@@ -241,7 +274,7 @@ class SeleniumTestCase(LiveServerTestCase):
 				{'some_input_id': 'some_text', 'another_input': 'more_text'}
 		'''
 		for text_input_id, text in put_spec.items():
-			cls.put(text_input_id, text)
+			cls.put(text_input_id, text, replace=replace)
 
 
 	# login as a regular user
@@ -1204,35 +1237,37 @@ class FormTest(SeleniumTestCase):
 #
 class ProposalFormTest(FormTest):
 
-	values = ['Test proposal title', 'This is only a test summary.',
-				'This is only a test body.']
+	# data used in proposal forms
+	test_data = [
+		'Test proposal title',
+		'This is only a test summary.',
+		'This is only a test body.',
+		'tag1 tag2 ',
+		['economy', 'health', 'environment']
+	]
 	form_data = {
-		'ProposalVersionForm__title': {
-
-			'value': values[0],
-			'error_id': 'ProposalVersionForm__title_errors',
-			'display_id': 'proposal_title',
-			'expect': values[0]
-
-		}, 'ProposalVersionForm__summary': {
-
-			'value': values[1],
-			'error_id': 'ProposalVersionForm__summary_errors',
-			'display_id': 'proposal_summary',
-			'expect': md.markdown(values[1])
-
-		}, 'ProposalVersionForm__text': {
-
-			'value': values[2], 
-			'error_id': 'ProposalVersionForm__text_errors',
-			'display_id': 'proposal_text',
-			'expect': md.markdown(values[2])
-
-		}
-		
+		'ProposalVersionForm__title': test_data[0],
+		'ProposalVersionForm__summary': test_data[1],
+		'ProposalVersionForm__text': test_data[2],
+		'tags': test_data[3],
+		'sectors': test_data[4]
 	}
+	expect_data = {
+		'proposal_title': test_data[0],
+		'proposal_summary': test_data[1],
+		'proposal_text': test_data[2],
+		'tags': test_data[3],
+		'sectors': test_data[4]
+	}
+	sectors = [
+		'economy', 'health', 'education', 'democracy', 'environment',
+		'culture', 'readiness', 'relations'
+	]
+	sector_ids = dict([
+		(sector, 'ProposalVersionForm__sectors_%s' %i)
+		for i,sector in enumerate(sectors)
+	])
 
-	check_pk = True
 	submit_id = 'ProposalVersionForm__submit'
 	escape_text = '<&>'
 	error_msg = 'This field is required.'
@@ -1240,165 +1275,416 @@ class ProposalFormTest(FormTest):
 	username = REG_USERNAME
 	expect_proposal_id = 1
 
-	REASON = 'EDITOR'
-	EVENT_TYPE = 'EDIT_ISSUE'
-	TEST_TAGS = 'tag1 tag2 '
 	PROPOSAL_TAGS_ID = 'proposal_tags'
 	PROPOSAL_TAGS_CLASS = 'ui-widget-content'
-	TAGS_ERROR_ID = 'proposal_tags_errors'
-	TAGS_ERROR_MSG = 'Please include at least one tag.'
 
 	def test_edit_proposal_english(self):
-		self.do_edit_proposal('en-ca')
+		'''
+			Tests editing an existing issue using the edit-issue form.
+		'''
 
-	def test_edit_proposal_french(self):
-		self.do_edit_proposal('fr-ca')
+		# get ahold of the proposal we want to edit, and it's edit page
+		proposal_pk = 1
+		language_code = 'en-ca'
+		edit_url = self.get_edit_url(proposal_pk, language_code)
 
-	def do_edit_proposal(self, language_code='en-ca'):
-
-		self.login_regularuser()
-
-		expected_id = self.expect_proposal_id()
-
-		# Go to the edit page for a test proposal
-		self.driver.get(self.get_url(language_code))
-		self.assertTrue(language_code, self.driver.current_url)
-
-		# Fill and submit the form with valid data
-		self.fill_form(self.form_data)
-		self.driver.find_element(
-			'id', 'proposal_tags_input').find_element_by_class_name(
-			self.PROPOSAL_TAGS_CLASS).send_keys(self.TEST_TAGS)
-
-		self.click('ProposalVersionForm__sectors_1')
-		self.click('ProposalVersionForm__sectors_5')
-		self.driver.find_element('id', self.submit_id).click()
+		# fill out and submit the edit-issue form
+		self.fill_proposal_form(language_code, edit_url, self.form_data)
 
 		# check that the proposal was correctly loaded
-		expect_data = dict([
-			(v['display_id'], v['expect']) for v in self.form_data.values()
-		])
-		self.assertTrue(self.elements_contain(expect_data))
+		self.check_content_displayed(self.expect_data)
 
-		# check the database
-		sectors = [
-			Sector.objects.get(name='environment'),
-			Sector.objects.get(name='culture')
-		]
+		# now check that the right data was added to the database
 		self.check_db(
-			expected_id, *self.values, username=self.username,
-			tags=self.TEST_TAGS, sectors=sectors, 
-			event_type=self.EVENT_TYPE,
+			proposal_pk, 
+			*self.test_data,
+			username=self.username,
+			event_type='EDIT_ISSUE',
+			reason='EDITOR',
+			language=language_code
+		)
+
+
+	def test_edit_proposal_french(self):
+
+		# get ahold of the proposal we want to edit, and it's edit page
+		proposal_pk = 1
+		language_code = 'fr-ca'
+		edit_url = self.get_edit_url(proposal_pk, language_code)
+
+		# fill out and submit the edit-issue form
+		self.fill_proposal_form(language_code, edit_url, self.form_data)
+
+		# check that the proposal was correctly loaded
+		# Note: the sectors will tranlated when displayed on the page
+		expect_data = copy.deepcopy(self.expect_data)
+		expect_data['sectors'] = [u'économie', 'environnement', u'santé']
+		self.check_content_displayed(expect_data)
+
+		# now check that the right data was added to the database
+		self.check_db(
+			proposal_pk, 
+			*self.test_data,
+			username=self.username,
+			event_type='EDIT_ISSUE',
+			reason='EDITOR',
+			language=language_code
+		)
+
+
+	def test_edit_proposal_ensure_escape(self):
+
+		# we'll use form data that includes special characters to test that
+		# they get escaped properly
+		special_char_test_data = [
+			'<&>',
+			'<&>',
+			'<&>',
+			'tag1 tag2 ',
+			['economy', 'environment', u'health']
+		]
+		form_data = {
+			'ProposalVersionForm__title': special_char_test_data[0],
+			'ProposalVersionForm__summary': special_char_test_data[1],
+			'ProposalVersionForm__text': special_char_test_data[2],
+			'tags': special_char_test_data[3],
+			'sectors': special_char_test_data[4]
+		}
+		expect_display_data = {
+			'proposal_title': special_char_test_data[0],
+			'proposal_summary': special_char_test_data[1],
+			'proposal_text': special_char_test_data[2],
+			'tags': special_char_test_data[3],
+			'sectors': special_char_test_data[4]
+		}
+
+		# get ahold of the proposal we want to edit, and it's edit page
+		proposal_pk = 1
+		language_code = 'en-ca'
+		edit_url = self.get_edit_url(proposal_pk, language_code)
+
+		# fill out and submit the edit-issue form
+		self.fill_proposal_form(language_code, edit_url, form_data)
+
+		# check that the proposal was correctly loaded
+		self.check_content_displayed(expect_display_data)
+
+		# check that the right data was added to the database
+		self.check_db(
+			proposal_pk, 
+			*special_char_test_data,
+			username=self.username,
+			event_type='EDIT_ISSUE',
+			reason='EDITOR',
 			language=language_code
 		)
 
 
 	# TODO: This should check the case where user has not entered any tags
+	# TODO: check that error messages appear and with correct styling
+	# TODO: check that db didn't get any data put into it
 	def test_edit_proposal_incomplete(self):
 
-		self.login_regularuser()
+		error_messages = {
+			'ProposalVersionForm__title': (
+				'ProposalVersionForm__title_errors', 
+				'This field is required.'
+			),
+			'ProposalVersionForm__summary': (
+				'ProposalVersionForm__summary_errors', 
+				'This field is required.'
+			),
+			'ProposalVersionForm__text': (
+				'ProposalVersionForm__text_errors',
+				'This field is required.'
+			),
+			'sectors': (
+				'ProposalVersionForm__sectors_0_errors', 
+				''
+			),
+			'tags': (
+				'proposal_tags_errors',
+				'Please include at least one tag.'
+			),
+		}
 
-		# Go to the edit page for a test proposal
-		self.driver.get(self.get_url())
+		# get ahold of the proposal we want to edit, and it's edit page
+		proposal_pk = 1
+		language_code = 'en-ca'
+		edit_url = self.get_edit_url(proposal_pk, language_code)
 
 		# we'll submit the form several times, 
 		# each time ommitting a different field
-		for ommitted_id, spec in self.form_data.items():
+		for datum_to_omit in self.form_data:
 
-			error_id = spec['error_id']
+			# TODO: make checking at least one sector required -- currently
+			# not enforced, therefore this doesn't get tested.
+			if datum_to_omit == 'sectors':
+				continue
 
-			self.fill_form(self.form_data, clear=ommitted_id)
+			form_data_copy = copy.deepcopy(self.form_data)
+			form_data_copy[datum_to_omit] = ''
 
-			# clear existing tags, and insert specified ones
-			self.driver.find_element(
-				'id', 'proposal_tags_input').find_element_by_class_name(
-				self.PROPOSAL_TAGS_CLASS).send_keys('\b'*5 + self.TEST_TAGS)
-
-			self.click('ProposalVersionForm__sectors_1')
-			self.click('ProposalVersionForm__sectors_5')
-			self.click(self.submit_id)
+			self.fill_proposal_form(
+					language_code,
+					edit_url,
+					form_data_copy
+			)
 
 			# Check for the error message
-			self.assertTrue(self.element_contains(error_id, self.error_msg,
-				use_html=False))
-
-			# Check that the input was styled with an error styling
-			ommitted_elm = self.driver.find_element('id', ommitted_id)
-			wrapper = ommitted_elm.find_element_by_xpath('..')
+			error_id, error_msg = error_messages[datum_to_omit]
+			print 'error_id:', error_id
 			self.assertTrue(
-				self.error_class in wrapper.get_attribute('class'))
+				self.element_contains(
+					error_id, error_msg, use_html=False
+				)
+			)
 
 
-		# Now Check that not submitting tags raises a user-facing error
-		# Fill out the form, but omit tags.
-		self.fill_form(self.form_data, clear=ommitted_id)
+	def test_add_proposal_english(self):
 
-		self.driver.find_element(
-			'id', 'proposal_tags_input').find_element_by_class_name(
-			self.PROPOSAL_TAGS_CLASS).send_keys('\b'*5)
+		# get the add-proposal page
+		language_code = 'en-ca'
+		add_url = self.get_add_url(language_code)
 
-		self.click('ProposalVersionForm__sectors_1')
-		self.click('ProposalVersionForm__sectors_5')
-		self.click(self.submit_id)
-
-		# check for the user-facing error
-		self.assertTrue(
-			self.element_contains(self.TAGS_ERROR_ID, self.TAGS_ERROR_MSG))
-
-		# Check that the tagit elment got styled up with error class
-		ommitted_elm = self.driver.find_element('id', self.PROPOSAL_TAGS_ID)
-		wrapper = ommitted_elm.find_element_by_xpath('..')
-		self.assertTrue(
-			self.error_class in wrapper.get_attribute('class'))
-
-
-	def test_edit_proposal_ensure_escape(self):
-		self.login_regularuser()
-
-		expected_id = self.expect_proposal_id()
-
-		form_data_needs_escape = dict([
-			(k, self.escape_text) for k in self.form_data.keys()])
-
-		expect_escaped_data = {
-			'proposal_title': escape(self.escape_text),
-			'proposal_summary': md.markdown(escape(self.escape_text)),
-			'proposal_text': md.markdown(escape(self.escape_text))
-		}
-
-		# Go to the edit page for a test proposal
-		self.driver.get(self.get_url())
-
-		# Fill and submit the form with data that should get escaped
-		self.fill_form(form_data_needs_escape)
-
-		self.driver.find_element(
-			'id', 'proposal_tags_input').find_element_by_class_name(
-			self.PROPOSAL_TAGS_CLASS).send_keys(self.TEST_TAGS)
-
-		self.click('ProposalVersionForm__sectors_1')
-		self.click('ProposalVersionForm__sectors_5')
-		self.driver.find_element('id', self.submit_id).click()
-
+		# fill out and submit the add-issue form
+		self.fill_proposal_form(language_code, add_url, self.form_data)
 
 		# check that the proposal was correctly loaded
-		self.assertTrue(self.elements_contain(expect_escaped_data))
+		self.check_content_displayed(self.expect_data)
 
-		# check the database
-		sectors = [
-			Sector.objects.get(name='environment'),
-			Sector.objects.get(name='culture')
-		]
-		self.check_db(expected_id, self.escape_text, 
-			self.escape_text, self.escape_text, self.username, 
-				self.TEST_TAGS, sectors, self.EVENT_TYPE)
-
-	def get_url(self, language_code='en-ca'):
-		edit_url = url_patch_lang(
-			Proposal.objects.get(pk=self.expect_proposal_id).get_edit_url(),
-			language_code
+		# now check that the right data was added to the database
+		self.check_db(
+			None, 
+			*self.test_data,
+			username=self.username,
+			event_type='ISSUE',
+			reason='AUTHOR',
+			language=language_code
 		)
-		return self.full_url(edit_url)
+
+
+	def test_add_proposal_french(self):
+
+		# get ahold of the proposal we want to edit, and it's edit page
+		language_code = 'fr-ca'
+		add_url = self.get_add_url(language_code)
+
+		# fill out and submit the edit-issue form
+		self.fill_proposal_form(language_code, add_url, self.form_data)
+
+		# check that the proposal was correctly loaded
+		# Note: the sectors will tranlated when displayed on the page
+		expect_data = copy.deepcopy(self.expect_data)
+		expect_data['sectors'] = [u'économie', 'environnement', u'santé']
+		self.check_content_displayed(expect_data)
+
+		# now check that the right data was added to the database
+		self.check_db(
+			None, 
+			*self.test_data,
+			username=self.username,
+			event_type='ISSUE',
+			reason='AUTHOR',
+			language=language_code
+		)
+
+
+	def test_add_proposal_ensure_escape(self):
+
+		# we'll use form data that includes special characters to test that
+		# they get escaped properly
+		special_char_test_data = [
+			'<&>',
+			'<&>',
+			'<&>',
+			'tag1 tag2 ',
+			['economy', 'environment', u'health']
+		]
+		form_data = {
+			'ProposalVersionForm__title': special_char_test_data[0],
+			'ProposalVersionForm__summary': special_char_test_data[1],
+			'ProposalVersionForm__text': special_char_test_data[2],
+			'tags': special_char_test_data[3],
+			'sectors': special_char_test_data[4]
+		}
+		expect_display_data = {
+			'proposal_title': special_char_test_data[0],
+			'proposal_summary': special_char_test_data[1],
+			'proposal_text': special_char_test_data[2],
+			'tags': special_char_test_data[3],
+			'sectors': special_char_test_data[4]
+		}
+
+		# get ahold of the proposal we want to edit, and it's edit page
+		proposal_pk = 1
+		language_code = 'en-ca'
+		add_url = self.get_add_url(language_code)
+
+		# fill out and submit the add-issue form
+		self.fill_proposal_form(language_code, add_url, form_data)
+
+		# check that the proposal was correctly loaded
+		self.check_content_displayed(expect_display_data)
+
+		# check that the right data was added to the database
+		self.check_db(
+			None, 
+			*special_char_test_data,
+			username=self.username,
+			event_type='ISSUE',
+			reason='AUTHOR',
+			language=language_code
+		)
+
+
+	# TODO: This should check the case where user has not entered any tags
+	# TODO: check that error messages appear and with correct styling
+	# TODO: check that db didn't get any data put into it
+	def test_add_proposal_incomplete(self):
+
+		error_messages = {
+			'ProposalVersionForm__title': (
+				'ProposalVersionForm__title_errors', 
+				'This field is required.'
+			),
+			'ProposalVersionForm__summary': (
+				'ProposalVersionForm__summary_errors', 
+				'This field is required.'
+			),
+			'ProposalVersionForm__text': (
+				'ProposalVersionForm__text_errors',
+				'This field is required.'
+			),
+			'sectors': (
+				'ProposalVersionForm__sectors_0_errors', 
+				''
+			),
+			'tags': (
+				'proposal_tags_errors',
+				'Please include at least one tag.'
+			),
+		}
+
+		# get ahold of the proposal we want to edit, and it's edit page
+		language_code = 'en-ca'
+		add_url= self.get_add_url(language_code)
+
+		# we'll submit the form several times, 
+		# each time ommitting a different field
+		for datum_to_omit in self.form_data:
+
+			# TODO: make checking at least one sector required -- currently
+			# not enforced, therefore this doesn't get tested.
+			if datum_to_omit == 'sectors':
+				continue
+
+			form_data_copy = copy.deepcopy(self.form_data)
+			form_data_copy[datum_to_omit] = ''
+
+			self.fill_proposal_form(
+					language_code,
+					add_url,
+					form_data_copy
+			)
+
+			# Check for the error message
+			error_id, error_msg = error_messages[datum_to_omit]
+			print 'error_id:', error_id
+			self.assertTrue(
+				self.element_contains(
+					error_id, error_msg, use_html=False
+				)
+			)
+
+
+	def fill_proposal_form(
+			self,
+			language_code,
+			url,
+			form_data
+		):
+
+		self.login_regularuser()
+
+		# Go to the edit page for a test proposal
+		self.driver.get(url)
+
+		# Some of the info can be put into the form using self.puts
+		# but the sectors and tags have to be specially entered.
+		data_to_simply_put = copy.deepcopy(form_data)
+		del data_to_simply_put['tags']
+		del data_to_simply_put['sectors']
+		self.puts(data_to_simply_put, replace=True)
+
+		# Fill in tags, if they were provided
+		if 'tags' in form_data:
+			tags_input = self.find('proposal_tags_input'
+				).find_element_by_class_name(self.PROPOSAL_TAGS_CLASS)
+			tags_input.send_keys('\b'*5)
+			tags_input.send_keys(form_data['tags'])
+
+		# Select sectors, if they were provided
+		for sector in self.sectors:
+			sector_id = self.sector_ids[sector]
+			sector_checkbox = self.find(sector_id)
+
+			# if the sector isn't in the right state, click it
+			is_selected = sector_checkbox.is_selected()
+			should_be_selected = sector in form_data['sectors']
+			if is_selected != should_be_selected:
+				sector_checkbox.click()
+
+		# submit the form
+		self.click(self.submit_id)
+
+
+	def get_add_url(self, language):
+		add_url = self.full_url(
+			url_patch_lang(
+				reverse('add_proposal'), language
+			)
+		)
+		return add_url
+
+
+	def get_edit_url(self, pk, language):
+		proposal_to_edit = Proposal.objects.get(pk=pk)
+		edit_url = self.full_url(
+			url_patch_lang(
+				proposal_to_edit.get_edit_url(),language
+			)
+		)
+		return edit_url
+
+
+	def check_content_displayed(self, expect_data):
+
+		easy_to_check_data = copy.copy(expect_data)
+		del easy_to_check_data['tags']
+		del easy_to_check_data['sectors']
+		
+		self.assertTrue(
+			self.elements_contain(
+				easy_to_check_data, use_html=False)
+		)
+
+		# get the individual tag texts
+		sectors_and_tags = (
+			expect_data['sectors'] + expect_data['tags'].split()
+		)
+
+		# check that each tag was displayed
+		for tag in sectors_and_tags:
+			self.assertTrue(
+				self.element_contains(
+					'tags', 
+					tag,
+					use_html=False, 
+					as_substring=True
+				)
+			)
+
 
 
 	def expect_proposal_id(self):
@@ -1411,24 +1697,29 @@ class ProposalFormTest(FormTest):
 			title, 
 			summary, 
 			text, 
-			username, 
 			tags, 
 			sectors,
+			username, 
+			reason,
 			event_type,
 			language='en-ca'
 		):
+
+		print title
 
 		proposal = Proposal.objects.get(title=title)
 		user = User.objects.get(username=username)
 
 		# this switch is used to turn of checking the primary key for
 		# the AddProposalTest, which inherits from this test
-		if self.check_pk:
+		if expected_id is not None:
 			self.assertEqual(expected_id, proposal.pk)
 
 		self.assertEqual(summary, proposal.summary)
 		self.assertEqual(text, proposal.text)
 		self.assertEqual(username, proposal.user.username)
+
+		proposal_version = ProposalVersion.objects.get(title=title)
 
 		proposal_version = proposal.get_latest()
 		self.assertEqual(title, proposal_version.title)
@@ -1438,8 +1729,8 @@ class ProposalFormTest(FormTest):
 
 		# Check if a Subscription was made
 		sub_id = proposal.subscription_id
-		s = Subscription.objects.get(subscription_id=sub_id, user=user, 
-			reason=self.REASON)
+		s = Subscription.objects.get(
+			subscription_id=sub_id, user=user, reason=reason)
 
 		# check if a publication was made against the proposal
 		p = Publication.objects.get(
@@ -1463,6 +1754,8 @@ class ProposalFormTest(FormTest):
 
 class AddProposalTest(ProposalFormTest):
 
+	values = ['Add proposal title', 'This is only an add test summary.',
+				'This is only an add test body.']
 	check_pk = False
 	REASON = 'AUTHOR'
 	EVENT_TYPE = 'ISSUE'
@@ -1479,7 +1772,6 @@ class AddProposalTest(ProposalFormTest):
 		super(AddProposalTest, self).do_edit_proposal(language_code)
 
 		opp_code = 'fr-ca' if language_code == 'en-ca' else 'en-ca'
-		print 'opp_code', opp_code
 
 		self.go(url_patch_lang('', language_code))
 
@@ -1930,18 +2222,18 @@ class TestIssueLang(SeleniumTestCase):
 		# go to main page, in french
 		self.go(url_patch_lang('', 'fr-ca'))
 		self.assertFalse(
-			'Keystone XL Pipeline Extension' in self.find('trending').text)
+			'Keystone XL Pipeline Extension' in self.find('middle').text)
 		self.assertTrue(
-			'Ceci n\'est pas un titre' in self.find('trending').text)
+			'Ceci n\'est pas un titre' in self.find('middle').text)
 
 
 	def test_english_issues(self):
 		# go to main page, in english
 		self.go(url_patch_lang('', 'en-ca'))
 		self.assertTrue(
-			'Keystone XL Pipeline Extension' in self.find('trending').text)
+			'Keystone XL Pipeline Extension' in self.find('middle').text)
 		self.assertFalse(
-			'Ceci n\'est pas un titre' in self.find('trending').text)
+			'Ceci n\'est pas un titre' in self.find('middle').text)
 
 
 class TestLoginRequired(FixtureLoadedTestCase):
@@ -1992,7 +2284,7 @@ class TestLoginRequired(FixtureLoadedTestCase):
 				'summary': 'test summary',
 				'text': 'Test proposal text', 
 				'user': 1, 
-				'tags': 'tag1,tag2',
+				'tag_text': 'tag1,tag2',
 				'language': 'en-ca'
 			},
 			Proposal
@@ -2004,8 +2296,9 @@ class TestLoginRequired(FixtureLoadedTestCase):
 				'summary': 'test summary',
 				'text': 'Test proposal text', 
 				'user': 1, 
-				'tags': 'tag1,tag2',
-				'language': 'en-ca'
+				'tag_text': 'tag1,tag2',
+				'language': 'en-ca',
+				'proposal': 1
 			},
 			Proposal
 		),
@@ -2131,8 +2424,6 @@ class TestLoginRequired(FixtureLoadedTestCase):
 		# form, so the post should be successful.  We will not be sent
 		# to the login page, and the object will be added to the database.
 		for view_name, kwargs, post_data, post_class in self.login_post_views:
-
-			print view_name
 
 			self.client.login(
 				username='superuser', password='superuser')

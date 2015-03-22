@@ -27,11 +27,11 @@
 
 <div class="form_line">
 	<div class="field_label_wrapper">
-		<span class="field_errors" id="{{taggit.id_prefix}}_errors">
+		<div class="field_errors" id="{{taggit.id_prefix}}_errors">
 			{% for error in taggit.errors %}
 				{{ error }}
 			{% endfor %}
-		</span>
+		</div>
 		<label for="{{ taggit.id_prefix }}" />{{ taggit.label|capfirst }}:</label>
 	</div>
 

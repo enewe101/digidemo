@@ -909,15 +909,20 @@ class EditProposalView(AbstractLoginRequiredView):
 		)
 		tagger_form = TaggerForm(self.request.POST)
 
-		if proposal_form.is_valid() and tagger_form.is_valid():
+		proposal_form_valid = proposal_form.is_valid()
+		tagger_form_valid = tagger_form.is_valid()
+
+		if proposal_form_valid and tagger_form_valid:
 
 			tags = tagger_form.save()
 			proposal_version = proposal_form.save()
+
 			proposal = proposal_version.proposal
 
 			fields_to_copy = [
 				'title', 'summary', 'text', 'user', 'proposal_image'
 			]
+
 			for field in fields_to_copy:
 				setattr(
 					proposal, 
@@ -948,13 +953,15 @@ class EditProposalView(AbstractLoginRequiredView):
 		# Assemble the context data on top of default context
 		context_data = self.get_default_context()
 		context_data.update({
-			'proposal': proposal,
 			'headline': proposal.title,
+			'proposal': proposal,
 			'proposal_form': proposal_form,
-			'tabs': get_edit_tabs('edit', proposal),
+			'tagger_form': tagger_form,
+			'tabs': get_proposal_tabs(proposal, EDIT_TAB_NAME),
 			'active_navitem': 'create',
 			'cancel_url': cancel_url
 		})
+
 
 		# Build a request context
 		context = RequestContext(self.request, context_data)
@@ -981,9 +988,12 @@ class AddProposalView(AbstractLoginRequiredView):
 			endpoint=reverse('add_proposal')
 		)
 
+		proposal_form_valid = proposal_form.is_valid()
+		tagger_form_valid = tagger_form.is_valid()
+
 		# If the form is correctly filled out, save it and redirect
 		# to the issue page
-		if proposal_form.is_valid() and tagger_form.is_valid():
+		if proposal_form_valid and tagger_form_valid:
 
 			tags = tagger_form.save()
 			proposal_version = proposal_form.save(commit=False)
@@ -1004,7 +1014,7 @@ class AddProposalView(AbstractLoginRequiredView):
 
 			# now save the proposal version, then bind the proposal and
 			# then save the bound proposal_version
-			proposal_version.propsal = proposal
+			proposal_version.proposal = proposal
 			proposal_version.save()
 
 			for sector in proposal_form.cleaned_data['sectors']:
@@ -1031,6 +1041,7 @@ class AddProposalView(AbstractLoginRequiredView):
 		context_data.update({
 			'headline': 'new issue',
 			'proposal_form': proposal_form,
+			'taggit': tagger_form,
 			'tabs': None,
 			'active_navitem': 'create',
 			'cancel_url': cancel_url
@@ -1053,7 +1064,7 @@ class AddProposalView(AbstractLoginRequiredView):
 			}
 		)
 
-		taggit = TaggerForm()
+		tagger_form = TaggerForm()
 
 		cancel_url = reverse('index')
 		if 'HTTP_REFERER' in self.request.META:
@@ -1063,7 +1074,7 @@ class AddProposalView(AbstractLoginRequiredView):
 			'GLOBALS': get_globals(self.request),
 			'headline': 'new issue',
 			'proposal_form': proposal_form,
-			'taggit': taggit,
+			'taggit': tagger_form,
 			'tabs': None,
 			'active_navitem': 'create',
 			'cancel_url': cancel_url
@@ -1693,7 +1704,6 @@ def index(request,sort_type='most_recent'):
 
 	# and with all of the petitions?
 	new_petitions = Letter.objects.all()
-
         
 	return render(
 		request,
