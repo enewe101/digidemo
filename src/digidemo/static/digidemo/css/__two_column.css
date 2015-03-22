@@ -1,11 +1,24 @@
-
 #right_col {
-	float: left;
-	width: 204px;
-	padding-left: 20px;
+	float: none;
+	width: 100%;
+	margin-bottom: 60px;
 }
 
 #main_col {
-	float:left;
-	width: 746px;
+	float: none;
+	width: 100%;
+}
+
+
+
+@media screen and (min-width: 1005px) {
+	#right_col {
+		float: left;
+		width: 204px;
+	}
+
+	#main_col {
+		float:left;
+		width: 746px;
+	}
 }
