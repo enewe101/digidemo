@@ -178,6 +178,14 @@ hr {
 	margin: 10px;
 }
 
+.take_note h3 {
+	margin-top: 24px;
+}
+
+.note_icon {
+	width: 30px;
+}
+
 .list_item {
 	background: rgb(245,245,245);
 	padding: 10px;

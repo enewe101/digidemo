@@ -1,0 +1,37 @@
+{% extends "digidemo/__two_column.html" %}
+{% load staticfiles %}
+
+{% block title %}
+	{{ target.title }} | {{ block.super }} 
+{% endblock title %}
+
+{% block  headline_title %}
+	{{ target.title }}
+{% endblock headline_title %}
+
+{% block maincol %}
+	<h2>{{ subtitle }}</h2>
+	<div class="take_note">
+		<img src="{% static "digidemo/images/bulb_icon.png" %}" 
+			class="note_icon" />
+		<h3>
+			Asking good questions
+		</h3>
+		<ul>
+			<li>
+				Be specific and clear about what you are asking.
+			</li>
+			<li>
+				No rhetorical questions please!  If you have a point to make
+				do so in the 
+				<a href="{{ target.get_open_discussions_url}}"> 
+					discussion area</a>.
+			</li>
+			<li>
+				What have you already found out about your question?  What
+				do you already know?
+			</li>
+		</ul>
+	</div>
+		{% include "digidemo/_w_simple_form_wrapped.html" with form=form %}
+{% endblock maincol %}

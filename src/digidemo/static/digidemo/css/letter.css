@@ -31,13 +31,12 @@
 }
 
 .letter_main {
-	width: 680px;
+	width: 640px;
 	position: relative;
 	float: left;
 }
 
 .physical_letter {
-	width: 638px;
 	border: solid 1px rgb(80,80,80);
 	padding: 20px;
 }
