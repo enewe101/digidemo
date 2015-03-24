@@ -1,0 +1,38 @@
+{% extends "digidemo/__two_column.html" %}
+{% load staticfiles %}
+
+{% block title %}
+	{{ target.title }} | {{ block.super }} 
+{% endblock title %}
+
+{% block  headline_title %}
+	{{ target.title }}
+{% endblock headline_title %}
+
+{% block maincol %}
+	<h2>{{ subtitle }}</h2>
+	<div class="take_note">
+		<img src="{% static "digidemo/images/bulb_icon.png" %}" 
+			class="note_icon" />
+		<h3>
+			Guidelines for posting
+		</h3>
+		<ul>
+			<li>
+				Be respectful and courteous at all times.  
+			</li>
+			<li>
+				There is no such thing as "winning" an argument.
+			</li>
+			<li>
+				In a productive discussion, the exchange of diverse opinions
+				leads to learning.
+			</li>
+			<li>
+				Back up your claims with evidence.  Challenge others to do
+				the same.
+			</li>
+		</ul>
+	</div>
+		{% include "digidemo/_w_simple_form_wrapped.html" with form=form %}
+{% endblock maincol %}

@@ -919,6 +919,10 @@ class EditProposalView(AbstractLoginRequiredView):
 
 			proposal = proposal_version.proposal
 
+			if proposal_version.proposal_image is None:
+				proposal_version.proposal_image = proposal.proposal_image
+				proposal_version.save()
+
 			fields_to_copy = [
 				'title', 'summary', 'text', 'user', 'proposal_image'
 			]
@@ -1316,6 +1320,7 @@ class MakePost(AbstractLoginRequiredView):
 
 
 class AskQuestionView(MakePost):
+	template = 'digidemo/ask_question.html'
 	form_class = QuestionForm
 	target_class = Proposal
 	active_navitem = QUESTIONS_NAV_NAME
@@ -1332,6 +1337,7 @@ class AskQuestionView(MakePost):
 
 
 class StartDiscussionView(MakePost):
+	template = 'digidemo/start_discussion.html'
 	form_class = DiscussionForm
 	target_class = Proposal
 	active_navitem = ISSUE_NAV_NAME

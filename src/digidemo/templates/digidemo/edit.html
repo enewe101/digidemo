@@ -4,6 +4,41 @@
 
 
 {% block maincol %}
+	<div class="take_note">
+		<img src="{% static "digidemo/images/bulb_icon.png" %}" 
+			class="note_icon" />
+		<h3>
+			Guidelines for writing
+		</h3>
+		<ul>
+			<li>
+				The issue article is a place to accumulate all of the 
+				<em>facts</em> relating to an issue.  
+			</li>
+			<li>
+				You can&mdash;and should&mdash;dispute facts using the 
+				<a href="{{ proposal.get_open_discussions_url }}">
+					discussion area</a>.
+			</li>
+			<li>
+				Want to express your opinion, advocate for action, or express
+				your values?  
+				<a href="{{ proposal.get_start_petition_url }}">
+					Write a letter</a>!
+			</li>
+			<li>
+				The strength of claims is measured by the evidence and 
+				reasoning upon which they stand.
+			</li>
+			<li>
+				Acknowledge uncertainty and controversy&mdash;uncertain 
+				evidence <em>certainly</em> supports a claim of uncertainty; 
+				conflicting evidence <em>uncontroversially</em> supports a 
+				claim of controversy.
+			</li>
+		</ul>
+	</div>
+
 	{% with version_form=proposal_form %}
 	
 	<form class="{{ version_form.form_class}}" 

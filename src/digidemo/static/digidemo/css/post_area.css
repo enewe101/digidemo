@@ -1,4 +1,6 @@
 .post, .subpost {
+	position: relative;
+	max-width: 100%;
 	margin-bottom: 20px;
 }
 
@@ -19,7 +21,8 @@
 }
 
 .post_main_area, .subpost_main_area {
-	width: 656px;
+	width: 600px;
+	max-width: 100%;
 	float: left;
 	border: solid 1px rgb(80,80,80);
 	padding: 10px;
