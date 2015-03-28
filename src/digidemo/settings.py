@@ -78,6 +78,10 @@ ALLOWED_HOSTS = local_settings.ALLOWED_HOSTS
 	#                       #
 	#########################
 
+TEMPLATE_LOADERS = (
+	'django.template.loaders.app_directories.Loader',
+)
+
 TEMPLATE_CONTEXT_PROCESSORS = (
 	'django.contrib.messages.context_processors.messages',
 	'django.core.context_processors.request',
@@ -95,6 +99,7 @@ INSTALLED_APPS = (
 	'digidemo',
 	'haystack',
 	'django_nose',
+	'highlight',
 )
 AUTH_USER_MODEL = 'auth.User'
 

@@ -14,7 +14,19 @@
 		href="{% static "digidemo/css/overview.css" %}" />
 	<link rel="stylesheet" type="text/css" 
 		href="{% static "digidemo/css/letter.css" %}" />
+	<link rel="stylesheet" type="text/css" 
+		href="{% static "digidemo/css/highlight.css" %}" />
 {% endblock css %}
+
+{% block js %}
+	{{block.super}}
+	<script type="text/javascript" 
+		src="{% static "digidemo/js/highlight.js" %}"></script>
+	<script type="text/javascript" 
+		src="{% static "digidemo/js/rangy-core.min.js" %}"></script>
+
+
+{% endblock js %}
 
 
 {% block  headline_title %}
@@ -43,6 +55,7 @@
 	</div>
 
 	<div class="left_col padded">
+
 			<div id="inbrief" class="in_brief">
 				<h1>{% trans "In brief" %}</h1>
 				<span id="proposal_summary">
@@ -50,8 +63,22 @@
 				</span>
 			</div>
 
-			<!-- start of proposal sectors -->
+			<!-- make inbrief text annotatable -->
+			<script type="text/javascript">
+				(function(){
+					var inbrief = $('#inbrief');
+					var inbrief_annotatable = new Annotatable(
+						inbrief, null, 'some_id'
+					);
+				})();
+			</script>
 
+			<script type="text/javascript">
+				//var inbrief = $('#inbrief');
+				//var annot = new Annotation(inbrief, 'Aust', 'abc');
+			</script>
+
+			<!-- start of proposal sectors -->
 			<div id="tags" class="tags">
 				{% for sector in proposal.sectors.all %}
 					{{ sector.render_link }}
@@ -196,6 +223,16 @@
 		{{ proposal.text|markdown }}
 	</div>
 	<!-- end the proposal text (body) -->
+
+	<!-- make article text annotatable -->
+	<script type="text/javascript">
+		(function(){
+			var inbrief = $('#proposal_text');
+			var inbrief_annotatable = new Annotatable(
+				inbrief, null, 'some_id'
+			);
+		})();
+	</script>
 
 </div>
 

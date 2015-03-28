@@ -559,9 +559,13 @@ class Letter(abstract_models.Subscribable):
 
 
 class Discussion(abstract_models.ScoredPost, abstract_models.Subscribable):
+
 	target = models.ForeignKey(Proposal, null=True, verbose_name=_('target'))
 	title = models.CharField(max_length=TITLE_LENGTH, verbose_name=_('title'))
 	is_open = models.BooleanField(default=True, verbose_name=_('is open'))
+	is_inline = models.BooleanField(default=False)
+	anchor = models.charField(max_length=8192)
+	quote = madels.charField(max_length=8192)
 
 	class Meta:
 		verbose_name = _('discussion')
