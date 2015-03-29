@@ -99,7 +99,6 @@ INSTALLED_APPS = (
 	'digidemo',
 	'haystack',
 	'django_nose',
-	'highlight',
 )
 AUTH_USER_MODEL = 'auth.User'
 

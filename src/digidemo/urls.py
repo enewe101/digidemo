@@ -121,9 +121,5 @@ urlpatterns += i18n_patterns('',
 	url(r'^ajaxLogin/$', handle_ajax_login,name = 'handle_ajax_login'),
 	url(r'^ajaxLogout/$', handle_ajax_logout,name = 'handle_ajax_logout'),
 
-
-	# highlighter app
-	url(r'^highlight/', include('highlight.urls')),
-
 ) + static_url(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 

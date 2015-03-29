@@ -192,7 +192,10 @@ function Annotatable(wrapper, annotation_form, color, class_prefix) {
 	var comment_Y = null;
 
 	// make the annotation widgetry
-	var annotator = $('<div/>').addClass(class_prefix + '_annotator');
+	var annotator = $('<div/>').addClass(
+		class_prefix + '_annotator').attr('title', 
+		'You must log in to comment!'
+	);
 	var word_bubble_image = $('<img/>').attr(
 		'src', django.STATIC_URL + 'digidemo/images/word_bubble_icon.png');
 	annotator.append(word_bubble_image);
@@ -200,11 +203,6 @@ function Annotatable(wrapper, annotation_form, color, class_prefix) {
 
 	// keep a list of annotation objects
 	var annotations = [];
-
-	// assemble annotation widgetry
-	//annotation_form.append(comment_input);
-	//annotation_form.append(comment_cancel);
-	//annotation_form.append(comment_save);
 
 	function delay_highlight(html, high_html, quote, e) {
 		$('body').append(annotator);

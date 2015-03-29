@@ -886,7 +886,9 @@ function DigidemoAnnotationForm(form_class, prefix_id) {
 
 
 	var class_prefix = 'highlight';
-	var wrapper = $('<div/>').addClass(class_prefix + '_comment_wrapper');
+	var wrapper = $('<div/>').addClass(
+		class_prefix + '_comment_wrapper').attr(
+		'title', 'You must log in to comment!');
 	wrapper.draggable();
 
 	var form = $('#' + form_id);

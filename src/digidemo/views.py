@@ -309,12 +309,15 @@ def get_django_vars_JSON(additional_vars={}, request=None):
 	globals = get_globals(request)
 
 	# we need to also pass the user profile 
-	globals['USER_PROFILE'] = globals['USER'].profile
+	if globals['USER'].is_authenticated():
+		globals['USER_PROFILE'] = utils.obj_to_dict(globals['USER'].profile)
+		globals['USER'] = utils.obj_to_dict(globals['USER'], 
+			exclude=['password'])
+	else:
+		globals['USER_PROFILE'] = None
+		globals['USER'] = None
 
 	# some objects are not serializeable, we need to use a bit of force
-	globals['USER'] = utils.obj_to_dict(globals['USER'], 
-		exclude=['password'])
-	globals['USER_PROFILE'] = utils.obj_to_dict(globals['USER_PROFILE'])
 
 
 	# some things we don't want to include
