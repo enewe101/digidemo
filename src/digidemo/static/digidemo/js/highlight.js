@@ -192,10 +192,10 @@ function Annotatable(wrapper, annotation_form, color, class_prefix) {
 	var comment_Y = null;
 
 	// make the annotation widgetry
-	var annotator = $('<div/>').addClass(
-		class_prefix + '_annotator').attr('title', 
-		'You must log in to comment!'
-	);
+	var annotator = $('<div/>').addClass(class_prefix + '_annotator')
+	if(!django.IS_USER_AUTHENTICATED) {
+		annotator.attr('title', 'You must log in to comment!');
+	}
 	var word_bubble_image = $('<img/>').attr(
 		'src', django.STATIC_URL + 'digidemo/images/word_bubble_icon.png');
 	annotator.append(word_bubble_image);
