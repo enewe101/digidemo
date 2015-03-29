@@ -275,6 +275,23 @@ class DiscussionForm(ModelForm):
 		}
 
 
+class InlineDiscussionForm(AugmentedFormMixin, ModelForm):
+	endpoint = 'add_inline_discussion'
+	class Meta:
+		model = Discussion
+		fields = ['target', 'text', 'anchor', 'quote', 'target_part', 
+			'is_inline'
+		]
+		widgets = {
+			'target': forms.HiddenInput(),
+			'text': forms.Textarea(),
+			'anchor': forms.HiddenInput(),
+			'quote': forms.HiddenInput(),
+			'target_part': forms.HiddenInput(),
+			'is_inline': forms.HiddenInput()
+		}
+
+
 @bound_form('reply')
 class ReplyForm(ModelForm):
 	class Meta:

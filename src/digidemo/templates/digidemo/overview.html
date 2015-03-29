@@ -49,6 +49,7 @@
 
 <div>
 
+
 	<div id="proposal_image" class="right_col">
 			<img class="proposal_image"
 			src="{% get_media_prefix %}{{ proposal.proposal_image }}" />
@@ -63,19 +64,43 @@
 				</span>
 			</div>
 
+
 			<!-- make inbrief text annotatable -->
+			<!-- beginning of inline commenting form -->
+
+			{% include 'digidemo/_w_ajax_form.html' with form=inbrief_inline_discussion_form %}
+
+			<!-- end of inline comment form -->
 			<script type="text/javascript">
 				(function(){
+
+				 	var discussions = {{summary_inline_discussions|safe}};
+
+					var digi_annotation_form = new DigidemoAnnotationForm(
+						'{{inbrief_inline_discussion_form.form_class }}',
+						'{{inbrief_inline_discussion_form.id_prefix }}'
+					);
+
+					var annotation_form = new GenericAnnotationForm();
 					var inbrief = $('#inbrief');
 					var inbrief_annotatable = new Annotatable(
-						inbrief, null, 'some_id'
+						inbrief, digi_annotation_form, 'lightgreen'
 					);
-				})();
-			</script>
 
-			<script type="text/javascript">
-				//var inbrief = $('#inbrief');
-				//var annot = new Annotation(inbrief, 'Aust', 'abc');
+					for(var i=0; i<discussions.length; i++) {
+						var d = discussions[i];
+						d.user_data.avatar_url = (
+							django.MEDIA_URL + d.user_data.avatar_url);
+						inbrief_annotatable.add_annotation(
+							d.anchor,
+							d.quote,
+							d.text,
+							d.user_data,
+							false,
+							'lightgreen'
+						);
+					}
+				})();
 			</script>
 
 			<!-- start of proposal sectors -->
@@ -225,12 +250,38 @@
 	<!-- end the proposal text (body) -->
 
 	<!-- make article text annotatable -->
+	{% include 'digidemo/_w_ajax_form.html' with form=text_inline_discussion_form %}
+
+	<!-- end of inline comment form -->
 	<script type="text/javascript">
 		(function(){
-			var inbrief = $('#proposal_text');
-			var inbrief_annotatable = new Annotatable(
-				inbrief, null, 'some_id'
+
+			var discussions = {{text_inline_discussions|safe}};
+
+			var digi_annotation_form = new DigidemoAnnotationForm(
+				'{{text_inline_discussion_form.form_class }}',
+				'{{text_inline_discussion_form.id_prefix }}'
 			);
+
+			var annotation_form = new GenericAnnotationForm();
+			var proposal_text = $('#proposal_text');
+			var text_annotatable = new Annotatable(
+				proposal_text, digi_annotation_form, 'lightgreen'
+			);
+
+			for(var i=0; i<discussions.length; i++) {
+				var d = discussions[i];
+				d.user_data.avatar_url = (
+					django.MEDIA_URL + d.user_data.avatar_url);
+				text_annotatable.add_annotation(
+					d.anchor,
+					d.quote,
+					d.text,
+					d.user_data,
+					false,
+					'lightgreen'
+				);
+			}
 		})();
 	</script>
 

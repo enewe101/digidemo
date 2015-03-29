@@ -1,9 +1,12 @@
 function Highlightable(
-	wrapper, on_highlight_start, on_highlight_abort, highlighted_class_name
+	wrapper, on_highlight_start, on_highlight_abort, highlighted_class_name,
+	color
 ) {
 
 	// alias 'this' to keep context during event callbacks
 	var that = this;
+
+	color = color || 'yellow';
 	
 	// fires when a highlight is started.  The highlight
 	// 		- can interrupt highlighting
@@ -27,7 +30,7 @@ function Highlightable(
 	var tag_matcher = /(<[^<>]+>)/g;
 
 	// used to insert highlighting spans
-	var replacer = '</span>$1<span class="' + highlighted_class_name + '">';
+	//var replacer = '</span>$1<span class="' + highlighted_class_name + '">';
 
 	// used to remember the original html in the wrapper
 	var original_html = wrapper.html();
@@ -63,9 +66,18 @@ function Highlightable(
 		return false;
 	}
 
-	function highlightify(s) {
+	function highlightify(s, color) {
+		var open_span = '<span class="' + highlighted_class_name + '">';
+		if(typeof color !== 'undefined') {
+			open_span = (
+				'<span style="background-color:'+color+';" '
+				+ 'class="' + highlighted_class_name + '">'
+			)
+		}
+		replacer = '</span>$1' + open_span;
+
 		s = s.replace(tag_matcher, replacer);
-		s = '<span class="' + highlighted_class_name + '">' + s + '</span>';
+		s = open_span + s + '</span>';
 		return s;
 	}
 
@@ -77,8 +89,11 @@ function Highlightable(
 		_clear();
 	}
 
+	this.has_match = function(html) {
+		return original_html.indexOf(html)>=0
+	};
 
-	function _highlight(html, trigger_callbacks, e) {
+	function _highlight(html, color, trigger_callbacks, e) {
 
 		if(!_is_unique(html)) {
 			if(trigger_callbacks) {
@@ -88,13 +103,13 @@ function Highlightable(
 		// if the user selects a region that is already highlighted, the
 		// method will fail.  Clear the existing highlight so they can try 
 		// again
-		} else if (original_html.indexOf(html)<0) {
+		} else if (!that.has_match(html)) {
 			_clear();
 			return false;
 
 		} else if (html != '') {
 
-			var highlightified_html = highlightify(html);
+			var highlightified_html = highlightify(html, color);
 
 			// fire the callback, which may cause highlight
 			// prevent the highlighting
@@ -126,8 +141,8 @@ function Highlightable(
 	}
 
 	// make _highlight public
-	this.highlight = function(html) {
-		return _highlight(html, false);
+	this.highlight = function(html, color) {
+		return _highlight(html, color, false);
 	};
 
 	// make _is_unique public
@@ -138,20 +153,18 @@ function Highlightable(
 	wrapper.mouseup(function(e) {
 		quote = getSelectedHtml();
 		var html = strip_extraneous_tags(quote);
-		var success = _highlight(html, true, e);
+		var success = _highlight(html, color, true, e);
 	});
 
 };
 
 
-function Annotatable(wrapper, send_comment, doc_id, class_prefix) {
+function Annotatable(wrapper, annotation_form, color, class_prefix) {
 
 	// alias 'that' to keep context during event callbacks
 	var that = this;
 
-	send_comment = send_comment || function(a,b,c,d) {
-		//alert(a + '; ' + b + '; ' + c + '; ' + d);
-	}
+	color = color || 'yellow';
 
 	if(typeof doc_id === 'undefined') {
 		doc_id = '';
@@ -160,6 +173,8 @@ function Annotatable(wrapper, send_comment, doc_id, class_prefix) {
 	if(typeof class_prefix === 'undefined') {
 		class_prefix = 'highlight';
 	}
+
+	annotation_form.register_annotatable(this);
 
 	var state = 'rest';
 
@@ -178,32 +193,27 @@ function Annotatable(wrapper, send_comment, doc_id, class_prefix) {
 
 	// make the annotation widgetry
 	var annotator = $('<div/>').addClass(class_prefix + '_annotator');
-	var commenter = $('<div/>').addClass(class_prefix + '_comment_wrapper');
-	commenter.draggable();
-	var comment_input = $('<textarea/>').addClass(class_prefix + '_textarea');
-	var comment_cancel = $('<input type="button" value="cancel" />').addClass(
-		class_prefix + '_cancel_button'
-	);
-	var comment_save = $('<input type="button" value="save" />').addClass(
-		class_prefix + '_save_button'
-	);
+	var word_bubble_image = $('<img/>').attr(
+		'src', django.STATIC_URL + 'digidemo/images/word_bubble_icon.png');
+	annotator.append(word_bubble_image);
+
 
 	// keep a list of annotation objects
 	var annotations = [];
 
 	// assemble annotation widgetry
-	commenter.append(comment_input);
-	commenter.append(comment_cancel);
-	commenter.append(comment_save);
+	//annotation_form.append(comment_input);
+	//annotation_form.append(comment_cancel);
+	//annotation_form.append(comment_save);
 
 	function delay_highlight(html, high_html, quote, e) {
 		$('body').append(annotator);
 
 		// show and position the annotator button
-		comment_Y = e.pageY - 24;
+		comment_Y = e.pageY - 40;
 		comment_X = e.pageX;
 
-		annotator.css('top', e.pageY - 24);
+		annotator.css('top', e.pageY - 40);
 		annotator.css('left', e.pageX);
 		annotator.css('display', 'block');
 
@@ -217,17 +227,17 @@ function Annotatable(wrapper, send_comment, doc_id, class_prefix) {
 
 
 	var highlightable = new Highlightable(
-		wrapper, delay_highlight, null, class_prefix);
+		wrapper, delay_highlight, null, class_prefix, color);
 
 
 	// expose highlighting functionality of underlying highlighter
-	function _highlight(html) {
-		highlightable.highlight(html, false, null);
+	function _highlight(html, color) {
+		highlightable.highlight(html, color);
 	}
 
 	// make the highlighting functionality public
-	this.highlight = function(html) {
-		_highlight(html);
+	this.highlight = function(html, color) {
+		_highlight(html, color);
 	}
 
 	// expose clear functionality of underlying highlighter
@@ -253,11 +263,15 @@ function Annotatable(wrapper, send_comment, doc_id, class_prefix) {
 	};
 
 	function highlight_and_comment() {
-		highlightable.highlight(keep_html);
-		$('body').append(commenter);
-		commenter.css('display', 'block');
-		commenter.css('top', comment_Y);
-		commenter.css('left', comment_X);
+		highlightable.highlight(keep_html, color);
+
+		annotation_form.show(
+			comment_Y,
+		   	comment_X,
+			keep_html,
+			keep_quote
+		);
+
 
 		comment_html = keep_html;
 		comment_quote = keep_quote;
@@ -266,35 +280,60 @@ function Annotatable(wrapper, send_comment, doc_id, class_prefix) {
 
 	}
 
-	function cancel_comment() {
-		commenter.css('display', 'none');
+	this.cancel_comment = function() {
 		highlightable.clear();
 		state = 'rest';
 	}
 
-	function save_comment() {
-		send_comment(
-			comment_input.val(),
-			comment_html,
-			comment_quote,
-			doc_id
-		)
-		commenter.css('display', 'none');
+	this.save_comment = function(comment_html, comment_quote, comment) {
 		state = 'rest';
+
 		var new_annotation = new Annotation(
 			wrapper, 
 			that, 
 			comment_html, 
 			comment_quote, 
-			comment_input.val(),
-			doc_id
+			comment,
+			{
+				'username': django['USER']['username'],
+				'rep': django['USER_PROFILE']['rep'],
+				'avatar_url': (
+					django['MEDIA_URL'] 
+					+ django['USER_PROFILE']['avatar_img']
+				)
+			},
+			true,
+			color
 		);
 		annotations.push(new_annotation);
 	}
 
+	this.add_annotation = function(
+		anchor, quote, text, user_data, do_show, color) {
+
+		// check if the annotation that is being loaded actually matches 
+		// html in the wrapper, and whether it matches uniquely.
+		var has_match = highlightable.has_match(anchor);
+		var is_unique = highlightable.is_unique(anchor);
+
+		if(has_match && is_unique) {
+			var new_annotation = new Annotation(
+				wrapper, 
+				that, 
+				anchor, 
+				quote, 
+				text,
+				user_data,
+				do_show,
+				color
+			);
+			annotations.push(new_annotation);
+			return true;
+		}
+		return false
+	};
+
 	annotator.click(highlight_and_comment);
-	comment_cancel.click(cancel_comment);
-	comment_save.click(save_comment);
 
 	$(document).click(function(){
 		if(state === 'rest') {
@@ -329,19 +368,38 @@ function get_next_color() {
 }
 
 
-function Annotation(wrapper, annotatable, html, quote, annotation, data) {
+function Annotation(
+	wrapper, annotatable, html, quote, annotation_text, data, do_show, color
+) {
+
+	// determines whether the annotation shows when added.  Default is to show
+	if(typeof do_show === 'undefined') do_show = true;
 
 	var locator = '<span id="annotation_locator"></span>';
 	var marker = $('<div/>').addClass('annot_marker');
-	marker.css('background-color', get_next_color());
+	var color = color || get_next_color();
+	marker.css('background-color', color);
 
-	var annotation = $('<div/>').addClass('annotation').text(annotation);
+	var annotation = $(
+		'<div class="annotation"> '
+			+ '<div class="user_id">'
+				+ '<img class="avatar_image_micro"'
+					+ ' src="' + data['avatar_url'] + '">'
+				+ '<div class="user_info">'
+					+ '<div class="username">' + data['username'] + '</div>'
+					+ '<div>' + data['rep'] + '</div>'
+				+ '</div>'
+			+ '</div>'
+			+ annotation_text
+		+ '</div>'
+	);
+
 
 	var state = 'dodge';
 
 	function show_annotation() {
 		annotatable.clear();
-		annotatable.highlight(html);
+		annotatable.highlight(html, color);
 		$('body').append(annotation);
 		annotation.css({
 			'display': 'block',
@@ -380,14 +438,84 @@ function Annotation(wrapper, annotatable, html, quote, annotation, data) {
 	var position = $('#annotation_locator').position();
 	wrapper.html(original_html);
 
-	marker.css({'top': position.top - 4, 'left': position.left});
+	marker.css({'top': position.top - 4, 'left': position.left-4});
 	$('body').append(marker);
 
-	show_annotation();
+	if(do_show) show_annotation();
 }
 
 
-function SynchronizedAnnotatable(wrapper, send_comment, doc_id, class_prefix) {
-	// load annotations
-	// save annotations
+function GenericAnnotationForm(send_comment) {
+
+	send_comment = send_comment || function(a,b,c) {
+		alert(a + '; ' + b + '; ' + c);
+	}
+
+	var annotatable = null;
+
+	// alias 'that' to preserve context in event callbacks
+	var that = this;
+
+	var html = '';
+	var quote = '';
+
+	this.show = function(X,Y,_html,_quote) {
+		html = _html;
+		quote = _quote;
+
+		$('body').append(wrapper);
+		wrapper.css('display', 'block');
+		wrapper.css('top', X);
+		wrapper.css('left', Y);
+	};
+
+	this.register_annotatable = function(annot) {
+		annotatable = annot;
+	}
+
+	function cancel() {
+		that.hide()
+		annotatable.cancel_comment();
+	}
+
+	this.hide = function() {
+		 wrapper.css('display', 'none');
+	}
+
+	function save() {
+		var comment = comment_input.val()
+		send_comment(
+			comment,
+			html,
+			quote
+		)
+
+		that.hide();
+
+		// need to get all this into AnnForm scope
+		annotatable.save_comment(
+			html, quote, comment, doc_id
+		);
+
+	}
+
+	var class_prefix = 'highlight';
+	var wrapper = $('<div/>').addClass(class_prefix + '_comment_wrapper');
+	wrapper.draggable();
+	var comment_input = $('<textarea/>').addClass(class_prefix + '_textarea');
+	var comment_cancel = $('<input type="button" value="cancel" />').addClass(
+		class_prefix + '_cancel_button'
+	);
+	var comment_save = $('<input type="button" value="save" />').addClass(
+		class_prefix + '_save_button'
+	);
+	wrapper.append(comment_input);
+	wrapper.append(comment_cancel);
+	wrapper.append(comment_save);
+	comment_cancel.click(cancel);
+	comment_save.click(save);
+
+	this.wrapper = wrapper;
+
 }
+

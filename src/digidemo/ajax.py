@@ -337,6 +337,37 @@ def register_notification_checked(request):
 	}
 
 
+@ajax_endpoint_login_required('You must login to comment!')
+def add_inline_discussion(request):
+
+	print 'post:', request.POST
+	
+	discussion_form = InlineDiscussionForm(request.POST)
+	if discussion_form.is_valid():
+
+		print request.POST
+
+		discussion = discussion_form.save(commit=False)
+		discussion.user = request.user
+		discussion.save()
+
+		print discussion
+
+		return {
+			'success':True,
+			'errors': discussion_form.json_errors()
+		}
+
+	print 'form not valid'
+	print discussion_form._errors
+
+	return {
+		'success':False,
+		'msg':'ajax.py: InlineDiscussionForm was not valid', 
+		'errors': discussion_form.json_errors()
+	}
+
+
 @ajax_endpoint_login_required('You must login to post a reply!', ReplyForm)
 def reply(request):
 

@@ -364,6 +364,24 @@ hr {
 	font-size: 12px;
 }
 
+.avatar_image_micro {
+	height: 36px;
+	width: 36px;
+	border-radius: 50%;
+	float: left;
+}
+
+.user_info {
+	float: left;
+	padding: 0 6px 0 6px;
+}
+
+.user_id {
+	border-right: solid 1px rgb(200,200,200);
+	float: left;
+	margin-right: 6px;
+}
+
 
 .avatar_image_small {
 	margin-top: 4px;

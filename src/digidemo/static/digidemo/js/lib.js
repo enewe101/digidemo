@@ -209,7 +209,11 @@ function register_form(form_id, endpoint, form_class, submit_id) {
 function FormWidget(form_id, endpoint, submit_id) {
 
 	// get the html elements that were passed by id
-	var submit_button = $('#' + submit_id);
+	var submit_button = null;
+	if(submit_id){
+		submit_button = $('#' + submit_id);
+	} 
+		
 	var form = $('#'+form_id);
 
 	var events = ['before', 'success', 'error', 'after'];
@@ -251,8 +255,11 @@ function FormWidget(form_id, endpoint, submit_id) {
 		}, this
 	);
 
-	submit_button.click(this.submit);
+	if(submit_button) {
+		submit_button.click(this.submit);
+	}
 }
+
 
 
 function render_errors(data, form_id) {
@@ -871,3 +878,84 @@ function AddFactorVersionWidget(add_link, form_wrapper,
 
 }
 
+
+function DigidemoAnnotationForm(form_class, prefix_id) {
+
+	var annotatable = null;
+	var form_id = form_class + '_' + prefix_id;
+
+
+	var class_prefix = 'highlight';
+	var wrapper = $('<div/>').addClass(class_prefix + '_comment_wrapper');
+	wrapper.draggable();
+
+	var form = $('#' + form_id);
+	wrapper.append(form);
+	var comment_input = $('#' + 'InlineDiscussionForm_inbrief' + '_text');
+
+	var comment_cancel = $('<input type="button" value="cancel" />').addClass(
+		class_prefix + '_cancel_button'
+	);
+	wrapper.append(comment_cancel);
+
+	var comment_save = $('#' + form_id + '_submit');
+
+	comment_cancel.click(cancel);
+
+	widgets[form_id].widget.hook('success', function() {
+		save();
+	});
+
+	widgets[form_id].widget.hook('error', function(data) {
+		js_error(data.toSource());
+	});
+
+	this.wrapper = wrapper;
+
+	// alias 'that' to preserve context in event callbacks
+	var that = this;
+
+	var html = '';
+	var quote = '';
+
+	this.show = function(X,Y,_html,_quote) {
+		html = _html;
+		quote = _quote;
+
+		$('body').append(wrapper);
+		wrapper.css('display', 'block');
+		wrapper.css('top', X);
+		wrapper.css('left', Y);
+
+		$('#' + form_id + '_anchor').val(html);
+		$('#' + form_id + '_quote').val(quote);
+
+	};
+
+	this.register_annotatable = function(annot) {
+		annotatable = annot;
+	}
+
+	function cancel() {
+		that.hide()
+		annotatable.cancel_comment();
+	}
+
+	this.hide = function() {
+		 wrapper.css('display', 'none');
+	}
+
+	function save() {
+		comment_input = $('#' + form_id + '_text');
+		var comment = comment_input.val();
+
+		annotatable.save_comment(
+			html, quote, comment, doc_id
+		);
+
+		comment_input.val('');
+		that.hide();
+	}
+
+
+}

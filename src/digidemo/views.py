@@ -29,7 +29,7 @@ from digidemo.shortcuts import get_profile, login_user, send_email_confirmation
 
 
 from forms import ProposalSearchForm
-from settings import DEBUG, IN_PRODUCTION
+from settings import DEBUG, IN_PRODUCTION, STATIC_URL, MEDIA_URL
 from settings import TEMP_DIR
 import pydenticon
 
@@ -260,12 +260,14 @@ def get_globals(request):
 		'OTHER_LANG': 'fr' if language_is_english else 'en',
 		'DEBUG': DEBUG,
 		'IN_PRODUCTION': IN_PRODUCTION,
-		'SECTORS': Sector.objects.all(),
+		#'SECTORS': Sector.objects.all(),
 		'IS_USER_AUTHENTICATED': request.user.is_authenticated(),
 		'IS_EMAIL_VALIDATED': email_validated,
 		'USER': request.user,
 		'FEEDBACK_FORM': FeedbackForm(),
-		'LOGIN_FORM': LoginForm(id_prefix='header')
+		'LOGIN_FORM': LoginForm(id_prefix='header'),
+		'STATIC_URL': STATIC_URL,
+		'MEDIA_URL': MEDIA_URL
 	}
 
 	if request.user.is_authenticated():
@@ -302,23 +304,29 @@ def show_server_error(request):
 
 
 def get_django_vars_JSON(additional_vars={}, request=None):
-	return json.dumps(get_django_vars(
-		request, additional_vars=additional_vars))
+
+	# we'll pass the the "GLOBALS" to javascript
+	globals = get_globals(request)
+
+	# we need to also pass the user profile 
+	globals['USER_PROFILE'] = globals['USER'].profile
+
+	# some objects are not serializeable, we need to use a bit of force
+	globals['USER'] = utils.obj_to_dict(globals['USER'], 
+		exclude=['password'])
+	globals['USER_PROFILE'] = utils.obj_to_dict(globals['USER_PROFILE'])
 
 
+	# some things we don't want to include
+	del globals['FEEDBACK_FORM']
+	del globals['LOGIN_FORM']
+
+	return json.dumps(globals)
+
+	
 def get_django_vars(request, additional_vars={}):
 
-	email_validated = True if (
-			request.user.is_authenticated() 
-			and get_profile(request.user).email_validated
-		) else False
-
-	django_vars = {
-		'DEBUG': DEBUG,
-		'IS_USER_AUTHENTICATED': request.user.is_authenticated(),
-		'IS_EMAIL_VALIDATED': email_validated
-	}
-
+	django_vars = get_globals(request)
 	django_vars.update(additional_vars)
 
 	return django_vars
@@ -1369,6 +1377,25 @@ class StartPetitionView(MakePost):
 		return self.target.get_start_petition_url()
 
 
+def get_discussion_info(discussion_query_set):
+	discussion_data = []
+	for d in discussion_query_set:
+		user = d.user
+		user_profile = user.profile
+		discussion = {
+			'anchor': d.anchor,
+			'quote': d.quote,
+			'text': d.text,
+			'user_data': {
+				'username': user.username,
+				'rep': user_profile.rep,
+				'avatar_url': str(user_profile.avatar_img)
+			}
+		}
+		discussion_data.append(discussion)
+
+	return discussion_data
+
 
 class IssueOverview(AbstractView):
 	template = 'digidemo/overview.html'
@@ -1386,6 +1413,32 @@ class IssueOverview(AbstractView):
 			letter_section = LetterSection(letter, self.request.user)
 			letter_sections.append(letter_section)
 
+		# make a form for submitting inline discussions
+		inbrief_inline_discussion_form = InlineDiscussionForm(
+			initial={
+				'target':proposal, 'target_part': 'summary',
+				'is_inline':1
+			},
+			id_prefix='inbrief'
+		)
+		text_inline_discussion_form = InlineDiscussionForm(
+			initial={
+				'target':proposal, 'target_part': 'text', 
+				'is_inline':1},
+			id_prefix='text'
+		)
+
+		summary_inline_discussions = get_discussion_info(
+			Discussion.objects.filter(
+				is_inline=True, target=proposal, target_part='summary'
+			)
+		)
+		text_inline_discussions = get_discussion_info(
+			Discussion.objects.filter(
+				is_inline=True, target=proposal, target_part='text'
+			)
+		)
+
 		return {
 			'GLOBALS': get_globals(self.request),
 			'proposal': proposal,
@@ -1393,7 +1446,12 @@ class IssueOverview(AbstractView):
 			'questions': questions[0:5],
 			'letter_sections': letter_sections,
 			'tabs': get_proposal_tabs(proposal, OVERVIEW_TAB_NAME),
-			'active_navitem': ISSUE_NAV_NAME
+			'active_navitem': ISSUE_NAV_NAME,
+			'inbrief_inline_discussion_form': inbrief_inline_discussion_form,
+			'text_inline_discussion_form': text_inline_discussion_form,
+			'summary_inline_discussions': json.dumps(
+				summary_inline_discussions),
+			'text_inline_discussions': json.dumps(text_inline_discussions)
 		}
 
 
