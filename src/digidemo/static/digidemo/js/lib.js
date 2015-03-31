@@ -886,7 +886,6 @@ function DigidemoAnnotationForm(form_class, prefix_id) {
 	var cancel_callback = function(){};
 	var form_id = form_class + '_' + prefix_id;
 
-
 	var class_prefix = 'highlight';
 	var wrapper = $('<div/>').addClass(class_prefix + '_comment_wrapper')
 	wrapper.draggable();
@@ -900,8 +899,11 @@ function DigidemoAnnotationForm(form_class, prefix_id) {
 		wrapper.attr('title', 'You must log in to comment!');
 	}
 
+	var info = $('<div/>').text('Your comment about selected text:');
+	info.css('margin-bottom', '4px');
+	//wrapper.css('cursor', 'grab');
 	var form = $('#' + form_id);
-	wrapper.append(form);
+	wrapper.append(info).append(form);
 	var comment_input = $('#' + 'InlineDiscussionForm_inbrief' + '_text');
 
 	var comment_cancel = $('<input type="button" value="cancel" />').addClass(
@@ -939,6 +941,7 @@ function DigidemoAnnotationForm(form_class, prefix_id) {
 		quote = _quote;
 
 		$('body').append(wrapper);
+		$('#' + form_id + '_submit').attr('value', 'post');
 		wrapper.css('display', 'block');
 		wrapper.css('top', X);
 		wrapper.css('left', Y);

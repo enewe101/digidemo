@@ -1733,22 +1733,22 @@ class ProposalFormTest(FormTest):
 			subscription_id=sub_id, user=user, reason=reason)
 
 		# check if a publication was made against the proposal
-		p = Publication.objects.get(
-			subscription_id=proposal.subscription_id,
-			source_user=user,
-			event_type=event_type
-		)
-		self.assertEqual(p.was_posted, False)
-		self.assertEqual(p.event_data, proposal.text[:100])
-		self.assertEqual(p.link_back, url_patch_lang(
-			proposal.get_url_by_view_name('proposal'), language))
+		#p = Publication.objects.get(
+		#	subscription_id=proposal.subscription_id,
+		#	source_user=user,
+		#	event_type=event_type
+		#)
+		#self.assertEqual(p.was_posted, False)
+		#self.assertEqual(p.event_data, proposal.text[:100])
+		#self.assertEqual(p.link_back, url_patch_lang(
+		#	proposal.get_url_by_view_name('proposal'), language))
 
-		# Check if a Publication was made against the tags
-		tag_names = tags.split()
-		tag_objects = [
-			Tag.objects.get(name=tag_names[0]),
-			Tag.objects.get(name=tag_names[1])
-		]
+		## Check if a Publication was made against the tags
+		#tag_names = tags.split()
+		#tag_objects = [
+		#	Tag.objects.get(name=tag_names[0]),
+		#	Tag.objects.get(name=tag_names[1])
+		#]
 
 
 
