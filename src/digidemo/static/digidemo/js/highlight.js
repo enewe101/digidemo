@@ -391,11 +391,11 @@ function Annotation(
 	var locator = '<span id="annotation_locator"></span>';
 	var marker = $('<div/>').addClass('annot_marker');
 	var color = color || get_next_color();
-	marker.css('background-color', color);
+	marker.css('background-color', 'solid 1px rgb(170, 0, 212)');
 	if(editable) {
-		marker.css('border', 'solid 1px rgb(170, 0, 212)');
-	} else {
 		marker.css('border', 'solid 1px ' + color);
+	} else {
+		marker.css('border', 'solid 1px rgb(170, 0, 212)');
 	}
 
 	var annotation = $('<div/>').addClass('annotation');
