@@ -887,10 +887,16 @@ function DigidemoAnnotationForm(form_class, prefix_id) {
 
 	var class_prefix = 'highlight';
 	var wrapper = $('<div/>').addClass(class_prefix + '_comment_wrapper')
+	wrapper.draggable();
+
+	// the following line is needed to override a behavior in chrome
+	// without it, the element's style attribute will contain a 
+	// "position:relative" directive.  This is avoided by explicitly setting 
+	// it to absolute (even though that's covered by a css rule...)
+	wrapper.attr('style', 'position:absolute');
 	if(!django.IS_USER_AUTHENTICATED) {
 		wrapper.attr('title', 'You must log in to comment!');
 	}
-	wrapper.draggable();
 
 	var form = $('#' + form_id);
 	wrapper.append(form);
@@ -910,7 +916,7 @@ function DigidemoAnnotationForm(form_class, prefix_id) {
 	});
 
 	widgets[form_id].widget.hook('error', function(data) {
-		js_error(data.toSource());
+		js_error(data);
 	});
 
 	this.wrapper = wrapper;
