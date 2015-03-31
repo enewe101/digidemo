@@ -276,13 +276,18 @@ class DiscussionForm(ModelForm):
 
 
 class InlineDiscussionForm(AugmentedFormMixin, ModelForm):
+
 	endpoint = 'add_inline_discussion'
+	comment_id = forms.CharField(widget=forms.HiddenInput(), required=False)
+
 	class Meta:
 		model = Discussion
-		fields = ['target', 'text', 'anchor', 'quote', 'target_part', 
+		fields = [
+			'comment_id', 'target', 'text', 'anchor', 'quote', 'target_part', 
 			'is_inline'
 		]
 		widgets = {
+			'comment_id': forms.HiddenInput(),
 			'target': forms.HiddenInput(),
 			'text': forms.Textarea(),
 			'anchor': forms.HiddenInput(),

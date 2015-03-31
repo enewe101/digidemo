@@ -48,8 +48,8 @@
 
 .annot_marker {
 	position: absolute;
-	height: 7px;
-	width: 7px;
+	height: 5px;
+	width: 5px;
 	cursor: pointer;
 	background: blue;
 	border-radius: 50%;
@@ -66,3 +66,11 @@
 	padding: 6px;
 }
 
+.edit_annotation_div {
+	font-size: 12px;
+	float: right;
+}
+
+.edit_annotation_div a {
+	margin-left: 4px;
+}

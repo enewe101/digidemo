@@ -882,6 +882,8 @@ function AddFactorVersionWidget(add_link, form_wrapper,
 function DigidemoAnnotationForm(form_class, prefix_id) {
 
 	var annotatable = null;
+	var save_callback = function(){};
+	var cancel_callback = function(){};
 	var form_id = form_class + '_' + prefix_id;
 
 
@@ -911,12 +913,12 @@ function DigidemoAnnotationForm(form_class, prefix_id) {
 
 	comment_cancel.click(cancel);
 
-	widgets[form_id].widget.hook('success', function() {
-		save();
+	widgets[form_id].widget.hook('success', function(data) {
+		save(data);
 	});
 
 	widgets[form_id].widget.hook('error', function(data) {
-		js_error(data);
+		js_error(data.toSource());
 	});
 
 	this.wrapper = wrapper;
@@ -927,7 +929,12 @@ function DigidemoAnnotationForm(form_class, prefix_id) {
 	var html = '';
 	var quote = '';
 
-	this.show = function(X,Y,_html,_quote) {
+	this.show = function(
+		_save_callback, _cancel_callback, X, Y,
+	   	_html, _quote, _comment_text, _comment_id
+	) {
+		save_callback = _save_callback;
+		cancel_callback = _cancel_callback;
 		html = _html;
 		quote = _quote;
 
@@ -939,6 +946,11 @@ function DigidemoAnnotationForm(form_class, prefix_id) {
 		$('#' + form_id + '_anchor').val(html);
 		$('#' + form_id + '_quote').val(quote);
 
+		_comment_text = _comment_text || '';
+		_comment_id = _comment_id || '';
+
+		$('#' + form_id + '_text').val(_comment_text);
+		$('#' + form_id + '_comment_id').val(_comment_id);
 	};
 
 	this.register_annotatable = function(annot) {
@@ -947,24 +959,21 @@ function DigidemoAnnotationForm(form_class, prefix_id) {
 
 	function cancel() {
 		that.hide()
-		annotatable.cancel_comment();
+		cancel_callback();
 	}
 
 	this.hide = function() {
 		 wrapper.css('display', 'none');
 	}
 
-	function save() {
+	function save(data) {
 		comment_input = $('#' + form_id + '_text');
 		var comment = comment_input.val();
 
-		annotatable.save_comment(
-			html, quote, comment, doc_id
-		);
+		var comment_id = data['comment_id'];
+		save_callback(html, quote, comment, comment_id);
 
 		comment_input.val('');
 		that.hide();
 	}
-
-
 }

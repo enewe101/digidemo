@@ -1387,6 +1387,7 @@ def get_discussion_info(discussion_query_set):
 			'anchor': d.anchor,
 			'quote': d.quote,
 			'text': d.text,
+			'id': d.pk,
 			'user_data': {
 				'username': user.username,
 				'rep': user_profile.rep,

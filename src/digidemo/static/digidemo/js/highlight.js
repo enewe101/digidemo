@@ -251,7 +251,7 @@ function Annotatable(wrapper, annotation_form, color, class_prefix) {
 	// clears any open word-bubbles from annotations
 	function _clear_annotation_text() {
 		for(var i=0; i<annotations.length; i++) {
-			annotations[i].clear_annotation_text();
+			annotations[i].hide();
 		}
 	}
 
@@ -264,6 +264,8 @@ function Annotatable(wrapper, annotation_form, color, class_prefix) {
 		highlightable.highlight(keep_html, color);
 
 		annotation_form.show(
+			that.save_comment,
+			that.cancel_comment,
 			comment_Y,
 		   	comment_X,
 			keep_html,
@@ -283,15 +285,20 @@ function Annotatable(wrapper, annotation_form, color, class_prefix) {
 		state = 'rest';
 	}
 
-	this.save_comment = function(comment_html, comment_quote, comment) {
+	this.save_comment = function(
+		comment_html, comment_quote, comment, comment_id
+	) {
+
 		state = 'rest';
 
 		var new_annotation = new Annotation(
 			wrapper, 
 			that, 
+			annotation_form,
 			comment_html, 
 			comment_quote, 
 			comment,
+			comment_id,
 			{
 				'username': django['USER']['username'],
 				'rep': django['USER_PROFILE']['rep'],
@@ -307,7 +314,7 @@ function Annotatable(wrapper, annotation_form, color, class_prefix) {
 	}
 
 	this.add_annotation = function(
-		anchor, quote, text, user_data, do_show, color) {
+		anchor, quote, text, annotation_id, user_data, do_show, color) {
 
 		// check if the annotation that is being loaded actually matches 
 		// html in the wrapper, and whether it matches uniquely.
@@ -318,9 +325,11 @@ function Annotatable(wrapper, annotation_form, color, class_prefix) {
 			var new_annotation = new Annotation(
 				wrapper, 
 				that, 
+				annotation_form,
 				anchor, 
 				quote, 
 				text,
+				annotation_id,
 				user_data,
 				do_show,
 				color
@@ -352,7 +361,7 @@ function Annotatable(wrapper, annotation_form, color, class_prefix) {
 		}
 
 		_clear_annotation_text();
-
+		
 	})
 }
 
@@ -367,33 +376,90 @@ function get_next_color() {
 
 
 function Annotation(
-	wrapper, annotatable, html, quote, annotation_text, data, do_show, color
+	wrapper, annotatable, annotation_form, html, quote, annotation_text, 
+	annotation_id, data, do_show, color
 ) {
 
 	// determines whether the annotation shows when added.  Default is to show
 	if(typeof do_show === 'undefined') do_show = true;
 
+	var editable = false;
+	if(django['USER'] && data['username']==django['USER']['username']) {
+		editable = true;
+	}
+
 	var locator = '<span id="annotation_locator"></span>';
 	var marker = $('<div/>').addClass('annot_marker');
 	var color = color || get_next_color();
 	marker.css('background-color', color);
+	if(editable) {
+		marker.css('border', 'solid 1px rgb(170, 0, 212)');
+	} else {
+		marker.css('border', 'solid 1px ' + color);
+	}
 
-	var annotation = $(
-		'<div class="annotation"> '
-			+ '<div class="user_id">'
-				+ '<img class="avatar_image_micro"'
-					+ ' src="' + data['avatar_url'] + '">'
-				+ '<div class="user_info">'
-					+ '<div class="username">' + data['username'] + '</div>'
-					+ '<div>' + data['rep'] + '</div>'
-				+ '</div>'
-			+ '</div>'
-			+ annotation_text
-		+ '</div>'
+	var annotation = $('<div/>').addClass('annotation');
+	var user_id = $('<div/>').addClass('user_id');
+	var avatar_image = $('<img/>').addClass('avatar_image_micro').attr(
+		'src', data['avatar_url']
 	);
+	var user_info = $('<div/>').addClass('user_info');
+	var username = $('<div/>').addClass('username').text(data['username']);
+	var user_rep = $('<div/>').text(data['rep']);
+	var annotation_text_span = $('<span/>').text(annotation_text);
 
+	user_info.append(username).append(user_rep);
+	user_id.append(avatar_image).append(user_info);
+	annotation.append(user_id).append(annotation_text_span);
 
-	var state = 'dodge';
+	function show_edit_form() {
+		annotatable.clear();
+		_clear_annotation_text();
+		annotatable.highlight(html, color);
+
+		annotation_form.show(
+			save,
+			show_annotation,
+			position.top + 20,
+		   	position.left,
+			html,
+			quote,
+			annotation_text,
+			annotation_id
+		);
+	}
+
+	function save(html, quote, comment_text) {
+		annotation_text_span.text(comment_text);
+		show_annotation();
+	}
+
+	function _delete() {
+		ajax(
+			'delete_inline_comment',
+			{'comment_id': annotation_id},
+			{
+				'success': function(data, textStatus, jqXHR){ 
+					fully_hide();
+				}
+			}
+		);
+
+	}
+
+	if(editable) {
+		var edit_div = $('<div/>').addClass('edit_annotation_div');
+		var edit_link = $('<a/>').text('edit');
+		var delete_link = $('<a/>').text('delete');
+
+		edit_link.click(show_edit_form);
+		delete_link.click(_delete);
+
+		edit_div.append(edit_link).append(delete_link);
+		annotation.append(edit_div);
+	}
+
+	var state = 'hidden';
 
 	function show_annotation() {
 		annotatable.clear();
@@ -405,12 +471,13 @@ function Annotation(
 			'left': position.left
 		});
 
-		state = 'dodge';
+		state = 'ignore_hide';
 	}
+
 
 	// clicking on the annotation itself does not clear it
 	annotation.click(function() {
-		state = 'dodge';
+		state = 'ignore_hide';
 	});
 
 	// clears word-bubbles associated to annotations, but not highlight
@@ -420,13 +487,36 @@ function Annotation(
 
 	// expose the clear_annotation_text functionality publicly
 	this.clear_annotation_text = function() {
-		if(state === 'dodge') {
-			state = 'rest';
-		} else {
-			_clear_annotation_text();
+		_clear_annotation_text();
+	}
+
+	// hides everything except the marker
+	function _hide() {
+		_clear_annotation_text();
+		state = 'hidden';
+	}
+
+	//expose hide publicly
+	this.hide = function() {
+		if(state === 'ignore_hide') {
+			state = 'showing';
+		} else if(state === 'showing') {
+			_hide();
+		} else if (state === 'hidden') {
+			// do nothing
+		} else if (state === 'fully_hidden') {
+			// do nothing
 		}
 	}
 
+	// hides everything including the marker
+	function fully_hide() {
+		_clear_annotation_text();
+		marker.css('display', 'none');
+		annotatable.clear();
+		state = 'fully_hidden'
+	}
+	
 	marker.click(show_annotation);
 
 	// use a span to locate the annotation in the text

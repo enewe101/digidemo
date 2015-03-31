@@ -9,6 +9,7 @@ from django.utils.translation import ugettext as __
 from django.utils import timezone
 from django.views.decorators.csrf import csrf_exempt
 from django.contrib.auth import authenticate, login, logout
+from django.core.exceptions import PermissionDenied
 from digidemo.models import *
 from digidemo.abstract_models import *
 from digidemo.forms import *
@@ -340,21 +341,32 @@ def register_notification_checked(request):
 @ajax_endpoint_login_required('You must login to comment!')
 def add_inline_discussion(request):
 
-	print 'post:', request.POST
-	
 	discussion_form = InlineDiscussionForm(request.POST)
 	if discussion_form.is_valid():
 
-		print request.POST
+		# if the comment id is not empty, this is an edit request
+		if(request.POST['comment_id'] != ''):
+			comment_id = int(request.POST['comment_id'])
+			discussion = Discussion.objects.get(pk=comment_id)
 
-		discussion = discussion_form.save(commit=False)
-		discussion.user = request.user
-		discussion.save()
+			# the user can only edit her own comments
+			if discussion.user != request.user:
+				raise PermissionDenied
 
-		print discussion
+			discussion.text = request.POST['text']
+			discussion.save()
+
+		# otherwise, this is a create request
+		else:
+			discussion = discussion_form.save(commit=False)
+			discussion.user = request.user
+			discussion.save()
+
+		print 'comment id:', discussion.pk
 
 		return {
 			'success':True,
+			'comment_id': discussion.pk,
 			'errors': discussion_form.json_errors()
 		}
 
@@ -366,6 +378,23 @@ def add_inline_discussion(request):
 		'msg':'ajax.py: InlineDiscussionForm was not valid', 
 		'errors': discussion_form.json_errors()
 	}
+
+@ajax_endpoint_login_required('You must login to delete a comment!')
+def delete_inline_comment(request):
+
+	# get the comment identified in the request
+	comment_id = request.POST['comment_id']
+	inline_comment = get_object_or_404(Discussion, pk=comment_id)
+
+	# ensure that the requesting user is trying to delete a comment that
+	# belongs to her
+	if inline_comment.user != request.user:
+		raise PermissionDenied
+
+	inline_comment.delete()
+	print 'Deleted'
+	return {'success':True}
+
 
 
 @ajax_endpoint_login_required('You must login to post a reply!', ReplyForm)
