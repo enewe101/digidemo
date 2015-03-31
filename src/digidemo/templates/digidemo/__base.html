@@ -25,7 +25,7 @@
 			<!--link rel="stylesheet" type="text/css" 
 				href="{% static "digidemo/css/login.css" %}" /-->
 			<link rel="stylesheet" type="text/css" 
-				href="{% static "digidemo/css/jquery-ui.css" %}" />
+				href="{% static "digidemo/css/jquery-ui.min.css" %}" />
 			<link rel="stylesheet" type="text/css" 
 				href="{% static "digidemo/css/style.css" %}" />
 			<link rel="stylesheet" type="text/css" 
@@ -76,8 +76,7 @@
 				src="//code.jquery.com/jquery-2.1.1.min.js"></script>
 
 			<script 
-				src="//code.jquery.com/ui/1.11.0/jquery-ui.min.js">
-			</script>
+				src="{% static "digidemo/js/jquery-ui.min.js" %}"></script>
 
 			<script type="text/javascript">
 				var ALERT_AJAX_ERRORS = true;
