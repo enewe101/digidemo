@@ -317,12 +317,10 @@ def get_django_vars_JSON(additional_vars={}, request=None):
 		globals['USER_PROFILE'] = None
 		globals['USER'] = None
 
-	# some objects are not serializeable, we need to use a bit of force
-
-
 	# some things we don't want to include
 	del globals['FEEDBACK_FORM']
 	del globals['LOGIN_FORM']
+	del globals['NOTIFICATIONS']
 
 	return json.dumps(globals)
 
