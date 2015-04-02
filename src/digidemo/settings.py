@@ -100,6 +100,7 @@ INSTALLED_APPS = (
 	'haystack',
 	'django_nose',
 )
+
 AUTH_USER_MODEL = 'auth.User'
 
 MIDDLEWARE_CLASSES = (
@@ -146,7 +147,6 @@ EMAIL_HOST_USER = local_settings.EMAIL_HOST_USER
 EMAIL_HOST_PASSWORD = local_settings.EMAIL_HOST_PASSWORD
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
-
 
 	#########################################
 	#                                       #

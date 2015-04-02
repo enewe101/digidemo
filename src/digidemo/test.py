@@ -1732,23 +1732,15 @@ class ProposalFormTest(FormTest):
 		s = Subscription.objects.get(
 			subscription_id=sub_id, user=user, reason=reason)
 
-		# check if a publication was made against the proposal
-		#p = Publication.objects.get(
-		#	subscription_id=proposal.subscription_id,
-		#	source_user=user,
-		#	event_type=event_type
-		#)
-		#self.assertEqual(p.was_posted, False)
-		#self.assertEqual(p.event_data, proposal.text[:100])
-		#self.assertEqual(p.link_back, url_patch_lang(
-		#	proposal.get_url_by_view_name('proposal'), language))
-
-		## Check if a Publication was made against the tags
-		#tag_names = tags.split()
-		#tag_objects = [
-		#	Tag.objects.get(name=tag_names[0]),
-		#	Tag.objects.get(name=tag_names[1])
-		#]
+		# TODO: test that a notification was made to superuser
+		#
+		# 	- make superuser subscribed to a SubscriptionId that represents
+		#		watching for the creation of any new issues
+		#	- make it so that regularuser creates all of these
+		#	- Make more users, and also test that users watching applicable
+		#	- tags, sectors, and the issue itself, get notified
+		#	- use a user that did not create this issue, and ensure that
+		#		they get subscribed upon editing
 
 
 
@@ -1780,7 +1772,6 @@ class AddProposalTest(ProposalFormTest):
 		self.go(url_patch_lang('', opp_code))
 
 		self.assertFalse(self.values[0] in self.find('trending').text)
-
 
 
 

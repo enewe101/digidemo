@@ -169,7 +169,7 @@ class TriggersNotification(TimeStamped):
 		# find the subscribers to all of the targets
 		subscriptions = Subscription.objects.filter(
 			subscription_id__in=targets
-		).exclude(user=source_user).order_by(-creation_date)
+		).exclude(user=source_user).order_by('-creation_date')
 
 		# Take only the most recent subscription for each user.   
 		# This can be acomplished using a dictionary indexed
@@ -188,8 +188,8 @@ class TriggersNotification(TimeStamped):
 				# note, we have to explicitly mark the timestamps, because
 				# during bulk create, save() will not explicitly be called
 				Notification(
-					#last_modified = timezone.now(),
-					#creation_date = timezone.now(),
+					last_modified = timezone.now(),
+					creation_date = timezone.now(),
 					source_user = source_user,
 					target_user = user,
 					event_type = event_type,
@@ -267,18 +267,37 @@ class Subscribable(TriggersNotification):
 
 	def subscribe(self, subscriber=None, reason=None):
 
-			# default values are assumed so that authors can be auto-susbcribed
-			# when their subscribable object is saved.  This can be overridden.
-			subscriber = subscriber or self.get_author()
-			reason = reason or self.get_reason()
+		'''
+			Subscribes the provided user, for the provided reason.  
+			Returns True if a new subscription was made, otherwise False.
+			
+			If no user is provided, then the object's get_author() method
+			is used to subscribe the author.  If that returns none, no 
+			subscription is made.  If no reason is provided, the object's
+			get_reason() method is called.  
 
-			if subscriber is not None:
-				sub, created = Subscription.objects.get_or_create(
-					user = subscriber,
-					reason = reason,
-					subscription_id = self.subscription_id
-				)
-				sub.save()
+			If the user already has a subscription to that object, then
+			the reason is updated, but a new subscription is not made.
+		'''
+
+		# default values are assumed so that authors can be auto-susbcribed
+		# when their subscribable object is saved.  This can be overridden.
+		subscriber = subscriber or self.get_author()
+		reason = reason or self.get_reason()
+
+		if subscriber is not None:
+			sub, created = Subscription.objects.get_or_create(
+				user = subscriber,
+				subscription_id = self.subscription_id
+			)
+			sub.reason = reason
+			sub.save()
+			if created:
+				return True
+			else:
+				return False
+
+		return False
 
 
 	class Meta:
