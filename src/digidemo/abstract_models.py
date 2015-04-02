@@ -31,6 +31,8 @@ EVENT_TYPE_CHOICES = (
 	('VOTE', 'vote'),
 	('SYSTEM', 'system'),
 )
+
+# reasons that a user is subscribed to content
 REASON_CHOICES = (
 	('AUTHOR', 'author'),
 	('COMMENTER', 'commenter'),
@@ -164,16 +166,40 @@ class TriggersNotification(TimeStamped):
 		link_back = link_back or self.get_link_back()
 		event_type = event_type or self.get_event_type()
 
+		# find the subscribers to all of the targets
+		subscriptions = Subscription.objects.filter(
+			subscription_id__in=targets
+		).exclude(user=source_user).order_by(-creation_date)
+
+		# Take only the most recent subscription for each user.   
+		# This can be acomplished using a dictionary indexed
+		# by user, since only the last value for a key is kept.
+		subscriptions = dict([
+			(s.user, {'reason':s.reason, 'sub_id':s.subscription_id})
+			for s in subscriptions
+		])
+
 		# now make all the notifications
-		for subscription_id in targets:
-			pub = Publication(
-				source_user = source_user,
-				subscription_id = subscription_id,
-				event_type = event_type,
-				event_data = event_data,
-				link_back = link_back
+		notifications = []
+		for user in subscriptions:
+			sub = subscriptions[user]
+			notifications.append(
+
+				# note, we have to explicitly mark the timestamps, because
+				# during bulk create, save() will not explicitly be called
+				Notification(
+					#last_modified = timezone.now(),
+					#creation_date = timezone.now(),
+					source_user = source_user,
+					target_user = user,
+					event_type = event_type,
+					reason = sub['reason'],
+					event_data = event_data,
+					link_back = link_back
+				)
 			)
-			pub.save()
+
+		Notification.objects.bulk_create(notifications)
 
 	class Meta:
 		abstract = True

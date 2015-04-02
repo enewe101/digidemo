@@ -421,69 +421,6 @@ class ProposalVersionForm(AugmentedFormMixin, ModelForm):
 		}
 
 
-#	def save(self, commit=True):
-#
-#		# If the proposal version isn't bound to a proposal, we are making
-#		# a brand new proposal
-#		if self.cleaned_data['proposal'] is None:
-#
-#			# Copy data from the proposal_version,
-#			# which is used to make the proposal itself
-#			proposal_init = {
-#				'title': self.cleaned_data['title'],
-#				'summary': self.cleaned_data['summary'],
-#				'text': self.cleaned_data['text'],
-#				'user': self.cleaned_data['user'],
-#				'original_user': self.cleaned_data['user'],
-#				'language': self.cleaned_data['language']
-#			}
-#
-#			# now make the proposal and save it
-#			self.proposal = Proposal(**proposal_init)
-#			self.proposal.save(suppress_subscribe=True, suppress_publish=True)
-#
-#			# now save the proposal version, then bind the proposal and
-#			# then save the bound proposal_version
-#			new_proposal_version = super(ProposalVersionForm, self).save(
-#				commit=False)
-#			new_proposal_version.proposal = self.proposal
-#			new_proposal_version.save()
-#
-#			# Finally copy the sectors to the saved proposal and
-#			# proposal_version
-#			for sector in self.cleaned_data['sectors']:
-#				new_proposal_version.sectors.add(sector)
-#				self.proposal.sectors.add(sector)
-#
-#		# Otherwise, we editing an existing proposal proposal, by saving a new
-#		# proposal version
-#		else:
-#
-#			# Update the values in the Proposal which mirror the
-#			# ProposalVersion.  Since this is an edit, there is already
-#			# a proposal bound to the form, get it, then update values.
-#			self.proposal = self.cleaned_data['proposal']
-#			for field in ['title', 'summary', 'text', 'user']:
-#				setattr(self.proposal, field, self.cleaned_data[field])
-#
-#			# this save will cause the editing user to be subscribed to the 
-#			# issue
-#			self.proposal.save(suppress_publish=True, suppress_subscribe=True)
-#
-#			# Save a new proposal version based on the contents of this form
-#			new_proposal_version = super(ProposalVersionForm, self).save()
-#
-#			# We also need to manually copy over the sectors.
-#			# First, clear any existing ones from the proposal (this makes
-#			# deletion of sectors possible)
-#			self.proposal.sectors.clear()
-#			for sector in self.cleaned_data['sectors']:
-#				new_proposal_version.sectors.add(sector)
-#				self.proposal.sectors.add(sector)
-#
-#		# Finally, return a reference to the proposal
-#		return new_proposal_version
-
 
 class TaggerForm(object):
 
