@@ -1,7 +1,10 @@
+import os
 from django.core.management.base import BaseCommand, CommandError
 from django.core.mail import EmailMessage
 from digidemo.views import get_notification_message
 from digidemo.abstract_models import Notification
+from digidemo.settings import BASE_DIR
+from django.utils import timezone
 
 class Command(BaseCommand):
 
@@ -57,7 +60,8 @@ class Command(BaseCommand):
 			n.was_mailed = True
 			n.save()
 
-		log_fh = open('mail_log.txt', 'a')
-		log_fh.write('%s sent %d mails.' % (str(timezone.now()), num_sent))
+		log_fname = os.path.join(BASE_DIR, 'mail_log.txt')
+		log_fh = open(log_fname, 'a')
+		log_fh.write('%s sent %d mails.\n' % (str(timezone.now()), num_sent))
 		log_fh.close()
-		
+
