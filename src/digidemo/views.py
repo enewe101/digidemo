@@ -1587,12 +1587,14 @@ class DiscussionListView(AbstractView):
 
 		self.open_discussions = Discussion.objects.filter(
 			target=proposal,
-			is_open=True
+			is_open=True,
+			is_inline=False
 		)
 
 		self.closed_discussions = Discussion.objects.filter(
 			target=proposal,
-			is_open=False
+			is_open=False,
+			is_inline=False
 		)
 
 		return {
