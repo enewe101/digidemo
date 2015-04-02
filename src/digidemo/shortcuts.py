@@ -77,6 +77,17 @@ def url_patch_lang(url, language_code=None):
 	return language_code + no_lang_url
 
 
+def get_user_hash(user):
+	return hashlib.sha256(
+		'af612da003486b687' + user.username
+	).hexdigest()[:32]
+
+
+def create_unsubscribe_link(user):
+	link_kwargs = {'code':get_user_hash(user), 'user':user.pk}
+	link_suffix = reverse('unsubscribe', kwargs=link_kwargs)
+	return 'https://luminocracy.org' + link_suffix
+
 def send_email_confirmation(user, request):
 	# send registration email
 	random_hash = hashlib.sha256(

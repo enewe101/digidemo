@@ -25,7 +25,7 @@ from digidemo.abstract_models import *
 from digidemo.forms import *
 from digidemo import utils
 from digidemo.utils import force_logout
-from digidemo.shortcuts import get_profile, login_user, send_email_confirmation
+from digidemo.shortcuts import get_profile, login_user, send_email_confirmation, get_user_hash
 
 
 from forms import ProposalSearchForm
@@ -1913,6 +1913,35 @@ def verify_email(request, code):
 			'django_vars_js': get_django_vars_JSON(request=request)
 		}
 	)
+
+
+class Unsubscribe(AbstractLoginRequiredView):
+	template = 'digidemo/unsubscribe.html'
+
+	def get_context_data(self):
+		code = self.kwargs['code']
+		user_pk = self.kwargs['user']
+		user = User.objects.get(pk=user_pk)
+		expected_code = get_user_hash(user)
+
+		unsubscribed = False
+
+		print code
+		print expected_code
+
+		if code == expected_code:
+			user_profile = user.profile
+
+			user_profile.do_email_news = False
+			user_profile.do_email_responses = False
+			user_profile.do_email_petitions = False
+			user_profile.do_email_watched = False
+
+			user_profile.save()
+
+			unsubscribed=True
+
+		return {'unsubscribed':unsubscribed}
 
 
 def resetPassword(request):

@@ -1,0 +1,30 @@
+{% extends "digidemo/__base.html" %}
+{% load staticfiles %}
+{% load apptags %}
+{% load i18n %}
+
+{% block middle %}
+
+<div class="validate_center">
+	<div class="unsubscribe"></div>
+	{% if unsubscribed %}
+		<h2 id="exclamation" class="validate"> 
+			{% trans "No more emails!" %}  <br/>
+			<span id="exclamation_message" class="not_bold">
+				{% trans "Thanks for letting us know.  We won't send you any more emails!" %}
+			</span>
+		</h2>
+	{% else %}
+		<h2 id="exclamation" class="validate">
+			Something went wrong and we couldn't unsubscribe you...
+			<span id="exclamation_message" class="not_bold">
+				{% blocktrans with email="edward.newell@gmail.com" %}
+					Please <a href="mailto:{{email}}">email me</a> 
+					and I'll look into it.  Sorry about that :S
+				{% endblocktrans %}
+			</span>
+		</h2>
+	{% endif %}
+</div>
+
+{% endblock middle %}

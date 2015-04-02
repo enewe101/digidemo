@@ -150,6 +150,13 @@ hr {
 }
 
 
+.unsubscribe {
+	background: no-repeat url('../images/unsubscribe.jpg');
+	height: 100px;
+	width: 100px;
+	float:left;
+}
+
 .check {
 	background: no-repeat url('../images/check.png');
 	height: 100px;

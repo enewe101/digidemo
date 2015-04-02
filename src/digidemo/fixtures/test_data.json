@@ -2757,27 +2757,5 @@
   },
   "model": "digidemo.subscription",
   "pk": 17
-},
-{
-  "fields": {
-    "subscription_id": 70,
-    "reason": "EDITOR",
-    "last_modified": "2015-03-29T17:12:45Z",
-    "user": 2,
-    "creation_date": "2015-03-29T17:12:45Z"
-  },
-  "model": "digidemo.subscription",
-  "pk": 18
-},
-{
-  "fields": {
-    "subscription_id": 85,
-    "reason": "EDITOR",
-    "last_modified": "2015-03-29T17:13:18Z",
-    "user": 2,
-    "creation_date": "2015-03-29T17:13:18Z"
-  },
-  "model": "digidemo.subscription",
-  "pk": 19
 }
 ]

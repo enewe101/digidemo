@@ -2676,34 +2676,36 @@ class PublishSubscribeTest(FixtureLoadedTestCase):
 		s = Subscription.objects.get(subscription_id=sub_id)
 		self.assertEqual(s.user, proposal_author)
 
-		# Check if a Pubscription was made against the Proposal
-		p = Publication.objects.get(subscription_id=proposal.subscription_id)
-		self.assertEqual(p.source_user, proposal_author)
-		self.assertEqual(p.event_type, 'ISSUE')
-		self.assertEqual(p.was_posted, False)
-		self.assertEqual(p.event_data, proposal.text[:100])
-		self.assertEqual(p.link_back, 
-			proposal.get_url_by_view_name('proposal'))
+		# TODO: test for notifications directly
+		#
+		## Check if a Pubscription was made against the Proposal
+		#p = Publication.objects.get(subscription_id=proposal.subscription_id)
+		#self.assertEqual(p.source_user, proposal_author)
+		#self.assertEqual(p.event_type, 'ISSUE')
+		#self.assertEqual(p.was_posted, False)
+		#self.assertEqual(p.event_data, proposal.text[:100])
+		#self.assertEqual(p.link_back, 
+		#	proposal.get_url_by_view_name('proposal'))
 
 
-		# Check if a Publication was made against the tag
-		p = Publication.objects.get(subscription_id=tag.subscription_id)
-		self.assertEqual(p.source_user, proposal_author)
-		self.assertEqual(p.event_type, 'ISSUE')
-		self.assertEqual(p.was_posted, False)
-		self.assertEqual(p.event_data, proposal.text[:100])
-		self.assertEqual(p.link_back, 
-			proposal.get_url_by_view_name('proposal'))
+		## Check if a Publication was made against the tag
+		#p = Publication.objects.get(subscription_id=tag.subscription_id)
+		#self.assertEqual(p.source_user, proposal_author)
+		#self.assertEqual(p.event_type, 'ISSUE')
+		#self.assertEqual(p.was_posted, False)
+		#self.assertEqual(p.event_data, proposal.text[:100])
+		#self.assertEqual(p.link_back, 
+		#	proposal.get_url_by_view_name('proposal'))
 
-		# Check if a Publication was made against the sector
-		p = Publication.objects.get(
-			subscription_id=sector.subscription_id,
-			source_user=proposal_author,
-			event_type='ISSUE',
-			was_posted=False,
-			event_data=proposal.text[:100],
-			link_back=proposal.get_url_by_view_name('proposal')
-		)
+		## Check if a Publication was made against the sector
+		#p = Publication.objects.get(
+		#	subscription_id=sector.subscription_id,
+		#	source_user=proposal_author,
+		#	event_type='ISSUE',
+		#	was_posted=False,
+		#	event_data=proposal.text[:100],
+		#	link_back=proposal.get_url_by_view_name('proposal')
+		#)
 
 
 	def test_question(self):
@@ -2836,15 +2838,17 @@ class PublishSubscribeTest(FixtureLoadedTestCase):
 		s = Subscription.objects.get(subscription_id=sub_id)
 		self.assertEqual(s.user, subscribable_author)
 
+		# TODO: test for notifications directly
+		#
 		# Check for a Publication of the Subscribable against the Target
-		p = Publication.objects.get(
-			subscription_id=target.subscription_id,
-			source_user=subscribable_author,
-			event_type=event_type,
-			was_posted=False,
-			event_data=event_data,
-			link_back=subscribable.get_url()
-		)
+		#p = Publication.objects.get(
+		#	subscription_id=target.subscription_id,
+		#	source_user=subscribable_author,
+		#	event_type=event_type,
+		#	was_posted=False,
+		#	event_data=event_data,
+		#	link_back=subscribable.get_url()
+		#)
 
 
 
