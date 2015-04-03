@@ -42,7 +42,7 @@ from choices import *;
 OVERVIEW_TAB_NAME = _('issue')
 QUESTIONS_TAB_NAME = _('questions')
 OPINION_TAB_NAME = _('letters')
-EDIT_TAB_NAME = _('edit / discuss')
+EDIT_TAB_NAME = _('discuss')
 
 # Names we use for the top level "button" navigation
 ISSUE_NAV_NAME = 'issues'
