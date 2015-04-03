@@ -1,0 +1,24 @@
+{% extends "digidemo/__base.html" %}
+{% load staticfiles %}
+{% load apptags %}
+{% load i18n %}
+
+{% block middle %}
+
+{% if thank_you %}
+	<div class="centered">
+		<h1 class="italic computerModern">{% trans "Thank you!" %}</h1>
+	</div>
+{% else %}
+	<div class="mid_form_taller">
+		<h1>Feedback</h1>
+		Now where did I put that form...</br>
+		just email me, ok?  
+		<h2>edward.newell {at} gmail.com</h2>
+	</div>
+{% endif %}
+
+
+{% endblock middle %}
+
+

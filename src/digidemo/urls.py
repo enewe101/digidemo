@@ -50,6 +50,7 @@ urlpatterns += i18n_patterns('',
 	url(r'^email-verify/(?P<code>\w*)', verify_email, name='verify_email'),
 	url(r'^mail-sent', mail_sent, name='mail_sent'),
 	url(r'^unsubscribe/(?P<user>\d+)/(?P<code>\w+)', Unsubscribe().view, name='unsubscribe'),
+	url(r'^feedback', Feedback().view, name='feedback'),
 
 	# Registration
 	url(r'^userRegistration/$', userRegistration,name='userRegistration'),

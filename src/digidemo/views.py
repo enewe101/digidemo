@@ -861,6 +861,12 @@ class InvalidEmail(AbstractView):
 	def get_context_data(self):
 		return {}
 
+class Feedback(AbstractView):
+	template = 'digidemo/temp_feedback.html'
+
+	def get_context_data(self):
+		return {}
+
 
 
 # TODO: the cancel button won't work after an invalid form post
