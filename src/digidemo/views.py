@@ -920,6 +920,12 @@ class EditProposalView(AbstractLoginRequiredView):
 			self.request.FILES,
 			endpoint=proposal.get_edit_url()
 		)
+
+		# Take note of whether an image was uploaded
+		do_restore_image = False
+		if len(self.request.FILES.keys()) == 0:
+			do_restore_image = True
+
 		tagger_form = TaggerForm(self.request.POST)
 
 		proposal_form_valid = proposal_form.is_valid()
@@ -932,7 +938,8 @@ class EditProposalView(AbstractLoginRequiredView):
 
 			proposal = proposal_version.proposal
 
-			if proposal_version.proposal_image is None:
+			# if no image was uploaded, revert to the existing image
+			if do_restore_image:
 				proposal_version.proposal_image = proposal.proposal_image
 				proposal_version.save()
 

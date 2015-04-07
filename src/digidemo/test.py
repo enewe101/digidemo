@@ -1304,6 +1304,32 @@ class ProposalFormTest(FormTest):
 			language=language_code
 		)
 
+	def test_edit_proposal_change_image(self):
+		'''
+			Tests editing an existing issue using the edit-issue form.
+		'''
+
+		# get ahold of the proposal we want to edit, and it's edit page
+		proposal_pk = 1
+		language_code = 'en-ca'
+		edit_url = self.get_edit_url(proposal_pk, language_code)
+
+		# fill out and submit the edit-issue form
+		self.fill_proposal_form(language_code, edit_url, self.form_data)
+
+		# check that the proposal was correctly loaded
+		self.check_content_displayed(self.expect_data)
+
+		# now check that the right data was added to the database
+		self.check_db(
+			proposal_pk, 
+			*self.test_data,
+			username=self.username,
+			event_type='EDIT_ISSUE',
+			reason='EDITOR',
+			language=language_code
+		)
+
 
 	def test_edit_proposal_french(self):
 
@@ -1663,11 +1689,20 @@ class ProposalFormTest(FormTest):
 		easy_to_check_data = copy.copy(expect_data)
 		del easy_to_check_data['tags']
 		del easy_to_check_data['sectors']
-		
+
 		self.assertTrue(
 			self.elements_contain(
 				easy_to_check_data, use_html=False)
 		)
+
+		# check the proposal image
+		proposal_image = self.driver.find_element_by_class_name(
+			'proposal_image')
+		src = proposal_image.get_attribute('src')
+		expected_src = self.full_url(
+			'/media/proposal-images/keystone-pipeline_Biejz6p.jpg'
+		)
+		self.assertEqual(src, expected_src)
 
 		# get the individual tag texts
 		sectors_and_tags = (
