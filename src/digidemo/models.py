@@ -391,6 +391,8 @@ class UserProfile(abstract_models.TimeStamped):
 		verbose_name=_('do email petitions'))
 	do_email_watched = models.BooleanField(default=True, 
 		verbose_name=_('do email watched'))
+	preferred_language = models.CharField(max_length=5, choices=LANGUAGES,
+			default='en-ca', verbose_name=_('preferred language'))
 
 	class Meta:
 		verbose_name = _('user profile')

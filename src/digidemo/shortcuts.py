@@ -6,6 +6,7 @@ from django.utils.translation import ugettext_lazy as _
 from django.utils.translation import ugettext as __
 from django.contrib.auth import authenticate, login
 from django.core.urlresolvers import reverse
+from django.utils import translation 
 
 from digidemo.models import *
 from digidemo.settings import DEBUG, LANGUAGES
@@ -83,10 +84,12 @@ def get_user_hash(user):
 	).hexdigest()[:32]
 
 
-def create_unsubscribe_link(user):
+def create_unsubscribe_link(user, test=False):
+	translation.activate(user.profile.preferred_language)
 	link_kwargs = {'code':get_user_hash(user), 'user':user.pk}
 	link_suffix = reverse('unsubscribe', kwargs=link_kwargs)
 	return 'https://luminocracy.org' + link_suffix
+
 
 def send_email_confirmation(user, request):
 	# send registration email

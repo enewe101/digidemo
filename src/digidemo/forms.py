@@ -17,7 +17,7 @@ from django.core.exceptions import ObjectDoesNotExist
 
 from digidemo.choices import *
 from digidemo.models import *
-from digidemo.settings import PROJECT_DIR
+from digidemo.settings import PROJECT_DIR, LANGUAGES
 from digidemo import utils
 
 
@@ -554,17 +554,23 @@ class UserRegisterForm(AugmentedFormMixin, ModelForm):
 		widget=forms.PasswordInput(), max_length=PASSWORD_MAX_LENGTH,
 		label=_('Confirm password'))
 
+	preferred_language = forms.ChoiceField(
+		choices=LANGUAGES, widget=forms.Select(), 
+		label=_('Preferred language')
+	)
+
 	class Meta:
 		model = User
 		fields = [
-				'first_name', 'last_name', 'username', 'email', 'password',
-				'confirm_password'
+				'first_name', 'last_name', 'username', 'email', 
+				'preferred_language', 'password', 'confirm_password'
 			]
 		widgets = {
 			'first_name': forms.TextInput(),
 			'last_name': forms.TextInput(),
 			'username': forms.TextInput(),
 			'email': forms.EmailInput(),
+			'preferred_language': forms.Select(),
 			'password': forms.PasswordInput(),
 		}
 

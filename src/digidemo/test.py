@@ -19,7 +19,7 @@ from digidemo import settings, markdown as md
 from digidemo.models import *
 from digidemo.abstract_models import *
 from digidemo.views import get_notification_message
-from digidemo.shortcuts import get_profile, url_patch_lang
+from digidemo.shortcuts import get_profile, url_patch_lang, create_unsubscribe_link
 
 from selenium import webdriver
 from selenium.common.exceptions import TimeoutException
@@ -2887,6 +2887,26 @@ class PublishSubscribeTest(FixtureLoadedTestCase):
 
 
 
+
+class TestCreateUnsubscribeLink(SeleniumTestCase):
+
+	def test_create_unsubscribe_link(self):
+
+		u = User.objects.get(pk=1)
+		link = create_unsubscribe_link(u)
+		link = link.replace('https://luminocracy.org', 'localhost:8000')
+		print link
+		self.assertTrue(u.profile.preferred_language in link)
+		self.go(link)
+		self.assertTrue('No more emails!' in self.find('exclamation').text)
+
+		u = User.objects.get(pk=2)
+		link = create_unsubscribe_link(u)
+		link = link.replace('https://luminocracy.org', 'localhost:8000')
+		print link
+		self.assertTrue(u.profile.preferred_language in link)
+		self.go(link)
+		self.assertTrue('No more emails!' in self.find('exclamation').text)
 
 
 class UserProfileTest(FixtureLoadedTestCase):

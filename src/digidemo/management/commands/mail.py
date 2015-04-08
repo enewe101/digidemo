@@ -3,6 +3,7 @@ from django.core.management.base import BaseCommand, CommandError
 from django.core.mail import EmailMessage
 from digidemo.views import get_notification_message
 from digidemo.abstract_models import Notification
+from digidemo.models import User
 from digidemo.settings import BASE_DIR
 from django.utils import timezone
 from digidemo.shortcuts import create_unsubscribe_link
@@ -10,9 +11,9 @@ from digidemo.shortcuts import create_unsubscribe_link
 class Command(BaseCommand):
 
 	help = 'Sends mail for all open notifications'
-	
 
 	def handle(self, *args, **options):
+
 
 		# get all the notifications that haven't yet been seen or mailed
 		notifications = Notification.objects.filter(

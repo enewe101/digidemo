@@ -1873,7 +1873,9 @@ def userRegistration(request):
 
 	else:
 		reg_form = UserRegisterForm(
-		endpoint=reverse('userRegistration'))
+			initial={'preferred_language':request.LANGUAGE_CODE},
+			endpoint=reverse('userRegistration')
+		)
 
  
 	return render(
@@ -1930,7 +1932,7 @@ def verify_email(request, code):
 	)
 
 
-class Unsubscribe(AbstractLoginRequiredView):
+class Unsubscribe(AbstractView):
 	template = 'digidemo/unsubscribe.html'
 
 	def get_context_data(self):
