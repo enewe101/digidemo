@@ -1840,7 +1840,10 @@ def userRegistration(request):
 				last_name = reg_form.cleaned_data['last_name']
 			)
 
-			user_profile = UserProfile(user=new_user)
+			user_profile = UserProfile(
+				user=new_user,
+				preferred_language=reg_form.cleaned_data['preferred_language']
+			)
 			user_profile.save()
 
 			# make a default avatar
@@ -1942,9 +1945,6 @@ class Unsubscribe(AbstractView):
 		expected_code = get_user_hash(user)
 
 		unsubscribed = False
-
-		print code
-		print expected_code
 
 		if code == expected_code:
 			user_profile = user.profile
