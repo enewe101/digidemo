@@ -47,6 +47,7 @@ def reset(user, pwd):
 	if returncode > 0:
 		print 'aborted'
 		return returncode
+
 	# data loading
 	fixture_name = settings.DATA_FIXTURE
 	Popen([manage_command, 'loaddata', fixture_name], 

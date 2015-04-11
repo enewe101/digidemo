@@ -10,6 +10,7 @@ import os, errno
 import digidemo.settings as settings
 import json
 import subprocess
+from digidemo.settings import DATA_FIXTURE
 
 # helper function
 def mkdir_p(path):
@@ -23,7 +24,7 @@ def mkdir_p(path):
 # make some absolute paths that are needed
 manage_command = os.path.join(settings.BASE_DIR, 'manage.py')
 fixtures_dir = os.path.join(settings.BASE_DIR, 'digidemo/fixtures')
-fixture_fname = os.path.join(fixtures_dir, 'test_data.json')
+fixture_fname = os.path.join(fixtures_dir, DATA_FIXTURE+'.json')
 
 # be sure the fixtures dir exists and open the file for writing
 mkdir_p(fixtures_dir)
