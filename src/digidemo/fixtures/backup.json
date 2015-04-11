@@ -6080,32 +6080,13 @@
     "parent_letter": null,
     "creation_date": "2014-07-13T17:02:17Z",
     "last_modified": "2015-02-16T23:33:51Z",
-    "user": 2,
+    "user": 6,
     "score": 8,
     "subscription_id": 194,
     "valence": -1
   },
   "model": "digidemo.letter",
   "pk": 1
-},
-{
-  "fields": {
-    "target": 1,
-    "recipients": [
-      1
-    ],
-    "title": "Stop Keystone XL",
-    "text": "I do not support the project to expand the Keystone Pipeline System.  This proposal generates serious and certain  environmental losses, which do not justify the economic gains.  Furthermore, the development will bring wealth mainly to foreign shareholders, so that the actual economic gains will be much less than they should  be.",
-    "parent_letter": 1,
-    "creation_date": "2015-02-08T04:26:51Z",
-    "last_modified": "2015-02-08T04:26:51Z",
-    "user": 6,
-    "score": 1,
-    "subscription_id": 339,
-    "valence": -1
-  },
-  "model": "digidemo.letter",
-  "pk": 51
 },
 {
   "fields": {
