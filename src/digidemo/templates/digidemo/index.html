@@ -128,43 +128,55 @@
 
 	<div id="about">
 
-		<h1>Political Info for Canadians By Canadians</h1>
+		<h1>{% trans "Political Info for Canadians By Canadians" %}</h1>
 
 		<div id="start" class="centered right_col">
 			<a id="start_issue"
-				href="{% url "add_proposal" %}">Start an issue</a>
+				href="{% url "add_proposal" %}">
+				{% trans "Start an issue" %}
+			</a>
 			<p id="def_issue" class="italic">
+				{% blocktrans %}
 				An "issue" is one opportunity, threat, or decision.
 				It can be at the level of your city, province, or the whole 
 				country.
+				{% endblocktrans %}
 			</p>
 		</div>
 
 		<div id="about_info" class="left_col">
-			<h2>Crowdsourced by Canadians like you</h2>
+			<h2>{% trans "Crowdsourced by Canadians like you" %}</h2>
 			<p>
+				{% blocktrans %}
 				Our issues are crowdsourced by Canadians like you, and 
 				written through 
 				a community authoring process, to promote a balanced 
 				account that reflects diverse perspectives.
+				{% endblocktrans %}
 			</p>
-			<h2>A non-partisan source you can trust</h2>
+			<h2>{% trans "A non-partisan source you can trust" %}</h2>
 			<p>
+				{% blocktrans %}
 				The goal of this platform is to create a productive 
 				dialogue 
 				focused on learning and finding solutions.  We want to cut 
 				through
 				rhetoric, and provide a place where Canadians can get reliable
 				information about current events.
+				{% endblocktrans %}
 			</p>
-			<h2>It's easy, with a little help from your friends</h2>
+			<h2>
+				{% trans "It's easy, with a little help from your friends" %}
+			</h2>
 			<p>
+				{% blocktrans %}
 				Is there an important issue you think Canadians
 				need to know about?  It only takes five minutes to start a 
 				new issue.  Once you've made a quick first draft, you can
 				invite a friend to help you.  Issue-writing is meant to be a
 				collaborative process.  
 				It's easier and more fun when we work on issues together.
+				{% endblocktrans %}
 			</p>
 		</div>
 

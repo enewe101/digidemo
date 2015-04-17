@@ -14,7 +14,7 @@
 		<div id="colophon">
 		</div>
 		<div id="tagline">
-			Read. Discuss. Act.
+			{% trans "Read. Discuss. Act." %}
 		</div>
 	</div>
 
@@ -29,15 +29,15 @@
 		</a-->
 		<a class="header_link"
 			href="{% url "feedback" %}">
-			feedback
+			{% trans "feedback" %}
 		</a>
 		<a class="header_link"
 			href="http://shpow.com" target="_blank">
-			blog
+			{% trans "blog" %}
 		</a>
 		<a class="header_link"
 			href="{% url "issue_list" order_by="interesting" %}">
-			all issues
+			{% trans "all issues" %}
 		</a>
 
 		<div class="float_left">
